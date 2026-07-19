@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Toaster } from 'sonner';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
@@ -23,6 +24,7 @@ export default async function LangLayout({
       <Header lang={lang} dict={dict} />
       <main className="flex-1">{children}</main>
       <Footer dict={dict} />
+      <Toaster position="bottom-right" richColors />
     </div>
   );
 }
