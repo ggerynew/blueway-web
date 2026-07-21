@@ -38,7 +38,7 @@ export default async function LangLayout({
       <main id="main" className="flex-1">
         {children}
       </main>
-      <Footer dict={dict} />
+      <Footer lang={lang} dict={dict} />
       <Toaster position="bottom-right" richColors />
     </div>
   );

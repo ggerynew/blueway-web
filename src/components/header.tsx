@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import { MobileNav } from '@/components/mobile-nav';
 
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const nav = [
@@ -28,7 +29,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="hidden items-center gap-4 md:flex">
           <Link
             href={`/${otherLang}`}
             hrefLang={otherLang}
@@ -44,6 +45,8 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             {dict.nav.quote}
           </Link>
         </div>
+
+        <MobileNav lang={lang} quoteLabel={dict.nav.quote} items={nav} />
       </div>
     </header>
   );
