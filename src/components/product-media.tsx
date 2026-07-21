@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { asset } from '@/lib/asset';
+import { ProductThumb } from '@/components/product-thumb';
 
 export interface ProductMediaLabels {
   photo: string;
@@ -22,7 +23,7 @@ export function ProductMedia({
   labels,
 }: {
   name: string;
-  image: string;
+  image?: string;
   videoId?: string;
   model3d?: string;
   model3dIsDemo?: boolean;
@@ -70,12 +71,7 @@ export function ProductMedia({
         >
           {tab === 'photo' && (
             <div className="flex h-full items-center justify-center p-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={asset(image)}
-                alt={name}
-                className="max-h-full max-w-full object-contain"
-              />
+              <ProductThumb image={image} name={name} />
             </div>
           )}
 

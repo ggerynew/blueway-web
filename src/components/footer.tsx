@@ -4,6 +4,7 @@ import type { Dictionary, Locale } from '@/lib/i18n';
 export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const links = [
     { href: `/${lang}/termekek`, label: dict.nav.products },
+    { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/nyomtatofejek`, label: dict.nav.printheads },
     { href: `/${lang}/partnereink`, label: dict.nav.partners },

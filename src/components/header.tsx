@@ -5,6 +5,7 @@ import { MobileNav } from '@/components/mobile-nav';
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const nav = [
     { href: `/${lang}/termekek`, label: dict.nav.products },
+    { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/nyomtatofejek`, label: dict.nav.printheads },
     { href: `/${lang}/partnereink`, label: dict.nav.partners },

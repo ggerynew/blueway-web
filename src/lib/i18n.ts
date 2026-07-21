@@ -9,6 +9,7 @@ export const dictionaries = {
   hu: {
     nav: {
       products: 'Termékek',
+      manufacturers: 'Gyártók',
       services: 'Szolgáltatások',
       printheads: 'Nyomtatófejek',
       partners: 'Partnereink',
@@ -53,6 +54,13 @@ export const dictionaries = {
         demoNote: 'Minta 3D modell',
         dragHint: 'Húzza az egérrel a forgatáshoz',
       },
+    },
+    manufacturers: {
+      title: 'Gyártók',
+      lead: 'Piacvezető gyártók termékjelölési megoldásait forgalmazzuk — böngésszen gyártó szerint.',
+      viewProducts: 'Termékek megtekintése',
+      backToManufacturers: 'Gyártók',
+      productsFrom: (name: string) => `${name} termékek`,
     },
     services: {
       title: 'Szolgáltatások',
@@ -169,6 +177,7 @@ export const dictionaries = {
   en: {
     nav: {
       products: 'Products',
+      manufacturers: 'Manufacturers',
       services: 'Services',
       printheads: 'Print heads',
       partners: 'Partners',
@@ -213,6 +222,13 @@ export const dictionaries = {
         demoNote: 'Sample 3D model',
         dragHint: 'Drag to rotate',
       },
+    },
+    manufacturers: {
+      title: 'Manufacturers',
+      lead: 'We distribute the product marking solutions of market-leading manufacturers — browse by manufacturer.',
+      viewProducts: 'View products',
+      backToManufacturers: 'Manufacturers',
+      productsFrom: (name: string) => `${name} products`,
     },
     services: {
       title: 'Services',
