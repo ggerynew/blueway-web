@@ -60,7 +60,7 @@ export function ContactForm({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
-            {labels.name} <span className="text-brand-600">*</span>
+            {labels.name} <span className="text-brand-600" aria-hidden="true">*</span>
           </label>
           <input
             id="name"
@@ -73,7 +73,7 @@ export function ContactForm({
         </div>
         <div>
           <label htmlFor="email" className={labelClass}>
-            {labels.email} <span className="text-brand-600">*</span>
+            {labels.email} <span className="text-brand-600" aria-hidden="true">*</span>
           </label>
           <input
             id="email"
@@ -101,7 +101,7 @@ export function ContactForm({
 
       <div>
         <label htmlFor="subject" className={labelClass}>
-          {labels.subject} <span className="text-brand-600">*</span>
+          {labels.subject} <span className="text-brand-600" aria-hidden="true">*</span>
         </label>
         <input
           id="subject"
@@ -115,7 +115,7 @@ export function ContactForm({
 
       <div>
         <label htmlFor="message" className={labelClass}>
-          {labels.message} <span className="text-brand-600">*</span>
+          {labels.message} <span className="text-brand-600" aria-hidden="true">*</span>
         </label>
         <textarea
           id="message"

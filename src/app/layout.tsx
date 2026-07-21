@@ -20,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="hu" className={inter.variable}>
+    <html lang="hu" className={inter.variable} suppressHydrationWarning>
       <body className="font-sans">{children}</body>
     </html>
   );

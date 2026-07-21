@@ -31,7 +31,9 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <div className="flex items-center gap-4">
           <Link
             href={`/${otherLang}`}
-            className="text-sm text-ink-muted uppercase transition-colors hover:text-ink"
+            hrefLang={otherLang}
+            aria-label={lang === 'hu' ? 'Váltás angol nyelvre' : 'Switch to Hungarian'}
+            className="rounded-sm text-sm text-ink-muted uppercase transition-colors hover:text-ink"
           >
             {otherLang}
           </Link>
