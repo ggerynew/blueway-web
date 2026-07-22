@@ -52,7 +52,7 @@ export default async function CategoryPage({
             <Reveal key={product.slug} delay={i * 0.05}>
               <Link
                 href={`/${lang}/termekek/${cat.slug}/${product.slug}`}
-                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                className="group product-tile flex h-full flex-col p-5"
               >
                 <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
                   <ProductThumb

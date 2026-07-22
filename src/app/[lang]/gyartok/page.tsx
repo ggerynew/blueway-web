@@ -44,7 +44,7 @@ export default async function ManufacturersPage({
             <Reveal key={m.slug} delay={i * 0.05}>
               <Link
                 href={`/${lang}/gyartok/${m.slug}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                className="group product-tile flex h-full flex-col justify-between p-6"
               >
                 <div>
                   <h2 className="text-xl font-semibold tracking-tight text-brand-700">

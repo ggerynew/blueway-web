@@ -45,6 +45,28 @@ body {
   animation: media-fade-in 0.3s ease;
 }
 
+/* Lebegő termékcsempe kékes árnyékkal */
+.product-tile {
+  background-color: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  box-shadow:
+    0 10px 30px -12px color-mix(in srgb, var(--color-brand-600) 30%, transparent),
+    0 4px 10px -6px color-mix(in srgb, var(--color-brand-600) 14%, transparent);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.product-tile:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-brand-200);
+  box-shadow:
+    0 26px 52px -14px color-mix(in srgb, var(--color-brand-600) 42%, transparent),
+    0 8px 18px -8px color-mix(in srgb, var(--color-brand-600) 20%, transparent);
+}
+
 ::selection {
   background: var(--color-brand-100);
   color: var(--color-brand-900);

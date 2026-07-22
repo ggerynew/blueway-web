@@ -31,6 +31,8 @@ export interface Manufacturer {
   /** A Product.brand mezővel egyező megjelenítendő név. */
   brand: string;
   name: string;
+  /** Logó a public mappán belül; ha hiányzik, a név szövegként jelenik meg. */
+  logo?: string;
   description: LocalizedText;
 }
 
@@ -39,6 +41,7 @@ export const manufacturers: Manufacturer[] = [
     slug: 'cab',
     brand: 'CAB',
     name: 'cab',
+    logo: '/images/brand/cab-logo.png',
     description: {
       hu: 'Címkenyomtatók, print & apply rendszerek, címkeadagolók és gravírozó lézerek — német gyártás, az ipar minden területére.',
       en: 'Label printers, print & apply systems, label dispensers and marking lasers — German engineering for every area of industry.',
@@ -428,6 +431,70 @@ export const products: Product[] = [
       { hu: 'Szalag- és gépintegráció', en: 'Conveyor / machine integration' },
       { hu: 'Nagy felhelyezési pontosság', en: 'High placement accuracy' },
     ],
+  },
+
+  {
+    slug: 'cab-roxi',
+    category: 'cimkezo-gepek',
+    name: 'CAB ROXI',
+    brand: 'CAB',
+    short: {
+      hu: 'Címkéző fej precíziós behelyező-címkézéshez — fóliák, membránok, tömítések.',
+      en: 'Labeling head for precision insert-labeling — films, membranes, seals.',
+    },
+    description: {
+      hu: 'A ROXI robusztus felépítésű, korszerű elektronikájú címkéző fej fóliák, membránok, tömítések és hővezető alkatrészek precíz behelyező-címkézéséhez. HERMES applikátorokkal magas pontosságú ipari alkalmazásokban is bevethető.',
+      en: 'The ROXI is a solidly built labeling head with modern electronics for precision insert-labeling of films, membranes, seals and thermally conductive components. With HERMES applicators it also serves high-accuracy industrial applications.',
+    },
+    features: [
+      { hu: 'Precíziós behelyező-címkézés', en: 'Precision insert-labeling' },
+      { hu: 'Fólia, membrán, tömítés, hővezető alkatrész', en: 'Films, membranes, seals, thermal components' },
+      { hu: 'HERMES applikátorokkal', en: 'Works with HERMES applicators' },
+      { hu: 'Korszerű cab elektronika', en: 'Modern cab electronics' },
+    ],
+    image: '/images/products/cab-roxi.png',
+  },
+  {
+    slug: 'cab-pxq',
+    category: 'cimkezo-gepek',
+    name: 'CAB PX Q',
+    brand: 'CAB',
+    short: {
+      hu: 'Nyomtató- és leválasztó modul automata gépekbe és applikátorokba.',
+      en: 'Print-and-peel module for automated machines and applicators.',
+    },
+    description: {
+      hu: 'A PX Q nyomtató- és leválasztó modult teljesen automatikus ipari nyomtatásra és címkézésre tervezték, a legújabb cab elektronikai platformra építve — applikátorokba és OEM gépekbe integrálható.',
+      en: 'The PX Q print-and-peel module is designed for fully automatic industrial printing and labeling, built on the latest cab electronics platform — for integration into applicators and OEM machines.',
+    },
+    features: [
+      { hu: 'Nyomtató- és leválasztó modul', en: 'Print-and-peel module' },
+      { hu: 'Teljesen automatikus üzem', en: 'Full automation' },
+      { hu: 'Legújabb cab elektronikai platform', en: 'Latest cab electronics platform' },
+      { hu: 'Applikátor / OEM integráció', en: 'Applicator / OEM integration' },
+    ],
+    image: '/images/products/cab-pxq.png',
+  },
+  {
+    slug: 'cab-hermes-c',
+    category: 'cimkezo-gepek',
+    name: 'CAB HERMES C',
+    brand: 'CAB',
+    short: {
+      hu: 'Print & apply rendszer a HERMES családból, ipari címkézéshez.',
+      en: 'Print & apply system from the HERMES family for industrial labeling.',
+    },
+    description: {
+      hu: 'A HERMES C a cab print & apply kínálatának tagja: nyomtat és valós időben helyezi fel a címkéket a gyártósoron, megbízható ipari kivitelben.',
+      en: 'The HERMES C is part of cab’s print & apply range: it prints and applies labels in real time on the production line, in a reliable industrial build.',
+    },
+    features: [
+      { hu: 'Valós idejű print & apply', en: 'Real-time print & apply' },
+      { hu: 'Gyártósori címkézés', en: 'Production-line labeling' },
+      { hu: 'HERMES termékcsalád', en: 'HERMES family' },
+      { hu: 'Ipari kivitel', en: 'Industrial build' },
+    ],
+    image: '/images/products/cab-hermes-c.png',
   },
 
   // ——— CAB — Címke-adagoló gépek ———

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { ProductThumb } from '@/components/product-thumb';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
 
@@ -40,9 +41,22 @@ export default async function ManufacturerPage({
         >
           ← {dict.manufacturers.backToManufacturers}
         </Link>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
-          {manufacturer.name}
-        </h1>
+        {manufacturer.logo ? (
+          <h1 className="mt-5">
+            <span className="inline-flex items-center rounded-2xl bg-white px-6 py-4 shadow-[0_8px_24px_-12px_rgba(37,99,235,0.28)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset(manufacturer.logo)}
+                alt={manufacturer.name}
+                className="h-12 w-auto md:h-14"
+              />
+            </span>
+          </h1>
+        ) : (
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight md:text-5xl">
+            {manufacturer.name}
+          </h1>
+        )}
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">
           {manufacturer.description[lang]}
         </p>
@@ -53,7 +67,7 @@ export default async function ManufacturerPage({
           <Reveal key={product.slug} delay={(i % 3) * 0.05}>
             <Link
               href={`/${lang}/termekek/${product.category}/${product.slug}`}
-              className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+              className="group product-tile flex h-full flex-col p-5"
             >
               <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
                 <ProductThumb

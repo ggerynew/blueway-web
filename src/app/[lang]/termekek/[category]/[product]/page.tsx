@@ -95,7 +95,7 @@ export default async function ProductPage({
                 <Link
                   key={p.slug}
                   href={`/${lang}/termekek/${cat.slug}/${p.slug}`}
-                  className="group rounded-2xl border border-line bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                  className="group product-tile p-4"
                 >
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-3">
                     <ProductThumb image={p.image} name={p.name} />
