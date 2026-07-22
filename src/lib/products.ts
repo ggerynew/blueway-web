@@ -186,7 +186,7 @@ export const products: Product[] = [
       { hu: 'Egyszerű anyagbefűzés', en: 'Easy media loading' },
     ],
     image: '/images/products/cab-eos2.png',
-    videoId: 'RqS25uZIMnU',
+    videoId: 'mFCv2GaNkg0',
   },
   {
     slug: 'cab-eos5',
@@ -207,7 +207,7 @@ export const products: Product[] = [
       { hu: 'Asztali kivitel nagy kapacitással', en: 'Desktop format with high capacity' },
     ],
     image: '/images/products/cab-eos5.png',
-    videoId: 'RqS25uZIMnU',
+    videoId: 'mFCv2GaNkg0',
   },
   {
     slug: 'cab-mach1',
@@ -285,6 +285,7 @@ export const products: Product[] = [
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
     image: '/images/products/cab-xc4.png',
+    videoId: 'xqlxvt3fOX4',
   },
   {
     slug: 'cab-xc6',
@@ -305,6 +306,7 @@ export const products: Product[] = [
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
     image: '/images/products/cab-xc6.png',
+    videoId: 'xqlxvt3fOX4',
   },
 
   // ——— CAB — további címkenyomtatók ———
@@ -314,6 +316,7 @@ export const products: Product[] = [
     name: 'CAB SQUIX 6.3',
     brand: 'CAB',
     image: '/images/products/cab-squix-6.png',
+    videoId: 'o2eKZGETCPk',
     short: {
       hu: 'Ipari címkenyomtató 6"-es fejjel, széles címkékhez és nagy mennyiséghez.',
       en: 'Industrial label printer with a 6" head for wide labels and high volumes.',
@@ -335,6 +338,7 @@ export const products: Product[] = [
     name: 'CAB SQUIX 4 M',
     brand: 'CAB',
     image: '/images/products/cab-squix-4m.png',
+    videoId: 'o2eKZGETCPk',
     short: {
       hu: 'Ipari nyomtató kifejezetten apró címkékhez és keskeny, végtelenített anyagokhoz.',
       en: 'Industrial printer specifically for very small labels and slim continuous materials.',
@@ -356,6 +360,7 @@ export const products: Product[] = [
     name: 'CAB SQUIX 4 MT',
     brand: 'CAB',
     image: '/images/products/cab-squix-4mt.png',
+    videoId: 'o2eKZGETCPk',
     short: {
       hu: 'Ipari nyomtató textil alapanyagokhoz — mosás- és varrócímkékhez.',
       en: 'Industrial printer for textile materials — wash-care and sewn-in labels.',
@@ -400,6 +405,7 @@ export const products: Product[] = [
     name: 'CAB HERMES Q',
     brand: 'CAB',
     image: '/images/products/cab-hermes-q.png',
+    videoId: 'HG9eudLWxfM',
     short: {
       hu: 'Print & apply rendszer gyártósorra — pontos címkefelhelyezés valós időben.',
       en: 'Print & apply system for production lines — precise real-time label application.',
@@ -435,6 +441,7 @@ export const products: Product[] = [
       { hu: 'Nagy felhelyezési pontosság', en: 'High placement accuracy' },
     ],
     image: '/images/products/cab-ixor.jpg',
+    videoId: 'te_UCjKplTI',
   },
 
   {
@@ -457,6 +464,7 @@ export const products: Product[] = [
       { hu: 'Korszerű cab elektronika', en: 'Modern cab electronics' },
     ],
     image: '/images/products/cab-roxi.png',
+    videoId: '1gc7P-fNwJc',
   },
   {
     slug: 'cab-pxq',
@@ -478,6 +486,7 @@ export const products: Product[] = [
       { hu: 'Applikátor / OEM integráció', en: 'Applicator / OEM integration' },
     ],
     image: '/images/products/cab-pxq.png',
+    videoId: 'AOjwwv_yzbc',
   },
   {
     slug: 'cab-hermes-c',
@@ -587,6 +596,7 @@ export const products: Product[] = [
       { hu: 'Jelölőállomásba építhető', en: 'Marking-station integration' },
     ],
     image: '/images/products/cab-xeno-1.jpg',
+    videoId: 'eDgChgvtAzc',
   },
   {
     slug: 'cab-xeno-3',
@@ -608,6 +618,7 @@ export const products: Product[] = [
       { hu: 'Jelölőállomásba építve', en: 'Marking-station integration' },
     ],
     image: '/images/products/cab-xeno-3.jpg',
+    videoId: 'b3xeRtxdFy8',
   },
   {
     slug: 'cab-lm-plus',
@@ -629,6 +640,7 @@ export const products: Product[] = [
       { hu: 'Nincs szükség külön szerszámra', en: 'No additional tooling' },
     ],
     image: '/images/products/cab-lm-plus.jpg',
+    videoId: 'Q7-qCKuZ708',
   },
   {
     slug: 'cab-lsg100-plus',
@@ -702,6 +714,7 @@ export const products: Product[] = [
     name: 'POSTEK OX',
     brand: 'POSTEK',
     image: '/images/products/postek-ox.png',
+    videoId: 'BVSxFLYtC5U',
     datasheet: '/datasheets/postek-ox-datasheet.pdf',
     short: {
       hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
@@ -725,6 +738,7 @@ export const products: Product[] = [
     name: 'POSTEK TX',
     brand: 'POSTEK',
     image: '/images/products/postek-tx.png',
+    videoId: 'qAcJTzTMTnI',
     datasheet: '/datasheets/postek-tx-datasheet.pdf',
     short: {
       hu: 'Valódi ipari nyomtató HEAT™ technológiával, nagy terhelhetőséghez.',
@@ -748,6 +762,7 @@ export const products: Product[] = [
     name: 'POSTEK GX',
     brand: 'POSTEK',
     image: '/images/products/postek-gx.png',
+    videoId: 'XcnaxfjbTwc',
     datasheet: '/datasheets/postek-gx-datasheet.pdf',
     short: {
       hu: 'Asztali kivitel ipari teljesítménnyel, kompakt helyigénnyel.',
