@@ -135,7 +135,7 @@ export const products: Product[] = [
       { hu: 'Ethernet, USB, RS-232, opcionális Wi-Fi', en: 'Ethernet, USB, RS-232, optional Wi-Fi' },
       { hu: 'Vágó, adagoló és visszatekercselő opciók', en: 'Cutter, dispenser and rewinder options' },
     ],
-    image: '/images/products/squix4.jpg',
+    image: '/images/products/cab-squix-4.png',
     videoId: 'o2eKZGETCPk',
     model3d: '/models/demo.glb',
     model3dIsDemo: true,
@@ -158,7 +158,7 @@ export const products: Product[] = [
       { hu: 'Ipari kivitel folyamatos üzemre', en: 'Industrial build for continuous operation' },
       { hu: 'SQUIX elektronika és kezelőfelület', en: 'SQUIX electronics and interface' },
     ],
-    image: '/images/products/squix2.jpg',
+    image: '/images/products/cab-squix-2.png',
     videoId: 'o2eKZGETCPk',
   },
   {
@@ -179,7 +179,7 @@ export const products: Product[] = [
       { hu: 'Érintőkijelzős kezelés', en: 'Touchscreen operation' },
       { hu: 'Egyszerű anyagbefűzés', en: 'Easy media loading' },
     ],
-    image: '/images/products/eos2.jpg',
+    image: '/images/products/cab-eos2.png',
     videoId: 'RqS25uZIMnU',
   },
   {
@@ -200,7 +200,7 @@ export const products: Product[] = [
       { hu: 'Érintőkijelzős kezelés', en: 'Touchscreen operation' },
       { hu: 'Asztali kivitel nagy kapacitással', en: 'Desktop format with high capacity' },
     ],
-    image: '/images/products/eos5.jpg',
+    image: '/images/products/cab-eos5.png',
     videoId: 'RqS25uZIMnU',
   },
   {
@@ -220,7 +220,7 @@ export const products: Product[] = [
       { hu: 'Belépő szintű, kompakt modell', en: 'Entry-level compact model' },
       { hu: 'Egyszerű kezelés', en: 'Simple operation' },
     ],
-    image: '/images/products/mach1.jpg',
+    image: '/images/products/cab-mach1.png',
   },
   {
     slug: 'cab-mach2',
@@ -239,7 +239,7 @@ export const products: Product[] = [
       { hu: 'Kijelzővel szerelt kivitel', en: 'Equipped with a display' },
       { hu: 'Memóriakezelés a nyomtatón', en: 'On-printer memory handling' },
     ],
-    image: '/images/products/mach2.jpg',
+    image: '/images/products/cab-mach2.png',
   },
   {
     slug: 'cab-mach4s',
@@ -258,7 +258,7 @@ export const products: Product[] = [
       { hu: 'SQUIX elektronika és kezelőfelület', en: 'SQUIX electronics and interface' },
       { hu: 'Asztali méret, ipari tudás', en: 'Desktop size, industrial capability' },
     ],
-    image: '/images/products/mach4s.jpg',
+    image: '/images/products/cab-mach4s.png',
   },
   {
     slug: 'cab-xc4',
@@ -278,7 +278,7 @@ export const products: Product[] = [
       { hu: '4" nyomtatási szélesség', en: '4" print width' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/xc4.jpg',
+    image: '/images/products/cab-xc4.png',
   },
   {
     slug: 'cab-xc6',
@@ -298,7 +298,7 @@ export const products: Product[] = [
       { hu: '6" nyomtatási szélesség', en: '6" print width' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/xc6.jpg',
+    image: '/images/products/cab-xc6.png',
   },
 
   // ——— CAB — további címkenyomtatók ———
@@ -307,6 +307,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 6.3',
     brand: 'CAB',
+    image: '/images/products/cab-squix-6.png',
     short: {
       hu: 'Ipari címkenyomtató 6"-es fejjel, széles címkékhez és nagy mennyiséghez.',
       en: 'Industrial label printer with a 6" head for wide labels and high volumes.',
@@ -327,6 +328,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 4 M',
     brand: 'CAB',
+    image: '/images/products/cab-squix-4m.png',
     short: {
       hu: 'Ipari nyomtató kifejezetten apró címkékhez és keskeny, végtelenített anyagokhoz.',
       en: 'Industrial printer specifically for very small labels and slim continuous materials.',
@@ -347,6 +349,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 4 MT',
     brand: 'CAB',
+    image: '/images/products/cab-squix-4mt.png',
     short: {
       hu: 'Ipari nyomtató textil alapanyagokhoz — mosás- és varrócímkékhez.',
       en: 'Industrial printer for textile materials — wash-care and sewn-in labels.',
@@ -367,6 +370,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB XD Q',
     brand: 'CAB',
+    image: '/images/products/cab-xd-q.png',
     short: {
       hu: 'Kétoldalas nyomtatás egy menetben — függőcímkékhez és flexibilis anyagokhoz.',
       en: 'Double-sided printing in a single pass — for tags and flexible materials.',
@@ -389,6 +393,7 @@ export const products: Product[] = [
     category: 'cimkezo-gepek',
     name: 'CAB HERMES Q',
     brand: 'CAB',
+    image: '/images/products/cab-hermes-q.png',
     short: {
       hu: 'Print & apply rendszer gyártósorra — pontos címkefelhelyezés valós időben.',
       en: 'Print & apply system for production lines — precise real-time label application.',
@@ -431,6 +436,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB HS',
     brand: 'CAB',
+    image: '/images/products/cab-hs.png',
     short: {
       hu: 'Címkeadagoló minden címkemérethez — hézag nélkül vágott vagy stancolt címkékhez.',
       en: 'Label dispenser for every label size — for gap-free cut or die-cut labels.',
@@ -451,6 +457,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB VS',
     brand: 'CAB',
+    image: '/images/products/cab-vs.png',
     short: {
       hu: 'Kompakt címkeadagoló munkaállomásokra, egyszerű, gyors kézi címkézéshez.',
       en: 'Compact label dispenser for workstations — simple, fast manual labeling.',
