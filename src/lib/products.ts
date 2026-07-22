@@ -431,6 +431,7 @@ export const products: Product[] = [
       { hu: 'Szalag- és gépintegráció', en: 'Conveyor / machine integration' },
       { hu: 'Nagy felhelyezési pontosság', en: 'High placement accuracy' },
     ],
+    image: '/images/products/cab-ixor.jpg',
   },
 
   {
