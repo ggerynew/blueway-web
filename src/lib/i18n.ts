@@ -45,6 +45,7 @@ export const dictionaries = {
       comingSoon: 'A kategória termékei hamarosan felkerülnek — addig is kérjen ajánlatot, segítünk a választásban.',
       backToProducts: 'Termékek',
       requestQuote: 'Ajánlatot kérek erre a termékre',
+      datasheet: 'Adatlap letöltése (PDF)',
       featuresTitle: 'Főbb jellemzők',
       otherProducts: 'További termékek a kategóriában',
       media: {
@@ -213,6 +214,7 @@ export const dictionaries = {
       comingSoon: 'Products in this category are coming soon — in the meantime, request a quote and we will help you choose.',
       backToProducts: 'Products',
       requestQuote: 'Request a quote for this product',
+      datasheet: 'Download datasheet (PDF)',
       featuresTitle: 'Key features',
       otherProducts: 'More products in this category',
       media: {

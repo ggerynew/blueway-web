@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { ProductMedia } from '@/components/product-media';
 import { ProductThumb } from '@/components/product-thumb';
 import { Reveal } from '@/components/reveal';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getCategory, getProduct, getProductsByCategory, products } from '@/lib/products';
 
@@ -74,12 +75,33 @@ export default async function ProductPage({
               ))}
             </ul>
 
-            <Link
-              href={`/${lang}/kapcsolat`}
-              className="mt-10 inline-block rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
-            >
-              {dict.products.requestQuote}
-            </Link>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link
+                href={`/${lang}/kapcsolat`}
+                className="inline-block rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+              >
+                {dict.products.requestQuote}
+              </Link>
+              {product.datasheet && (
+                <a
+                  href={asset(product.datasheet)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-muted"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {dict.products.datasheet}
+                </a>
+              )}
+            </div>
           </div>
         </Reveal>
       </div>

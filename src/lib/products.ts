@@ -18,6 +18,8 @@ export interface Product {
   features: LocalizedText[];
   /** Termékfotó a public mappán belül; ha hiányzik, placeholder jelenik meg. */
   image?: string;
+  /** Letölthető adatlap (PDF) a public mappán belül. */
+  datasheet?: string;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
   /** GLB modell útvonala a public mappán belül */
@@ -700,6 +702,7 @@ export const products: Product[] = [
     name: 'POSTEK OX',
     brand: 'POSTEK',
     image: '/images/products/postek-ox.png',
+    datasheet: '/datasheets/postek-ox-datasheet.pdf',
     short: {
       hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
       en: 'Flagship industrial printer with integrated visual verification and RFID.',
@@ -722,6 +725,7 @@ export const products: Product[] = [
     name: 'POSTEK TX',
     brand: 'POSTEK',
     image: '/images/products/postek-tx.png',
+    datasheet: '/datasheets/postek-tx-datasheet.pdf',
     short: {
       hu: 'Valódi ipari nyomtató HEAT™ technológiával, nagy terhelhetőséghez.',
       en: 'True industrial printer with HEAT™ technology for heavy-duty use.',
@@ -744,6 +748,7 @@ export const products: Product[] = [
     name: 'POSTEK GX',
     brand: 'POSTEK',
     image: '/images/products/postek-gx.png',
+    datasheet: '/datasheets/postek-gx-datasheet.pdf',
     short: {
       hu: 'Asztali kivitel ipari teljesítménnyel, kompakt helyigénnyel.',
       en: 'Desktop format with industrial performance in a compact footprint.',
@@ -758,27 +763,6 @@ export const products: Product[] = [
       { hu: '4,5" érintőkijelző', en: '4.5" touchscreen' },
       { hu: 'Nagy pontosságú pozicionálás', en: 'High-precision positioning' },
       { hu: 'Opcionális RFID', en: 'Optional RFID' },
-    ],
-  },
-  {
-    slug: 'postek-c168',
-    category: 'cimkenyomtatok',
-    name: 'POSTEK C168',
-    brand: 'POSTEK',
-    short: {
-      hu: 'Kereskedelmi asztali nyomtató egyszerű, mindennapi címkézéshez.',
-      en: 'Commercial desktop printer for simple, everyday labeling.',
-    },
-    description: {
-      hu: 'A POSTEK C168 sorozat kompakt, tartós kereskedelmi asztali nyomtató: egyrészes váz, megbízható mechanika és minőségi nyomtatófejek. Direkt termál és termotranszfer, 4" nyomtatási szélességig. Modellek: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
-      en: 'The POSTEK C168 series is a compact, durable commercial desktop printer: a one-piece chassis, reliable mechanics and high-end printheads. Direct thermal and thermal transfer, up to 4" print width. Models: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
-    },
-    features: [
-      { hu: 'Kompakt, egyrészes váz', en: 'Compact one-piece chassis' },
-      { hu: '203 / 300 dpi modellek', en: '203 / 300 dpi models' },
-      { hu: '4" nyomtatási szélességig', en: 'Up to 4" print width' },
-      { hu: 'Direkt termál és termotranszfer', en: 'Direct thermal & thermal transfer' },
-      { hu: 'RS-232 és USB', en: 'RS-232 & USB' },
     ],
   },
 ];
