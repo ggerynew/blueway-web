@@ -51,6 +51,7 @@ export const manufacturers: Manufacturer[] = [
     slug: 'postek',
     brand: 'POSTEK',
     name: 'POSTEK',
+    logo: '/images/brand/postek-logo.png',
     description: {
       hu: 'Robusztus ipari és asztali címkenyomtatók egyszerű nyomtatási feladatoktól az RFID-címkézésig, kiváló ár-érték aránnyal.',
       en: 'Robust industrial and desktop label printers from simple printing tasks to RFID labeling, with excellent value for money.',
@@ -698,6 +699,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK OX',
     brand: 'POSTEK',
+    image: '/images/products/postek-ox.png',
     short: {
       hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
       en: 'Flagship industrial printer with integrated visual verification and RFID.',
@@ -719,6 +721,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK TX',
     brand: 'POSTEK',
+    image: '/images/products/postek-tx.png',
     short: {
       hu: 'Valódi ipari nyomtató HEAT™ technológiával, nagy terhelhetőséghez.',
       en: 'True industrial printer with HEAT™ technology for heavy-duty use.',
@@ -740,6 +743,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK GX',
     brand: 'POSTEK',
+    image: '/images/products/postek-gx.png',
     short: {
       hu: 'Asztali kivitel ipari teljesítménnyel, kompakt helyigénnyel.',
       en: 'Desktop format with industrial performance in a compact footprint.',
