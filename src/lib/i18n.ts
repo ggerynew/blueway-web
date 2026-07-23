@@ -86,41 +86,23 @@ export const dictionaries = {
     },
     services: {
       title: 'Szolgáltatások',
-      lead: 'A jelölési feladat mellé a teljes hátteret is adjuk: szerviz, bérnyomtatás és lézeres teljesítménymérés — hogy a gépei mindig a legjobbat hozzák.',
-      items: [
-        {
-          title: 'Címkenyomtató szerviz',
-          body: 'Vállaljuk bármely típusú címke- és fólianyomtató szervizelését, karbantartását és alkatrészellátását. Gyors átfutás, gyári és utángyártott alkatrészek egyaránt.',
-          points: [
-            'Márkafüggetlen javítás és karbantartás',
-            'Gyári és utángyártott alkatrészek',
-            'Bevizsgálás és megelőző karbantartás',
-          ],
-          meta: 'CAB · Toshiba · Zebra · MecTec · Intermec',
-        },
-        {
-          title: 'Címke nyomtatás',
-          body: 'Bérnyomtatást vállalunk saját vagy az ügyfél által hozott alapanyagokra — kis és nagy példányszámban, akár egyedi kivitelben.',
-          points: [
-            'Saját vagy hozott alapanyagra',
-            'Kis és nagy példányszám',
-            'Egyedi méret és kivitel',
-          ],
-          meta: '',
-        },
-        {
-          title: 'Lézer teljesítménymérés',
-          body: 'Piacvezető Ophir eszközökkel mérjük a lézerek tényleges teljesítményét, hogy a jelölés minősége és a gép állapota mindig ellenőrzött legyen.',
-          points: [
-            'Fiber / YAG lézerek 100 W-ig',
-            'CO₂ lézerek 300 W-ig',
-            'Ophir mérőeszközök',
-          ],
-          meta: 'Ophir',
-        },
-      ],
-      ctaTitle: 'Szüksége van szervizre vagy mérésre?',
-      ctaBody: 'Írja le a feladatot, és rövid időn belül visszajelzünk a lehetőségekről.',
+      lead: 'Az általunk forgalmazott gépekhez teljes körű szervizhátteret biztosítunk — telepítés, karbantartás, javítás és alkatrészellátás.',
+      service: {
+        title: 'Szerviz',
+        body: 'Az általunk forgalmazott címke- és jelölőgépek telepítését, beüzemelését, karbantartását és javítását vállaljuk, gyári alkatrészellátással.',
+        points: [
+          'Telepítés és beüzemelés',
+          'Karbantartás és megelőző bevizsgálás',
+          'Javítás és gyári alkatrészellátás',
+        ],
+        brands: 'CAB · POSTEK',
+      },
+      contactLabel: 'Szerviz elérhetőség',
+      email: 'info@blueway.hu',
+      mailtoSubject: 'Szerviz megkeresés',
+      ctaTitle: 'Szervizre van szüksége?',
+      ctaBody: 'Írja meg a gép típusát és a hibát, és rövid időn belül visszajelzünk.',
+      ctaButton: 'Írjon a szerviznek',
     },
     printheads: {
       title: 'Nyomtatófejek',
@@ -337,41 +319,23 @@ export const dictionaries = {
     },
     services: {
       title: 'Services',
-      lead: 'Beyond the marking equipment we provide the full background: service, contract printing and laser power measurement — so your machines always perform at their best.',
-      items: [
-        {
-          title: 'Label printer service',
-          body: 'We service, maintain and supply spare parts for any type of label or foil printer. Fast turnaround, with both original and compatible parts.',
-          points: [
-            'Brand-independent repair and maintenance',
-            'Original and compatible spare parts',
-            'Inspection and preventive maintenance',
-          ],
-          meta: 'CAB · Toshiba · Zebra · MecTec · Intermec',
-        },
-        {
-          title: 'Label printing',
-          body: 'We offer contract printing on your own or on customer-supplied materials — in small or large volumes, even in custom formats.',
-          points: [
-            'On your own or supplied materials',
-            'Small and large volumes',
-            'Custom size and finish',
-          ],
-          meta: '',
-        },
-        {
-          title: 'Laser power measurement',
-          body: 'Using market-leading Ophir instruments we measure the actual output of lasers, so marking quality and machine condition stay under control.',
-          points: [
-            'Fiber / YAG lasers up to 100 W',
-            'CO₂ lasers up to 300 W',
-            'Ophir measurement instruments',
-          ],
-          meta: 'Ophir',
-        },
-      ],
-      ctaTitle: 'Need service or a measurement?',
-      ctaBody: 'Describe the task and we will get back to you shortly with the options.',
+      lead: 'We provide full service support for the machines we distribute — installation, maintenance, repair and spare parts.',
+      service: {
+        title: 'Service',
+        body: 'We handle installation, commissioning, maintenance and repair of the label and marking machines we distribute, with original spare parts.',
+        points: [
+          'Installation and commissioning',
+          'Maintenance and preventive inspection',
+          'Repair and original spare parts',
+        ],
+        brands: 'CAB · POSTEK',
+      },
+      contactLabel: 'Service contact',
+      email: 'info@blueway.hu',
+      mailtoSubject: 'Service request',
+      ctaTitle: 'Need service?',
+      ctaBody: 'Tell us the machine type and the issue, and we will get back to you shortly.',
+      ctaButton: 'Email the service team',
     },
     printheads: {
       title: 'Print heads',
