@@ -18,7 +18,11 @@ export default async function HomePage({
   const TILE_COUNT = Math.min(18, withImage.length);
   const heroTiles = Array.from({ length: TILE_COUNT }, (_, i) => {
     const p = withImage[Math.round((i * (withImage.length - 1)) / (TILE_COUNT - 1))];
-    return { src: asset(p.image as string), alt: p.name };
+    return {
+      src: asset(p.image as string),
+      alt: p.name,
+      href: `/${lang}/termekek/${p.category}/${p.slug}`,
+    };
   });
 
   return (
