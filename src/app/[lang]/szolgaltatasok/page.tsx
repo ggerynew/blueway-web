@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { getProduct } from '@/lib/products';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -25,49 +28,88 @@ export default async function ServicesPage({
   const dict = getDictionary(lang);
   const { services } = dict;
   const mailto = `mailto:${services.email}?subject=${encodeURIComponent(services.mailtoSubject)}`;
+  const software = getProduct('szoftverek', 'egyedi-szoftverfejlesztes');
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 md:py-24">
+    <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {services.title}
         </h1>
       </Reveal>
       <Reveal delay={0.08}>
-        <p className="mt-4 text-lg text-ink-muted">{services.lead}</p>
+        <p className="mt-4 max-w-2xl text-lg text-ink-muted">{services.lead}</p>
       </Reveal>
 
-      <Reveal delay={0.12}>
-        <div className="mt-12 rounded-2xl border border-line bg-white p-8">
-          <h2 className="text-2xl font-semibold tracking-tight">{services.service.title}</h2>
-          <p className="mt-3 text-ink-muted">{services.service.body}</p>
-          <ul className="mt-6 space-y-2">
-            {services.service.points.map((p) => (
-              <li key={p} className="flex items-start gap-2 text-ink-muted">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
-                {p}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 text-xs font-medium tracking-wide text-ink-muted uppercase">
-            {services.service.brands}
-          </p>
-
-          <div className="mt-8 border-t border-line pt-6">
-            <p className="text-xs font-medium tracking-wide text-ink-muted uppercase">
-              {services.contactLabel}
+      <div className="mt-12 grid items-stretch gap-4 md:grid-cols-2">
+        {/* Szerviz csempe */}
+        <Reveal delay={0.12}>
+          <div className="product-tile flex h-full flex-col p-8">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {services.service.title}
+            </h2>
+            <p className="mt-3 text-ink-muted">{services.service.body}</p>
+            <ul className="mt-6 space-y-2">
+              {services.service.points.map((p) => (
+                <li key={p} className="flex items-start gap-2 text-ink-muted">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-xs font-medium tracking-wide text-ink-muted uppercase">
+              {services.service.brands}
             </p>
-            <a
-              href={mailto}
-              className="mt-1 inline-block text-lg font-medium text-brand-700 transition-colors hover:text-brand-800"
-            >
-              {services.email}
-            </a>
-          </div>
-        </div>
-      </Reveal>
 
-      <Reveal delay={0.16}>
+            <div className="mt-auto border-t border-line pt-6">
+              <p className="text-xs font-medium tracking-wide text-ink-muted uppercase">
+                {services.contactLabel}
+              </p>
+              <a
+                href={mailto}
+                className="mt-1 inline-block text-lg font-medium text-brand-700 transition-colors hover:text-brand-800"
+              >
+                {services.email}
+              </a>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Egyedi szoftverfejlesztés csempe */}
+        {software && (
+          <Reveal delay={0.16}>
+            <Link
+              href={`/${lang}/termekek/${software.category}/${software.slug}`}
+              className="group product-tile flex h-full flex-col overflow-hidden"
+            >
+              {software.image && (
+                <div className="flex aspect-[16/9] items-center justify-center overflow-hidden bg-surface">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={asset(software.image)}
+                    alt={software.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex flex-1 flex-col p-8">
+                <h2 className="text-2xl font-semibold tracking-tight group-hover:text-brand-700">
+                  {software.name}
+                </h2>
+                <p className="mt-3 text-ink-muted">{software.short[lang]}</p>
+                <span className="mt-auto pt-6 text-sm font-medium text-brand-700">
+                  {services.moreLabel}
+                  <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+                    →
+                  </span>
+                </span>
+              </div>
+            </Link>
+          </Reveal>
+        )}
+      </div>
+
+      <Reveal delay={0.2}>
         <div className="mt-10 flex flex-col items-start gap-6 rounded-2xl border border-line bg-white p-8 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-xl font-semibold tracking-tight">{services.ctaTitle}</h2>
