@@ -988,6 +988,7 @@ export const products: Product[] = [
     category: 'cimkek-es-festekszalagok',
     name: 'DNP festékszalagok',
     brand: 'DNP',
+    image: '/images/brand/dnp-logo.png',
     short: {
       hu: 'Prémium termotranszfer festékszalagok — wax, wax/resin és resin kivitelben.',
       en: 'Premium thermal transfer ribbons — in wax, wax/resin and resin.',
@@ -1008,6 +1009,7 @@ export const products: Product[] = [
     category: 'cimkek-es-festekszalagok',
     name: 'ARMOR-IIMAK festékszalagok',
     brand: 'ARMOR-IIMAK',
+    image: '/images/brand/armor-iimak-logo.png',
     short: {
       hu: 'Termotranszfer festékszalagok flat-head és near-edge nyomtatókhoz.',
       en: 'Thermal transfer ribbons for flat-head and near-edge printers.',
