@@ -535,6 +535,7 @@ export const products: Product[] = [
     name: 'CAB HS',
     brand: 'CAB',
     image: '/images/products/cab-hs.png',
+    datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
       hu: 'Címkeadagoló minden címkemérethez — hézag nélkül vágott vagy stancolt címkékhez.',
       en: 'Label dispenser for every label size — for gap-free cut or die-cut labels.',
@@ -556,6 +557,7 @@ export const products: Product[] = [
     name: 'CAB VS',
     brand: 'CAB',
     image: '/images/products/cab-vs.png',
+    datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
       hu: 'Kompakt címkeadagoló munkaállomásokra, egyszerű, gyors kézi címkézéshez.',
       en: 'Compact label dispenser for workstations — simple, fast manual labeling.',
