@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getCategory, getProductsByCategory, manufacturers } from '@/lib/products';
 
@@ -59,9 +60,30 @@ export default async function CategoryPage({
               <Reveal>
                 <Link
                   href={`/${lang}/gyartok/${group.manufacturer.slug}`}
-                  className="text-sm font-medium tracking-wide text-brand-700 uppercase transition-colors hover:text-brand-800"
+                  className="group inline-flex items-center gap-3 text-brand-700 transition-colors hover:text-brand-800"
                 >
-                  {group.manufacturer.name} →
+                  {group.manufacturer.logo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={asset(group.manufacturer.logo)}
+                      alt={group.manufacturer.name}
+                      className={`w-auto object-contain ${
+                        group.manufacturer.slug === 'cab'
+                          ? 'max-h-24 max-w-[280px]'
+                          : 'max-h-11 max-w-[180px]'
+                      }`}
+                    />
+                  ) : (
+                    <span className="text-sm font-medium tracking-wide uppercase">
+                      {group.manufacturer.name}
+                    </span>
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className="text-xl transition-transform group-hover:translate-x-0.5"
+                  >
+                    →
+                  </span>
                 </Link>
               </Reveal>
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
