@@ -981,6 +981,48 @@ export const products: Product[] = [
       { hu: 'Cerakote® jelölésre hitelesítve', en: 'Certified for Cerakote® marking' },
     ],
   },
+
+  // ——— Festékszalagok (termotranszfer) ———
+  {
+    slug: 'dnp-festekszalagok',
+    category: 'cimkek-es-festekszalagok',
+    name: 'DNP festékszalagok',
+    brand: 'DNP',
+    short: {
+      hu: 'Prémium termotranszfer festékszalagok — wax, wax/resin és resin kivitelben.',
+      en: 'Premium thermal transfer ribbons — in wax, wax/resin and resin.',
+    },
+    description: {
+      hu: 'A DNP (Dai Nippon Printing) a világ egyik vezető termotranszfer festékszalag-gyártója. Teljes kínálat wax, wax/resin és resin szalagokból: a világszerte elismert TR4085Plus prémium wax szalagtól a nagy ellenállású resin szalagokig. Ideális szállítási, logisztikai, gyógyszeripari, vegyipari és kültéri címkézéshez, papír és szintetikus címkékre egyaránt.',
+      en: 'DNP (Dai Nippon Printing) is one of the world’s leading manufacturers of thermal transfer ribbons. A complete range of wax, wax/resin and resin ribbons: from the globally renowned TR4085Plus premium wax to highly resistant resin ribbons. Ideal for shipping, logistics, pharmaceutical, chemical and outdoor labeling, on both paper and synthetic labels.',
+    },
+    features: [
+      { hu: 'Wax, wax/resin és resin kivitel', en: 'Wax, wax/resin and resin grades' },
+      { hu: 'TR4085Plus prémium wax szalag', en: 'TR4085Plus premium wax ribbon' },
+      { hu: 'Nagy tartósságú resin szalagok', en: 'Highly durable resin ribbons' },
+      { hu: 'Papír és szintetikus címkékhez', en: 'For paper and synthetic labels' },
+    ],
+  },
+  {
+    slug: 'armor-iimak-festekszalagok',
+    category: 'cimkek-es-festekszalagok',
+    name: 'ARMOR-IIMAK festékszalagok',
+    brand: 'ARMOR-IIMAK',
+    short: {
+      hu: 'Termotranszfer festékszalagok flat-head és near-edge nyomtatókhoz.',
+      en: 'Thermal transfer ribbons for flat-head and near-edge printers.',
+    },
+    description: {
+      hu: 'Az ARMOR-IIMAK a termotranszfer festékszalagok egyik piacvezető gyártója. Három szalagcsalád — wax (AWR 1), wax/resin (APR 1, APR 6, APR 600) és resin (AXR 1, AXR 7, AXR 100, AXR 600, AXR 800/900) — flat-head és near-edge nyomtatókhoz, papír- és szintetikus címkékhez, valamint flexibilis csomagolóanyagokhoz. Nagy sebességű nyomtatás (akár 1 m/s) és kiváló nyomatállóság.',
+      en: 'ARMOR-IIMAK is a market leader in thermal transfer ribbons. Three ribbon families — wax (AWR 1), wax/resin (APR 1, APR 6, APR 600) and resin (AXR 1, AXR 7, AXR 100, AXR 600, AXR 800/900) — for flat-head and near-edge printers, for paper and synthetic labels as well as flexible packaging. High-speed printing (up to 1 m/s) with excellent print resistance.',
+    },
+    features: [
+      { hu: 'Wax, wax/resin és resin családok', en: 'Wax, wax/resin and resin families' },
+      { hu: 'Flat-head és near-edge nyomtatókhoz', en: 'For flat-head and near-edge printers' },
+      { hu: 'Nagy sebességű nyomtatás (akár 1 m/s)', en: 'High-speed printing (up to 1 m/s)' },
+      { hu: 'Kiváló nyomatállóság', en: 'Excellent print resistance' },
+    ],
+  },
 ];
 
 export function getCategory(slug: string): Category | undefined {
