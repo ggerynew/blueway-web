@@ -151,6 +151,8 @@ export const dictionaries = {
       phone: '+36 30 279 6679',
       emailLabel: 'E-mail',
       email: 'info@blueway.hu',
+      mapLabel: 'Térkép',
+      mapOpen: 'Megnyitás a Google Térképen',
       form: {
         name: 'Név',
         namePlaceholder: 'Az Ön neve',
@@ -384,6 +386,8 @@ export const dictionaries = {
       phone: '+36 30 279 6679',
       emailLabel: 'Email',
       email: 'info@blueway.hu',
+      mapLabel: 'Map',
+      mapOpen: 'Open in Google Maps',
       form: {
         name: 'Name',
         namePlaceholder: 'Your name',

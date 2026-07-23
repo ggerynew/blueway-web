@@ -27,6 +27,11 @@ export default async function ContactPage({
   const dict = getDictionary(lang);
   const { contact } = dict;
 
+  // Google Maps – a nagytarcsai telephely (API-kulcs nélküli beágyazás)
+  const mapQuery = 'Déri Miksa u. 10/A, 2142 Nagytarcsa, Hungary';
+  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&hl=${lang}&output=embed`;
+  const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+
   const info = [
     { label: contact.companyLabel, value: contact.company, href: undefined },
     { label: contact.siteLabel, value: contact.site, href: undefined },
@@ -92,6 +97,34 @@ export default async function ContactPage({
           </div>
         </Reveal>
       </div>
+
+      <Reveal delay={0.12}>
+        <section className="mt-16">
+          <h2 className="text-sm font-medium tracking-wide text-ink uppercase">
+            {contact.mapLabel}
+          </h2>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-white">
+            <iframe
+              title={`${contact.company} — ${contact.site}`}
+              src={mapSrc}
+              className="h-[360px] w-full md:h-[420px]"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+          <a
+            href={mapLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+          >
+            {contact.mapOpen}
+            <span aria-hidden="true">→</span>
+          </a>
+        </section>
+      </Reveal>
     </div>
   );
 }
