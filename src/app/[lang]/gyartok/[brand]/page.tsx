@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
-import { ProductThumb } from '@/components/product-thumb';
+import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
+import { categories, manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => manufacturers.map((m) => ({ lang, brand: m.slug })));
@@ -31,6 +31,11 @@ export default async function ManufacturerPage({
   if (!manufacturer) notFound();
   const dict = getDictionary(lang);
   const items = getProductsByBrand(manufacturer.brand);
+
+  // Kategória szerinti csoportosítás (a categories sorrendje szerint)
+  const categoryGroups = categories
+    .map((c) => ({ category: c, list: items.filter((p) => p.category === c.slug) }))
+    .filter((g) => g.list.length > 0);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -62,26 +67,23 @@ export default async function ManufacturerPage({
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((product, i) => (
-          <Reveal key={product.slug} delay={(i % 3) * 0.05}>
-            <Link
-              href={`/${lang}/termekek/${product.category}/${product.slug}`}
-              className="group product-tile flex h-full flex-col p-5"
-            >
-              <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
-                <ProductThumb
-                  image={product.image}
-                  name={product.name}
-                  imgClassName="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <h2 className="mt-4 font-semibold tracking-tight group-hover:text-brand-700">
-                {product.name}
-              </h2>
-              <p className="mt-1 text-sm text-ink-muted">{product.short[lang]}</p>
-            </Link>
-          </Reveal>
+      <div className="mt-12 space-y-14">
+        {categoryGroups.map((group) => (
+          <section key={group.category.slug}>
+            <Reveal>
+              <Link
+                href={`/${lang}/termekek/${group.category.slug}`}
+                className="text-xl font-semibold tracking-tight transition-colors hover:text-brand-700"
+              >
+                {group.category.name[lang]}
+              </Link>
+            </Reveal>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {group.list.map((product, i) => (
+                <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
+              ))}
+            </div>
+          </section>
         ))}
       </div>
     </div>

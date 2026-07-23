@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
-import { ProductThumb } from '@/components/product-thumb';
+import { ProductCard } from '@/components/product-card';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { categories, getCategory, getProductsByCategory } from '@/lib/products';
+import { categories, getCategory, getProductsByCategory, manufacturers } from '@/lib/products';
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
@@ -18,6 +18,12 @@ export default async function CategoryPage({
   if (!cat) notFound();
   const dict = getDictionary(lang);
   const items = getProductsByCategory(cat.slug);
+
+  // Gyártó szerinti csoportosítás (a manufacturers sorrendje szerint)
+  const brandGroups = manufacturers
+    .map((m) => ({ manufacturer: m, list: items.filter((p) => p.brand === m.brand) }))
+    .filter((g) => g.list.length > 0);
+  const multiBrand = brandGroups.length > 1;
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -46,27 +52,30 @@ export default async function CategoryPage({
             </Link>
           </div>
         </Reveal>
+      ) : multiBrand ? (
+        <div className="mt-12 space-y-14">
+          {brandGroups.map((group) => (
+            <section key={group.manufacturer.slug}>
+              <Reveal>
+                <Link
+                  href={`/${lang}/gyartok/${group.manufacturer.slug}`}
+                  className="text-sm font-medium tracking-wide text-brand-700 uppercase transition-colors hover:text-brand-800"
+                >
+                  {group.manufacturer.name} →
+                </Link>
+              </Reveal>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {group.list.map((product, i) => (
+                  <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
       ) : (
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((product, i) => (
-            <Reveal key={product.slug} delay={i * 0.05}>
-              <Link
-                href={`/${lang}/termekek/${cat.slug}/${product.slug}`}
-                className="group product-tile flex h-full flex-col p-5"
-              >
-                <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
-                  <ProductThumb
-                    image={product.image}
-                    name={product.name}
-                    imgClassName="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <h2 className="mt-4 font-semibold tracking-tight group-hover:text-brand-700">
-                  {product.name}
-                </h2>
-                <p className="mt-1 text-sm text-ink-muted">{product.short[lang]}</p>
-              </Link>
-            </Reveal>
+            <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
           ))}
         </div>
       )}
