@@ -6,7 +6,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { getCategory, getProduct, getProductsByCategory, manufacturers, products } from '@/lib/products';
+import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products } from '@/lib/products';
 
 export function generateStaticParams() {
   return products.map((p) => ({ category: p.category, product: p.slug }));
@@ -22,7 +22,7 @@ export default async function ProductPage({
   if (!cat || !product) notFound();
   const dict = getDictionary(lang);
   const others = getProductsByCategory(cat.slug).filter((p) => p.slug !== product.slug);
-  const brandManufacturer = manufacturers.find((m) => m.brand === product.brand);
+  const brandLogo = getBrandLogo(product.brand);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -57,13 +57,13 @@ export default async function ProductPage({
 
         <Reveal delay={0.12}>
           <div>
-            {brandManufacturer?.logo ? (
+            {brandLogo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={asset(brandManufacturer.logo)}
+                src={asset(brandLogo)}
                 alt={product.brand}
                 className={`w-auto object-contain ${
-                  brandManufacturer.slug === 'cab' ? 'h-12' : 'h-8'
+                  product.brand === 'CAB' ? 'h-12' : 'h-8'
                 }`}
               />
             ) : (
