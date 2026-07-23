@@ -59,6 +59,16 @@ export const manufacturers: Manufacturer[] = [
       en: 'Robust industrial and desktop label printers from simple printing tasks to RFID labeling, with excellent value for money.',
     },
   },
+  {
+    slug: 'tykma-electrox',
+    brand: 'Tykma Electrox',
+    name: 'TYKMA Electrox',
+    logo: '/images/brand/tykma-logo.png',
+    description: {
+      hu: 'Ipari fiber-, CO₂- és UV-lézeres jelölő- és gravírozórendszerek több mint 60 év tapasztalattal — asztali gépektől az integrációs lézerekig.',
+      en: 'Industrial fiber, CO₂ and UV laser marking and engraving systems with over 60 years of experience — from benchtop machines to integration lasers.',
+    },
+  },
 ];
 
 export const categories: Category[] = [
@@ -828,6 +838,125 @@ export const products: Product[] = [
       { hu: '4" nyomtatási szélességig', en: 'Up to 4" print width' },
       { hu: 'Direkt termál és termotranszfer', en: 'Direct thermal & thermal transfer' },
       { hu: 'RS-232 és USB', en: 'RS-232 & USB' },
+    ],
+  },
+
+  // ——— TYKMA Electrox — lézeres jelölő- és gravírozórendszerek ———
+  {
+    slug: 'tykma-minilase',
+    category: 'lezer-gravirozok',
+    name: 'TYKMA Minilase',
+    brand: 'Tykma Electrox',
+    image: '/images/products/tykma-minilase.jpg',
+    datasheet: '/datasheets/tykma-electrox-brochure.pdf',
+    short: {
+      hu: 'Asztali Class 1 fiber lézerjelölő — gyors, karbantartásmentes, nagy darabszámhoz.',
+      en: 'Benchtop Class 1 fiber laser marker — fast, maintenance-free, for high volumes.',
+    },
+    description: {
+      hu: 'A Minilase kompakt, Class 1 asztali fiber lézerjelölő rendszer, amelyet nagy darabszámú gyártáshoz terveztek. Háromoldalas, pneumatikus függőleges ajtó szabadalmaztatott biztonsági rendszerrel, léghűtéses, karbantartásmentes fiber lézerforrás. Az „Easy" üzemmódban az ajtózárás–jelölés–ajtónyitás sorozat automatikus. Motoros fókuszmagasság-állítás beépített fókuszkeresővel; opcionális forgatóegység 360°-os palástjelöléshez.',
+      en: 'The Minilase is a compact Class 1 benchtop fiber laser marking system built for high-volume production. A three-sided pneumatic vertical door with a patented safety system, and an air-cooled, maintenance-free fiber laser source. In Easy mode the door-close / mark / door-open sequence is automated. Motorised focal-height adjustment with a built-in focus finder; an optional rotary device enables 360° radial marking.',
+    },
+    features: [
+      { hu: 'Class 1 — nyílt térben is biztonságos', en: 'Class 1 — safe in an open environment' },
+      { hu: 'MOPA fiber lézer, 20 / 50 W', en: 'MOPA fiber laser, 20 / 50 W' },
+      { hu: 'Automatikus pneumatikus ajtó', en: 'Automatic pneumatic door' },
+      { hu: 'Léghűtéses, karbantartásmentes', en: 'Air-cooled, maintenance-free' },
+      { hu: 'Beépített fókuszkereső', en: 'Built-in focus finder' },
+      { hu: '36 hónap garancia', en: '36-month warranty' },
+    ],
+  },
+  {
+    slug: 'tykma-minilase-xl',
+    category: 'lezer-gravirozok',
+    name: 'TYKMA Minilase XL',
+    brand: 'Tykma Electrox',
+    image: '/images/products/tykma-minilase-xl.jpg',
+    datasheet: '/datasheets/tykma-electrox-brochure.pdf',
+    short: {
+      hu: 'Nagyobb, nyitott munkaterű fiber lézerjelölő — akár Class 4 üzemmódban is.',
+      en: 'Larger, open-interior fiber laser marker — with optional Class 4 operation.',
+    },
+    description: {
+      hu: 'A Minilase XL a Minilase család legnagyobb munkaterű, nyitott belsejű asztali tagja — akár 508 mm széles alkatrészek jelöléséhez. A szervizkulccsal és figyelmeztető lámpával Class 4 (nyitott ajtós) jelölés is lehetséges. Automatikus üzemmód, motoros fókuszmagasság-állítás (opcionálisan programozható), többféle lézertípussal (fiber akár 100 W-ig) rendelhető.',
+      en: 'The Minilase XL is the largest, open-interior benchtop member of the Minilase line — for marking parts up to 508 mm wide. With a service key and warning light, Class 4 (open-door) marking is also possible. Automatic mode, motorised focal-height adjustment (optionally programmable), available with a variety of laser types (fiber up to 100 W).',
+    },
+    features: [
+      { hu: 'Tág, nyitott munkatér', en: 'Large, open working area' },
+      { hu: 'MOPA fiber lézer, 20–100 W', en: 'MOPA fiber laser, 20–100 W' },
+      { hu: 'Opcionális Class 4 üzemmód', en: 'Optional Class 4 operation' },
+      { hu: 'Programozható fókusz opció', en: 'Programmable focus option' },
+      { hu: 'Léghűtéses, karbantartásmentes', en: 'Air-cooled, maintenance-free' },
+      { hu: '36 hónap garancia', en: '36-month warranty' },
+    ],
+  },
+  {
+    slug: 'tykma-vereo',
+    category: 'lezer-gravirozok',
+    name: 'TYKMA Vereo',
+    brand: 'Tykma Electrox',
+    image: '/images/products/tykma-vereo.jpg',
+    datasheet: '/datasheets/tykma-electrox-brochure.pdf',
+    short: {
+      hu: 'Kompakt fiber integrációs lézer gyártósorokba és munkacellákba.',
+      en: 'Compact fiber integration laser for production lines and work cells.',
+    },
+    description: {
+      hu: 'A Vereo ultrakompakt, robusztus, marógépi alumíniumházas jelölőfejjel szerelt fiber integrációs lézer, amelyet automatizált gyártósorokba és egyedi zárt terekbe való beépítésre terveztek. Léghűtéses, karbantartásmentes fiber forrás; egyszerű USB-kapcsolat PC-hez, dedikált I/O és menet közbeni („marking on the fly") jelölés.',
+      en: 'The Vereo is a fiber integration laser with an ultra-compact, robust machined-aluminium marking head, designed for integration into automated production lines and custom enclosures. An air-cooled, maintenance-free fiber source; a simple USB connection to a PC, dedicated I/O and marking on the fly.',
+    },
+    features: [
+      { hu: 'Ultrakompakt jelölőfej', en: 'Ultra-compact marking head' },
+      { hu: 'MOPA fiber lézerforrás', en: 'MOPA fiber laser source' },
+      { hu: 'Gyártósori integrációra tervezve', en: 'Designed for line integration' },
+      { hu: 'Dedikált I/O, marking on the fly', en: 'Dedicated I/O, marking on the fly' },
+      { hu: 'Léghűtéses, karbantartásmentes', en: 'Air-cooled, maintenance-free' },
+    ],
+  },
+  {
+    slug: 'tykma-vereo-smart',
+    category: 'lezer-gravirozok',
+    name: 'TYKMA Vereo Smart',
+    brand: 'Tykma Electrox',
+    image: '/images/products/tykma-vereo-smart.jpg',
+    datasheet: '/datasheets/tykma-electrox-brochure.pdf',
+    short: {
+      hu: 'Integrációs lézer PC nélkül — érintőképernyő és vezérlés bármely eszközről.',
+      en: 'Integration laser without a PC — touchscreen and control from any device.',
+    },
+    description: {
+      hu: 'A Vereo Smart integrációs lézer beépített vezérlővel önálló, PC nélküli működésre képes: a jelölőprogramokat a fedélzeti tárolón tartja. Előlapi érintőképernyő, hálózati csatlakozás és plug-and-play interfész a gyakori PLC-márkákhoz. A saját fejlesztésű felületről a lézer bármely eszközről (PC, tablet, telefon, PLC) vezérelhető és felügyelhető — szoftvertelepítés nélkül.',
+      en: 'The Vereo Smart integration laser can run standalone with no PC thanks to an integrated controller: marking programs are kept in on-board storage. A front touchscreen interface, network connectivity and a plug-and-play interface for common PLC brands. Its proprietary interface lets you control and monitor the laser from any device (PC, tablet, phone, PLC) — with no software to install.',
+    },
+    features: [
+      { hu: 'Önálló működés PC nélkül', en: 'Standalone operation, no PC' },
+      { hu: 'Előlapi érintőképernyő', en: 'Front touchscreen interface' },
+      { hu: 'Vezérlés bármely eszközről', en: 'Control from any device' },
+      { hu: 'Plug-and-play PLC-interfész', en: 'Plug-and-play PLC interface' },
+      { hu: 'Hálózati csatlakozás, adatcsere', en: 'Network connectivity, data exchange' },
+    ],
+  },
+  {
+    slug: 'tykma-virtus',
+    category: 'lezer-gravirozok',
+    name: 'TYKMA Virtus',
+    brand: 'Tykma Electrox',
+    image: '/images/products/tykma-virtus.jpg',
+    datasheet: '/datasheets/tykma-electrox-brochure.pdf',
+    short: {
+      hu: 'Kompakt, belépő szintű Class 4 fiber lézerjelölő és -gravírozó.',
+      en: 'Compact, entry-level Class 4 fiber laser marker and engraver.',
+    },
+    description: {
+      hu: 'A Virtus kompakt, Class 4 fiber lézerjelölő és -gravírozó rendszer, akár 60 W-os MOPA fiber forrással — nagy csúcsteljesítmény és gyors feldolgozás fémeken, műanyagokon, bevonatos felületeken. Állítható Z-tengely és rögzítő szerszámlap; léghűtéses, karbantartásmentes, alacsony fogyasztású. Ideális gyártósorokba, munkacellákba és asztali használatra; hivatalos rendszer Cerakote® bevonatok jelöléséhez és ablálásához.',
+      en: 'The Virtus is a compact Class 4 fiber laser marking and engraving system with a MOPA fiber source up to 60 W — high peak power and fast processing on metals, plastics and coated surfaces. Adjustable Z-axis and a tooling fixture plate; air-cooled, maintenance-free and low-consumption. Ideal for lines, work cells and benchtop use; an official system for marking and ablating Cerakote® coatings.',
+    },
+    features: [
+      { hu: 'MOPA fiber lézer, akár 60 W', en: 'MOPA fiber laser, up to 60 W' },
+      { hu: 'Állítható Z-tengely + szerszámlap', en: 'Adjustable Z-axis + tooling plate' },
+      { hu: 'Gyártósori és asztali integráció', en: 'Line and benchtop integration' },
+      { hu: 'Léghűtéses, karbantartásmentes', en: 'Air-cooled, maintenance-free' },
+      { hu: 'Cerakote® jelölésre hitelesítve', en: 'Certified for Cerakote® marking' },
     ],
   },
 ];
