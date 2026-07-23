@@ -154,8 +154,6 @@ export const products: Product[] = [
     image: '/images/products/cab-squix-4.png',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
-    model3d: '/models/demo.glb',
-    model3dIsDemo: true,
   },
   {
     slug: 'cab-squix-2',
