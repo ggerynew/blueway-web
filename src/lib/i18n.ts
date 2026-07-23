@@ -52,6 +52,10 @@ export const dictionaries = {
         title: 'Címkék',
         text: 'Egyedi méretű címkék papír és műanyag alapanyagból — kérjen ajánlatot pár lépésben.',
       },
+      applicatorsTitle: 'Applikátorok',
+      applicatorsLead:
+        'A megfelelő applikátor a felülettől és a feladattól függ — íme a főbb típusok, videós bemutatóval.',
+      watchVideo: 'Videó megtekintése',
       media: {
         photo: 'Fotó',
         video: 'Videó',
@@ -272,6 +276,10 @@ export const dictionaries = {
         title: 'Labels',
         text: 'Custom-size labels in paper and plastic materials — request a quote in a few steps.',
       },
+      applicatorsTitle: 'Applicators',
+      applicatorsLead:
+        'The right applicator depends on the surface and the task — here are the main types, with video demos.',
+      watchVideo: 'Watch video',
       media: {
         photo: 'Photo',
         video: 'Video',
