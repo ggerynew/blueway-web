@@ -108,8 +108,8 @@ export const categories: Category[] = [
     slug: 'szoftverek',
     name: { hu: 'Szoftverek', en: 'Software' },
     description: {
-      hu: 'NiceLabel és LabelJoy címketervező és -nyomtató szoftverek.',
-      en: 'NiceLabel and LabelJoy label design and printing software.',
+      hu: 'Címketervező és -nyomtató szoftverek, valamint egyedi fejlesztések.',
+      en: 'Label design and printing software, plus custom development.',
     },
   },
   {
@@ -727,6 +727,7 @@ export const products: Product[] = [
     category: 'szoftverek',
     name: 'cablabel S3',
     brand: 'CAB',
+    image: '/images/brand/cab-logo.png',
     short: {
       hu: 'cab címketervező és -nyomtató szoftver, teljes körű eszközvezérléssel.',
       en: 'cab label design and printing software with full device control.',
@@ -742,6 +743,27 @@ export const products: Product[] = [
       { hu: 'Több kiadásban', en: 'Available in multiple editions' },
     ],
     datasheet: '/datasheets/cab-cablabel-s3.pdf',
+  },
+  {
+    slug: 'egyedi-szoftverfejlesztes',
+    category: 'szoftverek',
+    name: 'Egyedi szoftverfejlesztés',
+    brand: 'Blueway Trade',
+    image: '/images/products/egyedi-szoftver.png',
+    short: {
+      hu: 'Egyedi szoftverek tervezése és kivitelezése az Ön folyamataira szabva.',
+      en: 'Custom software designed and built around your processes.',
+    },
+    description: {
+      hu: 'Egyedi szoftverek tervezését és kivitelezését vállaljuk — a címkézési és jelölési munkafolyamatok automatizálásától az adatbázis- és rendszerintegrációig, teljesen az Ön igényeire szabva.',
+      en: 'We design and build custom software — from automating labeling and marking workflows to database and system integration, tailored entirely to your needs.',
+    },
+    features: [
+      { hu: 'Igény szerinti fejlesztés', en: 'Development to your requirements' },
+      { hu: 'Munkafolyamat-automatizálás', en: 'Workflow automation' },
+      { hu: 'Adatbázis- és rendszerintegráció', en: 'Database and system integration' },
+      { hu: 'Címke- és jelölésvezérlés', en: 'Label and marking control' },
+    ],
   },
 
   // ——— POSTEK — címkenyomtató sorozatok ———
