@@ -119,6 +119,48 @@ export default async function ProductPage({
         </Reveal>
       </div>
 
+      {product.applicators && product.applicators.length > 0 && (
+        <Reveal delay={0.05}>
+          <section className="mt-20 border-t border-line pt-10">
+            <h2 className="text-xl font-semibold tracking-tight">
+              {dict.products.applicatorsTitle}
+            </h2>
+            <p className="mt-2 max-w-2xl text-ink-muted">
+              {dict.products.applicatorsLead}
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {product.applicators.map((a) => (
+                <div key={a.image} className="product-tile flex h-full flex-col p-5">
+                  <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={asset(a.image)}
+                      alt={a.name[lang]}
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <h3 className="mt-4 font-semibold tracking-tight">{a.name[lang]}</h3>
+                  <p className="mt-1 flex-1 text-sm text-ink-muted">{a.description[lang]}</p>
+                  {a.videoId && (
+                    <a
+                      href={`https://www.youtube.com/watch?v=${a.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                      {dict.products.watchVideo}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      )}
+
       <Reveal delay={0.05}>
         <section id="ajanlatkeres" className="mt-20 scroll-mt-24 border-t border-line pt-10">
           <h2 className="text-xl font-semibold tracking-tight">

@@ -26,6 +26,16 @@ export interface Product {
   model3d?: string;
   /** true, amíg a 3D modell csak bemutató minta, nem a valós termék */
   model3dIsDemo?: boolean;
+  /** Kapcsolódó applikátorok (pl. HERMES Q print & apply) */
+  applicators?: Applicator[];
+}
+
+export interface Applicator {
+  image: string;
+  name: LocalizedText;
+  description: LocalizedText;
+  /** YouTube videó azonosító (linkeléshez) */
+  videoId?: string;
 }
 
 export interface Manufacturer {
@@ -461,6 +471,53 @@ export const products: Product[] = [
       { hu: 'Roll-on / blow-on / tamp-on applikátorok', en: 'Roll-on / blow-on / tamp-on applicators' },
       { hu: 'Bal és jobb kivitel', en: 'Left and right versions' },
       { hu: 'Gyártósori integráció', en: 'Production-line integration' },
+    ],
+    applicators: [
+      {
+        image: '/images/applicators/hq-tamp.jpg',
+        name: { hu: 'Szúró (tamp-on) applikátor', en: 'Tamp-on applicator' },
+        description: {
+          hu: 'A bélyegzőpárna a címkét közvetlenül a termékre nyomja — sík felületekre, valós időben.',
+          en: 'The tamp pad presses the label directly onto the product — on plane surfaces, in real time.',
+        },
+        videoId: 'HG9eudLWxfM',
+      },
+      {
+        image: '/images/applicators/hq-formpad.jpg',
+        name: { hu: 'Formapárnás applikátor', en: 'Form-pad applicator' },
+        description: {
+          hu: 'Íves és hengeres felületekre helyezi fel a címkét pontosan, buborékmentesen.',
+          en: 'Applies labels precisely and bubble-free onto curved and cylindrical surfaces.',
+        },
+        videoId: 'P-9HXQJ-Lds',
+      },
+      {
+        image: '/images/applicators/hq-blow.jpg',
+        name: { hu: 'Fújó (blow-on) applikátor', en: 'Blow-on applicator' },
+        description: {
+          hu: 'Érintés nélkül, légsugárral fújja a címkét a felületre 5–10 mm távolságból.',
+          en: 'Applies the label contactlessly with a blast of air from 5–10 mm away.',
+        },
+        videoId: 'mzq7QKgfb1Q',
+      },
+      {
+        image: '/images/applicators/hq-rollon.jpg',
+        name: { hu: 'Gördülő (roll-on) applikátor', en: 'Roll-on applicator' },
+        description: {
+          hu: 'Kerek termékekre — kábelre, tömlőre, csőre — görgeti fel a címkét.',
+          en: 'Rolls the label onto round products such as cables, hoses and pipes.',
+        },
+        videoId: 'Q_8G_dg2-EQ',
+      },
+      {
+        image: '/images/applicators/hq-tampblow.jpg',
+        name: { hu: 'Szúró-fújó (tamp-blow) applikátor', en: 'Tamp-blow applicator' },
+        description: {
+          hu: 'Mozgó csomagokra, távolságból helyezi fel a címkét — valós időben, több oldalról.',
+          en: 'Applies labels onto moving packages from a distance — in real time, from all sides.',
+        },
+        videoId: 'T_SItehIQhs',
+      },
     ],
   },
   {
