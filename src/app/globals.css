@@ -72,29 +72,22 @@ body {
   color: var(--color-brand-900);
 }
 
-/* Logó fogaskerekek – lassú, folyamatos forgás */
-@keyframes bw-gear-cw {
-  to {
-    transform: rotate(360deg);
-  }
+/* Logó: animált videó a fejlécben. A fehér háttér a világos felülethez simul. */
+.logo-media {
+  mix-blend-mode: multiply;
 }
 
-@keyframes bw-gear-ccw {
-  to {
-    transform: rotate(-360deg);
-  }
+/* Alapból a videó látszik, a statikus kép rejtve. */
+.logo-still {
+  display: none;
 }
 
-.bw-gear {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .bw-gear-cw {
-    animation: bw-gear-cw 18s linear infinite;
+/* Csökkentett mozgás esetén: videó helyett statikus logó. */
+@media (prefers-reduced-motion: reduce) {
+  .logo-video {
+    display: none;
   }
-  .bw-gear-ccw {
-    animation: bw-gear-ccw 18s linear infinite;
+  .logo-still {
+    display: block;
   }
 }
