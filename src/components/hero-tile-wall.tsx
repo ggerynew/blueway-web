@@ -10,9 +10,10 @@ type Tile = { src: string; alt: string; href: string };
  * egérrel (vagy érintéssel) bárhol meg lehet fogni és forgatni; elengedés után
  * a lendület kifut, majd visszaáll az automatikus forgásra.
  *
- * A csempe KÖZEPÉN egy kis kör alakú kattintási zóna nyitja meg a termékoldalt.
- * Ha a mutató a lenyomás óta elmozdult (tehát forgatás történt), a kattintást
- * elnyeljük — így a forgatást a kattintózóna nem zavarja meg.
+ * Az EGÉSZ csempére kattintva megnyílik a termékoldal (nagy, biztos célpont).
+ * Amíg a kurzor a falon van, a forgás megáll — így a kattintás célpontja stabil
+ * marad; a kurzort elhúzva a forgás újraindul. Ha a mutató a lenyomás óta
+ * elmozdult (forgatás), a kattintást elnyeljük, hogy a forgatást ne zavarja.
  */
 export function HeroTileWall({
   tiles,
@@ -25,19 +26,20 @@ export function HeroTileWall({
   const angle = useRef(0);
   const velocity = useRef(0);
   const dragging = useRef(false);
+  const hovering = useRef(false);
   const moved = useRef(false);
   const lastX = useRef(0);
   const startX = useRef(0);
-  const autoSpeed = useRef(0.06);
+  const autoSpeed = useRef(0.05);
 
   const COLS = columns ?? Math.ceil(tiles.length / 2);
   const step = 360 / COLS;
-  const tileW = 132;
-  const tileH = 104;
-  const rowGap = 14;
-  const radius = Math.round(((tileW + 22) / 2) / Math.tan(Math.PI / COLS));
+  const tileW = 168;
+  const tileH = 128;
+  const rowGap = 16;
+  const radius = Math.round(((tileW + 24) / 2) / Math.tan(Math.PI / COLS));
 
-  // Folyamatos forgás (rAF)
+  // Folyamatos forgás (rAF). Hover vagy húzás közben megáll.
   useEffect(() => {
     const el = spinRef.current;
     if (!el) return;
@@ -46,7 +48,8 @@ export function HeroTileWall({
 
     let raf = 0;
     const frame = () => {
-      if (!dragging.current) {
+      const paused = dragging.current || hovering.current;
+      if (!paused) {
         angle.current += autoSpeed.current + velocity.current;
         velocity.current *= 0.94;
         if (Math.abs(velocity.current) < 0.001) velocity.current = 0;
@@ -96,8 +99,13 @@ export function HeroTileWall({
   return (
     <div
       className="relative aspect-square w-full cursor-grab overflow-hidden rounded-[2rem] select-none active:cursor-grabbing"
-      style={{ perspective: '1100px', touchAction: 'none' }}
+      style={{ perspective: '1200px', touchAction: 'none' }}
       onPointerDown={onPointerDown}
+      onPointerEnter={() => (hovering.current = true)}
+      onPointerLeave={() => {
+        hovering.current = false;
+        dragging.current = false;
+      }}
     >
       {/* lágy háttérfény */}
       <div
@@ -124,9 +132,12 @@ export function HeroTileWall({
             const row = Math.floor(i / COLS);
             const yOff = (row - 0.5) * (tileH + rowGap);
             return (
-              <div
+              <Link
                 key={`${t.href}-${i}`}
-                className="group absolute flex items-center justify-center rounded-xl border border-line bg-white/95 p-2 shadow-[0_8px_24px_-10px_rgba(29,78,216,0.35)]"
+                href={t.href}
+                aria-label={t.alt}
+                onClick={onLinkClick}
+                className="group absolute flex cursor-pointer items-center justify-center rounded-2xl border border-line bg-white/95 p-2 shadow-[0_10px_28px_-10px_rgba(29,78,216,0.4)] ring-1 ring-transparent transition-[box-shadow,border-color] hover:border-brand-300 hover:ring-brand-500/50"
                 style={{
                   width: tileW,
                   height: tileH,
@@ -144,32 +155,7 @@ export function HeroTileWall({
                   loading="lazy"
                   draggable={false}
                 />
-
-                {/* kis kör alakú kattintási zóna a közepén → termékoldal */}
-                <Link
-                  href={t.href}
-                  aria-label={t.alt}
-                  onClick={onLinkClick}
-                  className="absolute top-1/2 left-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full ring-1 ring-transparent transition-all hover:bg-white/80 hover:ring-brand-500/60 hover:shadow-md"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                    className="text-brand-700 opacity-0 transition-opacity group-hover:opacity-100"
-                  >
-                    <path
-                      d="M7 17L17 7M17 7H9M17 7v8"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-              </div>
+              </Link>
             );
           })}
         </div>
@@ -178,7 +164,7 @@ export function HeroTileWall({
       {/* szélek elhalványítása a mélységérzethez */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(140%_100%_at_50%_50%,transparent_55%,var(--color-surface)_92%)]"
+        className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[radial-gradient(140%_100%_at_50%_50%,transparent_58%,var(--color-surface)_94%)]"
       />
     </div>
   );
