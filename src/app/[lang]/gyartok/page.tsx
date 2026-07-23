@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getProductsByBrand } from '@/lib/products';
 
@@ -47,10 +48,21 @@ export default async function ManufacturersPage({
                 className="group product-tile flex h-full flex-col justify-between p-6"
               >
                 <div>
-                  <h2 className="text-xl font-semibold tracking-tight text-brand-700">
-                    {m.name}
+                  <h2 className="flex h-12 items-center">
+                    {m.logo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={asset(m.logo)}
+                        alt={m.name}
+                        className="max-h-11 w-auto max-w-[180px] object-contain"
+                      />
+                    ) : (
+                      <span className="text-xl font-semibold tracking-tight text-brand-700">
+                        {m.name}
+                      </span>
+                    )}
                   </h2>
-                  <p className="mt-2 text-sm text-ink-muted">{m.description[lang]}</p>
+                  <p className="mt-4 text-sm text-ink-muted">{m.description[lang]}</p>
                 </div>
                 <p className="mt-6 text-sm font-medium text-brand-700">
                   {dict.products.productCount(count)}
