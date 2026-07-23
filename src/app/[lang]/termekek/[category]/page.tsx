@@ -96,6 +96,31 @@ export default async function CategoryPage({
         </div>
       ) : (
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {cat.slug === 'cimkek-es-festekszalagok' && (
+            <Reveal>
+              <Link
+                href={`/${lang}/cimke-ajanlatkero`}
+                className="group product-tile flex h-full flex-col overflow-hidden"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-surface">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={asset('/images/products/cimkek.jpg')}
+                    alt={dict.products.labelsTile.title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="font-semibold tracking-tight group-hover:text-brand-700">
+                    {dict.products.labelsTile.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-ink-muted">
+                    {dict.products.labelsTile.text}
+                  </p>
+                </div>
+              </Link>
+            </Reveal>
+          )}
           {items.map((product, i) => (
             <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
           ))}

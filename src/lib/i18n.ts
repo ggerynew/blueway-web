@@ -48,6 +48,10 @@ export const dictionaries = {
       datasheet: 'Adatlap letöltése (PDF)',
       featuresTitle: 'Főbb jellemzők',
       otherProducts: 'További termékek a kategóriában',
+      labelsTile: {
+        title: 'Címkék',
+        text: 'Egyedi méretű címkék papír és műanyag alapanyagból — kérjen ajánlatot pár lépésben.',
+      },
       media: {
         photo: 'Fotó',
         video: 'Videó',
@@ -264,6 +268,10 @@ export const dictionaries = {
       datasheet: 'Download datasheet (PDF)',
       featuresTitle: 'Key features',
       otherProducts: 'More products in this category',
+      labelsTile: {
+        title: 'Labels',
+        text: 'Custom-size labels in paper and plastic materials — request a quote in a few steps.',
+      },
       media: {
         photo: 'Photo',
         video: 'Video',
