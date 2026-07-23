@@ -731,6 +731,7 @@ export const products: Product[] = [
       { hu: 'Nyomtató, print & apply és lézer vezérlés', en: 'Controls printers, print & apply and lasers' },
       { hu: 'Több kiadásban', en: 'Available in multiple editions' },
     ],
+    datasheet: '/datasheets/cab-cablabel-s3.pdf',
   },
 
   // ——— POSTEK — címkenyomtató sorozatok ———
