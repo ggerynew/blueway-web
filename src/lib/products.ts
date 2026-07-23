@@ -1048,3 +1048,16 @@ export function getManufacturer(slug: string): Manufacturer | undefined {
 export function getProductsByBrand(brand: string): Product[] {
   return products.filter((p) => p.brand === brand);
 }
+
+/**
+ * Márka → logó feloldás. Először a gyártók között keres; ha a márka nem
+ * gyártó (pl. festékszalag-márkák), a kiegészítő térképből ad logót.
+ */
+const extraBrandLogos: Record<string, string> = {
+  DNP: '/images/brand/dnp-logo.png',
+  'ARMOR-IIMAK': '/images/brand/armor-iimak-logo.png',
+};
+
+export function getBrandLogo(brand: string): string | undefined {
+  return manufacturers.find((m) => m.brand === brand)?.logo ?? extraBrandLogos[brand];
+}
