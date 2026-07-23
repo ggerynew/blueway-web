@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
-import { HeroVisual } from '@/components/hero-visual';
+import { HeroTileWall } from '@/components/hero-tile-wall';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
+import { products } from '@/lib/products';
 
 export default async function HomePage({
   params,
@@ -10,6 +12,14 @@ export default async function HomePage({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
+
+  // Termékfotók a forgó hero-falhoz — a teljes katalógusból egyenletesen válogatva.
+  const withImage = products.filter((p) => p.image);
+  const TILE_COUNT = Math.min(18, withImage.length);
+  const heroTiles = Array.from({ length: TILE_COUNT }, (_, i) => {
+    const p = withImage[Math.round((i * (withImage.length - 1)) / (TILE_COUNT - 1))];
+    return { src: asset(p.image as string), alt: p.name };
+  });
 
   return (
     <>
@@ -48,7 +58,7 @@ export default async function HomePage({
           </div>
 
           <Reveal delay={0.2} className="hidden lg:block">
-            <HeroVisual />
+            <HeroTileWall tiles={heroTiles} />
           </Reveal>
         </div>
       </section>
