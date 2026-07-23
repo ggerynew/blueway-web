@@ -474,26 +474,35 @@ export const products: Product[] = [
     ],
     applicators: [
       {
-        image: '/images/applicators/hq-tamp.jpg',
-        name: { hu: 'Szúrópárnás (tamp-on) applikátor', en: 'Tamp-on applicator' },
+        image: '/images/applicators/hq-4114.jpg',
+        name: { hu: 'Szúrópárnás applikátor (HQ 4114/4116)', en: 'Tamp-on applicator (HQ 4114/4116)' },
         description: {
-          hu: 'A szúrópárna a kinyomtatott címkét sík felületre nyomja rá, valós időben.',
-          en: 'The tamp pad presses the printed label onto flat surfaces, in real time.',
-        },
-        videoId: 'HG9eudLWxfM',
-      },
-      {
-        image: '/images/applicators/hq-formpad.jpg',
-        name: { hu: 'Formapárnás (form pad) applikátor', en: 'Form-pad applicator' },
-        description: {
-          hu: 'Formapárna íves és hengeres felületekre — pontos, buborékmentes felhelyezés.',
-          en: 'A form pad for curved and cylindrical surfaces — precise, bubble-free application.',
+          hu: 'Kis és közepes címkék felhelyezése minden oldalról, valós időben; formapárnával íves és hengeres felületekre is.',
+          en: 'Applies small and midsized labels from all sides in real time; with a form pad also onto curved and cylindrical surfaces.',
         },
         videoId: 'P-9HXQJ-Lds',
       },
       {
-        image: '/images/applicators/hq-blow.jpg',
-        name: { hu: 'Fújó (blow-on) applikátor', en: 'Blow-on applicator' },
+        image: '/images/applicators/hq-4214.jpg',
+        name: { hu: 'Elforduló szúrópárnás (HQ 4214)', en: 'Stroke-turn applicator (HQ 4214)' },
+        description: {
+          hu: 'A párna nyomtatás közben a felhelyezési síkba fordul — nehezen beépíthető helyekre is alkalmas.',
+          en: 'The pad pivots into the application plane while printing — also suitable for hard-to-install positions.',
+        },
+        videoId: '0QethJtANc0',
+      },
+      {
+        image: '/images/applicators/hq-4414.jpg',
+        name: { hu: 'Szúrópárnás applikátor (HQ 4414/4416)', en: 'Tamp-on applicator (HQ 4414/4416)' },
+        description: {
+          hu: 'Kis és közepes címkék minden oldalról, állítható felhelyezési pozícióval.',
+          en: 'Small and midsized labels from all sides, with an adjustable application position.',
+        },
+        videoId: 'HG9eudLWxfM',
+      },
+      {
+        image: '/images/applicators/hq-4514.jpg',
+        name: { hu: 'Fújópárnás applikátor (HQ 4514)', en: 'Blow-on applicator (HQ 4514)' },
         description: {
           hu: 'A címkét légsugár fújja a felületre 5–10 mm távolságból, érintés nélkül.',
           en: 'The label is blown onto the surface from 5–10 mm away, contactlessly.',
@@ -501,13 +510,69 @@ export const products: Product[] = [
         videoId: 'mzq7QKgfb1Q',
       },
       {
-        image: '/images/applicators/hq-flag.jpg',
-        name: { hu: 'Zászlós (flag) applikátor', en: 'Flag applicator' },
+        image: '/images/applicators/hq-4712.jpg',
+        name: { hu: 'Zászlós applikátor (HQ 4712)', en: 'Flag applicator (HQ 4712)' },
         description: {
-          hu: 'Zászlós applikátor (HQ 4712): kábelekre és kerek tárgyakra hajtja rá a címkét zászlóként.',
-          en: 'Flag applicator (HQ 4712): wraps the label as a flag onto cables and round objects.',
+          hu: 'Kábelekre és kerek tárgyakra hajtja rá a címkét zászló formában.',
+          en: 'Wraps the label as a flag onto cables and round objects.',
         },
         videoId: 'SV0G6Z2yb-4',
+      },
+      {
+        image: '/images/applicators/hq-4014.jpg',
+        name: { hu: 'Szúrópárnás csomag-applikátor (HQ 4014/4016)', en: 'Tamp-on package applicator (HQ 4014/4016)' },
+        description: {
+          hu: 'Álló vagy mozgó csomagokra, minden oldalról — a párna típusától függően mozgásban is.',
+          en: 'Onto stationary or moving packages from all sides — depending on the pad, also in motion.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-4024.jpg',
+        name: { hu: 'Rugós szúrópárnás (HQ 4024)', en: 'Spring-mounted tamp-on (HQ 4024)' },
+        description: {
+          hu: 'Változó magasságú csomagokra egyetlen párnával; akár 90% sűrítettlevegő-megtakarítás.',
+          en: 'Onto packages of varying heights with a single pad; up to 90% savings in compressed air.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-4614.jpg',
+        name: { hu: 'Szúró-fújó applikátor (HQ 4614)', en: 'Stroke-blow applicator (HQ 4614)' },
+        description: {
+          hu: 'Változó magasságú, mozgó csomagokra: a párna a csomag fölé áll, majd ráfújja a címkét.',
+          en: 'Onto moving packages of varying heights: the pad moves above the package and blows the label on.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-5112.jpg',
+        name: { hu: 'Adagolómodul (HQ 5112/5114/5116)', en: 'Demand modules (HQ 5112/5114/5116)' },
+        description: {
+          hu: 'Címkesorozat felhelyezése mozgó csomagokra, adagolónyelvről.',
+          en: 'Applies a series of labels onto moving packages from a dispensing tongue.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-5314.jpg',
+        name: { hu: 'Vákuumszalagos applikátor (HQ 5314)', en: 'Vacuum-belt applicator (HQ 5314)' },
+        description: {
+          hu: 'A címkét vákuumszalag viszi a felhelyezési pontra — sík felületekre, mozgásban.',
+          en: 'A vacuum belt carries the label to the application point — onto plane surfaces, in motion.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-5414.jpg',
+        name: { hu: 'Vákuumszalagos applikátor (HQ 5414)', en: 'Vacuum-belt applicator (HQ 5414)' },
+        description: {
+          hu: 'Nagyobb címkékhez, felülről történő felhelyezéssel, mozgó termékekre.',
+          en: 'For larger labels, applied from the top onto moving products.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-5714.jpg',
+        name: { hu: 'Igény szerinti adagolóasztal (HQ 5714)', en: 'Demand table (HQ 5714)' },
+        description: {
+          hu: 'Előnyomtatott, előadagolt címkék felvétele és igény szerinti felhelyezése.',
+          en: 'Picks up pre-printed, pre-dispensed labels and applies them on demand.',
+        },
       },
     ],
   },
