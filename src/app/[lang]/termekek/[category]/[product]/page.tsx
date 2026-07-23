@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductMedia } from '@/components/product-media';
 import { ProductThumb } from '@/components/product-thumb';
+import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
@@ -76,12 +77,12 @@ export default async function ProductPage({
             </ul>
 
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <Link
-                href={`/${lang}/kapcsolat`}
+              <a
+                href="#ajanlatkeres"
                 className="inline-block rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
               >
                 {dict.products.requestQuote}
-              </Link>
+              </a>
               {product.datasheet && (
                 <a
                   href={asset(product.datasheet)}
@@ -105,6 +106,22 @@ export default async function ProductPage({
           </div>
         </Reveal>
       </div>
+
+      <Reveal delay={0.05}>
+        <section id="ajanlatkeres" className="mt-20 scroll-mt-24 border-t border-line pt-10">
+          <h2 className="text-xl font-semibold tracking-tight">
+            {dict.products.inquiry.title}
+          </h2>
+          <p className="mt-2 max-w-xl text-ink-muted">{dict.products.inquiry.lead}</p>
+          <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
+            <ProductInquiry
+              labels={dict.products.inquiry}
+              recipient={dict.contact.email}
+              productName={product.name}
+            />
+          </div>
+        </section>
+      </Reveal>
 
       {others.length > 0 && (
         <Reveal delay={0.1}>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { sendForm } from '@/lib/send-form';
 import type { Dictionary } from '@/lib/i18n';
 
 type FormLabels = Dictionary['contact']['form'];
@@ -15,7 +16,7 @@ export function ContactForm({
 }) {
   const [sending, setSending] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
 
@@ -36,13 +37,14 @@ export function ContactForm({
       company ? `${labels.company}: ${company}` : '',
     ].filter(Boolean);
 
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-
     try {
-      window.location.href = mailto;
-      toast.success(labels.success);
+      const result = await sendForm({
+        fields: { name, email, company, subject, message },
+        subject: subject || `${labels.subject}: ${name}`,
+        bodyLines,
+        recipient,
+      });
+      toast.success(result === 'sent' ? labels.sent : labels.success);
       form.reset();
     } catch {
       toast.error(labels.error);

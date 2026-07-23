@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { sendForm } from '@/lib/send-form';
+import { asset } from '@/lib/asset';
 import type { Dictionary } from '@/lib/i18n';
 
 type Labels = Dictionary['labelQuote'];
@@ -49,7 +51,7 @@ export function LabelQuoteForm({
 }) {
   const [sending, setSending] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
     const form = e.currentTarget;
@@ -69,7 +71,13 @@ export function LabelQuoteForm({
       [labels.ribbonQuality, g('ribbon')],
     ];
 
+    const diagramUrl =
+      (typeof window !== 'undefined' ? window.location.origin : '') +
+      asset('/images/cimke-meretek.svg');
+
     const bodyLines = [
+      labels.emailHeading,
+      '',
       labels.specTitle,
       ...spec.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`),
     ];
@@ -81,16 +89,38 @@ export function LabelQuoteForm({
       `${labels.company}: ${g('company')}`,
       `${labels.email}: ${g('email')}`,
       `${labels.phone}: ${g('phone')}`,
+      '',
+      `${labels.diagramLink}: ${diagramUrl}`,
     );
 
     const subjectWho = g('company') || g('name') || g('email');
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(
-      `${labels.title} — ${subjectWho}`,
-    )}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+    const fields: Record<string, string> = {
+      name: g('name'),
+      company: g('company'),
+      email: g('email'),
+      phone: g('phone'),
+      width: g('width'),
+      height: g('height'),
+      material: g('material'),
+      quantity: g('quantity'),
+      cornerRadius: g('cornerRadius'),
+      rollOuter: g('rollOuter'),
+      rollInner: g('rollInner'),
+      winding: g('winding'),
+      color: g('color'),
+      ribbon: g('ribbon'),
+      notes: g('notes'),
+      diagram: diagramUrl,
+    };
 
     try {
-      window.location.href = mailto;
-      toast.success(labels.success);
+      const result = await sendForm({
+        fields,
+        subject: `${labels.title} — ${subjectWho}`,
+        bodyLines,
+        recipient,
+      });
+      toast.success(result === 'sent' ? labels.sent : labels.success);
       form.reset();
     } catch {
       toast.error(labels.error);
