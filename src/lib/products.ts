@@ -69,6 +69,26 @@ export const manufacturers: Manufacturer[] = [
       en: 'Industrial fiber, CO₂ and UV laser marking and engraving systems with over 60 years of experience — from benchtop machines to integration lasers.',
     },
   },
+  {
+    slug: 'dnp',
+    brand: 'DNP',
+    name: 'DNP',
+    logo: '/images/brand/dnp-logo.png',
+    description: {
+      hu: 'Prémium termotranszfer festékszalagok — wax, wax/resin és resin kivitelben, a világ egyik vezető gyártójától.',
+      en: 'Premium thermal transfer ribbons — wax, wax/resin and resin, from one of the world’s leading manufacturers.',
+    },
+  },
+  {
+    slug: 'armor-iimak',
+    brand: 'ARMOR-IIMAK',
+    name: 'ARMOR-IIMAK',
+    logo: '/images/brand/armor-iimak-logo.png',
+    description: {
+      hu: 'Termotranszfer festékszalagok flat-head és near-edge nyomtatókhoz — wax, wax/resin és resin családok.',
+      en: 'Thermal transfer ribbons for flat-head and near-edge printers — wax, wax/resin and resin families.',
+    },
+  },
 ];
 
 export const categories: Category[] = [
@@ -1047,15 +1067,7 @@ export function getProductsByBrand(brand: string): Product[] {
   return products.filter((p) => p.brand === brand);
 }
 
-/**
- * Márka → logó feloldás. Először a gyártók között keres; ha a márka nem
- * gyártó (pl. festékszalag-márkák), a kiegészítő térképből ad logót.
- */
-const extraBrandLogos: Record<string, string> = {
-  DNP: '/images/brand/dnp-logo.png',
-  'ARMOR-IIMAK': '/images/brand/armor-iimak-logo.png',
-};
-
+/** Márka → logó feloldás a gyártók listája alapján. */
 export function getBrandLogo(brand: string): string | undefined {
-  return manufacturers.find((m) => m.brand === brand)?.logo ?? extraBrandLogos[brand];
+  return manufacturers.find((m) => m.brand === brand)?.logo;
 }

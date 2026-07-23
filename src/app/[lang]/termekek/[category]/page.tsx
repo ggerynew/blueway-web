@@ -24,7 +24,9 @@ export default async function CategoryPage({
   const brandGroups = manufacturers
     .map((m) => ({ manufacturer: m, list: items.filter((p) => p.brand === m.brand) }))
     .filter((g) => g.list.length > 0);
-  const multiBrand = brandGroups.length > 1;
+  // A festékszalag-kategória lapos csempés nézetben marad (Címkék + márkacsempék),
+  // nem gyártói alcímekre bontva.
+  const multiBrand = brandGroups.length > 1 && cat.slug !== 'cimkek-es-festekszalagok';
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
