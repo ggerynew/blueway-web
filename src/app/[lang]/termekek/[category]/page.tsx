@@ -102,12 +102,12 @@ export default async function CategoryPage({
                 href={`/${lang}/cimke-ajanlatkero`}
                 className="group product-tile flex h-full flex-col overflow-hidden"
               >
-                <div className="aspect-[4/3] overflow-hidden bg-surface">
+                <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-surface">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={asset('/images/products/cimkek.jpg')}
                     alt={dict.products.labelsTile.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="max-h-[70%] max-w-[70%] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-5">
