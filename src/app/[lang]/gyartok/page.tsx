@@ -48,13 +48,17 @@ export default async function ManufacturersPage({
                 className="group product-tile flex h-full flex-col justify-between p-6"
               >
                 <div>
-                  <h2 className="flex h-12 items-center">
+                  <h2 className="flex h-16 items-center">
                     {m.logo ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={asset(m.logo)}
                         alt={m.name}
-                        className="max-h-11 w-auto max-w-[180px] object-contain"
+                        className={`w-auto object-contain ${
+                          m.slug === 'cab'
+                            ? 'max-h-16 max-w-[210px]'
+                            : 'max-h-11 max-w-[180px]'
+                        }`}
                       />
                     ) : (
                       <span className="text-xl font-semibold tracking-tight text-brand-700">
