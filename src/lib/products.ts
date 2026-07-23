@@ -16,7 +16,10 @@ export interface Product {
   short: LocalizedText;
   description: LocalizedText;
   features: LocalizedText[];
-  image: string;
+  /** Termékfotó a public mappán belül; ha hiányzik, placeholder jelenik meg. */
+  image?: string;
+  /** Letölthető adatlap (PDF) a public mappán belül. */
+  datasheet?: string;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
   /** GLB modell útvonala a public mappán belül */
@@ -24,6 +27,39 @@ export interface Product {
   /** true, amíg a 3D modell csak bemutató minta, nem a valós termék */
   model3dIsDemo?: boolean;
 }
+
+export interface Manufacturer {
+  slug: string;
+  /** A Product.brand mezővel egyező megjelenítendő név. */
+  brand: string;
+  name: string;
+  /** Logó a public mappán belül; ha hiányzik, a név szövegként jelenik meg. */
+  logo?: string;
+  description: LocalizedText;
+}
+
+export const manufacturers: Manufacturer[] = [
+  {
+    slug: 'cab',
+    brand: 'CAB',
+    name: 'cab',
+    logo: '/images/brand/cab-logo.png',
+    description: {
+      hu: 'Címkenyomtatók, print & apply rendszerek, címkeadagolók és gravírozó lézerek — német gyártás, az ipar minden területére.',
+      en: 'Label printers, print & apply systems, label dispensers and marking lasers — German engineering for every area of industry.',
+    },
+  },
+  {
+    slug: 'postek',
+    brand: 'POSTEK',
+    name: 'POSTEK',
+    logo: '/images/brand/postek-logo.png',
+    description: {
+      hu: 'Robusztus ipari és asztali címkenyomtatók egyszerű nyomtatási feladatoktól az RFID-címkézésig, kiváló ár-érték aránnyal.',
+      en: 'Robust industrial and desktop label printers from simple printing tasks to RFID labeling, with excellent value for money.',
+    },
+  },
+];
 
 export const categories: Category[] = [
   {
@@ -105,7 +141,8 @@ export const products: Product[] = [
       { hu: 'Ethernet, USB, RS-232, opcionális Wi-Fi', en: 'Ethernet, USB, RS-232, optional Wi-Fi' },
       { hu: 'Vágó, adagoló és visszatekercselő opciók', en: 'Cutter, dispenser and rewinder options' },
     ],
-    image: '/images/products/squix4.jpg',
+    image: '/images/products/cab-squix-4.png',
+    datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
     model3d: '/models/demo.glb',
     model3dIsDemo: true,
@@ -128,7 +165,8 @@ export const products: Product[] = [
       { hu: 'Ipari kivitel folyamatos üzemre', en: 'Industrial build for continuous operation' },
       { hu: 'SQUIX elektronika és kezelőfelület', en: 'SQUIX electronics and interface' },
     ],
-    image: '/images/products/squix2.jpg',
+    image: '/images/products/cab-squix-2.png',
+    datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
   },
   {
@@ -149,8 +187,9 @@ export const products: Product[] = [
       { hu: 'Érintőkijelzős kezelés', en: 'Touchscreen operation' },
       { hu: 'Egyszerű anyagbefűzés', en: 'Easy media loading' },
     ],
-    image: '/images/products/eos2.jpg',
-    videoId: 'RqS25uZIMnU',
+    image: '/images/products/cab-eos2.png',
+    datasheet: '/datasheets/cab-eos.pdf',
+    videoId: 'mFCv2GaNkg0',
   },
   {
     slug: 'cab-eos5',
@@ -170,8 +209,9 @@ export const products: Product[] = [
       { hu: 'Érintőkijelzős kezelés', en: 'Touchscreen operation' },
       { hu: 'Asztali kivitel nagy kapacitással', en: 'Desktop format with high capacity' },
     ],
-    image: '/images/products/eos5.jpg',
-    videoId: 'RqS25uZIMnU',
+    image: '/images/products/cab-eos5.png',
+    datasheet: '/datasheets/cab-eos.pdf',
+    videoId: 'mFCv2GaNkg0',
   },
   {
     slug: 'cab-mach1',
@@ -190,7 +230,8 @@ export const products: Product[] = [
       { hu: 'Belépő szintű, kompakt modell', en: 'Entry-level compact model' },
       { hu: 'Egyszerű kezelés', en: 'Simple operation' },
     ],
-    image: '/images/products/mach1.jpg',
+    image: '/images/products/cab-mach1.png',
+    datasheet: '/datasheets/cab-mach12.pdf',
   },
   {
     slug: 'cab-mach2',
@@ -209,7 +250,8 @@ export const products: Product[] = [
       { hu: 'Kijelzővel szerelt kivitel', en: 'Equipped with a display' },
       { hu: 'Memóriakezelés a nyomtatón', en: 'On-printer memory handling' },
     ],
-    image: '/images/products/mach2.jpg',
+    image: '/images/products/cab-mach2.png',
+    datasheet: '/datasheets/cab-mach12.pdf',
   },
   {
     slug: 'cab-mach4s',
@@ -228,7 +270,8 @@ export const products: Product[] = [
       { hu: 'SQUIX elektronika és kezelőfelület', en: 'SQUIX electronics and interface' },
       { hu: 'Asztali méret, ipari tudás', en: 'Desktop size, industrial capability' },
     ],
-    image: '/images/products/mach4s.jpg',
+    image: '/images/products/cab-mach4s.png',
+    datasheet: '/datasheets/cab-mach4s.pdf',
   },
   {
     slug: 'cab-xc4',
@@ -248,7 +291,9 @@ export const products: Product[] = [
       { hu: '4" nyomtatási szélesség', en: '4" print width' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/xc4.jpg',
+    image: '/images/products/cab-xc4.png',
+    datasheet: '/datasheets/cab-xcq.pdf',
+    videoId: 'xqlxvt3fOX4',
   },
   {
     slug: 'cab-xc6',
@@ -268,7 +313,522 @@ export const products: Product[] = [
       { hu: '6" nyomtatási szélesség', en: '6" print width' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/xc6.jpg',
+    image: '/images/products/cab-xc6.png',
+    datasheet: '/datasheets/cab-xcq.pdf',
+    videoId: 'xqlxvt3fOX4',
+  },
+
+  // ——— CAB — további címkenyomtatók ———
+  {
+    slug: 'cab-squix-6',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 6.3',
+    brand: 'CAB',
+    image: '/images/products/cab-squix-6.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari címkenyomtató 6"-es fejjel, széles címkékhez és nagy mennyiséghez.',
+      en: 'Industrial label printer with a 6" head for wide labels and high volumes.',
+    },
+    description: {
+      hu: 'A SQUIX 6.3 a SQUIX család legszélesebb ipari tagja: 6" (168,9 mm) nyomtatási szélesség, robusztus alumínium váz és a teljes SQUIX tartozékpaletta a nagy formátumú, folyamatos nyomtatáshoz.',
+      en: 'The SQUIX 6.3 is the widest industrial member of the SQUIX family: 6" (168.9 mm) print width, a robust aluminium chassis and the full SQUIX range of accessories for large-format, continuous printing.',
+    },
+    features: [
+      { hu: '6" (168,9 mm) nyomtatási szélesség', en: '6" (168.9 mm) print width' },
+      { hu: '300 dpi felbontás', en: '300 dpi resolution' },
+      { hu: 'Robusztus alumínium váz', en: 'Robust aluminium chassis' },
+      { hu: 'Vágó, adagoló és visszatekercselő opciók', en: 'Cutter, dispenser and rewinder options' },
+    ],
+  },
+  {
+    slug: 'cab-squix-4m',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 4 M',
+    brand: 'CAB',
+    image: '/images/products/cab-squix-4m.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari nyomtató kifejezetten apró címkékhez és keskeny, végtelenített anyagokhoz.',
+      en: 'Industrial printer specifically for very small labels and slim continuous materials.',
+    },
+    description: {
+      hu: 'A SQUIX 4 M-et a nagyon kicsi címkék és keskeny, végtelenített anyagok precíz nyomtatására fejlesztették — pontos anyagvezetés és a SQUIX ipari megbízhatósága.',
+      en: 'The SQUIX 4 M is developed for precise printing of very small labels and slim continuous materials — accurate media guidance with SQUIX industrial reliability.',
+    },
+    features: [
+      { hu: 'Apró címkékhez és keskeny anyagokhoz', en: 'For small labels and slim media' },
+      { hu: 'Pontos anyagvezetés', en: 'Precise media guidance' },
+      { hu: '300 / 600 dpi felbontás', en: '300 / 600 dpi resolution' },
+      { hu: 'SQUIX elektronika', en: 'SQUIX electronics' },
+    ],
+  },
+  {
+    slug: 'cab-squix-4mt',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 4 MT',
+    brand: 'CAB',
+    image: '/images/products/cab-squix-4mt.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari nyomtató textil alapanyagokhoz — mosás- és varrócímkékhez.',
+      en: 'Industrial printer for textile materials — wash-care and sewn-in labels.',
+    },
+    description: {
+      hu: 'A SQUIX 4 MT textilszalagok és mosáscímkék nyomtatására optimalizált változat, a textiliparra szabott anyagkezeléssel.',
+      en: 'The SQUIX 4 MT is optimised for printing textile ribbons and wash-care labels, with media handling tailored to the textile industry.',
+    },
+    features: [
+      { hu: 'Textilszalag és mosáscímke', en: 'Textile ribbons & wash-care labels' },
+      { hu: 'Textilre hangolt anyagkezelés', en: 'Textile-tuned media handling' },
+      { hu: '300 dpi felbontás', en: '300 dpi resolution' },
+      { hu: 'SQUIX platform', en: 'SQUIX platform' },
+    ],
+  },
+  {
+    slug: 'cab-xd-q',
+    category: 'cimkenyomtatok',
+    name: 'CAB XD Q',
+    brand: 'CAB',
+    image: '/images/products/cab-xd-q.png',
+    datasheet: '/datasheets/cab-xdq.pdf',
+    short: {
+      hu: 'Kétoldalas nyomtatás egy menetben — függőcímkékhez és flexibilis anyagokhoz.',
+      en: 'Double-sided printing in a single pass — for tags and flexible materials.',
+    },
+    description: {
+      hu: 'Az XD Q két nyomtatófejjel egyszerre nyomtatja a hordozó mindkét oldalát — ideális kétoldalas függőcímkékhez és flexibilis anyagokhoz, 4" és 6" szélességben.',
+      en: 'The XD Q prints both sides of the web simultaneously with two printheads — ideal for double-sided tags and flexible materials, in 4" and 6" widths.',
+    },
+    features: [
+      { hu: 'Kétoldalas nyomtatás egy menetben', en: 'Double-sided printing in one pass' },
+      { hu: '4" és 6" szélesség', en: '4" and 6" widths' },
+      { hu: 'Két nyomtatófej', en: 'Two printheads' },
+      { hu: 'SQUIX elektronika', en: 'SQUIX electronics' },
+    ],
+  },
+
+  // ——— CAB — Print & apply (címkéző gépek) ———
+  {
+    slug: 'cab-hermes-q',
+    category: 'cimkezo-gepek',
+    name: 'CAB HERMES Q',
+    brand: 'CAB',
+    image: '/images/products/cab-hermes-q.png',
+    datasheet: '/datasheets/cab-hermes-q.pdf',
+    videoId: 'HG9eudLWxfM',
+    short: {
+      hu: 'Print & apply rendszer gyártósorra — pontos címkefelhelyezés valós időben.',
+      en: 'Print & apply system for production lines — precise real-time label application.',
+    },
+    description: {
+      hu: 'A HERMES Q print & apply rendszer a legújabb cab nyomtatógeneráció elektronikájára épül: nagy teljesítményű CPU és pontos címkefelhelyezés hengeres, ferde vagy íves felületekre roll-on, blow-on vagy tamp-on applikátorral.',
+      en: 'The HERMES Q print & apply system is built on the electronics of the latest cab printer generation: a powerful CPU and precise label application onto cylindrical, oblique or curved surfaces with roll-on, blow-on or tamp-on applicators.',
+    },
+    features: [
+      { hu: 'Valós idejű print & apply', en: 'Real-time print & apply' },
+      { hu: 'Roll-on / blow-on / tamp-on applikátorok', en: 'Roll-on / blow-on / tamp-on applicators' },
+      { hu: 'Bal és jobb kivitel', en: 'Left and right versions' },
+      { hu: 'Gyártósori integráció', en: 'Production-line integration' },
+    ],
+  },
+  {
+    slug: 'cab-ixor',
+    category: 'cimkezo-gepek',
+    name: 'CAB IXOR',
+    brand: 'CAB',
+    short: {
+      hu: 'A kategória legkisebb szervo-hajtású címkéző feje automata sorokhoz.',
+      en: 'The smallest servo-driven labeling head in its class for automated lines.',
+    },
+    description: {
+      hu: 'Az IXOR a teljesítménykategória legkisebb szervo-hajtású címkéző feje; moduláris felépítéssel teljesen automata címkéző gépekbe és gyártósori szalagokra integrálható.',
+      en: 'The IXOR is the smallest servo-driven labeling head in its performance class; its modular design integrates into fully automatic labeling machines and production-line conveyors.',
+    },
+    features: [
+      { hu: 'Szervo-hajtású címkéző fej', en: 'Servo-driven labeling head' },
+      { hu: 'Kompakt, moduláris felépítés', en: 'Compact, modular design' },
+      { hu: 'Szalag- és gépintegráció', en: 'Conveyor / machine integration' },
+      { hu: 'Nagy felhelyezési pontosság', en: 'High placement accuracy' },
+    ],
+    image: '/images/products/cab-ixor.jpg',
+    datasheet: '/datasheets/cab-ixor.pdf',
+    videoId: 'te_UCjKplTI',
+  },
+
+  {
+    slug: 'cab-roxi',
+    category: 'cimkezo-gepek',
+    name: 'CAB ROXI',
+    brand: 'CAB',
+    short: {
+      hu: 'Címkéző fej precíziós behelyező-címkézéshez — fóliák, membránok, tömítések.',
+      en: 'Labeling head for precision insert-labeling — films, membranes, seals.',
+    },
+    description: {
+      hu: 'A ROXI robusztus felépítésű, korszerű elektronikájú címkéző fej fóliák, membránok, tömítések és hővezető alkatrészek precíz behelyező-címkézéséhez. HERMES applikátorokkal magas pontosságú ipari alkalmazásokban is bevethető.',
+      en: 'The ROXI is a solidly built labeling head with modern electronics for precision insert-labeling of films, membranes, seals and thermally conductive components. With HERMES applicators it also serves high-accuracy industrial applications.',
+    },
+    features: [
+      { hu: 'Precíziós behelyező-címkézés', en: 'Precision insert-labeling' },
+      { hu: 'Fólia, membrán, tömítés, hővezető alkatrész', en: 'Films, membranes, seals, thermal components' },
+      { hu: 'HERMES applikátorokkal', en: 'Works with HERMES applicators' },
+      { hu: 'Korszerű cab elektronika', en: 'Modern cab electronics' },
+    ],
+    image: '/images/products/cab-roxi.png',
+    datasheet: '/datasheets/cab-roxi.pdf',
+    videoId: '1gc7P-fNwJc',
+  },
+  {
+    slug: 'cab-pxq',
+    category: 'cimkezo-gepek',
+    name: 'CAB PX Q',
+    brand: 'CAB',
+    short: {
+      hu: 'Nyomtató- és leválasztó modul automata gépekbe és applikátorokba.',
+      en: 'Print-and-peel module for automated machines and applicators.',
+    },
+    description: {
+      hu: 'A PX Q nyomtató- és leválasztó modult teljesen automatikus ipari nyomtatásra és címkézésre tervezték, a legújabb cab elektronikai platformra építve — applikátorokba és OEM gépekbe integrálható.',
+      en: 'The PX Q print-and-peel module is designed for fully automatic industrial printing and labeling, built on the latest cab electronics platform — for integration into applicators and OEM machines.',
+    },
+    features: [
+      { hu: 'Nyomtató- és leválasztó modul', en: 'Print-and-peel module' },
+      { hu: 'Teljesen automatikus üzem', en: 'Full automation' },
+      { hu: 'Legújabb cab elektronikai platform', en: 'Latest cab electronics platform' },
+      { hu: 'Applikátor / OEM integráció', en: 'Applicator / OEM integration' },
+    ],
+    image: '/images/products/cab-pxq.png',
+    datasheet: '/datasheets/cab-pxq.pdf',
+    videoId: 'AOjwwv_yzbc',
+  },
+  {
+    slug: 'cab-hermes-c',
+    category: 'cimkezo-gepek',
+    name: 'CAB HERMES C',
+    brand: 'CAB',
+    short: {
+      hu: 'Print & apply rendszer a HERMES családból, ipari címkézéshez.',
+      en: 'Print & apply system from the HERMES family for industrial labeling.',
+    },
+    description: {
+      hu: 'A HERMES C a cab print & apply kínálatának tagja: nyomtat és valós időben helyezi fel a címkéket a gyártósoron, megbízható ipari kivitelben.',
+      en: 'The HERMES C is part of cab’s print & apply range: it prints and applies labels in real time on the production line, in a reliable industrial build.',
+    },
+    features: [
+      { hu: 'Valós idejű print & apply', en: 'Real-time print & apply' },
+      { hu: 'Gyártósori címkézés', en: 'Production-line labeling' },
+      { hu: 'HERMES termékcsalád', en: 'HERMES family' },
+      { hu: 'Ipari kivitel', en: 'Industrial build' },
+    ],
+    image: '/images/products/cab-hermes-c.png',
+    datasheet: '/datasheets/cab-hermes-c.pdf',
+  },
+
+  // ——— CAB — Címke-adagoló gépek ———
+  {
+    slug: 'cab-hs',
+    category: 'cimke-adagolo-gepek',
+    name: 'CAB HS',
+    brand: 'CAB',
+    image: '/images/products/cab-hs.png',
+    datasheet: '/datasheets/cab-hsvs.pdf',
+    short: {
+      hu: 'Címkeadagoló minden címkemérethez — hézag nélkül vágott vagy stancolt címkékhez.',
+      en: 'Label dispenser for every label size — for gap-free cut or die-cut labels.',
+    },
+    description: {
+      hu: 'A HS adagoló bármilyen címkeméretet egyszerűen adagol; a címkék hézag nélkül is stancolhatók vagy vághatók, a kézi felhelyezés gyorsításához.',
+      en: 'The HS dispenser feeds any label size with ease; labels can be die-cut or cut without any gap in between, speeding up manual application.',
+    },
+    features: [
+      { hu: 'Bármilyen címkeméret', en: 'Any label size' },
+      { hu: 'Hézag nélküli adagolás', en: 'Gap-free dispensing' },
+      { hu: 'Fotocellás vezérlés', en: 'Photocell control' },
+      { hu: 'Asztali kivitel', en: 'Desktop unit' },
+    ],
+  },
+  {
+    slug: 'cab-vs',
+    category: 'cimke-adagolo-gepek',
+    name: 'CAB VS',
+    brand: 'CAB',
+    image: '/images/products/cab-vs.png',
+    datasheet: '/datasheets/cab-hsvs.pdf',
+    short: {
+      hu: 'Kompakt címkeadagoló munkaállomásokra, egyszerű, gyors kézi címkézéshez.',
+      en: 'Compact label dispenser for workstations — simple, fast manual labeling.',
+    },
+    description: {
+      hu: 'A VS adagoló kompakt kivitelben gyorsítja a kézi címkézést munkaállomásokon, megbízható címkeleválasztással.',
+      en: 'The VS dispenser accelerates manual labeling at workstations in a compact format, with reliable label separation.',
+    },
+    features: [
+      { hu: 'Kompakt asztali kivitel', en: 'Compact desktop unit' },
+      { hu: 'Megbízható címkeleválasztás', en: 'Reliable label separation' },
+      { hu: 'Állítható különböző méretekhez', en: 'Adjustable for various sizes' },
+      { hu: 'Munkaállomási használat', en: 'Workstation use' },
+    ],
+  },
+
+  // ——— CAB — Lézeres jelölők ———
+  {
+    slug: 'cab-xeno-4',
+    category: 'lezer-gravirozok',
+    name: 'CAB XENO 4',
+    brand: 'CAB',
+    short: {
+      hu: 'Fiber gravírozó lézer műanyagok, fémek és festett felületek jelölésére.',
+      en: 'Fiber marking laser for plastics, metals and painted surfaces.',
+    },
+    description: {
+      hu: 'A XENO 4 új generációs fiber lézer 20, 30 vagy 50 W teljesítménnyel — dióda-pumpált, léghűtéses jelölőrendszer műanyagok, fémek és festett felületek gravírozására, jelölőállomásba építve.',
+      en: 'The XENO 4 is a new-generation fiber laser with 20, 30 or 50 W output — a diode-pumped, air-cooled marking system for engraving plastics, metals and painted surfaces, built into a marking station.',
+    },
+    features: [
+      { hu: '20 / 30 / 50 W fiber lézer', en: '20 / 30 / 50 W fiber laser' },
+      { hu: 'Dióda-pumpált, léghűtéses', en: 'Diode-pumped, air-cooled' },
+      { hu: 'Műanyag, fém, festett felület', en: 'Plastics, metals, painted surfaces' },
+      { hu: 'Jelölőállomásba építve', en: 'Marking-station integration' },
+    ],
+    image: '/images/products/cab-xeno-4.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+  },
+  {
+    slug: 'cab-xeno-1',
+    category: 'lezer-gravirozok',
+    name: 'CAB XENO 1',
+    brand: 'CAB',
+    short: {
+      hu: 'Kompakt pulzáló fiber lézer fém és műanyag jelölésére.',
+      en: 'Compact pulsed fiber laser for marking metal and plastic.',
+    },
+    description: {
+      hu: 'A XENO 1 kompakt, pulzáló fiber lézer fémek és műanyagok jelölésére — belépő szintű, léghűtéses jelölőmegoldás, könnyen integrálható jelölőállomásokba.',
+      en: 'The XENO 1 is a compact pulsed fiber laser for marking metals and plastics — an entry-level, air-cooled marking solution that integrates easily into marking stations.',
+    },
+    features: [
+      { hu: 'Kompakt pulzáló fiber lézer', en: 'Compact pulsed fiber laser' },
+      { hu: 'Fém és műanyag jelölés', en: 'Marks metal and plastic' },
+      { hu: 'Léghűtéses', en: 'Air-cooled' },
+      { hu: 'Jelölőállomásba építhető', en: 'Marking-station integration' },
+    ],
+    image: '/images/products/cab-xeno-1.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+    videoId: 'eDgChgvtAzc',
+  },
+  {
+    slug: 'cab-xeno-3',
+    category: 'lezer-gravirozok',
+    name: 'CAB XENO 3',
+    brand: 'CAB',
+    short: {
+      hu: 'Fiber jelölő lézer a XENO családból, ipari jelöléshez.',
+      en: 'Fiber marking laser from the XENO family for industrial marking.',
+    },
+    description: {
+      hu: 'A XENO 3 a XENO fiber lézercsalád tagja — megbízható, léghűtéses ipari jelölés fémeken és műszaki műanyagokon, jelölőállomásba építve.',
+      en: 'The XENO 3 is part of the XENO fiber laser family — reliable, air-cooled industrial marking on metals and technical plastics, integrated into a marking station.',
+    },
+    features: [
+      { hu: 'XENO fiber lézercsalád', en: 'XENO fiber laser family' },
+      { hu: 'Léghűtéses', en: 'Air-cooled' },
+      { hu: 'Fém és műszaki műanyag', en: 'Metals and technical plastics' },
+      { hu: 'Jelölőállomásba építve', en: 'Marking-station integration' },
+    ],
+    image: '/images/products/cab-xeno-3.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+    videoId: 'b3xeRtxdFy8',
+  },
+  {
+    slug: 'cab-lm-plus',
+    category: 'lezer-gravirozok',
+    name: 'CAB LM+',
+    brand: 'CAB',
+    short: {
+      hu: 'Lézeres címke-jelölő: címkék pontos jelölése és vágása szerszám nélkül.',
+      en: 'Laser label marker: precise marking and cutting of labels without tools.',
+    },
+    description: {
+      hu: 'Az LM+ lézeres címke-jelölő végtelenített alapanyagból különböző méretű címkéket jelöl és vág ki pontosan, további szerszámok nélkül.',
+      en: 'The LM+ laser label marker precisely marks and cuts labels of different sizes out of continuous material, without the need for additional tools.',
+    },
+    features: [
+      { hu: 'Címkék jelölése és vágása', en: 'Marks and cuts labels' },
+      { hu: 'Végtelenített alapanyagból', en: 'From continuous material' },
+      { hu: 'Különböző címkeméretek', en: 'Various label sizes' },
+      { hu: 'Nincs szükség külön szerszámra', en: 'No additional tooling' },
+    ],
+    image: '/images/products/cab-lm-plus.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+    videoId: 'Q7-qCKuZ708',
+  },
+  {
+    slug: 'cab-lsg100-plus',
+    category: 'lezer-gravirozok',
+    name: 'CAB LSG+100',
+    brand: 'CAB',
+    short: {
+      hu: 'Lézeres jelölőállomás (1. lézerosztály) sorozatgyártáshoz, XENO 4-gyel.',
+      en: 'Class-1 laser marking station for series production, with XENO 4.',
+    },
+    description: {
+      hu: 'Az LSG+100 lézerbiztonsági jelölőállomás ipari megoldás alkatrészek sorozatjelölésére a XENO 4 fiber lézerrel. Robusztus fémház, nagy munkatér, és 19"-os rack a lézerforrásnak és egy ipari PC-nek.',
+      en: 'The LSG+100 laser safety housing is an industrial solution for series marking of parts with the XENO 4 fiber laser. Rugged metal housing, a large work area and a 19" rack for the laser source and an industrial PC.',
+    },
+    features: [
+      { hu: '1. lézerosztályú biztonsági ház', en: 'Class-1 laser safety housing' },
+      { hu: 'Sorozatjelölés XENO 4-gyel', en: 'Series marking with XENO 4' },
+      { hu: 'Nagy munkatér', en: 'Large work area' },
+      { hu: '19"-os rack a lézerforrásnak és ipari PC-nek', en: '19" rack for laser source & industrial PC' },
+    ],
+    image: '/images/products/cab-lsg100-plus.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+  },
+  {
+    slug: 'cab-af5',
+    category: 'lezer-gravirozok',
+    name: 'CAB AF5',
+    brand: 'CAB',
+    short: {
+      hu: 'Elszívó- és szűrőrendszer a lézeres jelöléshez — védi a kezelőt és az optikát.',
+      en: 'Extraction and filter system for laser marking — protects operator and optics.',
+    },
+    description: {
+      hu: 'Az AF5 elszívó- és szűrőberendezés a lézeres jelölés során keletkező füstöt és port szívja el, védve a kezelő egészségét, valamint a jelölőteret és a lencsét a szennyeződéstől. Az LSG+100 / XENO rendszerek tartozéka.',
+      en: 'The AF5 extraction and filter device removes the smoke and dust generated during laser marking, protecting the operator’s health as well as the marking area and lens from contamination. An accessory for the LSG+100 / XENO systems.',
+    },
+    features: [
+      { hu: 'Elszívás és szűrés', en: 'Extraction and filtration' },
+      { hu: 'Védi a kezelő egészségét', en: 'Protects operator health' },
+      { hu: 'Tisztán tartja az optikát és a jelölőteret', en: 'Keeps optics and marking area clean' },
+      { hu: 'Az LSG+100 / XENO tartozéka', en: 'Accessory for LSG+100 / XENO' },
+    ],
+    image: '/images/products/cab-af5.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
+  },
+
+  // ——— CAB — Szoftver ———
+  {
+    slug: 'cab-cablabel-s3',
+    category: 'szoftverek',
+    name: 'cablabel S3',
+    brand: 'CAB',
+    short: {
+      hu: 'cab címketervező és -nyomtató szoftver, teljes körű eszközvezérléssel.',
+      en: 'cab label design and printing software with full device control.',
+    },
+    description: {
+      hu: 'A cablabel S3 a cab saját címketervező szoftvere: WYSIWYG szerkesztő, adatbázis-kapcsolat és a cab nyomtatók, print & apply rendszerek és lézerek teljes körű vezérlése egy felületről.',
+      en: 'cablabel S3 is cab’s own label design software: a WYSIWYG editor, database connectivity and full control of cab printers, print & apply systems and lasers from a single interface.',
+    },
+    features: [
+      { hu: 'WYSIWYG címketervező', en: 'WYSIWYG label editor' },
+      { hu: 'Adatbázis-kapcsolat', en: 'Database connectivity' },
+      { hu: 'Nyomtató, print & apply és lézer vezérlés', en: 'Controls printers, print & apply and lasers' },
+      { hu: 'Több kiadásban', en: 'Available in multiple editions' },
+    ],
+    datasheet: '/datasheets/cab-cablabel-s3.pdf',
+  },
+
+  // ——— POSTEK — címkenyomtató sorozatok ———
+  {
+    slug: 'postek-ox',
+    category: 'cimkenyomtatok',
+    name: 'POSTEK OX',
+    brand: 'POSTEK',
+    image: '/images/products/postek-ox.png',
+    videoId: 'BVSxFLYtC5U',
+    datasheet: '/datasheets/postek-ox-datasheet.pdf',
+    short: {
+      hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
+      en: 'Flagship industrial printer with integrated visual verification and RFID.',
+    },
+    description: {
+      hu: 'A POSTEK OX sorozat a kínálat csúcsa: 200/300/600 dpi, akár 18 ips sebesség, négymagos processzor, 4,5"-es érintőkijelző és integrált vizuális ellenőrzés, amely 1D/2D vonalkódokat minősít ANSI/ISO szerint. Opcionális RFID- és verifikációs csomagok. Modellek: OX2, OX3, OX6 (+ OX218/OX318, RFID: OXr).',
+      en: 'The POSTEK OX series is the top of the range: 200/300/600 dpi, up to 18 ips, a quad-core processor, a 4.5" touchscreen and integrated visual verification that grades 1D/2D barcodes to ANSI/ISO. Optional RFID and verification packages. Models: OX2, OX3, OX6 (+ OX218/OX318, RFID: OXr).',
+    },
+    features: [
+      { hu: '200 / 300 / 600 dpi', en: '200 / 300 / 600 dpi' },
+      { hu: 'Akár 18 ips sebesség', en: 'Up to 18 ips' },
+      { hu: 'Integrált 1D/2D vizuális ellenőrzés', en: 'Integrated 1D/2D visual verification' },
+      { hu: '4,5" érintőkijelző', en: '4.5" touchscreen' },
+      { hu: 'Opcionális RFID', en: 'Optional RFID' },
+    ],
+  },
+  {
+    slug: 'postek-tx',
+    category: 'cimkenyomtatok',
+    name: 'POSTEK TX',
+    brand: 'POSTEK',
+    image: '/images/products/postek-tx.png',
+    videoId: 'qAcJTzTMTnI',
+    datasheet: '/datasheets/postek-tx-datasheet.pdf',
+    short: {
+      hu: 'Valódi ipari nyomtató HEAT™ technológiával, nagy terhelhetőséghez.',
+      en: 'True industrial printer with HEAT™ technology for heavy-duty use.',
+    },
+    description: {
+      hu: 'A POSTEK TX sorozat valódi ipari nyomtató: 64-bites négymagos processzor, HEAT™ nyomtatási algoritmus és ADAPT™ ±0,5 mm-es anyagpozicionálás. Direkt termál és termotranszfer mód. Modellek: TX2r (203 dpi, 16 ips), TX3r (300 dpi, 12 ips), TX6r (600 dpi).',
+      en: 'The POSTEK TX series is a true industrial printer: a 64-bit quad-core processor, the HEAT™ printing algorithm and ADAPT™ media positioning to ±0.5 mm. Direct thermal and thermal transfer. Models: TX2r (203 dpi, 16 ips), TX3r (300 dpi, 12 ips), TX6r (600 dpi).',
+    },
+    features: [
+      { hu: '203 / 300 / 600 dpi modellek', en: '203 / 300 / 600 dpi models' },
+      { hu: 'HEAT™ nyomtatási minőség', en: 'HEAT™ print quality' },
+      { hu: 'ADAPT™ ±0,5 mm pozicionálás', en: 'ADAPT™ ±0.5 mm positioning' },
+      { hu: '4,5" színes érintőkijelző', en: '4.5" color touchscreen' },
+      { hu: 'Direkt termál és termotranszfer', en: 'Direct thermal & thermal transfer' },
+    ],
+  },
+  {
+    slug: 'postek-gx',
+    category: 'cimkenyomtatok',
+    name: 'POSTEK GX',
+    brand: 'POSTEK',
+    image: '/images/products/postek-gx.png',
+    videoId: 'XcnaxfjbTwc',
+    datasheet: '/datasheets/postek-gx-datasheet.pdf',
+    short: {
+      hu: 'Asztali kivitel ipari teljesítménnyel, kompakt helyigénnyel.',
+      en: 'Desktop format with industrial performance in a compact footprint.',
+    },
+    description: {
+      hu: 'A POSTEK GX sorozat asztali méretben hozza az ipari teljesítményt: 4,5"-es érintőkijelző, nagy pontosságú anyagpozicionálás, direkt termál és termotranszfer. Modellek: GX2 (203 dpi, 10 ips), GX3 (300 dpi, 8 ips), GX6 (600 dpi, 5 ips), opcionális RFID (GXr).',
+      en: 'The POSTEK GX series brings industrial performance in a desktop size: a 4.5" touchscreen, high-precision media positioning, direct thermal and thermal transfer. Models: GX2 (203 dpi, 10 ips), GX3 (300 dpi, 8 ips), GX6 (600 dpi, 5 ips), optional RFID (GXr).',
+    },
+    features: [
+      { hu: 'Kompakt asztali kivitel', en: 'Compact desktop format' },
+      { hu: '203 / 300 / 600 dpi modellek', en: '203 / 300 / 600 dpi models' },
+      { hu: '4,5" érintőkijelző', en: '4.5" touchscreen' },
+      { hu: 'Nagy pontosságú pozicionálás', en: 'High-precision positioning' },
+      { hu: 'Opcionális RFID', en: 'Optional RFID' },
+    ],
+  },
+  {
+    slug: 'postek-c168',
+    category: 'cimkenyomtatok',
+    name: 'POSTEK C168',
+    brand: 'POSTEK',
+    image: '/images/products/postek-c168.jpg',
+    datasheet: '/datasheets/postek-c168-datasheet.pdf',
+    short: {
+      hu: 'Kereskedelmi asztali nyomtató egyszerű, mindennapi címkézéshez.',
+      en: 'Commercial desktop printer for simple, everyday labeling.',
+    },
+    description: {
+      hu: 'A POSTEK C168 sorozat kompakt, tartós kereskedelmi asztali nyomtató: egyrészes váz, megbízható mechanika és minőségi nyomtatófejek. Direkt termál és termotranszfer, 4" nyomtatási szélességig. Modellek: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
+      en: 'The POSTEK C168 series is a compact, durable commercial desktop printer: a one-piece chassis, reliable mechanics and high-end printheads. Direct thermal and thermal transfer, up to 4" print width. Models: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
+    },
+    features: [
+      { hu: 'Kompakt, egyrészes váz', en: 'Compact one-piece chassis' },
+      { hu: '203 / 300 dpi modellek', en: '203 / 300 dpi models' },
+      { hu: '4" nyomtatási szélességig', en: 'Up to 4" print width' },
+      { hu: 'Direkt termál és termotranszfer', en: 'Direct thermal & thermal transfer' },
+      { hu: 'RS-232 és USB', en: 'RS-232 & USB' },
+    ],
   },
 ];
 
@@ -282,4 +842,12 @@ export function getProductsByCategory(categorySlug: string): Product[] {
 
 export function getProduct(categorySlug: string, productSlug: string): Product | undefined {
   return products.find((p) => p.category === categorySlug && p.slug === productSlug);
+}
+
+export function getManufacturer(slug: string): Manufacturer | undefined {
+  return manufacturers.find((m) => m.slug === slug);
+}
+
+export function getProductsByBrand(brand: string): Product[] {
+  return products.filter((p) => p.brand === brand);
 }

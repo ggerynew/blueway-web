@@ -29,7 +29,7 @@ export default async function ProductsPage({
             <Reveal key={cat.slug} delay={i * 0.05}>
               <Link
                 href={`/${lang}/termekek/${cat.slug}`}
-                className="group flex h-full flex-col justify-between rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                className="group product-tile flex h-full flex-col justify-between p-6"
               >
                 <div>
                   <h2 className="text-lg font-semibold tracking-tight group-hover:text-brand-700">

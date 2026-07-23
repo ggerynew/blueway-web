@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import { MobileNav } from '@/components/mobile-nav';
+import { Logo } from '@/components/logo';
 
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const nav = [
     { href: `/${lang}/termekek`, label: dict.nav.products },
+    { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/nyomtatofejek`, label: dict.nav.printheads },
     { href: `/${lang}/partnereink`, label: dict.nav.partners },
@@ -14,9 +17,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href={`/${lang}`} className="text-lg font-semibold tracking-tight">
-          <span className="text-brand-700">blue</span>way
-        </Link>
+        <Logo lang={lang} />
         <nav className="hidden items-center gap-7 text-sm text-ink-muted md:flex">
           {nav.map((item) => (
             <Link
@@ -28,10 +29,12 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="hidden items-center gap-4 md:flex">
           <Link
             href={`/${otherLang}`}
-            className="text-sm text-ink-muted uppercase transition-colors hover:text-ink"
+            hrefLang={otherLang}
+            aria-label={lang === 'hu' ? 'Váltás angol nyelvre' : 'Switch to Hungarian'}
+            className="rounded-sm text-sm text-ink-muted uppercase transition-colors hover:text-ink"
           >
             {otherLang}
           </Link>
@@ -42,6 +45,8 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             {dict.nav.quote}
           </Link>
         </div>
+
+        <MobileNav lang={lang} quoteLabel={dict.nav.quote} items={nav} />
       </div>
     </header>
   );

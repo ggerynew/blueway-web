@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProductMedia } from '@/components/product-media';
+import { ProductThumb } from '@/components/product-thumb';
+import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
@@ -74,15 +76,52 @@ export default async function ProductPage({
               ))}
             </ul>
 
-            <Link
-              href={`/${lang}/kapcsolat`}
-              className="mt-10 inline-block rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
-            >
-              {dict.products.requestQuote}
-            </Link>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <a
+                href="#ajanlatkeres"
+                className="inline-block rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+              >
+                {dict.products.requestQuote}
+              </a>
+              {product.datasheet && (
+                <a
+                  href={asset(product.datasheet)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-muted"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  {dict.products.datasheet}
+                </a>
+              )}
+            </div>
           </div>
         </Reveal>
       </div>
+
+      <Reveal delay={0.05}>
+        <section id="ajanlatkeres" className="mt-20 scroll-mt-24 border-t border-line pt-10">
+          <h2 className="text-xl font-semibold tracking-tight">
+            {dict.products.inquiry.title}
+          </h2>
+          <p className="mt-2 max-w-xl text-ink-muted">{dict.products.inquiry.lead}</p>
+          <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
+            <ProductInquiry
+              labels={dict.products.inquiry}
+              recipient={dict.contact.email}
+              productName={product.name}
+            />
+          </div>
+        </section>
+      </Reveal>
 
       {others.length > 0 && (
         <Reveal delay={0.1}>
@@ -95,15 +134,10 @@ export default async function ProductPage({
                 <Link
                   key={p.slug}
                   href={`/${lang}/termekek/${cat.slug}/${p.slug}`}
-                  className="group rounded-2xl border border-line bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                  className="group product-tile p-4"
                 >
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={asset(p.image)}
-                      alt={p.name}
-                      className="max-h-full max-w-full object-contain"
-                    />
+                    <ProductThumb image={p.image} name={p.name} />
                   </div>
                   <p className="mt-3 text-sm font-medium group-hover:text-brand-700">
                     {p.name}
