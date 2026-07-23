@@ -6,7 +6,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { getCategory, getProduct, getProductsByCategory, products } from '@/lib/products';
+import { getCategory, getProduct, getProductsByCategory, manufacturers, products } from '@/lib/products';
 
 export function generateStaticParams() {
   return products.map((p) => ({ category: p.category, product: p.slug }));
@@ -22,6 +22,7 @@ export default async function ProductPage({
   if (!cat || !product) notFound();
   const dict = getDictionary(lang);
   const others = getProductsByCategory(cat.slug).filter((p) => p.slug !== product.slug);
+  const brandManufacturer = manufacturers.find((m) => m.brand === product.brand);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -56,10 +57,21 @@ export default async function ProductPage({
 
         <Reveal delay={0.12}>
           <div>
-            <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">
-              {product.brand}
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            {brandManufacturer?.logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={asset(brandManufacturer.logo)}
+                alt={product.brand}
+                className={`w-auto object-contain ${
+                  brandManufacturer.slug === 'cab' ? 'h-12' : 'h-8'
+                }`}
+              />
+            ) : (
+              <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">
+                {product.brand}
+              </p>
+            )}
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
               {product.name}
             </h1>
             <p className="mt-4 text-lg text-ink-muted">{product.description[lang]}</p>
