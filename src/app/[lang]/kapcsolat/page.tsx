@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ContactForm } from '@/components/contact-form';
 import { Reveal } from '@/components/reveal';
@@ -53,15 +52,6 @@ export default async function ContactPage({
       </Reveal>
       <Reveal delay={0.08}>
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">{contact.lead}</p>
-      </Reveal>
-      <Reveal delay={0.12}>
-        <Link
-          href={`/${lang}/cimke-ajanlatkero`}
-          className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
-        >
-          {dict.labelQuote.title}
-          <span aria-hidden="true">→</span>
-        </Link>
       </Reveal>
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
