@@ -71,3 +71,30 @@ body {
   background: var(--color-brand-100);
   color: var(--color-brand-900);
 }
+
+/* Logó fogaskerekek – lassú, folyamatos forgás */
+@keyframes bw-gear-cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bw-gear-ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.bw-gear {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bw-gear-cw {
+    animation: bw-gear-cw 18s linear infinite;
+  }
+  .bw-gear-ccw {
+    animation: bw-gear-ccw 18s linear infinite;
+  }
+}
