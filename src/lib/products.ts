@@ -798,6 +798,29 @@ export const products: Product[] = [
       { hu: 'Opcionális RFID', en: 'Optional RFID' },
     ],
   },
+  {
+    slug: 'postek-c168',
+    category: 'cimkenyomtatok',
+    name: 'POSTEK C168',
+    brand: 'POSTEK',
+    image: '/images/products/postek-c168.jpg',
+    datasheet: '/datasheets/postek-c168-datasheet.pdf',
+    short: {
+      hu: 'Kereskedelmi asztali nyomtató egyszerű, mindennapi címkézéshez.',
+      en: 'Commercial desktop printer for simple, everyday labeling.',
+    },
+    description: {
+      hu: 'A POSTEK C168 sorozat kompakt, tartós kereskedelmi asztali nyomtató: egyrészes váz, megbízható mechanika és minőségi nyomtatófejek. Direkt termál és termotranszfer, 4" nyomtatási szélességig. Modellek: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
+      en: 'The POSTEK C168 series is a compact, durable commercial desktop printer: a one-piece chassis, reliable mechanics and high-end printheads. Direct thermal and thermal transfer, up to 4" print width. Models: C168/200s (203 dpi, 4 ips), C168/300s (300 dpi, 3 ips).',
+    },
+    features: [
+      { hu: 'Kompakt, egyrészes váz', en: 'Compact one-piece chassis' },
+      { hu: '203 / 300 dpi modellek', en: '203 / 300 dpi models' },
+      { hu: '4" nyomtatási szélességig', en: 'Up to 4" print width' },
+      { hu: 'Direkt termál és termotranszfer', en: 'Direct thermal & thermal transfer' },
+      { hu: 'RS-232 és USB', en: 'RS-232 & USB' },
+    ],
+  },
 ];
 
 export function getCategory(slug: string): Category | undefined {
