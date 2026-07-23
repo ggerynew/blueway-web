@@ -595,6 +595,7 @@ export const products: Product[] = [
       { hu: 'Jelölőállomásba építve', en: 'Marking-station integration' },
     ],
     image: '/images/products/cab-xeno-4.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
   },
   {
     slug: 'cab-xeno-1',
@@ -616,6 +617,7 @@ export const products: Product[] = [
       { hu: 'Jelölőállomásba építhető', en: 'Marking-station integration' },
     ],
     image: '/images/products/cab-xeno-1.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'eDgChgvtAzc',
   },
   {
@@ -638,6 +640,7 @@ export const products: Product[] = [
       { hu: 'Jelölőállomásba építve', en: 'Marking-station integration' },
     ],
     image: '/images/products/cab-xeno-3.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'b3xeRtxdFy8',
   },
   {
@@ -660,6 +663,7 @@ export const products: Product[] = [
       { hu: 'Nincs szükség külön szerszámra', en: 'No additional tooling' },
     ],
     image: '/images/products/cab-lm-plus.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'Q7-qCKuZ708',
   },
   {
@@ -682,6 +686,7 @@ export const products: Product[] = [
       { hu: '19"-os rack a lézerforrásnak és ipari PC-nek', en: '19" rack for laser source & industrial PC' },
     ],
     image: '/images/products/cab-lsg100-plus.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
   },
   {
     slug: 'cab-af5',
@@ -703,6 +708,7 @@ export const products: Product[] = [
       { hu: 'Az LSG+100 / XENO tartozéka', en: 'Accessory for LSG+100 / XENO' },
     ],
     image: '/images/products/cab-af5.jpg',
+    datasheet: '/datasheets/cab-laser-xeno.pdf',
   },
 
   // ——— CAB — Szoftver ———
