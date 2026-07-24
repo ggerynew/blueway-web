@@ -221,7 +221,7 @@ export const products: Product[] = [
     name: 'CAB SQUIX 2',
     brand: 'CAB',
     short: {
-      hu: 'Ipari, keskeny, 2"-es nyomtatófejjel rendelkező modell nagy mennyiségű nyomtatásra.',
+      hu: 'Keskeny ipari modell 2"-es nyomtatófejjel, nagy mennyiségű nyomtatásra.',
       en: 'Narrow industrial model with a 2" printhead for high-volume printing.',
     },
     description: {
@@ -336,7 +336,7 @@ export const products: Product[] = [
   {
     slug: 'cab-mach4s',
     category: 'cimkenyomtatok',
-    name: 'CAB MACH4S',
+    name: 'CAB MACH 4S',
     brand: 'CAB',
     short: {
       hu: 'Asztali modell nagyobb nyomtatási feladatokhoz, SQUIX elektronikával.',
@@ -443,7 +443,7 @@ export const products: Product[] = [
       en: 'Industrial printer specifically for very small labels and slim continuous materials.',
     },
     description: {
-      hu: 'A SQUIX 4 M a nagyon kicsi címkék és keskeny, végtelenített anyagok (pl. présbújtatott csövek) precíz nyomtatására készült, középre igazított anyagvezetéssel — így nincs szükség beállításra anyagváltáskor. 300 vagy 600 dpi felbontás, akár 300 mm/s sebesség, és a SQUIX ipari megbízhatósága, teljes tartozékpalettával.',
+      hu: 'A SQUIX 4 M a nagyon kicsi címkék és keskeny, végtelenített anyagok (pl. lapított zsugorcsövek) precíz nyomtatására készült, középre igazított anyagvezetéssel — így nincs szükség beállításra anyagváltáskor. 300 vagy 600 dpi felbontás, akár 300 mm/s sebesség, és a SQUIX ipari megbízhatósága, teljes tartozékpalettával.',
       en: 'The SQUIX 4 M is built for precise printing of very small labels and slim continuous materials (e.g. pressed tubes), with a centered media guide — so no adjustment is needed when changing materials. 300 or 600 dpi resolution, up to 300 mm/s, and SQUIX industrial reliability with the full range of accessories.',
     },
     features: [
@@ -488,7 +488,7 @@ export const products: Product[] = [
       en: 'Double-sided printing in a single pass — for tags and flexible materials.',
     },
     description: {
-      hu: 'Az XD Q két nyomtatófejjel egyszerre nyomtatja a hordozó mindkét oldalát — textilszalagokra, kartoncímkékre, présbújtatott csövekre, valamint végtelenített szintetikus, papír- és kartonanyagokra, végtelenített vagy kész kivitelben. Ideális kétoldalas függőcímkékhez és flexibilis anyagokhoz, 4" és 6" szélességben, a legújabb cab elektronikai platformra építve.',
+      hu: 'Az XD Q két nyomtatófejjel egyszerre nyomtatja a hordozó mindkét oldalát — textilszalagokra, kartoncímkékre, lapított zsugorcsövekre, valamint végtelenített szintetikus, papír- és kartonanyagokra, végtelenített vagy kész kivitelben. Ideális kétoldalas függőcímkékhez és flexibilis anyagokhoz, 4" és 6" szélességben, a legújabb cab elektronikai platformra építve.',
       en: 'The XD Q prints both sides of the web simultaneously with two printheads — on textile tapes, cardboard tags, pressed tubes, and continuous synthetic, paper or cardboard materials, continuous or ready-for-use. Ideal for double-sided tags and flexible materials, in 4" and 6" widths, built on the latest cab electronics platform.',
     },
     features: [
@@ -536,7 +536,7 @@ export const products: Product[] = [
         image: '/images/applicators/hq-3014.jpg',
         name: { hu: '3014/3016 Karos felrakó', en: '3014/3016 Arm applicator' },
         description: {
-          hu: 'Nagyobb címkékhez, termék elejének, oldalának, vagy hátának címkézése.',
+          hu: 'Nagyobb címkékhez, termék elejének, oldalának vagy hátának címkézése.',
           en: 'For larger labels — labeling the front, side or back of the product.',
         },
         longDescription: {
@@ -691,7 +691,7 @@ export const products: Product[] = [
         image: '/images/applicators/hq-6014.jpg',
         name: { hu: '6014 Ráfújó címkéző', en: '6014 Blow-on applicator' },
         description: {
-          hu: 'Törékeny, vagy egyenetlen felületek címkézése, nagy sebességgel.',
+          hu: 'Törékeny vagy egyenetlen felületek címkézése, nagy sebességgel.',
           en: 'Labeling fragile or uneven surfaces at high speed.',
         },
         longDescription: {
@@ -918,7 +918,7 @@ export const products: Product[] = [
       en: 'Fiber marking laser (20/30/50 W) for metals, plastics and painted surfaces.',
     },
     description: {
-      hu: 'A XENO 4 új generációs fiber lézer 20, 30 vagy 50 W kimenő teljesítménnyel — dióda-pumpált, léghűtéses. Két egységből áll: a beépített lézerforrást tartalmazó vezérlőből és a szálon csatlakozó, tetszőleges helyzetben beépíthető szkennerfejből. Az integrált fókuszkereső egyszerűsíti a munkadarab pozicionálását; a különböző planfeld-objektívekkel 69×69 mm-től 290×290 mm-ig terjedő jelölőmezők érhetők el. Ipar 4.0-kész, TCP/IP-vezérlés és -felügyelet. Jelöl fémen, műanyagon és festett felületen.',
+      hu: 'A XENO 4 új generációs fiber lézer 20, 30 vagy 50 W kimenő teljesítménnyel — dióda-pumpált, léghűtéses. Két egységből áll: a beépített lézerforrást tartalmazó vezérlőből és a szálon csatlakozó, tetszőleges helyzetben beépíthető szkennerfejből. Az integrált fókuszkereső egyszerűsíti a munkadarab pozicionálását; a különböző síkmezős (F-theta) objektívekkel 69×69 mm-től 290×290 mm-ig terjedő jelölőmezők érhetők el. Ipar 4.0-kész, TCP/IP-vezérlés és -felügyelet. Jelöl fémen, műanyagon és festett felületen.',
       en: 'The XENO 4 is a new-generation fiber laser with 20, 30 or 50 W output power — diode-pumped and air-cooled. It consists of two units: a control unit with an integral beam source, and a scan head connected via a fiber that can be mounted in any orientation. The integrated focus finder simplifies workpiece positioning; different plano-spherical lenses cover marking fields from 69×69 mm to 290×290 mm. Industry 4.0-ready with TCP/IP control and monitoring. Marks metal, plastics and painted surfaces.',
     },
     features: [
@@ -1543,7 +1543,7 @@ export const products: Product[] = [
       en: 'Tape dispenser for high-adhesive, technical tapes (VHB, ACX, foam).',
     },
     description: {
-      hu: 'A TDA080-NS a TDA080 módosított változata: speciális, lapos adagológörgőkkel a nagy tapadású és technikai szalagokhoz (pl. VHB, ACX, hab, kétoldalas, PET, fátyol). Automatikusan adagolja és vágja szinte az összes szalagtípust akár 3,15" (80 mm) szélességig. Digitálisan programozható hossz, ±1 mm vágáspontosság, négy üzemmód, tömör fémfelépítés. 3" (76 mm) mag. Amerikai tervezés.',
+      hu: 'A TDA080-NS a TDA080 módosított változata: speciális, lapos adagológörgőkkel a nagy tapadású és technikai szalagokhoz (pl. VHB, ACX, hab, kétoldalas, PET, fátyolszövet). Automatikusan adagolja és vágja szinte az összes szalagtípust akár 3,15" (80 mm) szélességig. Digitálisan programozható hossz, ±1 mm vágáspontosság, négy üzemmód, tömör fémfelépítés. 3" (76 mm) mag. Amerikai tervezés.',
       en: 'The TDA080-NS is a modified TDA080 with special flat advancement rollers for high-adhesive and technical tapes (e.g. VHB, ACX, foam, double-sided, PET, fleece). It automatically dispenses and cuts virtually any tape up to 3.15" (80 mm) wide. Digitally programmable length, ±1 mm cutting accuracy, four operating modes, solid metal construction. 3" (76 mm) core. Designed in the U.S.A.',
     },
     features: [
