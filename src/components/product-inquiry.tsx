@@ -29,6 +29,14 @@ export function ProductInquiry({
     const d = new FormData(form);
     const g = (k: string) => String(d.get(k) ?? '').trim();
 
+    const attachInput = form.elements.namedItem('attachments') as HTMLInputElement | null;
+    const files = Array.from(attachInput?.files ?? []);
+    if (files.reduce((n, f) => n + f.size, 0) > 10 * 1024 * 1024) {
+      toast.error(labels.attachTooLarge);
+      setSending(false);
+      return;
+    }
+
     const bodyLines = [
       `${labels.title} — ${productName}`,
       '',
@@ -39,6 +47,7 @@ export function ProductInquiry({
       `${labels.company}: ${g('company')}`,
       `${labels.email}: ${g('email')}`,
       g('phone') ? `${labels.phone}: ${g('phone')}` : '',
+      files.length ? `${labels.attachBody}: ${files.map((f) => f.name).join(', ')}` : '',
     ].filter((l, i) => l !== '' || i > 0);
 
     try {
@@ -54,8 +63,11 @@ export function ProductInquiry({
         subject: `${labels.title} — ${productName}`,
         bodyLines,
         recipient,
+        files,
       });
-      toast.success(result === 'sent' ? labels.sent : labels.success);
+      toast.success(
+        result === 'sent' ? labels.sent : files.length ? labels.attachMailto : labels.success,
+      );
       form.reset();
     } catch {
       toast.error(labels.error);
@@ -96,6 +108,19 @@ export function ProductInquiry({
           <label htmlFor="pi-message" className={labelClass}>{labels.message}</label>
           <input id="pi-message" name="message" type="text" placeholder={labels.messagePlaceholder} className={fieldClass} />
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="pi-attachments" className={labelClass}>{labels.attach}</label>
+        <input
+          id="pi-attachments"
+          name="attachments"
+          type="file"
+          multiple
+          accept="image/*,.pdf,.ai,.eps,.svg,.zip"
+          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink transition-colors file:mr-4 file:rounded-full file:border-0 file:bg-brand-700 file:px-4 file:py-1.5 file:text-xs file:font-medium file:text-white hover:file:bg-brand-800"
+        />
+        <p className="mt-1.5 text-xs text-ink-muted">{labels.attachHint}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
