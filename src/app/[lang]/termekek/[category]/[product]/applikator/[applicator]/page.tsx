@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { LegalNotice } from '@/components/legal-notice';
 import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
@@ -170,6 +171,7 @@ export default async function ApplicatorPage({
               recipient={dict.contact.email}
               productName={`${product.name} — ${applicator.name[lang]}`}
             />
+            <LegalNotice lang={lang} />
           </div>
         </section>
       </Reveal>

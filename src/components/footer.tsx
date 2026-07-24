@@ -29,6 +29,12 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             </Link>
           ))}
           <a
+            href={asset(dict.footer.termsHref)}
+            className="w-fit transition-colors hover:text-ink"
+          >
+            {dict.footer.terms}
+          </a>
+          <a
             href={asset(dict.footer.privacyPolicyHref)}
             className="w-fit transition-colors hover:text-ink"
           >
