@@ -22,6 +22,8 @@ export interface Product {
   datasheet?: string;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
+  /** További, gombként megjelenő videók saját megnevezéssel */
+  extraVideos?: { videoId: string; label: LocalizedText }[];
   /** GLB modell útvonala a public mappán belül */
   model3d?: string;
   /** true, amíg a 3D modell csak bemutató minta, nem a valós termék */
@@ -1106,6 +1108,15 @@ export const products: Product[] = [
     brand: 'POSTEK',
     image: '/images/products/postek-ox.png',
     videoId: '3WoA_Zb9zb4',
+    extraVideos: [
+      {
+        videoId: 'bEGEA6W-omo',
+        label: {
+          hu: 'Automata fej nyitás és nyomás állítás',
+          en: 'Automatic head opening and pressure adjustment',
+        },
+      },
+    ],
     datasheet: '/datasheets/postek-ox-datasheet.pdf',
     short: {
       hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
