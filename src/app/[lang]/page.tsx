@@ -15,7 +15,7 @@ export default async function HomePage({
 
   // Termékfotók a forgó hero-falhoz — a teljes katalógusból egyenletesen válogatva.
   const withImage = products.filter((p) => p.image);
-  const TILE_COUNT = Math.min(18, withImage.length);
+  const TILE_COUNT = Math.min(17, withImage.length);
   const heroTiles = Array.from({ length: TILE_COUNT }, (_, i) => {
     const p = withImage[Math.round((i * (withImage.length - 1)) / (TILE_COUNT - 1))];
     return {
@@ -23,6 +23,12 @@ export default async function HomePage({
       alt: p.name,
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     };
+  });
+  // Címkék csempe a falra — a letisztított tekercses képpel.
+  heroTiles.splice(1, 0, {
+    src: asset('/images/products/cimkek.jpg'),
+    alt: dict.products.labelsTile.title,
+    href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });
 
   return (
