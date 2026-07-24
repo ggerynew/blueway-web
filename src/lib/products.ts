@@ -1079,6 +1079,29 @@ export const products: Product[] = [
     datasheet: '/datasheets/cab-cablabel-s3.pdf',
   },
   {
+    slug: 'nicelabel',
+    category: 'szoftverek',
+    name: 'NiceLabel',
+    brand: 'Loftware',
+    image: '/images/products/nicelabel.png',
+    short: {
+      hu: 'A világ egyik legelterjedtebb címketervező és -nyomtató szoftvere a Loftware-től.',
+      en: 'One of the world’s most widely used label design and printing software, by Loftware.',
+    },
+    description: {
+      hu: 'A NiceLabel — ma a Loftware része — a világ egyik legelterjedtebb címketervező és -nyomtató szoftvere. WYSIWYG tervezőjével gyorsan készíthetők professzionális címkék: minden gyakori 1D és 2D vonalkód (EAN, Code 128, GS1-128, QR, DataMatrix stb.), változó adatok, sorszámozás és adatbázis-kapcsolat (Excel, SQL) támogatott, több ezer nyomtatómodellhez saját illesztőprogrammal. Nyomtatási űrlapokkal a felhasználók hibamentesen, kattintásra nyomtathatnak. Az egyszerű asztali tervezőtől a felhőalapú, vállalati szintű címkekezelő rendszerekig számos verzióban érhető el — kérjen ajánlatot, és segítünk kiválasztani az igényeinek megfelelő kiadást.',
+      en: 'NiceLabel — now part of Loftware — is one of the world’s most widely used label design and printing software. Its WYSIWYG designer builds professional labels fast: every common 1D and 2D barcode (EAN, Code 128, GS1-128, QR, DataMatrix etc.), variable data, serialization and database connectivity (Excel, SQL) are supported, with native drivers for thousands of printer models. Print forms let operators print error-free with a single click. It is available in many editions, from the simple desktop designer to cloud-based, enterprise-grade label management systems — request a quote and we will help you choose the right one.',
+    },
+    features: [
+      { hu: 'WYSIWYG címketervezés, minden gyakori 1D/2D vonalkód', en: 'WYSIWYG label design, every common 1D/2D barcode' },
+      { hu: 'Adatbázis-kapcsolat (Excel, SQL) és változó adatok', en: 'Database connectivity (Excel, SQL) and variable data' },
+      { hu: 'Több ezer nyomtatómodell natív támogatása', en: 'Native support for thousands of printer models' },
+      { hu: 'Nyomtatási űrlapok a hibamentes nyomtatáshoz', en: 'Print forms for error-free printing' },
+      { hu: 'Az asztali tervezőtől a vállalati címkekezelésig', en: 'From desktop designer to enterprise label management' },
+      { hu: 'Segítünk a megfelelő verzió kiválasztásában', en: 'We help you choose the right edition' },
+    ],
+  },
+  {
     slug: 'egyedi-szoftverfejlesztes',
     category: 'szoftverek',
     name: 'Egyedi szoftverfejlesztés',
