@@ -137,7 +137,7 @@ export function LabelQuoteForm({
           {labels.contactTitle}
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <Field id="name" label={labels.name} placeholder={labels.namePlaceholder} />
+          <Field id="name" label={labels.name} required placeholder={labels.namePlaceholder} />
           <Field id="company" label={labels.company} placeholder={labels.companyPlaceholder} />
           <Field id="email" label={labels.email} type="email" required placeholder={labels.emailPlaceholder} />
           <Field id="phone" label={labels.phone} type="tel" placeholder={labels.phonePlaceholder} />
