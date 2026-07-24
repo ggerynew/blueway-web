@@ -50,7 +50,7 @@ export default async function ManufacturersPage({
                 <div>
                   <h2
                     className={`flex items-center ${
-                      m.slug === 'cab' ? 'h-24' : 'h-12'
+                      m.slug === 'cab' ? 'h-24' : m.slug === 'start-international' ? 'h-20' : 'h-12'
                     }`}
                   >
                     {m.logo ? (
@@ -61,7 +61,9 @@ export default async function ManufacturersPage({
                         className={`w-auto object-contain ${
                           m.slug === 'cab'
                             ? 'max-h-24 max-w-[280px]'
-                            : 'max-h-11 max-w-[180px]'
+                            : m.slug === 'start-international'
+                              ? 'max-h-20 max-w-[220px]'
+                              : 'max-h-11 max-w-[180px]'
                         }`}
                       />
                     ) : (

@@ -24,9 +24,11 @@ export default async function CategoryPage({
   const brandGroups = manufacturers
     .map((m) => ({ manufacturer: m, list: items.filter((p) => p.brand === m.brand) }))
     .filter((g) => g.list.length > 0);
-  // A festékszalag-kategória lapos csempés nézetben marad (Címkék + márkacsempék),
-  // nem gyártói alcímekre bontva.
-  const multiBrand = brandGroups.length > 1 && cat.slug !== 'cimkek-es-festekszalagok';
+  // Gyártói alcímekkel jelenítjük meg, ha minden termék besorolható egy gyártóhoz
+  // (egy márka esetén is látszik a logó). A festékszalag-kategória lapos marad
+  // (Címkék + márkacsempék), és ha van gyártó nélküli termék, szintén lapos.
+  const groupedCount = brandGroups.reduce((n, g) => n + g.list.length, 0);
+  const multiBrand = groupedCount === items.length && cat.slug !== 'cimkek-es-festekszalagok';
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -72,7 +74,9 @@ export default async function CategoryPage({
                       className={`w-auto object-contain ${
                         group.manufacturer.slug === 'cab'
                           ? 'max-h-24 max-w-[280px]'
-                          : 'max-h-11 max-w-[180px]'
+                          : group.manufacturer.slug === 'start-international'
+                            ? 'max-h-20 max-w-[220px]'
+                            : 'max-h-11 max-w-[180px]'
                       }`}
                     />
                   ) : (
