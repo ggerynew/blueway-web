@@ -602,6 +602,32 @@ export const products: Product[] = [
         videoId: '0QethJtANc0',
       },
       {
+        slug: 'hq-4414',
+        image: '/images/applicators/hq-4414.jpg',
+        name: { hu: '4414 Stroke applikátor', en: '4414 Stroke applicator' },
+        description: {
+          hu: 'Kis és közepes címkék minden oldalról, x-y irányban állítható pozícióval.',
+          en: 'Small and midsized labels from all sides, with an x-y adjustable position.',
+        },
+        longDescription: {
+          hu: 'Nagyon kis és közepes címkék valós idejű felhelyezése minden oldalról. A felhelyezési pozíció x és y irányban is finoman állítható. A párnát két rövid löketű henger viszi pontosan a helyére, majd a lökethenger a termékre helyezi a címkét.',
+          en: 'Applies very small and midsized labels in real time from all sides. The application position is finely adjustable in both x and y directions. Two short stroke cylinders bring the pad exactly into position, then a stroke cylinder places the label on the product.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '4–114 mm', en: '4–114 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '4–80 mm', en: '4–80 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló', en: 'at rest' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról', en: 'from top, below, side' } },
+          { label: { hu: 'Termékmagasság', en: 'Product height' }, value: { hu: 'változó', en: 'variable' } },
+          { label: { hu: 'Pozícióállítás (x / y)', en: 'Position adjustment (x / y)' }, value: { hu: 'x 3–7 mm, y 11–15 mm', en: 'x 3–7 mm, y 11–15 mm' } },
+          { label: { hu: 'Termék távolsága az egység aljától', en: 'Distance to bottom of unit' }, value: { hu: 'max. 135–335 mm', en: 'up to 135–335 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~25 címke/perc', en: '~25 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '5–6 kg', en: '5–6 kg' } },
+        ],
+      },
+      {
         slug: 'hq-4714',
         image: '/images/applicators/hq-4714.jpg',
         name: { hu: '4714 Zászló címkéző', en: '4714 Flag applicator' },
