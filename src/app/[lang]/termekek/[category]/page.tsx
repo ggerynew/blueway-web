@@ -113,7 +113,7 @@ export default async function CategoryPage({
                   <img
                     src={asset('/images/products/cimkek.jpg')}
                     alt={dict.products.labelsTile.title}
-                    className="max-h-[70%] max-w-[70%] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                    className="max-h-[95%] max-w-[95%] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-5">
