@@ -116,6 +116,16 @@ export const manufacturers: Manufacturer[] = [
       en: 'Thermal transfer ribbons for flat-head and near-edge printers — wax, wax/resin and resin families.',
     },
   },
+  {
+    slug: 'start-international',
+    brand: 'START International',
+    name: 'START International',
+    logo: '/images/brand/start-logo.jpg',
+    description: {
+      hu: 'Elektromos, automata címkeadagoló és szalagadagoló gépek ipari felhasználásra — amerikai gyártás, robusztus fémfelépítéssel.',
+      en: 'Electric, automatic label and tape dispensers for industrial use — US-made, with robust metal construction.',
+    },
+  },
 ];
 
 export const categories: Category[] = [
@@ -1312,6 +1322,204 @@ export const products: Product[] = [
       { hu: 'Flat-head és near-edge nyomtatókhoz', en: 'For flat-head and near-edge printers' },
       { hu: 'Nagy sebességű nyomtatás (akár 1 m/s)', en: 'High-speed printing (up to 1 m/s)' },
       { hu: 'Kiváló nyomatállóság', en: 'Excellent print resistance' },
+    ],
+  },
+  {
+    slug: 'start-ld3000',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LD3000',
+    brand: 'START International',
+    image: '/images/products/ld3000.jpg',
+    short: {
+      hu: 'Nagy sebességű elektromos címkeadagoló kis címkékhez, kis munkaterületre.',
+      en: 'High-speed electric label dispenser for small labels and small work areas.',
+    },
+    description: {
+      hu: 'Az LD3000 nagy sebességű elektromos címkeadagoló kis címkékhez és kivágott alkatrészekhez (papír, poliészter, vinil, acetát, hab, fólia). Fotoszenzor gondoskodik a pontos lehúzásról, adagolásról és továbbításról, a hordozó automatikusan felcsévélődik. Szerszám nélkül állítható, tartós anodizált alumínium ház. 12 V DC, mellékelt 100–240 V univerzális adapterrel. Amerikai gyártás.',
+      en: 'The LD3000 is a high-speed electric label dispenser for small labels and die-cut parts (paper, polyester, vinyl, acetate, foam, foil). A photosensor ensures accurate peeling, dispensing and advancing, and the liner is automatically rewound. Tool-free adjustment, durable anodized aluminum housing. 12V DC with an included 100–240V universal transformer. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Címkeszélesség 6–57 mm, hossz 6–76 mm', en: 'Label width 6–57 mm, length 6–76 mm' },
+      { hu: 'Adagolási sebesség 56 mm/s', en: 'Feed speed 56 mm/s' },
+      { hu: 'Fotoszenzoros pontosság, automatikus hordozó-felcsévélés', en: 'Photosensor accuracy, automatic liner rewind' },
+      { hu: 'Max. tekercsátmérő 190 mm (1"/3" mag)', en: 'Max. roll diameter 190 mm (1"/3" core)' },
+      { hu: 'Anodizált alumínium ház', en: 'Anodized aluminum housing' },
+    ],
+  },
+  {
+    slug: 'start-ld3500',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LD3500',
+    brand: 'START International',
+    image: '/images/products/ld3500.jpg',
+    short: {
+      hu: 'Elektromos címkeadagoló átlátszó és nehezen kezelhető anyagokhoz.',
+      en: 'Electric label dispenser for clear and challenging materials.',
+    },
+    description: {
+      hu: 'Az LD3500 kifejezetten átlátszó, tamper-evident, wafer-seal és karton-lezáró címkékhez, valamint más nehezen kezelhető átlátszó anyagokhoz készült. Függőleges leválasztólemez segíti a fotoszenzor pontos beállítását átlátszó anyagoknál. Automatikus lehúzás és hordozó-felcsévélés, szerszám nélküli állítás, anodizált alumínium ház. 12 V DC univerzális adapterrel. Amerikai gyártás.',
+      en: 'The LD3500 is designed for clear, tamper-evident, wafer-seal and carton-sealing labels and other challenging clear materials. A vertical strip plate improves photosensor adjustment for detecting clear materials. Automatic peeling and liner rewind, tool-free adjustment, anodized aluminum housing. 12V DC with universal transformer. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Átlátszó / tamper-evident címkékhez', en: 'For clear / tamper-evident labels' },
+      { hu: 'Címkeszélesség 6–57 mm, hossz 13–101 mm', en: 'Label width 6–57 mm, length 13–101 mm' },
+      { hu: 'Függőleges leválasztólemez a pontos érzékeléshez', en: 'Vertical strip plate for accurate detection' },
+      { hu: 'Adagolási sebesség 56 mm/s', en: 'Feed speed 56 mm/s' },
+      { hu: 'Fotoszenzoros pontosság, automatikus hordozó-felcsévélés', en: 'Photosensor accuracy, automatic liner rewind' },
+    ],
+  },
+  {
+    slug: 'start-ld6050',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LD6050',
+    brand: 'START International',
+    image: '/images/products/ld6050.jpg',
+    short: {
+      hu: 'Nagy sebességű elektromos címkeadagoló szélesebb, 121 mm-es címkékhez.',
+      en: 'High-speed electric label dispenser for wider, 121 mm labels.',
+    },
+    description: {
+      hu: 'Az LD6050 nagy sebességű elektromos címkeadagoló szélesebb, akár 4,75" (121 mm) széles címkékhez és kivágott alkatrészekhez. Fotoszenzoros lehúzás és továbbítás, automatikus hordozó-felcsévélés, szerszám nélküli állítás és tartós fémfelépítés. Amerikai gyártás.',
+      en: 'The LD6050 is a high-speed electric label dispenser for wider labels and die-cut parts up to 4.75" (121 mm) wide. Photosensor peeling and advancing, automatic liner rewind, tool-free adjustment and durable metal construction. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Címkeszélesség akár 121 mm', en: 'Label width up to 121 mm' },
+      { hu: 'Nagy sebességű adagolás', en: 'High-speed dispensing' },
+      { hu: 'Fotoszenzoros pontosság', en: 'Photosensor accuracy' },
+      { hu: 'Automatikus hordozó-felcsévélés', en: 'Automatic liner rewind' },
+      { hu: 'Tartós fémfelépítés', en: 'Durable metal construction' },
+    ],
+  },
+  {
+    slug: 'start-ld8100',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LD8100',
+    brand: 'START International',
+    image: '/images/products/ld8100.jpg',
+    short: {
+      hu: 'Szupergyors elektromos címkeadagoló hosszú, széles csomagoló-címkékhez.',
+      en: 'Super-speed electric label dispenser for long, wide packaging labels.',
+    },
+    description: {
+      hu: 'Az LD8100 szupergyors elektromos címkeadagoló hosszú, csomagolás jellegű címkékhez és kivágott alkatrészekhez. Nagy nyomatékú motor kezeli a nagy átmérőjű (max. 305 mm) tekercsek súlyát, állítható leválasztólemez a nehezen leváló címkékhez. Fotoszenzoros pontosság, automatikus hordozó-felcsévélés, teljes fémfelépítés. Címkeszélesség 6–127 mm, hossz 13–305 mm. Amerikai gyártás.',
+      en: 'The LD8100 is a super-speed electric label dispenser for long, packaging-type labels and die-cut parts. A high-torque motor handles the weight of large-diameter rolls (max. 305 mm) and an adjustable strip plate helps with hard-to-release labels. Photosensor accuracy, automatic liner rewind, all-metal construction. Label width 6–127 mm, length 13–305 mm. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Címkeszélesség 6–127 mm, hossz 13–305 mm', en: 'Label width 6–127 mm, length 13–305 mm' },
+      { hu: 'Max. tekercsátmérő 305 mm', en: 'Max. roll diameter 305 mm' },
+      { hu: 'Nagy nyomatékú motor nehéz tekercsekhez', en: 'High-torque motor for heavy rolls' },
+      { hu: 'Állítható leválasztólemez', en: 'Adjustable strip plate' },
+      { hu: 'Teljes fémfelépítés', en: 'All-metal construction' },
+    ],
+  },
+  {
+    slug: 'start-ldx8050',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LDX8050',
+    brand: 'START International',
+    image: '/images/products/ldx8050.jpg',
+    short: {
+      hu: 'Nagy sebességű címkeadagoló hosszú, széles (max. 203 mm) címkékhez.',
+      en: 'High-speed label dispenser for long, wide labels (up to 203 mm).',
+    },
+    description: {
+      hu: 'Az LDX8050 nagy sebességű elektromos címkeadagoló hosszú, széles csomagoló-címkékhez, akár 8" (203 mm) szélességig. Nagy nyomatékú motor a nagy átmérőjű (max. 305 mm) tekercsekhez, állítható leválasztólemez, fotoszenzoros pontosság, automatikus hordozó-felcsévélés. Adagolási sebesség 99 mm/s. Amerikai gyártás.',
+      en: 'The LDX8050 is a high-speed electric label dispenser for long, wide packaging labels up to 8" (203 mm) wide. High-torque motor for large-diameter rolls (max. 305 mm), adjustable strip plate, photosensor accuracy, automatic liner rewind. Feed speed 99 mm/s. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Címkeszélesség 6–203 mm, hossz 13–305 mm', en: 'Label width 6–203 mm, length 13–305 mm' },
+      { hu: 'Adagolási sebesség 99 mm/s', en: 'Feed speed 99 mm/s' },
+      { hu: 'Max. tekercsátmérő 305 mm', en: 'Max. roll diameter 305 mm' },
+      { hu: 'Nagy nyomatékú motor', en: 'High-torque motor' },
+      { hu: 'Fotoszenzoros pontosság', en: 'Photosensor accuracy' },
+    ],
+  },
+  {
+    slug: 'start-ldx8100',
+    category: 'cimke-adagolo-gepek',
+    name: 'START LDX8100',
+    brand: 'START International',
+    image: '/images/products/ldx8100.jpg',
+    short: {
+      hu: 'Szupergyors címkeadagoló hosszú, széles címkékhez, 198 mm/s sebességgel.',
+      en: 'Super-speed label dispenser for long, wide labels at 198 mm/s.',
+    },
+    description: {
+      hu: 'Az LDX8100 szupergyors elektromos címkeadagoló hosszú, széles csomagoló-címkékhez — az LDX8050 gyorsabb változata, 7,8" (198 mm/s) adagolási sebességgel. Nagy nyomatékú motor a nagy átmérőjű (max. 305 mm) tekercsekhez, állítható leválasztólemez, fotoszenzoros pontosság, automatikus hordozó-felcsévélés. Címkeszélesség 6–203 mm, hossz 13–305 mm. Amerikai gyártás.',
+      en: 'The LDX8100 is a super-speed electric label dispenser for long, wide packaging labels — the faster version of the LDX8050 at 7.8" (198 mm/s) feed speed. High-torque motor for large-diameter rolls (max. 305 mm), adjustable strip plate, photosensor accuracy, automatic liner rewind. Label width 6–203 mm, length 13–305 mm. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Címkeszélesség 6–203 mm, hossz 13–305 mm', en: 'Label width 6–203 mm, length 13–305 mm' },
+      { hu: 'Adagolási sebesség 198 mm/s', en: 'Feed speed 198 mm/s' },
+      { hu: 'Max. tekercsátmérő 305 mm', en: 'Max. roll diameter 305 mm' },
+      { hu: 'Nagy nyomatékú motor', en: 'High-torque motor' },
+      { hu: 'Fotoszenzoros pontosság', en: 'Photosensor accuracy' },
+    ],
+  },
+  {
+    slug: 'start-tda080',
+    category: 'ragaszto-adagolok',
+    name: 'START TDA080',
+    brand: 'START International',
+    image: '/images/products/tda080.jpg',
+    short: {
+      hu: 'Elektromos, automata nagy teherbírású szalagadagoló akár 80 mm széles szalaghoz.',
+      en: 'Electric automatic heavy-duty tape dispenser for tape up to 80 mm wide.',
+    },
+    description: {
+      hu: 'A TDA080 elektromos, nagy teherbírású automata szalagadagoló, amely a legtöbb szalagtípust automatikusan adagolja és vágja, akár 3,15" (80 mm) szélességig. A kívánt hossz digitálisan programozható, a vágáspontosság ±1 mm. Négy üzemmód: kézi adagolás/kézi vágás, kézi adagolás és vágás, automata adagolás és vágás, valamint intervallumos adagolás és vágás. Tömör fémfelépítés, biztonsági retesz, 3" (76 mm) mag. Amerikai tervezés.',
+      en: 'The TDA080 is an electric, heavy-duty automatic tape dispenser that automatically dispenses and cuts most types of tape up to 3.15" (80 mm) wide. The desired length is digitally programmable with ±1 mm cutting accuracy. Four operating modes: manual feed/manual cut, manual feed & cut, auto feed & cut, and interval feed & cut. Solid metal construction, safety interlock, 3" (76 mm) core. Designed in the U.S.A.',
+    },
+    features: [
+      { hu: 'Szalagszélesség 6–80 mm', en: 'Tape width 6–80 mm' },
+      { hu: 'Vágáshossz 40–9999 mm', en: 'Cut length 40–9999 mm' },
+      { hu: 'Vágáspontosság ±1 mm', en: 'Cutting accuracy ±1 mm' },
+      { hu: '4 üzemmód', en: '4 operating modes' },
+      { hu: 'Max. tekercsátmérő 220 mm, 3" mag', en: 'Max. roll diameter 220 mm, 3" core' },
+    ],
+  },
+  {
+    slug: 'start-tda080-ns',
+    category: 'ragaszto-adagolok',
+    name: 'START TDA080-NS',
+    brand: 'START International',
+    image: '/images/products/tda080-ns.jpg',
+    short: {
+      hu: 'Szalagadagoló erős tapadású, technikai szalagokhoz (VHB, ACX, hab).',
+      en: 'Tape dispenser for high-adhesive, technical tapes (VHB, ACX, foam).',
+    },
+    description: {
+      hu: 'A TDA080-NS a TDA080 módosított változata: speciális, lapos adagológörgőkkel a nagy tapadású és technikai szalagokhoz (pl. VHB, ACX, hab, kétoldalas, PET, fátyol). Automatikusan adagolja és vágja szinte az összes szalagtípust akár 3,15" (80 mm) szélességig. Digitálisan programozható hossz, ±1 mm vágáspontosság, négy üzemmód, tömör fémfelépítés. 3" (76 mm) mag. Amerikai tervezés.',
+      en: 'The TDA080-NS is a modified TDA080 with special flat advancement rollers for high-adhesive and technical tapes (e.g. VHB, ACX, foam, double-sided, PET, fleece). It automatically dispenses and cuts virtually any tape up to 3.15" (80 mm) wide. Digitally programmable length, ±1 mm cutting accuracy, four operating modes, solid metal construction. 3" (76 mm) core. Designed in the U.S.A.',
+    },
+    features: [
+      { hu: 'Erős tapadású / technikai szalagokhoz', en: 'For high-adhesive / technical tapes' },
+      { hu: 'Speciális lapos adagológörgők', en: 'Special flat advancement rollers' },
+      { hu: 'Szalagszélesség 6–80 mm', en: 'Tape width 6–80 mm' },
+      { hu: 'Vágáshossz 40–9999 mm, ±1 mm pontosság', en: 'Cut length 40–9999 mm, ±1 mm accuracy' },
+      { hu: '4 üzemmód, tömör fémfelépítés', en: '4 operating modes, solid metal build' },
+    ],
+  },
+  {
+    slug: 'start-tda150-m',
+    category: 'ragaszto-adagolok',
+    name: 'START TDA150-M',
+    brand: 'START International',
+    image: '/images/products/tda150-m.jpg',
+    short: {
+      hu: 'Nagy teherbírású szalagadagoló akár 150 mm széles szalaghoz, 5 hossz memóriával.',
+      en: 'Heavy-duty tape dispenser for tape up to 150 mm wide, with 5-length memory.',
+    },
+    description: {
+      hu: 'A TDA150-M elektromos, nagy teherbírású automata szalagadagoló nagyon széles, akár 5,9" (150 mm) szalagokhoz, programozható 5 hosszúság-memóriával. Digitálisan beállítható hossz, ±1 mm vágáspontosság, négy üzemmód, guillotine egyenes vágás. Biztonsági rendszer megakadályozza a vágó működését, ha idegen tárgy (ujj, szerszám) van jelen. Tömör fémfelépítés, minden fém fogaskerék és görgő, 3" (76 mm) mag. Amerikai gyártás.',
+      en: 'The TDA150-M is an electric, heavy-duty automatic tape dispenser for very wide tapes up to 5.9" (150 mm), with a programmable 5-length memory. Digitally adjustable length, ±1 mm cutting accuracy, four operating modes, guillotine straight cut. A safety system prevents cutter activation when a foreign object (finger, tool) is present. Solid metal construction with all-metal gears and rollers, 3" (76 mm) core. Made in the U.S.A.',
+    },
+    features: [
+      { hu: 'Szalagszélesség 6–150 mm', en: 'Tape width 6–150 mm' },
+      { hu: 'Programozható 5 hossz memória', en: 'Programmable 5-length memory' },
+      { hu: 'Vágáshossz 40–9999 mm, ±1 mm pontosság', en: 'Cut length 40–9999 mm, ±1 mm accuracy' },
+      { hu: 'Biztonsági vágóvédelem', en: 'Safety cutter guard' },
+      { hu: 'Minden fém fogaskerék és görgő', en: 'All-metal gears and rollers' },
     ],
   },
 ];
