@@ -28,12 +28,29 @@ export interface Product {
   model3dIsDemo?: boolean;
   /** Kapcsolódó applikátorok (pl. HERMES Q print & apply) */
   applicators?: Applicator[];
+  /** Orientáció / kivitel bemutató blokk (pl. HERMES Q jobbos-balos) */
+  orientation?: {
+    image: string;
+    title: LocalizedText;
+    text: LocalizedText;
+  };
+}
+
+export interface ApplicatorParam {
+  label: LocalizedText;
+  value: LocalizedText;
 }
 
 export interface Applicator {
+  /** URL-slug az applikátor aloldalához */
+  slug: string;
   image: string;
   name: LocalizedText;
   description: LocalizedText;
+  /** Hosszabb ismertető az applikátor aloldalán */
+  longDescription?: LocalizedText;
+  /** Műszaki paraméterek táblázata */
+  params?: ApplicatorParam[];
   /** YouTube videó azonosító (linkeléshez) */
   videoId?: string;
 }
@@ -472,64 +489,219 @@ export const products: Product[] = [
       { hu: 'Bal és jobb kivitel', en: 'Left and right versions' },
       { hu: 'Gyártósori integráció', en: 'Production-line integration' },
     ],
+    orientation: {
+      image: '/images/applicators/hermes-q-left-right.jpg',
+      title: { hu: 'Két orientáció, három nyomtatófej-szélesség', en: 'Two orientations, three printhead widths' },
+      text: {
+        hu: 'A HERMES Q két kivitelben érhető el — jobbos (right) és balos (left) orientációban —, így bármelyik oldalról beépíthető a gyártósorba. A nyomtató modulok 2, 4 és 6 coll széles nyomtatófejjel rendelhetők.',
+        en: 'The HERMES Q is available in two versions — right-hand and left-hand orientation — so it can be integrated into a production line from either side. The printer modules are available with 2", 4" and 6" wide printheads.',
+      },
+    },
     applicators: [
       {
+        slug: 'hq-3014',
         image: '/images/applicators/hq-3014.jpg',
         name: { hu: '3014/3016 Karos felrakó', en: '3014/3016 Arm applicator' },
         description: {
           hu: 'Nagyobb címkékhez, termék elejének, oldalának, vagy hátának címkézése.',
           en: 'For larger labels — labeling the front, side or back of the product.',
         },
+        longDescription: {
+          hu: 'Címkék valós idejű felhelyezése felülről vagy oldalról mozgásban lévő csomagokra — jellemzően a csomag elejére vagy hátuljára. A párna a lehúzóél előtt veszi fel a nyomtatás közben készülő címkét, majd a forgó kar 0–90°-ban a termékre viszi.',
+          en: 'Applies labels in real time from the top or side onto packages in motion — preferably to the front or back of a package. The pad picks up the label while it is printed, and the pivot arm transfers it to the product at 0–90°.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '25–174 mm', en: '25–174 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '8–250 mm', en: '8–250 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'mozgásban vagy álló', en: 'in motion or at rest' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, oldalról, elölről, hátulról', en: 'from top, side, front, back' } },
+          { label: { hu: 'Csomagmagasság', en: 'Package height' }, value: { hu: 'változó', en: 'variable' } },
+          { label: { hu: 'Karhossz', en: 'Pivot arm length' }, value: { hu: '200–600 mm', en: '200–600 mm' } },
+          { label: { hu: 'Elfordulási szög', en: 'Pivot angle' }, value: { hu: '0–90°', en: '0–90°' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~15 címke/perc', en: '~15 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '9–12 kg', en: '9–12 kg' } },
+        ],
       },
       {
+        slug: 'hq-4014',
         image: '/images/applicators/hq-4014.jpg',
         name: { hu: '4014 Stroke applikátor', en: '4014 Stroke applicator' },
         description: {
           hu: 'Egyszerű címkézéshez.',
           en: 'For simple labeling.',
         },
+        longDescription: {
+          hu: 'Címkék valós idejű felhelyezése minden oldalról csomagokra. A párna típusa határozza meg, hogy a csomag álljon-e vagy mozgásban is címkézhető. A lökethenger hossza adja meg a csomag és a lehúzóél közötti maximális távolságot.',
+          en: 'Applies labels in real time from all sides onto packages. The type of pad defines whether a package has to be at rest or can be in motion. The stroke cylinder length defines the maximum distance between the package and the peel-off plate.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '20–174 mm', en: '20–174 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '20–210 mm', en: '20–210 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló (párnától függően mozgásban)', en: 'at rest (in motion depending on pad)' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról', en: 'from top, below, side' } },
+          { label: { hu: 'Csomagmagasság', en: 'Package height' }, value: { hu: 'változó', en: 'variable' } },
+          { label: { hu: 'Termék távolsága az egység aljától', en: 'Distance to bottom of unit' }, value: { hu: 'max. 130–530 mm', en: 'up to 130–530 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~25 címke/perc', en: '~25 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '5–9,5 kg', en: '5–9.5 kg' } },
+        ],
       },
       {
+        slug: 'hq-4114',
         image: '/images/applicators/hq-4114.jpg',
         name: { hu: '4114 Stroke applikátor', en: '4114 Stroke applicator' },
         description: {
           hu: 'Nagy pontosságú címkézés kis címkékhez (min. 4x4mm).',
           en: 'High-precision labeling for small labels (min. 4x4 mm).',
         },
+        longDescription: {
+          hu: 'Kis és közepes címkék valós idejű felhelyezése minden oldalról. A párna a lehúzóél előtt veszi fel a nyomtatás közben készülő címkét, majd rövid löketű henger viszi vízszintesen pozícióba. Formapárnával hengeres és íves felületekre is.',
+          en: 'Applies very small and midsized labels in real time from all sides. The pad picks up the label while it is printed and a short stroke cylinder brings it into position horizontally. With a form pad it labels cylindrical and curved surfaces too.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '10–174 mm', en: '10–174 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '8–80 mm', en: '8–80 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló', en: 'at rest' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról', en: 'from top, below, side' } },
+          { label: { hu: 'Termékmagasság', en: 'Product height' }, value: { hu: 'változó', en: 'variable' } },
+          { label: { hu: 'Termék távolsága az egység aljától', en: 'Distance to bottom of unit' }, value: { hu: 'max. 135–535 mm', en: 'up to 135–535 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~20 címke/perc', en: '~20 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '5–9 kg', en: '5–9 kg' } },
+        ],
         videoId: 'P-9HXQJ-Lds',
       },
       {
-        image: '/images/applicators/hq-4712.jpg',
+        slug: 'hq-4214',
+        image: '/images/applicators/hq-4214.jpg',
+        name: { hu: '4214 Stroke turn applikátor', en: '4214 Stroke turn applicator' },
+        description: {
+          hu: 'Kis címkék minden oldalról, nehezen beépíthető helyeken is.',
+          en: 'Small labels from all sides, also in hard-to-install positions.',
+        },
+        longDescription: {
+          hu: 'Nagyon kis vagy közepes címkék valós idejű felhelyezése minden oldalról, ahol az egység nehezen építhető be. A párnát forgóhenger vízszintesen legfeljebb 180°-ban a felhelyezési síkba fordítja, majd a lökethenger a termékre viszi a címkét.',
+          en: 'Applies very small or midsized labels in real time from all sides where the unit is difficult to install. A rotary cylinder pivots the pad by up to 180° horizontally into the application plane, then a stroke cylinder transfers the label to the product.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '4–80 mm', en: '4–80 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '4–40 mm', en: '4–40 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló (fújópárnával mozgásban)', en: 'at rest (in motion with blow-on pad)' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról', en: 'from top, below, side' } },
+          { label: { hu: 'Vízszintes elfordulás', en: 'Horizontal rotation' }, value: { hu: '90°, 0° (180° max. 15 mm magas címkénél)', en: '90°, 0° (180° for labels up to 15 mm high)' } },
+          { label: { hu: 'Termék távolsága az egység aljától', en: 'Distance to bottom of unit' }, value: { hu: 'max. 135–335 mm', en: 'up to 135–335 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~20 címke/perc', en: '~20 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '5–7,5 kg', en: '5–7.5 kg' } },
+        ],
+        videoId: '0QethJtANc0',
+      },
+      {
+        slug: 'hq-4714',
+        image: '/images/applicators/hq-4714.jpg',
         name: { hu: '4714 Zászló címkéző', en: '4714 Flag applicator' },
         description: {
           hu: 'Kábelek címkézése nagy pontossággal.',
           en: 'High-precision labeling of cables.',
         },
+        longDescription: {
+          hu: 'Címkék valós idejű, pontos felhelyezése kerek anyagokra — kábelekre, tömlőkre, csövekre. A párna felveszi a nyomtatás közben készülő címkét, majd egy vezérelt henger körbevezeti az anyag körül: a címke két vége összeragad, azután zászló formában a termékre simul.',
+          en: 'Applies labels precisely in real time onto round materials such as cables, hoses or pipes. The pad picks up the label while it is printed, then a cam-controlled cylinder guides it around the material: both label ends stick together and the label is tamped as a flag.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '50–100 mm', en: '50–100 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '10–50 mm', en: '10–50 mm' } },
+          { label: { hu: 'Átmérő (kábel/cső)', en: 'Diameter (cable/pipe)' }, value: { hu: '3–16 mm', en: '3–16 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló', en: 'at rest' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról; függőlegesen 0–180° forgatva', en: 'from top, below, side; rotated vertically 0–180°' } },
+          { label: { hu: 'Termék távolsága az egység aljától', en: 'Distance to bottom of unit' }, value: { hu: 'min. 70 mm, max. 260 mm', en: 'min. 70 mm, max. 260 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~15 címke/perc', en: '~15 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '8 kg', en: '8 kg' } },
+        ],
         videoId: 'SV0G6Z2yb-4',
       },
       {
+        slug: 'hq-6014',
         image: '/images/applicators/hq-6014.jpg',
         name: { hu: '6014 Ráfújó címkéző', en: '6014 Blow-on applicator' },
         description: {
           hu: 'Törékeny, vagy egyenetlen felületek címkézése, nagy sebességgel.',
           en: 'Labeling fragile or uneven surfaces at high speed.',
         },
+        longDescription: {
+          hu: 'Címkék felhelyezése álló vagy mozgásban lévő csomagokra érintés nélkül. A címkét ventilátor tartja meg, majd egymáshoz igazított fúvókákon át erős légsugár fújja a felületre. A címke méretétől függően akár 200 mm távolság is áthidalható.',
+          en: 'Applies labels contactlessly onto packages in motion or at rest. Each label is held by a fan and blown off through aligned nozzles by a powerful blast of air. Depending on the label size, a distance of up to 200 mm can be bridged.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '50–114 mm', en: '50–114 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '50–125 mm', en: '50–125 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló vagy mozgásban', en: 'at rest or in motion' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról', en: 'from top, below, side' } },
+          { label: { hu: 'Csomagmagasság', en: 'Package height' }, value: { hu: 'változó', en: 'variable' } },
+          { label: { hu: 'Csomag távolsága a lehúzóéltől', en: 'Distance to peel-off plate' }, value: { hu: 'max. 200 mm', en: 'up to 200 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: 'max. 100 címke/perc', en: 'up to 100 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 90 W', en: 'max. 90 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '4 kg', en: '4 kg' } },
+        ],
       },
       {
+        slug: 'hq-5314',
         image: '/images/applicators/hq-5314.jpg',
         name: { hu: '5314 Vákuumszalagos applikátor', en: '5314 Vacuum-belt applicator' },
         description: {
           hu: 'Címkézés nagy sebességgel, mozgásban lévő termékeknél.',
           en: 'High-speed labeling of products in motion.',
         },
+        longDescription: {
+          hu: 'Címkék valós idejű felhelyezése minden oldalról, sík felületekre, mozgásban lévő csomagokra. A nyomtatott címkét vákuumszalag viszi a felhelyezési pontra, a felhelyezést külső jel indítja.',
+          en: 'Applies labels in real time from all sides onto plane surfaces of packages in motion. A vacuum belt conveys the printed label to the point of transfer, and application is triggered by an external signal.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '20–174 mm', en: '20–174 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '60–456 mm', en: '60–456 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'mozgásban', en: 'in motion' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról (sík felületre)', en: 'from top, below, side (plane surfaces)' } },
+          { label: { hu: 'Csomagmagasság', en: 'Package height' }, value: { hu: 'egyenletes', en: 'uniform' } },
+          { label: { hu: 'Csomagsebesség', en: 'Package speed' }, value: { hu: 'max. 0,5 m/s', en: 'up to 0.5 m/s' } },
+          { label: { hu: 'Vákuumszalag sebessége', en: 'Vacuum-belt speed' }, value: { hu: '100–500 mm/s', en: '100–500 mm/s' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: 'max. 30 címke/perc', en: 'up to 30 labels/min' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 90 W', en: 'max. 90 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '7–8 kg', en: '7–8 kg' } },
+        ],
       },
       {
+        slug: 'hq-4514',
         image: '/images/applicators/hq-4514.jpg',
         name: { hu: '4514 Swing Stroke applikátor', en: '4514 Swing stroke applicator' },
         description: {
           hu: 'Belső címkézés.',
           en: 'Inside labeling.',
         },
+        longDescription: {
+          hu: 'Címkék valós idejű felhelyezése minden oldalról, profilok és csövek belső felületeire. A párnát forgóhenger a felhelyezési síkba fordítja, a lökethenger pontosan a helyére viszi a címkét. A fújópárna 5–10 mm távolságból, légsugárral helyezi fel a címkét.',
+          en: 'Applies labels in real time from all sides onto inner surfaces of profiles and pipes. A rotary cylinder pivots the pad to the application level and a stroke cylinder places the label exactly on spot. The blow-on pad applies the label from 5–10 mm away by a blast of air.',
+        },
+        params: [
+          { label: { hu: 'Címkeszélesség', en: 'Label width' }, value: { hu: '10–80 mm', en: '10–80 mm' } },
+          { label: { hu: 'Címkemagasság', en: 'Label height' }, value: { hu: '10–60 mm', en: '10–60 mm' } },
+          { label: { hu: 'Termék állapota', en: 'Product state' }, value: { hu: 'álló', en: 'at rest' } },
+          { label: { hu: 'Felhelyezés iránya', en: 'Application direction' }, value: { hu: 'felülről, alulról, oldalról (belső felületre is)', en: 'from top, below, side (inner surfaces too)' } },
+          { label: { hu: 'Termékmagasság', en: 'Product height' }, value: { hu: 'egyenletes', en: 'uniform' } },
+          { label: { hu: 'Függőleges elfordulás', en: 'Vertical pivot' }, value: { hu: '120°', en: '120°' } },
+          { label: { hu: 'Távolság a címke felső széléig', en: 'Distance to upper label edge' }, value: { hu: 'max. 150–350 mm', en: 'up to 150–350 mm' } },
+          { label: { hu: 'Ciklusidő', en: 'Cycle rate' }, value: { hu: '~20 címke/perc', en: '~20 labels/min' } },
+          { label: { hu: 'Sűrített levegő', en: 'Compressed air' }, value: { hu: '4,5 bar', en: '4.5 bar' } },
+          { label: { hu: 'Teljesítményfelvétel', en: 'Power consumption' }, value: { hu: 'max. 15 W', en: 'max. 15 W' } },
+          { label: { hu: 'Tömeg', en: 'Weight' }, value: { hu: '6–7 kg', en: '6–7 kg' } },
+        ],
         videoId: 'mzq7QKgfb1Q',
       },
     ],
@@ -1132,6 +1304,17 @@ export function getProduct(categorySlug: string, productSlug: string): Product |
 
 export function getManufacturer(slug: string): Manufacturer | undefined {
   return manufacturers.find((m) => m.slug === slug);
+}
+
+export function getApplicator(
+  categorySlug: string,
+  productSlug: string,
+  applicatorSlug: string,
+): { product: Product; applicator: Applicator } | undefined {
+  const product = getProduct(categorySlug, productSlug);
+  const applicator = product?.applicators?.find((a) => a.slug === applicatorSlug);
+  if (!product || !applicator) return undefined;
+  return { product, applicator };
 }
 
 export function getProductsByBrand(brand: string): Product[] {

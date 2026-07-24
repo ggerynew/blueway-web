@@ -119,6 +119,29 @@ export default async function ProductPage({
         </Reveal>
       </div>
 
+      {product.orientation && (
+        <Reveal delay={0.05}>
+          <section className="mt-20 border-t border-line pt-10">
+            <div className="grid items-center gap-8 rounded-2xl border border-line bg-white p-6 md:grid-cols-2 md:p-8">
+              <div className="flex items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={asset(product.orientation.image)}
+                  alt={product.orientation.title[lang]}
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold tracking-tight">
+                  {product.orientation.title[lang]}
+                </h2>
+                <p className="mt-3 text-ink-muted">{product.orientation.text[lang]}</p>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+      )}
+
       {product.applicators && product.applicators.length > 0 && (
         <Reveal delay={0.05}>
           <section className="mt-20 border-t border-line pt-10">
@@ -130,31 +153,30 @@ export default async function ProductPage({
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {product.applicators.map((a) => (
-                <div key={a.image} className="product-tile flex h-full flex-col p-5">
+                <Link
+                  key={a.slug}
+                  href={`/${lang}/termekek/${cat.slug}/${product.slug}/applikator/${a.slug}`}
+                  className="group product-tile flex h-full flex-col p-5"
+                >
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={asset(a.image)}
                       alt={a.name[lang]}
-                      className="max-h-full max-w-full object-contain"
+                      className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                     />
                   </div>
-                  <h3 className="mt-4 font-semibold tracking-tight">{a.name[lang]}</h3>
+                  <h3 className="mt-4 font-semibold tracking-tight group-hover:text-brand-700">
+                    {a.name[lang]}
+                  </h3>
                   <p className="mt-1 flex-1 text-sm text-ink-muted">{a.description[lang]}</p>
-                  {a.videoId && (
-                    <a
-                      href={`https://www.youtube.com/watch?v=${a.videoId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                      {dict.products.watchVideo}
-                    </a>
-                  )}
-                </div>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors group-hover:text-brand-800">
+                    {dict.products.applicatorDetails}
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </span>
+                </Link>
               ))}
             </div>
           </section>
