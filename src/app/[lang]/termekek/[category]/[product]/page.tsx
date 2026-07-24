@@ -116,6 +116,20 @@ export default async function ProductPage({
                   {dict.products.datasheet}
                 </a>
               )}
+              {product.extraVideos?.map((v) => (
+                <a
+                  key={v.videoId}
+                  href={`https://www.youtube.com/watch?v=${v.videoId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-ink-muted"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  {v.label[lang]}
+                </a>
+              ))}
             </div>
           </div>
         </Reveal>
