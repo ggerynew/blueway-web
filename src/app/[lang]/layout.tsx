@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import { Toaster } from 'sonner';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 
 export function generateStaticParams() {
@@ -22,10 +24,13 @@ export default async function LangLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Sets the correct document language per locale (root <html> defaults to hu). WCAG 3.1.1 */}
+      {/* Sets the correct document language per locale (root <html> defaults to hu). WCAG 3.1.1
+          Also exposes the basePath for the cookie-consent script (policy URLs). */}
       <script
         dangerouslySetInnerHTML={{
-          __html: `document.documentElement.lang=${JSON.stringify(lang)}`,
+          __html:
+            `document.documentElement.lang=${JSON.stringify(lang)};` +
+            `window.__BLUEWAY_BASE__=${JSON.stringify(process.env.NEXT_PUBLIC_BASE_PATH || '')};`,
         }}
       />
       <a
@@ -40,6 +45,8 @@ export default async function LangLayout({
       </main>
       <Footer lang={lang} dict={dict} />
       <Toaster position="bottom-right" richColors />
+      {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
+      <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
     </div>
   );
 }

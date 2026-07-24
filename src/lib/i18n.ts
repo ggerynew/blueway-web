@@ -231,6 +231,9 @@ export const dictionaries = {
       phone: '+36 30 279 6679',
       email: 'info@blueway.hu',
       rights: 'Minden jog fenntartva.',
+      privacyPolicy: 'Adatkezelési tájékoztató',
+      privacyPolicyHref: '/adatkezelesi-tajekoztato.html',
+      cookieSettings: 'Süti-beállítások',
     },
   },
   en: {
@@ -458,6 +461,9 @@ export const dictionaries = {
       phone: '+36 30 279 6679',
       email: 'info@blueway.hu',
       rights: 'All rights reserved.',
+      privacyPolicy: 'Privacy Policy',
+      privacyPolicyHref: '/privacy-policy.html',
+      cookieSettings: 'Cookie settings',
     },
   },
 } as const;

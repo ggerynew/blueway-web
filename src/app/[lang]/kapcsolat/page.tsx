@@ -93,12 +93,15 @@ export default async function ContactPage({
           <h2 className="text-sm font-medium tracking-wide text-ink uppercase">
             {contact.mapLabel}
           </h2>
+          {/* A térkép csak a harmadik feles sütikhez adott hozzájárulás után
+              töltődik be — a consent kezelő állítja be a src-t a data-src-ből. */}
           <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-white">
             <iframe
               title={`${contact.company} — ${contact.site}`}
-              src={mapSrc}
+              data-consent="thirdparty"
+              data-src={mapSrc}
               className="h-[360px] w-full md:h-[420px]"
-              style={{ border: 0 }}
+              style={{ border: 0, display: 'none' }}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
