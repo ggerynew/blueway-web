@@ -474,105 +474,63 @@ export const products: Product[] = [
     ],
     applicators: [
       {
-        image: '/images/applicators/hq-4114.jpg',
-        name: { hu: 'Szúrópárnás applikátor (HQ 4114/4116)', en: 'Tamp-on applicator (HQ 4114/4116)' },
+        image: '/images/applicators/hq-3014.jpg',
+        name: { hu: '3014/3016 Karos felrakó', en: '3014/3016 Arm applicator' },
         description: {
-          hu: 'Kis és közepes címkék felhelyezése minden oldalról, valós időben; formapárnával íves és hengeres felületekre is.',
-          en: 'Applies small and midsized labels from all sides in real time; with a form pad also onto curved and cylindrical surfaces.',
+          hu: 'Nagyobb címkékhez, termék elejének, oldalának, vagy hátának címkézése.',
+          en: 'For larger labels — labeling the front, side or back of the product.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-4014.jpg',
+        name: { hu: '4014 Stroke applikátor', en: '4014 Stroke applicator' },
+        description: {
+          hu: 'Egyszerű címkézéshez.',
+          en: 'For simple labeling.',
+        },
+      },
+      {
+        image: '/images/applicators/hq-4114.jpg',
+        name: { hu: '4114 Stroke applikátor', en: '4114 Stroke applicator' },
+        description: {
+          hu: 'Nagy pontosságú címkézés kis címkékhez (min. 4x4mm).',
+          en: 'High-precision labeling for small labels (min. 4x4 mm).',
         },
         videoId: 'P-9HXQJ-Lds',
       },
       {
-        image: '/images/applicators/hq-4214.jpg',
-        name: { hu: 'Elforduló szúrópárnás (HQ 4214)', en: 'Stroke-turn applicator (HQ 4214)' },
-        description: {
-          hu: 'A párna nyomtatás közben a felhelyezési síkba fordul — nehezen beépíthető helyekre is alkalmas.',
-          en: 'The pad pivots into the application plane while printing — also suitable for hard-to-install positions.',
-        },
-        videoId: '0QethJtANc0',
-      },
-      {
-        image: '/images/applicators/hq-4414.jpg',
-        name: { hu: 'Szúrópárnás applikátor (HQ 4414/4416)', en: 'Tamp-on applicator (HQ 4414/4416)' },
-        description: {
-          hu: 'Kis és közepes címkék minden oldalról, állítható felhelyezési pozícióval.',
-          en: 'Small and midsized labels from all sides, with an adjustable application position.',
-        },
-        videoId: 'HG9eudLWxfM',
-      },
-      {
-        image: '/images/applicators/hq-4514.jpg',
-        name: { hu: 'Fújópárnás applikátor (HQ 4514)', en: 'Blow-on applicator (HQ 4514)' },
-        description: {
-          hu: 'A címkét légsugár fújja a felületre 5–10 mm távolságból, érintés nélkül.',
-          en: 'The label is blown onto the surface from 5–10 mm away, contactlessly.',
-        },
-        videoId: 'mzq7QKgfb1Q',
-      },
-      {
         image: '/images/applicators/hq-4712.jpg',
-        name: { hu: 'Zászlós applikátor (HQ 4712)', en: 'Flag applicator (HQ 4712)' },
+        name: { hu: '4714 Zászló címkéző', en: '4714 Flag applicator' },
         description: {
-          hu: 'Kábelekre és kerek tárgyakra hajtja rá a címkét zászló formában.',
-          en: 'Wraps the label as a flag onto cables and round objects.',
+          hu: 'Kábelek címkézése nagy pontossággal.',
+          en: 'High-precision labeling of cables.',
         },
         videoId: 'SV0G6Z2yb-4',
       },
       {
-        image: '/images/applicators/hq-4014.jpg',
-        name: { hu: 'Szúrópárnás csomag-applikátor (HQ 4014/4016)', en: 'Tamp-on package applicator (HQ 4014/4016)' },
+        image: '/images/applicators/hq-6014.jpg',
+        name: { hu: '6014 Ráfújó címkéző', en: '6014 Blow-on applicator' },
         description: {
-          hu: 'Álló vagy mozgó csomagokra, minden oldalról — a párna típusától függően mozgásban is.',
-          en: 'Onto stationary or moving packages from all sides — depending on the pad, also in motion.',
-        },
-      },
-      {
-        image: '/images/applicators/hq-4024.jpg',
-        name: { hu: 'Rugós szúrópárnás (HQ 4024)', en: 'Spring-mounted tamp-on (HQ 4024)' },
-        description: {
-          hu: 'Változó magasságú csomagokra egyetlen párnával; akár 90% sűrítettlevegő-megtakarítás.',
-          en: 'Onto packages of varying heights with a single pad; up to 90% savings in compressed air.',
-        },
-      },
-      {
-        image: '/images/applicators/hq-4614.jpg',
-        name: { hu: 'Szúró-fújó applikátor (HQ 4614)', en: 'Stroke-blow applicator (HQ 4614)' },
-        description: {
-          hu: 'Változó magasságú, mozgó csomagokra: a párna a csomag fölé áll, majd ráfújja a címkét.',
-          en: 'Onto moving packages of varying heights: the pad moves above the package and blows the label on.',
-        },
-      },
-      {
-        image: '/images/applicators/hq-5112.jpg',
-        name: { hu: 'Adagolómodul (HQ 5112/5114/5116)', en: 'Demand modules (HQ 5112/5114/5116)' },
-        description: {
-          hu: 'Címkesorozat felhelyezése mozgó csomagokra, adagolónyelvről.',
-          en: 'Applies a series of labels onto moving packages from a dispensing tongue.',
+          hu: 'Törékeny, vagy egyenetlen felületek címkézése, nagy sebességgel.',
+          en: 'Labeling fragile or uneven surfaces at high speed.',
         },
       },
       {
         image: '/images/applicators/hq-5314.jpg',
-        name: { hu: 'Vákuumszalagos applikátor (HQ 5314)', en: 'Vacuum-belt applicator (HQ 5314)' },
+        name: { hu: '5314 Vákuumszalagos applikátor', en: '5314 Vacuum-belt applicator' },
         description: {
-          hu: 'A címkét vákuumszalag viszi a felhelyezési pontra — sík felületekre, mozgásban.',
-          en: 'A vacuum belt carries the label to the application point — onto plane surfaces, in motion.',
+          hu: 'Címkézés nagy sebességgel, mozgásban lévő termékeknél.',
+          en: 'High-speed labeling of products in motion.',
         },
       },
       {
-        image: '/images/applicators/hq-5414.jpg',
-        name: { hu: 'Vákuumszalagos applikátor (HQ 5414)', en: 'Vacuum-belt applicator (HQ 5414)' },
+        image: '/images/applicators/hq-4514.jpg',
+        name: { hu: '4514 Swing Stroke applikátor', en: '4514 Swing stroke applicator' },
         description: {
-          hu: 'Nagyobb címkékhez, felülről történő felhelyezéssel, mozgó termékekre.',
-          en: 'For larger labels, applied from the top onto moving products.',
+          hu: 'Belső címkézés.',
+          en: 'Inside labeling.',
         },
-      },
-      {
-        image: '/images/applicators/hq-5714.jpg',
-        name: { hu: 'Igény szerinti adagolóasztal (HQ 5714)', en: 'Demand table (HQ 5714)' },
-        description: {
-          hu: 'Előnyomtatott, előadagolt címkék felvétele és igény szerinti felhelyezése.',
-          en: 'Picks up pre-printed, pre-dispensed labels and applies them on demand.',
-        },
+        videoId: 'mzq7QKgfb1Q',
       },
     ],
   },
