@@ -72,7 +72,11 @@ export default async function ApplicatorPage({
               <img
                 src={asset(brandLogo)}
                 alt={product.brand}
-                className={`w-auto object-contain ${product.brand === 'CAB' ? 'h-12' : 'h-8'}`}
+                className={`w-auto object-contain ${
+                  product.brand === 'CAB' || product.brand === 'START International'
+                    ? 'h-12'
+                    : 'h-8'
+                }`}
               />
             ) : (
               <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">

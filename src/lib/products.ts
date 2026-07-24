@@ -1330,6 +1330,7 @@ export const products: Product[] = [
     name: 'START LD3000',
     brand: 'START International',
     image: '/images/products/ld3000.jpg',
+    datasheet: '/datasheets/start-ld3000.pdf',
     short: {
       hu: 'Nagy sebességű elektromos címkeadagoló kis címkékhez, kis munkaterületre.',
       en: 'High-speed electric label dispenser for small labels and small work areas.',
@@ -1352,6 +1353,7 @@ export const products: Product[] = [
     name: 'START LD3500',
     brand: 'START International',
     image: '/images/products/ld3500.jpg',
+    datasheet: '/datasheets/start-ld3500.pdf',
     short: {
       hu: 'Elektromos címkeadagoló átlátszó és nehezen kezelhető anyagokhoz.',
       en: 'Electric label dispenser for clear and challenging materials.',
@@ -1374,6 +1376,7 @@ export const products: Product[] = [
     name: 'START LD6050',
     brand: 'START International',
     image: '/images/products/ld6050.jpg',
+    datasheet: '/datasheets/start-ld6050.pdf',
     short: {
       hu: 'Nagy sebességű elektromos címkeadagoló szélesebb, 121 mm-es címkékhez.',
       en: 'High-speed electric label dispenser for wider, 121 mm labels.',
@@ -1396,6 +1399,7 @@ export const products: Product[] = [
     name: 'START LD8100',
     brand: 'START International',
     image: '/images/products/ld8100.jpg',
+    datasheet: '/datasheets/start-ld8100.pdf',
     short: {
       hu: 'Szupergyors elektromos címkeadagoló hosszú, széles csomagoló-címkékhez.',
       en: 'Super-speed electric label dispenser for long, wide packaging labels.',
@@ -1418,6 +1422,7 @@ export const products: Product[] = [
     name: 'START LDX8050',
     brand: 'START International',
     image: '/images/products/ldx8050.jpg',
+    datasheet: '/datasheets/start-ldx8050.pdf',
     short: {
       hu: 'Nagy sebességű címkeadagoló hosszú, széles (max. 203 mm) címkékhez.',
       en: 'High-speed label dispenser for long, wide labels (up to 203 mm).',
@@ -1440,6 +1445,7 @@ export const products: Product[] = [
     name: 'START LDX8100',
     brand: 'START International',
     image: '/images/products/ldx8100.jpg',
+    datasheet: '/datasheets/start-ldx8100.pdf',
     short: {
       hu: 'Szupergyors címkeadagoló hosszú, széles címkékhez, 198 mm/s sebességgel.',
       en: 'Super-speed label dispenser for long, wide labels at 198 mm/s.',
@@ -1462,6 +1468,7 @@ export const products: Product[] = [
     name: 'START TDA080',
     brand: 'START International',
     image: '/images/products/tda080.jpg',
+    datasheet: '/datasheets/start-tda080.pdf',
     short: {
       hu: 'Elektromos, automata nagy teherbírású szalagadagoló akár 80 mm széles szalaghoz.',
       en: 'Electric automatic heavy-duty tape dispenser for tape up to 80 mm wide.',
@@ -1484,6 +1491,7 @@ export const products: Product[] = [
     name: 'START TDA080-NS',
     brand: 'START International',
     image: '/images/products/tda080-ns.jpg',
+    datasheet: '/datasheets/start-tda080-ns.pdf',
     short: {
       hu: 'Szalagadagoló erős tapadású, technikai szalagokhoz (VHB, ACX, hab).',
       en: 'Tape dispenser for high-adhesive, technical tapes (VHB, ACX, foam).',
@@ -1506,6 +1514,7 @@ export const products: Product[] = [
     name: 'START TDA150-M',
     brand: 'START International',
     image: '/images/products/tda150-m.jpg',
+    datasheet: '/datasheets/start-tda150-m.pdf',
     short: {
       hu: 'Nagy teherbírású szalagadagoló akár 150 mm széles szalaghoz, 5 hossz memóriával.',
       en: 'Heavy-duty tape dispenser for tape up to 150 mm wide, with 5-length memory.',

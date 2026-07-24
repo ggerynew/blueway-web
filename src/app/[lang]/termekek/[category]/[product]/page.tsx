@@ -63,7 +63,9 @@ export default async function ProductPage({
                 src={asset(brandLogo)}
                 alt={product.brand}
                 className={`w-auto object-contain ${
-                  product.brand === 'CAB' ? 'h-12' : 'h-8'
+                  product.brand === 'CAB' || product.brand === 'START International'
+                    ? 'h-12'
+                    : 'h-8'
                 }`}
               />
             ) : (
