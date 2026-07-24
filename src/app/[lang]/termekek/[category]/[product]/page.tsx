@@ -23,7 +23,7 @@ export default async function ProductPage({
   if (!cat || !product) notFound();
   const dict = getDictionary(lang);
   const others = getProductsByCategory(cat.slug).filter((p) => p.slug !== product.slug);
-  const brandLogo = getBrandLogo(product.brand);
+  const brandLogo = product.brandLogo ?? getBrandLogo(product.brand);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
