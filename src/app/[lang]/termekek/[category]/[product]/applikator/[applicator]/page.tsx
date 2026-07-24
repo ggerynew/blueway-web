@@ -29,7 +29,7 @@ export default async function ApplicatorPage({
   if (!cat || !found) notFound();
   const { product, applicator } = found;
   const dict = getDictionary(lang);
-  const brandLogo = getBrandLogo(product.brand);
+  const brandLogo = product.brandLogo ?? getBrandLogo(product.brand);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 md:py-24">

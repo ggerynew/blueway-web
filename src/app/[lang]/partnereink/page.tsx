@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 
 export function generateStaticParams() {
@@ -40,9 +41,24 @@ export default async function PartnersPage({
         {partners.items.map((partner, i) => (
           <Reveal key={partner.name} delay={(i % 3) * 0.05}>
             <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm">
-              <h2 className="text-lg font-semibold tracking-tight text-brand-700">
-                {partner.name}
-              </h2>
+              {partner.logo ? (
+                <h2 className="flex h-14 items-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={asset(partner.logo)}
+                    alt={partner.name}
+                    className={`w-auto object-contain ${
+                      partner.logo.includes('cab-logo') || partner.logo.includes('start-logo')
+                        ? 'max-h-14 max-w-[210px]'
+                        : 'max-h-9 max-w-[180px]'
+                    }`}
+                  />
+                </h2>
+              ) : (
+                <h2 className="flex h-14 items-center text-lg font-semibold tracking-tight text-brand-700">
+                  {partner.name}
+                </h2>
+              )}
               <p className="mt-2 text-sm text-ink-muted">{partner.body}</p>
             </div>
           </Reveal>

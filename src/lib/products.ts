@@ -22,6 +22,8 @@ export interface Product {
   datasheet?: string;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
+  /** Márkalogó felülbírálás, ha a márka nem szerepel a gyártók között (pl. Loftware) */
+  brandLogo?: string;
   /** További, gombként megjelenő videók saját megnevezéssel */
   extraVideos?: { videoId: string; label: LocalizedText }[];
   /** GLB modell útvonala a public mappán belül */
@@ -1083,7 +1085,8 @@ export const products: Product[] = [
     category: 'szoftverek',
     name: 'NiceLabel',
     brand: 'Loftware',
-    image: '/images/products/nicelabel.png',
+    image: '/images/brand/loftware-logo.png',
+    brandLogo: '/images/brand/loftware-logo.png',
     short: {
       hu: 'A világ egyik legelterjedtebb címketervező és -nyomtató szoftvere a Loftware-től.',
       en: 'One of the world’s most widely used label design and printing software, by Loftware.',
