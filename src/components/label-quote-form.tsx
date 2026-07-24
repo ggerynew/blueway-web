@@ -58,6 +58,14 @@ export function LabelQuoteForm({
     const d = new FormData(form);
     const g = (k: string) => String(d.get(k) ?? '').trim();
 
+    const attachInput = form.elements.namedItem('attachments') as HTMLInputElement | null;
+    const files = Array.from(attachInput?.files ?? []);
+    if (files.reduce((n, f) => n + f.size, 0) > 10 * 1024 * 1024) {
+      toast.error(labels.attachTooLarge);
+      setSending(false);
+      return;
+    }
+
     const spec: [string, string][] = [
       [labels.width, g('width') && `${g('width')} mm`],
       [labels.height, g('height') && `${g('height')} mm`],
@@ -82,6 +90,9 @@ export function LabelQuoteForm({
       ...spec.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`),
     ];
     if (g('notes')) bodyLines.push('', `${labels.notes}:`, g('notes'));
+    if (files.length) {
+      bodyLines.push('', `${labels.attachBody}: ${files.map((f) => f.name).join(', ')}`);
+    }
     bodyLines.push(
       '',
       '—',
@@ -119,8 +130,11 @@ export function LabelQuoteForm({
         subject: `${labels.title} — ${subjectWho}`,
         bodyLines,
         recipient,
+        files,
       });
-      toast.success(result === 'sent' ? labels.sent : labels.success);
+      toast.success(
+        result === 'sent' ? labels.sent : files.length ? labels.attachMailto : labels.success,
+      );
       form.reset();
     } catch {
       toast.error(labels.error);
@@ -204,6 +218,18 @@ export function LabelQuoteForm({
             placeholder={labels.notesPlaceholder}
             className={`${fieldClass} resize-y`}
           />
+        </div>
+        <div className="mt-4">
+          <label htmlFor="attachments" className={labelClass}>{labels.attach}</label>
+          <input
+            id="attachments"
+            name="attachments"
+            type="file"
+            multiple
+            accept="image/*,.pdf,.ai,.eps,.svg,.zip"
+            className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink transition-colors file:mr-4 file:rounded-full file:border-0 file:bg-brand-700 file:px-4 file:py-1.5 file:text-xs file:font-medium file:text-white hover:file:bg-brand-800"
+          />
+          <p className="mt-1.5 text-xs text-ink-muted">{labels.attachHint}</p>
         </div>
       </section>
 

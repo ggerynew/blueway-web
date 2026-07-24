@@ -15,19 +15,23 @@ export async function sendForm(opts: {
   bodyLines: string[];
   /** `mailto` címzett. */
   recipient: string;
+  /** Csatolt fájlok — Formspree-n feltöltve; mailto esetén a levélhez kézzel kell mellékelni. */
+  files?: File[];
 }): Promise<SendResult> {
   const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+  const files = opts.files ?? [];
 
   if (endpoint) {
-    const params = new URLSearchParams();
+    const body = new FormData();
     for (const [k, v] of Object.entries(opts.fields)) {
-      if (v) params.set(k, v);
+      if (v) body.set(k, v);
     }
-    params.set('_subject', opts.subject);
+    body.set('_subject', opts.subject);
+    files.forEach((f, i) => body.append(i === 0 ? 'upload' : `upload${i + 1}`, f, f.name));
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { Accept: 'application/json' },
-      body: params,
+      body,
     });
     if (!res.ok) throw new Error('Form send failed');
     return 'sent';
