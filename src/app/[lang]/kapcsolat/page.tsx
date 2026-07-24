@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ContactForm } from '@/components/contact-form';
+import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 
@@ -84,6 +85,7 @@ export default async function ContactPage({
         <Reveal delay={0.18}>
           <div className="rounded-2xl border border-line bg-white p-6 md:p-8">
             <ContactForm labels={contact.form} recipient={contact.email} />
+            <LegalNotice lang={lang} />
           </div>
         </Reveal>
       </div>

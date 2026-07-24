@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { LabelQuoteForm } from '@/components/label-quote-form';
+import { LegalNotice } from '@/components/legal-notice';
 import { LabelDiagram } from '@/components/label-diagram';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
@@ -47,6 +48,7 @@ export default async function LabelQuotePage({
       <Reveal delay={0.18}>
         <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
           <LabelQuoteForm labels={labelQuote} recipient={dict.contact.email} />
+          <LegalNotice lang={lang} />
         </div>
       </Reveal>
     </div>

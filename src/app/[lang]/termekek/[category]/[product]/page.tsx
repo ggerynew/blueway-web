@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { LegalNotice } from '@/components/legal-notice';
 import { ProductMedia } from '@/components/product-media';
 import { ProductThumb } from '@/components/product-thumb';
 import { ProductInquiry } from '@/components/product-inquiry';
@@ -211,6 +212,7 @@ export default async function ProductPage({
               recipient={dict.contact.email}
               productName={product.name}
             />
+            <LegalNotice lang={lang} />
           </div>
         </section>
       </Reveal>
