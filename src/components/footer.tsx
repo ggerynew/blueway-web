@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { CookieSettingsLink } from '@/components/cookie-settings-link';
+import { asset } from '@/lib/asset';
 import type { Dictionary, Locale } from '@/lib/i18n';
 
 export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
@@ -26,6 +28,13 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
               {item.label}
             </Link>
           ))}
+          <a
+            href={asset(dict.footer.privacyPolicyHref)}
+            className="w-fit transition-colors hover:text-ink"
+          >
+            {dict.footer.privacyPolicy}
+          </a>
+          <CookieSettingsLink label={dict.footer.cookieSettings} />
         </nav>
 
         <div className="md:text-right">
