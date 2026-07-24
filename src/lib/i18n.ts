@@ -30,7 +30,7 @@ export const dictionaries = {
       },
       {
         title: 'Támogatás',
-        body: 'Minden, a piacon megtalálható nyomtatóhoz folyamatos és teljes körű támogatást biztosítunk.',
+        body: 'Az általunk forgalmazott eszközökhöz teljes körű szerviz- és alkatrész-támogatást biztosítunk.',
       },
       {
         title: 'Gyorsaság',
@@ -262,7 +262,7 @@ export const dictionaries = {
       },
       {
         title: 'Support',
-        body: 'Continuous, full-scope support for every printer available on the market.',
+        body: 'Full service and spare-parts support for the devices we distribute.',
       },
       {
         title: 'Speed',
