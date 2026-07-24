@@ -1105,7 +1105,7 @@ export const products: Product[] = [
     name: 'POSTEK OX',
     brand: 'POSTEK',
     image: '/images/products/postek-ox.png',
-    videoId: 'BVSxFLYtC5U',
+    videoId: '3WoA_Zb9zb4',
     datasheet: '/datasheets/postek-ox-datasheet.pdf',
     short: {
       hu: 'Ipari csúcskategóriás nyomtató integrált vizuális ellenőrzéssel és RFID-vel.',
