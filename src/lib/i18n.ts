@@ -54,8 +54,11 @@ export const dictionaries = {
       },
       applicatorsTitle: 'Applikátorok',
       applicatorsLead:
-        'A megfelelő applikátor a felülettől és a feladattól függ — íme a főbb típusok, videós bemutatóval.',
+        'A megfelelő applikátor a felülettől és a feladattól függ — kattintson a részletes adatokért.',
       watchVideo: 'Videó megtekintése',
+      applicatorDetails: 'Részletek és paraméterek',
+      applicatorParamsTitle: 'Műszaki paraméterek',
+      backToProduct: 'Vissza a termékhez',
       media: {
         photo: 'Fotó',
         video: 'Videó',
@@ -278,8 +281,11 @@ export const dictionaries = {
       },
       applicatorsTitle: 'Applicators',
       applicatorsLead:
-        'The right applicator depends on the surface and the task — here are the main types, with video demos.',
+        'The right applicator depends on the surface and the task — click for detailed specifications.',
       watchVideo: 'Watch video',
+      applicatorDetails: 'Details and parameters',
+      applicatorParamsTitle: 'Technical parameters',
+      backToProduct: 'Back to product',
       media: {
         photo: 'Photo',
         video: 'Video',
