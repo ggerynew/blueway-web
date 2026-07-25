@@ -32,6 +32,8 @@ export default async function LangLayout({
     logo: absUrl('images/brand/blueway-logo-still.png'),
     email: 'info@blueway.hu',
     telephone: '+36302796679',
+    taxID: '25051632-2-13',
+    vatID: 'HU25051632',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Déri Miksa u. 10/A.',
@@ -70,6 +72,15 @@ export default async function LangLayout({
       <Toaster position="bottom-right" richColors />
       {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
       <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
+      {/* Látogatottságmérés (GoatCounter): süti- és személyesadat-mentes, ezért
+          consent nélkül futhat. A GOATCOUNTER_CODE repo-secret bekapcsolja. */}
+      {process.env.NEXT_PUBLIC_GOATCOUNTER_CODE && (
+        <Script
+          data-goatcounter={`https://${process.env.NEXT_PUBLIC_GOATCOUNTER_CODE}.goatcounter.com/count`}
+          src="https://gc.zgo.at/count.js"
+          strategy="afterInteractive"
+        />
+      )}
     </div>
   );
 }
