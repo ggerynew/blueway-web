@@ -4,6 +4,7 @@ import { ContactForm } from '@/components/contact-form';
 import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -16,7 +17,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: getDictionary(lang).contact.title };
+  const dict = getDictionary(lang);
+  return pageMetadata({
+    lang,
+    path: 'kapcsolat',
+    title: dict.contact.title,
+    description: dict.contact.lead,
+  });
 }
 
 export default async function ContactPage({

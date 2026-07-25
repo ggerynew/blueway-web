@@ -6,6 +6,8 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getApplicator, getBrandLogo, getCategory, products } from '@/lib/products';
+import type { Metadata } from 'next';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return products.flatMap((p) =>
@@ -15,6 +17,25 @@ export function generateStaticParams() {
       applicator: a.slug,
     })),
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string; category: string; product: string; applicator: string }>;
+}): Promise<Metadata> {
+  const { lang, category, product: productSlug, applicator: applicatorSlug } = await params;
+  if (!isLocale(lang)) return {};
+  const found = getApplicator(category, productSlug, applicatorSlug);
+  if (!found) return {};
+  const { product, applicator } = found;
+  return pageMetadata({
+    lang,
+    path: `termekek/${category}/${product.slug}/applikator/${applicator.slug}`,
+    title: `${applicator.name[lang]} — ${product.name}`,
+    description: applicator.description[lang],
+    image: applicator.image ? absUrl(applicator.image.replace(/^\//, '')) : undefined,
+  });
 }
 
 export default async function ApplicatorPage({
