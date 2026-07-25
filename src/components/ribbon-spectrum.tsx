@@ -39,6 +39,63 @@ const T = {
     low: 'lower',
     high: 'higher',
   },
+  de: {
+    aria: 'Farbband-Auswahlband: von Wax zu Resin',
+    appsLabel: 'Anwendungen',
+    matsLabel: 'Etikettenmaterial',
+    apps: [
+      ['Karton- und Versandetiketten,', 'Logistik, Regaletiketten'],
+      ['Produktetiketten, Lebensmittel,', 'Kosmetik, Gesundheitswesen'],
+      ['Automobil, Elektronik,', 'Chemie (GHS), Labor'],
+    ],
+    mats: [
+      ['Naturpapier (Vellum) und', 'mattes Papier'],
+      ['Gestrichenes Papier,', 'PP- / PE-Folie'],
+      ['PET, Polyimid,', 'Vinyl, PVC'],
+    ],
+    zones: ['WAX', 'WAX-RESIN', 'RESIN'],
+    axis: 'Preis und Haltbarkeit',
+    low: 'niedriger',
+    high: 'höher',
+  },
+  ko: {
+    aria: '리본 선택 밴드: Wax에서 Resin 방향으로',
+    appsLabel: '적용 분야',
+    matsLabel: '라벨 소재',
+    apps: [
+      ['박스·배송 라벨,', '물류, 선반 라벨'],
+      ['제품 라벨, 식품,', '화장품, 의료'],
+      ['자동차, 전자,', '화학 (GHS), 실험실'],
+    ],
+    mats: [
+      ['비코팅(벨럼)·', '무광 용지'],
+      ['코팅지,', 'PP / PE 필름'],
+      ['PET, 폴리이미드,', '비닐, PVC'],
+    ],
+    zones: ['WAX', 'WAX-RESIN', 'RESIN'],
+    axis: '가격과 내구성',
+    low: '낮음',
+    high: '높음',
+  },
+  zh: {
+    aria: '碳带选择带：从蜡基到树脂基',
+    appsLabel: '应用领域',
+    matsLabel: '标签材质',
+    apps: [
+      ['纸箱和运输标签、', '物流、货架标签'],
+      ['产品标签、食品、', '化妆品、医疗'],
+      ['汽车、电子、', '化工 (GHS)、实验室'],
+    ],
+    mats: [
+      ['未涂布（书写纸）和', '哑光纸'],
+      ['铜版纸、', 'PP / PE 薄膜'],
+      ['PET、聚酰亚胺、', '乙烯基、PVC'],
+    ],
+    zones: ['蜡基 WAX', '混合 WAX-RESIN', '树脂 RESIN'],
+    axis: '价格与耐久性',
+    low: '较低',
+    high: '较高',
+  },
 } as const;
 
 const CENTERS = [190, 450, 710];

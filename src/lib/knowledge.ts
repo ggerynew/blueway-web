@@ -1,4 +1,4 @@
-import type { LocalizedText } from '@/lib/products';
+import { localize, type LocalizedText, type Sourced } from '@/lib/products';
 
 export interface GuideSection {
   title: LocalizedText;
@@ -20,7 +20,7 @@ export interface Guide {
  * Tudástár-cikkek. A festékszalag-ismertető a DNP hivatalos szalagválasztó
  * anyagai (Product Reference Guide, dnpribbons.com) alapján készült.
  */
-export const guides: Guide[] = [
+const guidesSource: Sourced<Guide[]> = [
   {
     slug: 'festekszalag-valaszto',
     title: {
@@ -171,6 +171,7 @@ export const guides: Guide[] = [
     ],
   },
 ];
+export const guides: Guide[] = localize<Guide[]>(guidesSource);
 
 export function getGuide(slug: string) {
   return guides.find((g) => g.slug === slug);

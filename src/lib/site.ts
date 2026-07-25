@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { Locale } from '@/lib/i18n';
+import { locales, type Locale } from '@/lib/i18n';
 
 /**
  * Az oldal publikus alap-URL-je (basePath-szel együtt). FORPSI/egyedi domainre
@@ -44,8 +44,7 @@ export function pageMetadata({
     alternates: {
       canonical,
       languages: {
-        hu: absUrl(`hu${suffix}`),
-        en: absUrl(`en${suffix}`),
+        ...Object.fromEntries(locales.map((l) => [l, absUrl(`${l}${suffix}`)])),
         'x-default': absUrl(`hu${suffix}`),
       },
     },

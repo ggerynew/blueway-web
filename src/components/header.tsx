@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import { MobileNav } from '@/components/mobile-nav';
+import { LangSwitcher } from '@/components/lang-switcher';
 import { Logo } from '@/components/logo';
 import { ProductSearch, type SearchItem } from '@/components/product-search';
 import { asset } from '@/lib/asset';
@@ -15,7 +16,6 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
-  const otherLang: Locale = lang === 'hu' ? 'en' : 'hu';
 
   const searchItems: SearchItem[] = [
     ...products.map((p) => ({
@@ -78,15 +78,8 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           ))}
         </nav>
         <div className="hidden w-44 xl:w-56 lg:block">{search}</div>
-        <div className="hidden items-center gap-4 md:flex">
-          <Link
-            href={`/${otherLang}`}
-            hrefLang={otherLang}
-            aria-label={lang === 'hu' ? 'Váltás angol nyelvre' : 'Switch to Hungarian'}
-            className="rounded-sm text-sm text-ink-muted uppercase transition-colors hover:text-ink"
-          >
-            {otherLang}
-          </Link>
+        <div className="hidden items-center gap-3 md:flex">
+          <LangSwitcher lang={lang} compact />
           <Link
             href={`/${lang}/kapcsolat`}
             className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700"

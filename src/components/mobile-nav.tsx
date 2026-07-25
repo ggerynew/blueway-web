@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { LangSwitcher } from '@/components/lang-switcher';
 import type { Locale } from '@/lib/i18n';
 
 export function MobileNav({
@@ -14,7 +15,6 @@ export function MobileNav({
   items: { href: string; label: string }[];
 }) {
   const [open, setOpen] = useState(false);
-  const otherLang: Locale = lang === 'hu' ? 'en' : 'hu';
   const close = () => setOpen(false);
 
   return (
@@ -53,15 +53,7 @@ export function MobileNav({
               </Link>
             ))}
             <div className="mt-3 flex items-center justify-between border-t border-line pt-4">
-              <Link
-                href={`/${otherLang}`}
-                hrefLang={otherLang}
-                onClick={close}
-                aria-label={lang === 'hu' ? 'Váltás angol nyelvre' : 'Switch to Hungarian'}
-                className="rounded-sm px-2 text-sm uppercase text-ink-muted transition-colors hover:text-ink"
-              >
-                {otherLang}
-              </Link>
+              <LangSwitcher lang={lang} />
               <Link
                 href={`/${lang}/kapcsolat`}
                 onClick={close}

@@ -2,6 +2,38 @@ import type { Locale } from './i18n';
 
 export type LocalizedText = Record<Locale, string>;
 
+/** Adatbeviteli forma: hu + en kötelező, a többi nyelv opcionális (angol fallback). */
+export type LocalizedSource = { hu: string; en: string } & Partial<
+  Record<Exclude<Locale, 'hu' | 'en'>, string>
+>;
+export type Sourced<T> = T extends LocalizedText
+  ? LocalizedSource
+  : T extends string | number | boolean | null | undefined
+    ? T
+    : T extends readonly (infer U)[]
+      ? Sourced<U>[]
+      : T extends object
+        ? { [K in keyof T]: Sourced<T[K]> }
+        : T;
+
+/** A hiányzó fordításokat angolra ejti vissza minden LocalizedText mezőben. */
+export function localize<T>(data: Sourced<T>): T {
+  const fill = (node: unknown): unknown => {
+    if (Array.isArray(node)) return node.map(fill);
+    if (node && typeof node === 'object') {
+      const rec = node as Record<string, unknown>;
+      if (typeof rec.hu === 'string' && typeof rec.en === 'string') {
+        return { de: rec.en, ko: rec.en, zh: rec.en, ...rec };
+      }
+      const out: Record<string, unknown> = {};
+      for (const k of Object.keys(rec)) out[k] = fill(rec[k]);
+      return out;
+    }
+    return node;
+  };
+  return fill(data) as T;
+}
+
 export interface Category {
   slug: string;
   name: LocalizedText;
@@ -69,7 +101,7 @@ export interface Manufacturer {
   description: LocalizedText;
 }
 
-export const manufacturers: Manufacturer[] = [
+const manufacturersSource: Sourced<Manufacturer[]> = [
   {
     slug: 'cab',
     brand: 'CAB',
@@ -131,8 +163,9 @@ export const manufacturers: Manufacturer[] = [
     },
   },
 ];
+export const manufacturers: Manufacturer[] = localize<Manufacturer[]>(manufacturersSource);
 
-export const categories: Category[] = [
+const categoriesSource: Sourced<Category[]> = [
   {
     slug: 'cimkenyomtatok',
     name: { hu: 'Címkenyomtatók', en: 'Label printers' },
@@ -190,8 +223,9 @@ export const categories: Category[] = [
     },
   },
 ];
+export const categories: Category[] = localize<Category[]>(categoriesSource);
 
-export const products: Product[] = [
+const productsSource: Sourced<Product[]> = [
   {
     slug: 'cab-squix-2',
     category: 'cimkenyomtatok',
@@ -1602,6 +1636,7 @@ export const products: Product[] = [
     ],
   },
 ];
+export const products: Product[] = localize<Product[]>(productsSource);
 
 export function getCategory(slug: string): Category | undefined {
   return categories.find((c) => c.slug === slug);
