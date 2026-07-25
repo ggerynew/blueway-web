@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { RibbonSpectrum } from '@/components/ribbon-spectrum';
+import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
 import { absUrl, pageMetadata } from '@/lib/site';
@@ -108,6 +109,23 @@ export default async function GuidePage({
                     </li>
                   ))}
                 </ul>
+              )}
+              {section.files && (
+                <div className="mt-5 flex flex-wrap gap-3">
+                  {section.files.map((f) => (
+                    <a
+                      key={f.href}
+                      href={asset(f.href)}
+                      download
+                      className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-medium transition-colors hover:border-ink-muted"
+                    >
+                      <span aria-hidden="true" className="text-brand-700">
+                        ↓
+                      </span>
+                      {f.label[lang]}
+                    </a>
+                  ))}
+                </div>
               )}
               {section.link && (
                 <Link
