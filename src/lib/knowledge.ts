@@ -6,6 +6,8 @@ export interface GuideSection {
   bullets?: LocalizedText[];
   /** Kiemelt link a szekció végén (nyelvi előtag nélküli útvonal). */
   link?: { href: string; label: LocalizedText };
+  /** Letölthető fájlok (a public mappán belüli útvonallal). */
+  files?: { href: string; label: LocalizedText }[];
 }
 
 export interface Guide {
@@ -166,6 +168,161 @@ const guidesSource: Sourced<Guide[]> = [
         link: {
           href: '/cimke-ajanlatkero',
           label: { hu: 'Címke-ajánlatkérő űrlap megnyitása', en: 'Open the label quote form', de: 'Zum Etiketten-Angebotsformular', ko: '라벨 견적 양식 열기', zh: '打开标签询价表单' },
+        },
+      },
+    ],
+  },
+  {
+    slug: 'cimkezo-rendszer-tervezese',
+    title: {
+      hu: 'Automata címkézés tervezése: milyen adatokat kérünk?',
+      en: 'Planning an automatic labeling system: what data we need', de: 'Planung einer automatischen Etikettieranlage: welche Daten wir benötigen', ko: '자동 라벨링 시스템 기획: 어떤 데이터가 필요한가', zh: '规划自动贴标系统：我们需要哪些数据',
+    },
+    short: {
+      hu: 'Címkéző gép kiválasztásához a címke, a termék és a folyamat adatai kellenek — végigvezetjük a teljes listán.',
+      en: 'Choosing a labeling machine needs data on the label, the product and the process — here is the full checklist.', de: 'Die Auswahl einer Etikettiermaschine erfordert Daten zum Etikett, zum Produkt und zum Prozess — hier ist die vollständige Checkliste.', ko: '라벨링 장비를 선정하려면 라벨, 제품, 공정에 대한 데이터가 필요합니다 — 전체 체크리스트를 안내합니다.', zh: '选择贴标设备需要标签、产品和工艺三方面的数据 —— 以下是完整的检查清单。',
+    },
+    lead: {
+      hu: 'Az automata címkézés nem egyetlen gép, hanem rendszer: nyomtató, applikátor, felrakófej, érzékelők és tartószerkezet együtt. Ahhoz, hogy a rendszer az első próbálkozásra jól működjön, néhány adatot előre tisztázni kell. Az alábbi lista a cab hivatalos címkézési adatlapja (Checkliste Etikettierung) alapján készült — ugyanezeket az adatokat kérjük Öntől is, amikor címkéző rendszert tervezünk.',
+      en: 'Automatic labeling is not a single machine but a system: printer, applicator, tamp pad, sensors and mounting frame together. For the system to work right the first time, a few things must be clarified up front. The list below follows cab’s official labeling checklist (Checkliste Etikettierung) — these are the same details we ask for when we design a labeling system.', de: 'Automatisches Etikettieren ist keine einzelne Maschine, sondern ein System: Etikettendrucker, Applikator, Druckstempel, Sensoren und Traggestell zusammen. Damit das System auf Anhieb richtig funktioniert, müssen einige Punkte vorab geklärt werden. Die folgende Liste folgt der offiziellen Checkliste Etikettierung von cab — es sind dieselben Angaben, die wir abfragen, wenn wir eine Etikettieranlage auslegen.', ko: '자동 라벨링은 단일 장비가 아니라 하나의 시스템입니다. 라벨 프린터, 어플리케이터, 태핑 패드, 센서, 장착 프레임이 함께 작동합니다. 시스템이 처음부터 올바르게 동작하려면 몇 가지 사항을 사전에 명확히 해야 합니다. 아래 목록은 cab의 공식 라벨링 체크리스트(Checkliste Etikettierung)를 따른 것으로, 저희가 라벨링 시스템을 설계할 때 요청하는 것과 동일한 정보입니다.', zh: '自动贴标不是一台单独的机器，而是一套系统：标签打印机、贴标模块、贴标头、传感器和安装机架共同构成整体。为了让系统一次就能正常运行，有几件事必须事先明确。下面的清单依据 cab 的官方贴标检查表（Checkliste Etikettierung）编制 —— 这些正是我们设计贴标系统时需要了解的细节。',
+    },
+    sections: [
+      {
+        title: { hu: '1. A címke adatai', en: '1. Label data', de: '1. Etikettendaten', ko: '1. 라벨 데이터', zh: '1. 标签数据' },
+        paragraphs: [
+          {
+            hu: 'A címke mérete és felépítése határozza meg a nyomtató fejszélességét, a tekercstartó méretét és az applikátor típusát. A méreteket a futásirányhoz képest adjuk meg: B a szélesség, H a hossz (magasság) futásirányban, A a címkeköz, C a hordozószalag teljes szélessége, R a sarok lekerekítése.',
+            en: 'The size and construction of the label determine the printhead width, the unwinder size and the applicator type. Dimensions are given relative to the running direction: B is the width, H the length (height) in running direction, A the gap between labels, C the total liner width, R the corner radius.', de: 'Größe und Aufbau des Etiketts bestimmen die Druckkopfbreite, die Größe des Abwicklers und den Applikatortyp. Die Maße beziehen sich auf die Laufrichtung: B ist die Breite, H die Länge (Höhe) in Laufrichtung, A der Abstand zwischen den Etiketten, C die Gesamtbreite des Trägermaterials, R der Eckenradius.', ko: '라벨의 크기와 구성은 프린트헤드 폭, 언와인더 크기, 어플리케이터 유형을 결정합니다. 치수는 진행 방향을 기준으로 표기하며, B는 폭, H는 진행 방향의 길이(높이), A는 라벨 간 간격, C는 라이너 전체 폭, R은 모서리 반경입니다.', zh: '标签的尺寸和结构决定打印头宽度、放卷器尺寸和贴标模块类型。尺寸以走纸方向为基准给出：B 为宽度，H 为走纸方向上的长度（高度），A 为标签间距，C 为底纸总宽度，R 为圆角半径。',
+          },
+        ],
+        bullets: [
+          { hu: 'Címkeméret: szélesség (B), hossz (H), címkeköz (A), hordozó szélessége (C), sarok lekerekítés (R) — és a hozzájuk tartozó tűrések', en: 'Label size: width (B), length (H), gap (A), liner width (C), corner radius (R) — and the applicable tolerances', de: 'Etikettengröße: Breite (B), Länge (H), Abstand (A), Breite des Trägermaterials (C), Eckenradius (R) — sowie die geltenden Toleranzen', ko: '라벨 크기: 폭(B), 길이(H), 간격(A), 라이너 폭(C), 모서리 반경(R) — 그리고 해당 공차', zh: '标签尺寸：宽度（B）、长度（H）、间距（A）、底纸宽度（C）、圆角半径（R）—— 以及适用的公差' },
+          { hu: 'Tekercsadatok: külső átmérő (Ø D), magátmérő (Ø d), belülre vagy kívülre tekercselt', en: 'Roll data: outer diameter (Ø D), core diameter (Ø d), wound inside or outside', de: 'Rollendaten: Außendurchmesser (Ø D), Kerndurchmesser (Ø d), innen oder außen gewickelt', ko: '라벨 롤 데이터: 외경(Ø D), 지관 내경(Ø d), 내권 또는 외권', zh: '标签卷数据：外径（Ø D）、卷芯内径（Ø d）、内卷或外卷' },
+          { hu: 'Címke alapanyaga és vastagsága, a hordozó (liner) anyaga és vastagsága, a címke színe', en: 'Face material and thickness, liner material and thickness, label colour', de: 'Obermaterial und dessen Dicke, Trägermaterial und dessen Dicke, Etikettenfarbe', ko: '표면재의 재질과 두께, 라이너의 재질과 두께, 라벨 색상', zh: '面材材质和厚度、底纸材质和厚度、标签颜色' },
+          { hu: 'Festékszalag: szélesség, minőség (wax / wax-resin / resin), futáshossz, tekercselés iránya', en: 'Thermal transfer ribbon: width, quality (wax / wax-resin / resin), length, winding direction', de: 'Thermotransfer-Farbband: Breite, Qualität (Wachs / Wachs-Harz / Harz), Länge, Wickelrichtung', ko: '열전사 리본: 폭, 품질(왁스 / 왁스-레진 / 레진), 길이, 권취 방향', zh: '热转印碳带：宽度、类型（蜡基／混合基／树脂基）、长度、卷绕方向' },
+          { hu: 'Van-e címkeminta és méretezett rajz — ezek felgyorsítják a tervezést', en: 'Whether a label sample and a dimensioned drawing are available — these speed up the design', de: 'Ob ein Etikettenmuster und eine bemaßte Zeichnung vorliegen — diese beschleunigen die Auslegung', ko: '라벨 샘플과 치수 기입 도면의 확보 여부 — 이는 설계 속도를 높여 줍니다', zh: '是否具备标签样品和标注尺寸的图纸 —— 这些能加快设计进度' },
+        ],
+      },
+      {
+        title: { hu: '2. A termék adatai', en: '2. Product data', de: '2. Produktdaten', ko: '2. 제품 데이터', zh: '2. 产品数据' },
+        paragraphs: [
+          {
+            hu: 'A címkézendő termék anyaga és mérete dönti el, hogy milyen felrakási módszer működik: a ragasztó máshogy tapad kartonra, üvegre vagy szilikonos felületre, és a mérettűrés befolyásolja a felrakófej lökethosszát.',
+            en: 'The material and size of the product decide which application method works: adhesive behaves differently on cardboard, glass or a silicone surface, and dimensional tolerance affects the stroke length of the tamp pad.', de: 'Material und Größe des Produkts entscheiden darüber, welches Aufbringverfahren funktioniert: Der Klebstoff verhält sich auf Karton, Glas oder einer Silikonoberfläche unterschiedlich, und die Maßtoleranz wirkt sich auf die Hublänge des Druckstempels aus.', ko: '제품의 재질과 크기는 어떤 부착 방식이 적합한지를 결정합니다. 접착제는 판지, 유리, 실리콘 표면에서 각각 다르게 거동하며, 치수 공차는 태핑 패드의 스트로크 길이에 영향을 줍니다.', zh: '产品的材质和尺寸决定采用哪种贴标方式：不干胶在纸板、玻璃或硅胶表面上的附着表现各不相同，而尺寸公差会影响贴标头的行程长度。',
+          },
+        ],
+        bullets: [
+          { hu: 'Anyag: karton/papír, üveg, gumi, műanyag fólia, fém, fa vagy egyéb', en: 'Material: cardboard/paper, glass, rubber, plastic film, metal, wood or other', de: 'Material: Karton/Papier, Glas, Gummi, Kunststofffolie, Metall, Holz oder Sonstiges', ko: '재질: 판지/종이, 유리, 고무, 플라스틱 필름, 금속, 목재 또는 기타', zh: '材质：纸板／纸张、玻璃、橡胶、塑料薄膜、金属、木材或其他' },
+          { hu: 'A munkadarab tömege (kg) és méretei — állandó vagy változó méret (tól–ig értékekkel)', en: 'Weight of the workpiece (kg) and its dimensions — constant or variable size (with from–to values)', de: 'Gewicht des Werkstücks (kg) und dessen Abmessungen — gleichbleibende oder variable Größe (mit Von-bis-Werten)', ko: '작업물의 중량(kg)과 치수 — 크기가 일정한지 가변인지(최소–최대 값 포함)', zh: '工件重量（kg）及其尺寸 —— 尺寸恒定或可变（并给出起止数值）' },
+          { hu: 'Termékminta és rajz a címkézési pozícióval megjelölve', en: 'Product sample and a drawing with the labeling position marked', de: 'Produktmuster und eine Zeichnung mit eingezeichneter Etikettierposition', ko: '제품 샘플과 라벨 부착 위치가 표시된 도면', zh: '产品样品，以及标明贴标位置的图纸' },
+        ],
+      },
+      {
+        title: { hu: '3. A címkézési folyamat', en: '3. The labeling process', de: '3. Der Etikettierprozess', ko: '3. 라벨링 공정', zh: '3. 贴标工艺' },
+        paragraphs: [
+          {
+            hu: 'Itt derül ki, hogy elég-e egy kézi indítású állomás, vagy teljesen automata, szállítószalagra épített rendszer kell. A ciklusidő és a termékek közötti távolság közvetlenül meghatározza, melyik applikátor bírja a tempót.',
+            en: 'This is where it turns out whether a manually triggered station is enough or a fully automatic, conveyor-mounted system is needed. Cycle time and the gap between products directly determine which applicator can keep up.', de: 'Hier zeigt sich, ob eine manuell ausgelöste Station ausreicht oder ob eine vollautomatische, am Förderband montierte Anlage erforderlich ist. Taktzeit und Abstand zwischen den Produkten bestimmen unmittelbar, welcher Applikator mithalten kann.', ko: '여기에서 수동으로 트리거하는 스테이션으로 충분한지, 아니면 컨베이어에 장착되는 완전 자동 시스템이 필요한지가 드러납니다. 사이클 타임과 제품 간 간격은 어떤 어플리케이터가 속도를 맞출 수 있는지를 직접적으로 결정합니다.', zh: '在这一环节可以判断是手动触发的贴标工位已经足够，还是需要安装在输送线上的全自动系统。节拍时间和产品之间的间距直接决定哪种贴标模块能够跟上生产。',
+          },
+        ],
+        bullets: [
+          { hu: 'Termék be- és kiadagolása: kézi vagy automata', en: 'Product feed and discharge: manual or automatic', de: 'Produktzuführung und -abführung: manuell oder automatisch', ko: '제품 공급 및 배출: 수동 또는 자동', zh: '产品进料和出料：手动或自动' },
+          { hu: 'A címkézés indítása: lábkapcsoló, kézi nyomógomb, érzékelő, PLC-jel vagy termékfelvétel érzékelővel', en: 'Triggering: foot switch, hand button, sensor, PLC signal or product pick-up with sensor', de: 'Auslösung: Fußschalter, Handtaster, Sensor, SPS-Signal oder Produktaufnahme mit Sensor', ko: '트리거 방식: 풋 스위치, 수동 버튼, 센서, PLC 신호 또는 센서를 이용한 제품 감지', zh: '触发方式：脚踏开关、手动按钮、传感器、PLC 信号或带传感器的产品取件' },
+          { hu: 'A termék a címkézés alatt áll vagy mozog — mozgás esetén állandó vagy változó szállítási sebesség (mm/s) és a termékek közötti távolság (mm)', en: 'Is the product at rest or in motion during labeling — if moving, constant or variable transport speed (mm/s) and the gap between products (mm)', de: 'Ob das Produkt beim Etikettieren steht oder sich bewegt — bei Bewegung: gleichbleibende oder variable Transportgeschwindigkeit (mm/s) und der Abstand zwischen den Produkten (mm)', ko: '라벨링 중 제품이 정지 상태인지 이동 상태인지 — 이동하는 경우 이송 속도(mm/s)가 일정한지 가변인지와 제품 간 간격(mm)', zh: '贴标时产品处于静止还是运动状态 —— 若为运动状态，需说明输送速度（mm/s）恒定还是可变，以及产品之间的间距（mm）' },
+          { hu: 'Teljesítményadatok: termék/perc, ciklusidő (s), üzemóra/nap, gyártási nap/év, éves címkeszám vagy nyomtatási futáshossz', en: 'Performance data: products/minute, cycle time (s), operating hours/day, production days/year, annual number of applications or print length', de: 'Leistungsdaten: Produkte/Minute, Taktzeit (s), Betriebsstunden/Tag, Produktionstage/Jahr, jährliche Anzahl der Etikettierungen oder Drucklänge', ko: '성능 데이터: 분당 제품 수, 사이클 타임(s), 1일 가동 시간, 연간 생산 일수, 연간 부착 횟수 또는 인쇄 길이', zh: '产能数据：产品数／分钟、节拍时间（s）、每天运行小时数、每年生产天数、年贴标次数或打印长度' },
+          { hu: 'Van-e termékfelvevő (fészek), és azt ki készíti', en: 'Is there a product nest, and who builds it', de: 'Ob eine Produktaufnahme vorhanden ist und wer sie baut', ko: '제품 안착부의 유무와 그 제작 주체', zh: '是否设有产品定位座，由谁制作' },
+        ],
+      },
+      {
+        title: { hu: '4. A címke helye és a felület', en: '4. Label position and surface', de: '4. Etikettenposition und Oberfläche', ko: '4. 라벨 위치와 표면', zh: '4. 标签位置和表面' },
+        paragraphs: [
+          {
+            hu: 'A felrakás iránya (elölről, oldalról, felülről, alulról, sarokra hajtva, hengerpalástra) és a felület alakja szabja meg az applikátor és a felrakófej kivitelét. A pozíciótűrés itt kulcskérdés: ±0,2 mm-es pontosság egészen más gépet igényel, mint ±2 mm.',
+            en: 'The application direction (from the front, side, top, bottom, wrapped around a corner, onto a cylinder) and the shape of the surface define the applicator and pad design. Position tolerance is key here: ±0.2 mm accuracy calls for a very different machine than ±2 mm.', de: 'Die Aufbringrichtung (von vorn, von der Seite, von oben, von unten, um eine Ecke gewickelt, auf einen Zylinder) und die Form der Oberfläche bestimmen die Auslegung von Applikator und Druckstempel. Entscheidend ist dabei die Positionstoleranz: Eine Genauigkeit von ±0,2 mm erfordert eine ganz andere Maschine als ±2 mm.', ko: '부착 방향(전면, 측면, 상면, 하면, 모서리 감싸기, 원통면)과 표면 형상은 어플리케이터와 패드 설계를 결정합니다. 여기서는 위치 공차가 핵심입니다. ±0.2 mm의 정밀도는 ±2 mm와는 전혀 다른 장비를 요구합니다.', zh: '贴标方向（从正面、侧面、顶部、底部、绕棱边包覆、贴到圆柱面上）以及表面形状决定贴标模块和压头的设计。位置公差在这里是关键：±0.2 mm 的精度要求与 ±2 mm 所需的设备完全不同。',
+          },
+        ],
+        bullets: [
+          { hu: 'Felrakás iránya: elölről, oldalról, felülről, alulról, kombinálva, sarokra átfordítva, hengerre oldalról vagy felülről, zászlósan, kúpos felületre', en: 'Application direction: front, side, top, bottom, combined, wrapped over a corner, onto a cylinder from the side or top, as a flag, onto a conical surface', de: 'Aufbringrichtung: von vorn, von der Seite, von oben, von unten, kombiniert, um eine Ecke gewickelt, auf einen Zylinder von der Seite oder von oben, als Fahnenetikett, auf eine konische Oberfläche', ko: '부착 방향: 전면, 측면, 상면, 하면, 복합, 모서리 감싸기, 원통면에 측면 또는 상면에서, 플래그 라벨 형태, 원뿔면', zh: '贴标方向：正面、侧面、顶部、底部、组合方式、绕棱边包覆、从侧面或顶部贴到圆柱面上、旗式标签、贴到锥面上' },
+          { hu: 'A címke pozíciója a terméken: X és Y méret a megadott ±tűréssel (±0,2 mm-től ±10 mm-ig)', en: 'Label position on the product: X and Y dimensions with the required ± tolerance (from ±0.2 mm to ±10 mm)', de: 'Etikettenposition auf dem Produkt: Maße in X und Y mit der geforderten ±-Toleranz (von ±0,2 mm bis ±10 mm)', ko: '제품상의 라벨 위치: 요구되는 ± 공차(±0.2 mm에서 ±10 mm까지)를 포함한 X 및 Y 치수', zh: '标签在产品上的位置：X 和 Y 方向尺寸及所需的 ± 公差（从 ±0.2 mm 到 ±10 mm）' },
+          { hu: 'A címkézendő felület jellege: sík, hullámos, kúpos, mélyített, rugalmas vagy merev; homorú/domború esetén a sugár (mm)', en: 'Nature of the labeled surface: flat, wavy, conical, recessed, flexible or rigid; for concave/convex surfaces the radius (mm)', de: 'Beschaffenheit der zu etikettierenden Oberfläche: eben, wellig, konisch, vertieft, flexibel oder starr; bei konkaven/konvexen Oberflächen der Radius (mm)', ko: '라벨이 부착되는 표면의 특성: 평면, 물결형, 원뿔형, 함몰형, 유연 또는 강성; 오목/볼록 표면의 경우 반경(mm)', zh: '被贴表面的性质：平面、波纹面、锥面、凹陷面、柔性或刚性；凹面／凸面还需给出半径（mm）' },
+          { hu: 'A szállítás iránya a szalagon (előre balra / hátra jobbra) — ez dönti el a bal- vagy jobboldali (L/R) gépkivitelt', en: 'Transport direction on the conveyor (forward to the left / backward to the right) — this decides the left- or right-hand (L/R) machine version', de: 'Transportrichtung auf dem Förderband (vorwärts nach links / rückwärts nach rechts) — davon hängt die links- oder rechtsseitige Maschinenausführung (L/R) ab', ko: '컨베이어의 이송 방향(좌측으로 전진 / 우측으로 후진) — 이는 좌측형 또는 우측형(L/R) 장비 사양을 결정합니다', zh: '输送机上的输送方向（向左为前进／向右为后退）—— 这决定设备采用左手还是右手（L/R）版本' },
+        ],
+      },
+      {
+        title: { hu: '5. Nyomtató és applikátor', en: '5. Printer and applicator', de: '5. Etikettendrucker und Applikator', ko: '5. 라벨 프린터와 어플리케이터', zh: '5. 打印机和贴标模块' },
+        paragraphs: [
+          {
+            hu: 'A fenti adatokból már kiválasztható a nyomtató (HERMES Q, Hermes C vagy SQUIX) és hozzá az applikátor. A nyomtatónál a fejszélesség (2", 4", 6"), a felbontás (200/300/600 dpi), a beépítési oldal (L/R) és a tekercstartó mérete (205 vagy 305 mm) a döntő paraméter.',
+            en: 'From the data above the printer (HERMES Q, Hermes C or SQUIX) and its applicator can be selected. For the printer the decisive parameters are the printhead width (2", 4", 6"), resolution (200/300/600 dpi), the installation side (L/R) and the unwinder size (205 or 305 mm).', de: 'Aus den obigen Daten lassen sich der Drucker (HERMES Q, Hermes C oder SQUIX) und der zugehörige Applikator auswählen. Beim Drucker sind die Druckkopfbreite (2", 4", 6"), die Auflösung (200/300/600 dpi), die Einbauseite (L/R) und die Größe des Abwicklers (205 oder 305 mm) die entscheidenden Parameter.', ko: '위의 데이터를 바탕으로 프린터(HERMES Q, Hermes C 또는 SQUIX)와 그에 맞는 어플리케이터를 선정할 수 있습니다. 프린터의 경우 프린트헤드 폭(2", 4", 6"), 해상도(200/300/600 dpi), 설치 방향(L/R), 언와인더 크기(205 또는 305 mm)가 결정적인 사양입니다.', zh: '根据以上数据即可选定打印机（HERMES Q、Hermes C 或 SQUIX）及其贴标模块。对打印机而言，决定性参数是打印头宽度（2"、4"、6"）、分辨率（200/300/600 dpi）、安装方向（L/R）和放卷器尺寸（205 或 305 mm）。',
+          },
+        ],
+        bullets: [
+          { hu: 'Applikátor típusa: karos (3014/3016), löketes (4014, 4114, 4414), forgó-löketes (4214), zászlós (4712), fúvó (6114) és egyedi kivitelek', en: 'Applicator type: swing-arm (3014/3016), stroke (4014, 4114, 4414), rotate-and-stroke (4214), flag (4712), blow-on (6114) and custom versions', de: 'Applikatortyp: Schwenkarm (3014/3016), Hub (4014, 4114, 4414), Dreh-Hub (4214), Fahnenapplikator (4712), Blasapplikator (6114) sowie Sonderausführungen', ko: '어플리케이터 유형: 스윙 암(3014/3016), 스트로크(4014, 4114, 4414), 회전 스트로크(4214), 플래그(4712), 블로우온(6114) 및 맞춤 사양', zh: '贴标模块类型：摆臂式（3014/3016）、行程式（4014、4114、4414）、旋转行程式（4214）、旗式（4712）、吹气式（6114）以及定制版本' },
+          { hu: 'Löket- vagy karhossz (mm), forgásszög (90° vagy 180°)', en: 'Stroke or arm length (mm), rotation angle (90° or 180°)', de: 'Hub- oder Armlänge (mm), Drehwinkel (90° oder 180°)', ko: '스트로크 또는 암 길이(mm), 회전 각도(90° 또는 180°)', zh: '行程或摆臂长度（mm）、旋转角度（90° 或 180°）' },
+          { hu: 'A nyomtató alsó éle és a termék közötti minimális és maximális távolság (mm)', en: 'Minimum and maximum distance between the printer’s bottom edge and the product (mm)', de: 'Minimaler und maximaler Abstand zwischen der Unterkante des Druckers und dem Produkt (mm)', ko: '프린터 하단면과 제품 사이의 최소 및 최대 거리(mm)', zh: '打印机下边缘与产品之间的最小和最大距离（mm）' },
+          { hu: 'Sűrített levegő: karbantartó egység, nyomáscsökkentő a löketszelephez, esetleg fúvószelep', en: 'Compressed air: service unit, pressure reducer for the stroke cylinder, optionally a blow valve', de: 'Druckluft: Druckluftwartungseinheit, Druckminderer für den Hubzylinder, optional ein Blasventil', ko: '압축 공기: 서비스 유닛, 스트로크 실린더용 감압 밸브, 선택 사양으로 블로우 밸브', zh: '压缩空气：气源处理单元、行程气缸用减压阀，可选配吹气阀' },
+          { hu: 'Adatátvitel és szoftver: Ethernet, USB, WLAN, PROFINET; cablabel S3, NiceLabel vagy más címkéző szoftver, illetve PLC-vezérlés', en: 'Connectivity and software: Ethernet, USB, WLAN, PROFINET; cablabel S3, NiceLabel or other labeling software, or PLC control', de: 'Anbindung und Software: Ethernet, USB, WLAN, PROFINET; cablabel S3, NiceLabel oder eine andere Etikettiersoftware, oder Steuerung über SPS', ko: '연결성 및 소프트웨어: Ethernet, USB, WLAN, PROFINET; cablabel S3, NiceLabel 또는 기타 라벨링 소프트웨어, 혹은 PLC 제어', zh: '接口和软件：Ethernet、USB、WLAN、PROFINET；cablabel S3、NiceLabel 或其他标签软件，或 PLC 控制' },
+        ],
+      },
+      {
+        title: { hu: '6. Felrakófej (bélyegző) kiválasztása', en: '6. Choosing the tamp pad', de: '6. Auswahl des Druckstempels', ko: '6. 태핑 패드 선정', zh: '6. 压头的选择' },
+        paragraphs: [
+          {
+            hu: 'A címke átadása a termékre több módon történhet, és ehhez igazodik a felrakófej felülete is. Egy sima műanyag doboz mást kíván, mint egy rugalmas fóliazacskó vagy egy szilikonos alkatrész.',
+            en: 'The label can be transferred to the product in several ways, and the pad surface follows suit. A smooth plastic box calls for something different than a flexible film bag or a silicone part.', de: 'Das Etikett lässt sich auf verschiedene Weise auf das Produkt übertragen, und die Stempeloberfläche richtet sich danach. Eine glatte Kunststoffbox erfordert etwas anderes als ein flexibler Folienbeutel oder ein Silikonteil.', ko: '라벨은 여러 방식으로 제품에 전달될 수 있으며, 패드 표면도 이에 맞춰 달라집니다. 매끄러운 플라스틱 상자에는 유연한 필름 백이나 실리콘 부품과는 다른 사양이 필요합니다.', zh: '标签可以通过多种方式转移到产品上，压头表面也随之不同。光滑的塑料盒所需的方案，与柔性薄膜袋或硅胶件完全不同。',
+          },
+        ],
+        bullets: [
+          { hu: 'Átadási mód: bélyegzés, rugós bélyegzés, ráfújás, ráhengerlés, körbecímkézés, zászlós felrakás, formára igazítás (szilikon), mechanikus adagolómodul', en: 'Transfer method: tamping, sprung tamping, blow-on, roll-on, wrap-around, flag application, form-fitting (silicone), mechanical dispensing module', de: 'Übertragungsverfahren: Stempeln, gefedertes Stempeln, Anblasen, Anrollen, Umwickeln, Fahnenetikettierung, formschlüssig (Silikon), mechanisches Spendemodul', ko: '전달 방식: 태핑, 스프링 태핑, 블로우온, 롤온, 감싸 붙이기, 플래그 라벨 부착, 형상 밀착(실리콘), 기계식 디스펜싱 모듈', zh: '转移方式：直压式、弹簧压式、吹气式、滚压式、包覆式、旗式贴标、贴合成型（硅胶）、机械剥标模块' },
+          { hu: 'Bélyegzőfelület: csupasz, csúszófóliás/teflonos, csillapított + csúszófóliás, gumis (Bumpon), szilikonos, címkeütközővel', en: 'Pad surface: blank, gliding film/PTFE-coated, damped + gliding film, rubber (Bumpon), silicone, with label stop', de: 'Stempeloberfläche: blank, mit Gleitfolie/PTFE-beschichtet, gedämpft + Gleitfolie, Gummi (Bumpon), Silikon, mit Etikettenanschlag', ko: '패드 표면: 무처리, 슬라이딩 필름/PTFE 코팅, 완충 + 슬라이딩 필름, 고무(Bumpon), 실리콘, 라벨 스토퍼 부착', zh: '压头表面：无涂层、滑动膜／PTFE 涂层、缓冲＋滑动膜、橡胶（Bumpon）、硅胶、带标签止挡' },
+          { hu: 'Univerzális bélyegzők bevett méretekben (pl. 90×90, 116×102, 116×152 mm) vagy egyedi forma', en: 'Universal pads in standard sizes (e.g. 90×90, 116×102, 116×152 mm) or a custom shape', de: 'Universalstempel in Standardgrößen (z. B. 90×90, 116×102, 116×152 mm) oder eine Sonderform', ko: '표준 규격의 범용 패드(예: 90×90, 116×102, 116×152 mm) 또는 맞춤 형상', zh: '标准尺寸的通用压头（例如 90×90、116×102、116×152 mm）或定制形状' },
+          { hu: 'Gyorscserélő rendszer, ha több címkeformátum váltakozik — adja meg a második/harmadik formátumot és a napi váltások számát', en: 'Quick-change system if several label formats alternate — state the second/third format and the number of changeovers per day', de: 'Schnellwechselsystem, wenn mehrere Etikettenformate wechseln — bitte das zweite/dritte Format und die Anzahl der Umrüstungen pro Tag angeben', ko: '여러 라벨 규격을 번갈아 사용하는 경우 퀵 체인지 시스템 — 두 번째/세 번째 규격과 1일 교체 횟수를 기재해 주십시오', zh: '若需交替使用多种标签规格，则配置快换系统 —— 请说明第二／第三种规格以及每天的换型次数' },
+        ],
+      },
+      {
+        title: { hu: '7. Zászlócímkézés kábelekre', en: '7. Flag labeling on cables', de: '7. Fahnenetikettierung an Kabeln', ko: '7. 케이블 플래그 라벨링', zh: '7. 线缆旗式贴标' },
+        paragraphs: [
+          {
+            hu: 'A kábelekre és vezetékekre felhajtott „zászló” alakú címke külön adatlapot kap, mert szűkebbek a mérethatárok. A cab 4712-es zászlóapplikátorával a címke a kábel köré fordul, és a két vége összeragad — az így keletkező felület marad olvasható.',
+            en: 'The wrapped “flag” label on cables and wires has its own checklist because the size limits are tighter. With cab’s 4712 flag applicator the label wraps around the cable and its two ends stick together — the resulting tab stays readable.', de: 'Das umwickelte „Fahnenetikett“ an Kabeln und Leitungen hat eine eigene Checkliste, weil die Größengrenzen enger sind. Mit dem Fahnenapplikator 4712 von cab wird das Etikett um das Kabel gelegt und seine beiden Enden verkleben miteinander — die so entstehende Fahne bleibt lesbar.', ko: '케이블과 전선에 감아 붙이는 “플래그 라벨”은 크기 제한이 더 엄격하기 때문에 별도의 체크리스트가 필요합니다. cab의 4712 플래그 어플리케이터에서는 라벨이 케이블을 감싸고 양쪽 끝이 서로 맞붙으며, 이렇게 형성된 탭은 판독 가능한 상태로 유지됩니다.', zh: '线缆和导线上的包覆式“旗式”标签有其专属的检查清单，因为尺寸限制更为严格。使用 cab 4712 旗式贴标模块时，标签绕线缆包覆一周，两端相互粘合 —— 由此形成的标签旗保持清晰可读。',
+          },
+        ],
+        bullets: [
+          { hu: 'Címke: szélesség (B) 50–100 mm, magasság (H) 10–50 mm, címkeköz (A) 2–5 mm, hordozószélesség (C) 62–106 mm', en: 'Label: width (B) 50–100 mm, height (H) 10–50 mm, gap (A) 2–5 mm, liner width (C) 62–106 mm', de: 'Etikett: Breite (B) 50–100 mm, Höhe (H) 10–50 mm, Abstand (A) 2–5 mm, Breite des Trägermaterials (C) 62–106 mm', ko: '라벨: 폭(B) 50–100 mm, 높이(H) 10–50 mm, 간격(A) 2–5 mm, 라이너 폭(C) 62–106 mm', zh: '标签：宽度（B）50–100 mm、高度（H）10–50 mm、间距（A）2–5 mm、底纸宽度（C）62–106 mm' },
+          { hu: 'Zászlóhossz (L) 20–45 mm; kábelátmérő 3–16 mm, a belső átmérő tartománya 1–3 mm', en: 'Flag length (L) 20–45 mm; cable diameter 3–16 mm, inner diameter range 1–3 mm', de: 'Fahnenlänge (L) 20–45 mm; Kabeldurchmesser 3–16 mm, Innendurchmesserbereich 1–3 mm', ko: '플래그 길이(L) 20–45 mm; 케이블 직경 3–16 mm, 내경 범위 1–3 mm', zh: '旗部长度（L）20–45 mm；线缆直径 3–16 mm，内径范围 1–3 mm' },
+          { hu: '60 mm-nél keskenyebb címkéhez távtartó szükséges a nyomtatóban', en: 'Labels narrower than 60 mm require a spacer in the printer', de: 'Etiketten mit einer Breite unter 60 mm erfordern ein Distanzstück im Drucker', ko: '폭이 60 mm 미만인 라벨에는 프린터에 스페이서가 필요합니다', zh: '宽度小于 60 mm 的标签需要在打印机内加装隔片' },
+          { hu: 'A kábel egyik oldalán legalább 60 mm szabad hely kell — csatlakozó, hajlítás vagy lépcső nélkül', en: 'At least 60 mm of free space is needed on one side of the cable — with no connector, bend or step', de: 'Auf einer Seite des Kabels werden mindestens 60 mm freier Raum benötigt — ohne Stecker, Biegung oder Absatz', ko: '케이블의 한쪽에 최소 60 mm의 여유 공간이 필요하며, 커넥터나 굴곡, 단차가 없어야 합니다', zh: '线缆一侧至少需要 60 mm 的自由空间 —— 其间不得有连接器、弯曲或台阶' },
+          { hu: 'A kábel merev vagy rugalmas voltát is jelezni kell, mert ez befolyásolja a felfogatást', en: 'Whether the cable is rigid or flexible must be stated, as it affects the fixture', de: 'Es ist anzugeben, ob das Kabel starr oder flexibel ist, da dies die Aufnahmevorrichtung beeinflusst', ko: '케이블이 강성인지 유연한지 반드시 명시해야 하며, 이는 고정 지그에 영향을 줍니다', zh: '必须说明线缆是刚性还是柔性的，因为这会影响夹具设计' },
+        ],
+      },
+      {
+        title: { hu: '8. Amit küldjön el nekünk', en: '8. What to send us', de: '8. Was Sie uns senden sollten', ko: '8. 보내주실 자료', zh: '8. 请提供给我们的资料' },
+        paragraphs: [
+          {
+            hu: 'Minél több adat áll rendelkezésre, annál pontosabb az ajánlat és annál kisebb az esély a beüzemeléskori meglepetésekre. A legfontosabb mellékletek:',
+            en: 'The more data available, the more precise the quotation and the smaller the chance of surprises at commissioning. The most important attachments:', de: 'Je mehr Daten vorliegen, desto genauer das Angebot und desto geringer die Gefahr von Überraschungen bei der Inbetriebnahme. Die wichtigsten Anlagen:', ko: '확보된 데이터가 많을수록 견적이 정확해지고 시운전 단계에서 예상치 못한 문제가 발생할 가능성이 줄어듭니다. 가장 중요한 첨부 자료는 다음과 같습니다:', zh: '可用的数据越多，报价就越精确，调试时出现意外的可能性也越小。最重要的附件：',
+          },
+        ],
+        bullets: [
+          { hu: 'Méretezett címkerajz és lehetőleg egy teljes mintatekercs (a festékszalagból is)', en: 'A dimensioned label drawing and ideally a full sample roll (of the ribbon as well)', de: 'Eine bemaßte Etikettenzeichnung und idealerweise eine vollständige Musterrolle (auch vom Farbband)', ko: '치수가 기입된 라벨 도면과, 가능하다면 온전한 샘플 롤(리본 포함)', zh: '标注尺寸的标签图纸，最好还有一整卷样品（碳带样品同样如此）' },
+          { hu: 'Termékrajz a címke helyének megjelölésével, valamint termékminta', en: 'Product drawing with the label position marked, plus a product sample', de: 'Produktzeichnung mit eingezeichneter Etikettenposition sowie ein Produktmuster', ko: '라벨 위치가 표시된 제품 도면과 제품 샘플', zh: '标明贴标位置的产品图纸，以及产品样品' },
+          { hu: 'A beépítési helyzet rajza — 3D modell (STP) vagy 2D rajz (PDF) formájában', en: 'Drawing of the installation situation — as a 3D model (STP) or a 2D drawing (PDF)', de: 'Zeichnung der Einbausituation — als 3D-Modell (STP) oder als 2D-Zeichnung (PDF)', ko: '설치 환경 도면 — 3D 모델(STP) 또는 2D 도면(PDF)', zh: '安装现场的图纸 —— 3D 模型（STP）或 2D 图纸（PDF）' },
+          { hu: 'Műszaki elvárások (specifikáció), ha van, valamint fotó vagy rövid videó a jelenlegi folyamatról', en: 'Technical specification if available, plus a photo or short video of the current process', de: 'Technisches Lastenheft, sofern vorhanden, sowie ein Foto oder ein kurzes Video des aktuellen Prozesses', ko: '기술 사양서가 있는 경우 해당 자료, 그리고 현재 공정의 사진 또는 짧은 동영상', zh: '如有技术规格书请一并提供，另附现有工艺的照片或短视频' },
+          { hu: 'A kívánt szállítási határidő és a tervezett éves mennyiség', en: 'The required delivery date and the planned annual volume', de: 'Der gewünschte Liefertermin und die geplante Jahresstückzahl', ko: '요구 납기일과 계획된 연간 물량', zh: '所需交货日期和计划年产量' },
+        ],
+        files: [
+          {
+            href: '/datasheets/cab-checkliste-etikettierung.pdf',
+            label: { hu: 'cab címkézési adatlap (PDF)', en: 'cab labeling checklist (PDF)', de: 'cab Checkliste Etikettierung (PDF)', ko: 'cab 라벨링 체크리스트 (PDF)', zh: 'cab 贴标项目清单 (PDF)' },
+          },
+          {
+            href: '/datasheets/cab-checkliste-fahnenetikett.pdf',
+            label: { hu: 'cab zászlócímke adatlap (PDF)', en: 'cab flag label checklist (PDF)', de: 'cab Checkliste Fahnenetikett (PDF)', ko: 'cab 플래그 라벨 체크리스트 (PDF)', zh: 'cab 旗式标签项目清单 (PDF)' },
+          },
+        ],
+        link: {
+          href: '/kapcsolat',
+          label: { hu: 'Küldje el az adatokat — segítünk a tervezésben', en: 'Send us the data — we help with the design', de: 'Senden Sie uns die Daten — wir helfen bei der Auslegung', ko: '데이터를 보내주시면 설계를 도와드리겠습니다', zh: '把数据发给我们 —— 我们协助完成方案设计' },
         },
       },
     ],
