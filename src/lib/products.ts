@@ -193,6 +193,30 @@ export const categories: Category[] = [
 
 export const products: Product[] = [
   {
+    slug: 'cab-squix-2',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 2',
+    brand: 'CAB',
+    short: {
+      hu: 'Keskeny ipari modell 2"-es nyomtatófejjel, nagy mennyiségű nyomtatásra.',
+      en: 'Narrow industrial model with a 2" printhead for high-volume printing.',
+    },
+    description: {
+      hu: 'A SQUIX 2 a keskeny címkék specialistája a SQUIX családban: 300 vagy 600 dpi felbontás, akár 250 mm/s nyomtatási sebesség és 56,9 mm nyomtatási szélesség. Ipari megbízhatóság kis címkeméretekhez, balra igazított anyagvezetéssel, robusztus alumínium mechanikával és a teljes SQUIX tartozékpalettával.',
+      en: 'The SQUIX 2 specialises in narrow labels within the SQUIX family: 300 or 600 dpi resolution, up to 250 mm/s print speed and 56.9 mm print width. Industrial reliability for small label sizes, with a left-aligned media guide, a robust aluminium mechanism and the full SQUIX range of accessories.',
+    },
+    features: [
+      { hu: '300 / 600 dpi felbontás', en: '300 / 600 dpi resolution' },
+      { hu: 'Nyomtatási sebesség akár 250 mm/s', en: 'Print speed up to 250 mm/s' },
+      { hu: 'Nyomtatási szélesség 56,9 mm (2")', en: 'Print width 56.9 mm (2")' },
+      { hu: 'Keskeny, kis címkékhez', en: 'For narrow, small labels' },
+      { hu: 'SQUIX elektronika és tartozékok', en: 'SQUIX electronics and accessories' },
+    ],
+    image: '/images/products/cab-squix-2.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+  },
+  {
     slug: 'cab-squix-4',
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 4',
@@ -218,28 +242,74 @@ export const products: Product[] = [
     videoId: 'o2eKZGETCPk',
   },
   {
-    slug: 'cab-squix-2',
+    slug: 'cab-squix-4m',
     category: 'cimkenyomtatok',
-    name: 'CAB SQUIX 2',
+    name: 'CAB SQUIX 4 M',
     brand: 'CAB',
-    short: {
-      hu: 'Keskeny ipari modell 2"-es nyomtatófejjel, nagy mennyiségű nyomtatásra.',
-      en: 'Narrow industrial model with a 2" printhead for high-volume printing.',
-    },
-    description: {
-      hu: 'A SQUIX 2 a keskeny címkék specialistája a SQUIX családban: 300 vagy 600 dpi felbontás, akár 250 mm/s nyomtatási sebesség és 56,9 mm nyomtatási szélesség. Ipari megbízhatóság kis címkeméretekhez, balra igazított anyagvezetéssel, robusztus alumínium mechanikával és a teljes SQUIX tartozékpalettával.',
-      en: 'The SQUIX 2 specialises in narrow labels within the SQUIX family: 300 or 600 dpi resolution, up to 250 mm/s print speed and 56.9 mm print width. Industrial reliability for small label sizes, with a left-aligned media guide, a robust aluminium mechanism and the full SQUIX range of accessories.',
-    },
-    features: [
-      { hu: '300 / 600 dpi felbontás', en: '300 / 600 dpi resolution' },
-      { hu: 'Nyomtatási sebesség akár 250 mm/s', en: 'Print speed up to 250 mm/s' },
-      { hu: 'Nyomtatási szélesség 56,9 mm (2")', en: 'Print width 56.9 mm (2")' },
-      { hu: 'Keskeny, kis címkékhez', en: 'For narrow, small labels' },
-      { hu: 'SQUIX elektronika és tartozékok', en: 'SQUIX electronics and accessories' },
-    ],
-    image: '/images/products/cab-squix-2.png',
+    image: '/images/products/cab-squix-4m.png',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari nyomtató kifejezetten apró címkékhez és keskeny, végtelenített anyagokhoz.',
+      en: 'Industrial printer specifically for very small labels and slim continuous materials.',
+    },
+    description: {
+      hu: 'A SQUIX 4 M a nagyon kicsi címkék és keskeny, végtelenített anyagok (pl. lapított zsugorcsövek) precíz nyomtatására készült, középre igazított anyagvezetéssel — így nincs szükség beállításra anyagváltáskor. 300 vagy 600 dpi felbontás, akár 300 mm/s sebesség, és a SQUIX ipari megbízhatósága, teljes tartozékpalettával.',
+      en: 'The SQUIX 4 M is built for precise printing of very small labels and slim continuous materials (e.g. pressed tubes), with a centered media guide — so no adjustment is needed when changing materials. 300 or 600 dpi resolution, up to 300 mm/s, and SQUIX industrial reliability with the full range of accessories.',
+    },
+    features: [
+      { hu: 'Apró címkékhez és keskeny, végtelenített anyagokhoz', en: 'For small labels and slim continuous materials' },
+      { hu: 'Középre igazított anyagvezetés', en: 'Centered media guide' },
+      { hu: '300 / 600 dpi felbontás, akár 300 mm/s', en: '300 / 600 dpi resolution, up to 300 mm/s' },
+      { hu: 'SQUIX elektronika és tartozékok', en: 'SQUIX electronics and accessories' },
+    ],
+  },
+  {
+    slug: 'cab-squix-4mt',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 4 MT',
+    brand: 'CAB',
+    image: '/images/products/cab-squix-4mt.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari nyomtató textil alapanyagokhoz — mosás- és varrócímkékhez.',
+      en: 'Industrial printer for textile materials — wash-care and sewn-in labels.',
+    },
+    description: {
+      hu: 'A SQUIX 4 MT textilszalagok és mosáscímkék nyomtatására optimalizált, középre igazított anyagvezetésű változat. Magas hőenergiát igénylő textileknél a festékszalag a nyomtatás után a szalaghoz tapadhat — ezt a beépített húzógörgő megbízhatóan leválasztja az anyagról. A textiliparra szabott anyagkezelés és a SQUIX platform megbízhatósága.',
+      en: 'The SQUIX 4 MT is optimised for printing textile ribbons and wash-care labels, with a centered media guide. When textiles require high heat, the ribbon may stick to the tape after printing — a built-in draw roller reliably separates it from the material. Media handling tailored to the textile industry, with SQUIX platform reliability.',
+    },
+    features: [
+      { hu: 'Textilszalag és mosáscímke nyomtatása', en: 'Printing textile ribbons & wash-care labels' },
+      { hu: 'Húzógörgő a festékszalag leválasztásához', en: 'Draw roller to separate the ribbon' },
+      { hu: 'Középre igazított anyagvezetés', en: 'Centered media guide' },
+      { hu: 'SQUIX platform megbízhatósága', en: 'SQUIX platform reliability' },
+    ],
+  },
+  {
+    slug: 'cab-squix-6',
+    category: 'cimkenyomtatok',
+    name: 'CAB SQUIX 6.3',
+    brand: 'CAB',
+    image: '/images/products/cab-squix-6.png',
+    datasheet: '/datasheets/cab-squix.pdf',
+    videoId: 'o2eKZGETCPk',
+    short: {
+      hu: 'Ipari címkenyomtató 6"-es fejjel, széles címkékhez és nagy mennyiséghez.',
+      en: 'Industrial label printer with a 6" head for wide labels and high volumes.',
+    },
+    description: {
+      hu: 'A SQUIX 6.3 a SQUIX család legszélesebb ipari tagja Odette-, UCC- és GS1-címkékhez a logisztikában: 203 vagy 300 dpi felbontás, akár 250 mm/s sebesség és 168 mm nyomtatási szélesség. Robusztus alumínium mechanika és váz, balra igazított anyagvezetés, és a teljes SQUIX tartozékpaletta a nagy formátumú, folyamatos nyomtatáshoz.',
+      en: 'The SQUIX 6.3 is the widest industrial member of the SQUIX family, for Odette, UCC and GS1 labels in logistics: 203 or 300 dpi resolution, up to 250 mm/s and 168 mm print width. A robust aluminium mechanism and chassis, left-aligned media guide and the full SQUIX range of accessories for large-format, continuous printing.',
+    },
+    features: [
+      { hu: '203 / 300 dpi felbontás', en: '203 / 300 dpi resolution' },
+      { hu: 'Nyomtatási sebesség akár 250 mm/s', en: 'Print speed up to 250 mm/s' },
+      { hu: 'Nyomtatási szélesség 168 mm (6")', en: 'Print width 168 mm (6")' },
+      { hu: 'Odette, UCC és GS1 logisztikai címkékhez', en: 'For Odette, UCC and GS1 logistics labels' },
+      { hu: 'Letépő, adagoló vagy vágó kivitel', en: 'Tear-off, peel-off or cutter version' },
+    ],
   },
   {
     slug: 'cab-eos2',
@@ -405,78 +475,6 @@ export const products: Product[] = [
     image: '/images/products/cab-xc6.png',
     datasheet: '/datasheets/cab-xcq.pdf',
     videoId: 'xqlxvt3fOX4',
-  },
-
-  // ——— CAB — további címkenyomtatók ———
-  {
-    slug: 'cab-squix-6',
-    category: 'cimkenyomtatok',
-    name: 'CAB SQUIX 6.3',
-    brand: 'CAB',
-    image: '/images/products/cab-squix-6.png',
-    datasheet: '/datasheets/cab-squix.pdf',
-    videoId: 'o2eKZGETCPk',
-    short: {
-      hu: 'Ipari címkenyomtató 6"-es fejjel, széles címkékhez és nagy mennyiséghez.',
-      en: 'Industrial label printer with a 6" head for wide labels and high volumes.',
-    },
-    description: {
-      hu: 'A SQUIX 6.3 a SQUIX család legszélesebb ipari tagja Odette-, UCC- és GS1-címkékhez a logisztikában: 203 vagy 300 dpi felbontás, akár 250 mm/s sebesség és 168 mm nyomtatási szélesség. Robusztus alumínium mechanika és váz, balra igazított anyagvezetés, és a teljes SQUIX tartozékpaletta a nagy formátumú, folyamatos nyomtatáshoz.',
-      en: 'The SQUIX 6.3 is the widest industrial member of the SQUIX family, for Odette, UCC and GS1 labels in logistics: 203 or 300 dpi resolution, up to 250 mm/s and 168 mm print width. A robust aluminium mechanism and chassis, left-aligned media guide and the full SQUIX range of accessories for large-format, continuous printing.',
-    },
-    features: [
-      { hu: '203 / 300 dpi felbontás', en: '203 / 300 dpi resolution' },
-      { hu: 'Nyomtatási sebesség akár 250 mm/s', en: 'Print speed up to 250 mm/s' },
-      { hu: 'Nyomtatási szélesség 168 mm (6")', en: 'Print width 168 mm (6")' },
-      { hu: 'Odette, UCC és GS1 logisztikai címkékhez', en: 'For Odette, UCC and GS1 logistics labels' },
-      { hu: 'Letépő, adagoló vagy vágó kivitel', en: 'Tear-off, peel-off or cutter version' },
-    ],
-  },
-  {
-    slug: 'cab-squix-4m',
-    category: 'cimkenyomtatok',
-    name: 'CAB SQUIX 4 M',
-    brand: 'CAB',
-    image: '/images/products/cab-squix-4m.png',
-    datasheet: '/datasheets/cab-squix.pdf',
-    videoId: 'o2eKZGETCPk',
-    short: {
-      hu: 'Ipari nyomtató kifejezetten apró címkékhez és keskeny, végtelenített anyagokhoz.',
-      en: 'Industrial printer specifically for very small labels and slim continuous materials.',
-    },
-    description: {
-      hu: 'A SQUIX 4 M a nagyon kicsi címkék és keskeny, végtelenített anyagok (pl. lapított zsugorcsövek) precíz nyomtatására készült, középre igazított anyagvezetéssel — így nincs szükség beállításra anyagváltáskor. 300 vagy 600 dpi felbontás, akár 300 mm/s sebesség, és a SQUIX ipari megbízhatósága, teljes tartozékpalettával.',
-      en: 'The SQUIX 4 M is built for precise printing of very small labels and slim continuous materials (e.g. pressed tubes), with a centered media guide — so no adjustment is needed when changing materials. 300 or 600 dpi resolution, up to 300 mm/s, and SQUIX industrial reliability with the full range of accessories.',
-    },
-    features: [
-      { hu: 'Apró címkékhez és keskeny, végtelenített anyagokhoz', en: 'For small labels and slim continuous materials' },
-      { hu: 'Középre igazított anyagvezetés', en: 'Centered media guide' },
-      { hu: '300 / 600 dpi felbontás, akár 300 mm/s', en: '300 / 600 dpi resolution, up to 300 mm/s' },
-      { hu: 'SQUIX elektronika és tartozékok', en: 'SQUIX electronics and accessories' },
-    ],
-  },
-  {
-    slug: 'cab-squix-4mt',
-    category: 'cimkenyomtatok',
-    name: 'CAB SQUIX 4 MT',
-    brand: 'CAB',
-    image: '/images/products/cab-squix-4mt.png',
-    datasheet: '/datasheets/cab-squix.pdf',
-    videoId: 'o2eKZGETCPk',
-    short: {
-      hu: 'Ipari nyomtató textil alapanyagokhoz — mosás- és varrócímkékhez.',
-      en: 'Industrial printer for textile materials — wash-care and sewn-in labels.',
-    },
-    description: {
-      hu: 'A SQUIX 4 MT textilszalagok és mosáscímkék nyomtatására optimalizált, középre igazított anyagvezetésű változat. Magas hőenergiát igénylő textileknél a festékszalag a nyomtatás után a szalaghoz tapadhat — ezt a beépített húzógörgő megbízhatóan leválasztja az anyagról. A textiliparra szabott anyagkezelés és a SQUIX platform megbízhatósága.',
-      en: 'The SQUIX 4 MT is optimised for printing textile ribbons and wash-care labels, with a centered media guide. When textiles require high heat, the ribbon may stick to the tape after printing — a built-in draw roller reliably separates it from the material. Media handling tailored to the textile industry, with SQUIX platform reliability.',
-    },
-    features: [
-      { hu: 'Textilszalag és mosáscímke nyomtatása', en: 'Printing textile ribbons & wash-care labels' },
-      { hu: 'Húzógörgő a festékszalag leválasztásához', en: 'Draw roller to separate the ribbon' },
-      { hu: 'Középre igazított anyagvezetés', en: 'Centered media guide' },
-      { hu: 'SQUIX platform megbízhatósága', en: 'SQUIX platform reliability' },
-    ],
   },
   {
     slug: 'cab-xd-q',
