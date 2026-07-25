@@ -1,6 +1,7 @@
 /*!
- * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN)
- * Verzió: 1.1 (2026-07-24) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
+ * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN + DE + KO + ZH)
+ * Verzió: 1.2 (2026-07-25) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
+ * 1.2: német, koreai és kínai felirat-fordítások; a szöveg tartalma változatlan.
  *
  * BEILLESZTÉS / INTEGRATION
  * -------------------------
@@ -42,9 +43,8 @@
   var LANG_DAYS = 183;
 
   var LANG = (document.documentElement.lang || 'hu').slice(0, 2).toLowerCase();
-  if (LANG !== 'en') LANG = 'hu';
 
-  var T = {
+  var T_ALL = {
     hu: {
       policyUrl: (window.__BLUEWAY_BASE__ || '') + '/adatkezelesi-tajekoztato.html',
       bannerTitle: 'Sütiket használunk',
@@ -84,8 +84,70 @@
       cancel: 'Cancel',
       placeholder: 'To display this content (Google Maps), third-party cookies must be enabled. ',
       placeholderLink: 'Open cookie settings'
+    },
+    de: {
+      policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
+      bannerTitle: 'Wir verwenden Cookies',
+      bannerText: 'Unsere Website verwendet unbedingt erforderliche Cookies sowie – nur mit Ihrer Einwilligung – Präferenz-Cookies (Spracheinstellung) und Cookies von Drittanbietern (Google Maps). Details: ',
+      policyLink: 'Datenschutzerklärung (EN)',
+      acceptAll: 'Alle akzeptieren',
+      rejectAll: 'Nur erforderliche',
+      settings: 'Einstellungen',
+      dialogTitle: 'Cookie-Einstellungen',
+      catNecessary: 'Unbedingt erforderliche Cookies',
+      catNecessaryDesc: 'Erforderlich für den Betrieb der Website und die Speicherung Ihrer Auswahl (blueway_consent). Keine Einwilligung erforderlich.',
+      catPref: 'Präferenz-Cookies',
+      catPrefDesc: 'Speicherung Ihrer Sprachwahl (blueway_lang, 6 Monate).',
+      catThird: 'Cookies von Drittanbietern',
+      catThirdDesc: 'Anzeige der Google-Maps-Karte (Cookies von google.com, z. B. NID). Daten können unter den Garantien des EU-US Data Privacy Framework (DPF) in die USA übermittelt werden.',
+      save: 'Einstellungen speichern',
+      cancel: 'Abbrechen',
+      placeholder: 'Zur Anzeige dieses Inhalts (Google Maps) müssen Drittanbieter-Cookies aktiviert werden. ',
+      placeholderLink: 'Cookie-Einstellungen öffnen'
+    },
+    ko: {
+      policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
+      bannerTitle: '쿠키를 사용합니다',
+      bannerText: '본 웹사이트는 반드시 필요한 쿠키를 사용하며, 귀하의 동의가 있는 경우에만 환경설정 쿠키(언어 설정)와 제3자 쿠키(Google Maps)를 사용합니다. 자세한 내용: ',
+      policyLink: '개인정보 처리방침 (EN)',
+      acceptAll: '모두 허용',
+      rejectAll: '필수만 허용',
+      settings: '설정',
+      dialogTitle: '쿠키 설정',
+      catNecessary: '반드시 필요한 쿠키',
+      catNecessaryDesc: '웹사이트 운영과 귀하의 선택 저장(blueway_consent)에 필요합니다. 동의가 필요하지 않습니다.',
+      catPref: '환경설정 쿠키',
+      catPrefDesc: '선택한 언어를 기억합니다 (blueway_lang, 6개월).',
+      catThird: '제3자 쿠키',
+      catThirdDesc: 'Google Maps 지도 표시 (google.com이 설정하는 쿠키, 예: NID). 데이터는 EU-미국 데이터 프라이버시 프레임워크(DPF)의 보호 조치에 따라 미국으로 이전될 수 있습니다.',
+      save: '설정 저장',
+      cancel: '취소',
+      placeholder: '이 콘텐츠(Google Maps)를 표시하려면 제3자 쿠키를 허용해야 합니다. ',
+      placeholderLink: '쿠키 설정 열기'
+    },
+    zh: {
+      policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
+      bannerTitle: '我们使用 Cookie',
+      bannerText: '本网站使用运行所必需的 Cookie，并且仅在您同意的情况下使用偏好 Cookie（语言设置）和第三方 Cookie（Google Maps）。详情： ',
+      policyLink: '隐私政策 (EN)',
+      acceptAll: '全部接受',
+      rejectAll: '仅必要项',
+      settings: '设置',
+      dialogTitle: 'Cookie 设置',
+      catNecessary: '严格必要的 Cookie',
+      catNecessaryDesc: '网站运行和保存您的选择（blueway_consent）所必需。无需征得同意。',
+      catPref: '偏好 Cookie',
+      catPrefDesc: '记住您选择的语言（blueway_lang，6 个月）。',
+      catThird: '第三方 Cookie',
+      catThirdDesc: '显示 Google Maps 地图（由 google.com 设置的 Cookie，例如 NID）。数据可能在欧盟-美国数据隐私框架（DPF）的保障下传输至美国。',
+      save: '保存设置',
+      cancel: '取消',
+      placeholder: '要显示此内容（Google Maps），需要允许第三方 Cookie。 ',
+      placeholderLink: '打开 Cookie 设置'
     }
-  }[LANG];
+  };
+  if (!T_ALL[LANG]) LANG = 'hu';
+  var T = T_ALL[LANG];
 
   /* ---------- cookie helpers ---------- */
   function setCookie(name, value, days) {
