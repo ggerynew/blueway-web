@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
@@ -38,8 +39,8 @@ export default async function PartnersPage({
       </Reveal>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {partners.items.map((partner, i) => (
-          <Reveal key={partner.name} delay={(i % 3) * 0.05}>
+        {partners.items.map((partner, i) => {
+          const card = (
             <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm">
               {partner.logo ? (
                 <h2 className="flex h-14 items-center">
@@ -61,8 +62,19 @@ export default async function PartnersPage({
               )}
               <p className="mt-2 text-sm text-ink-muted">{partner.body}</p>
             </div>
-          </Reveal>
-        ))}
+          );
+          return (
+            <Reveal key={partner.name} delay={(i % 3) * 0.05} className="h-full">
+              {partner.href ? (
+                <Link href={`/${lang}${partner.href}`} className="block h-full">
+                  {card}
+                </Link>
+              ) : (
+                card
+              )}
+            </Reveal>
+          );
+        })}
       </div>
     </div>
   );
