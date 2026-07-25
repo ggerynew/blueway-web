@@ -130,7 +130,7 @@ export default async function CategoryPage({
                 <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-surface">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={asset('/images/products/cimkek.jpg')}
+                    src={asset('/images/products/cimkek.webp')}
                     alt={dict.products.labelsTile.title}
                     className="max-h-[95%] max-w-[95%] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                   />

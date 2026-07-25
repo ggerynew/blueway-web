@@ -47,7 +47,7 @@ export default async function HomePage({
   });
   // Címkék csempe a falra — a letisztított tekercses képpel.
   heroTiles.splice(1, 0, {
-    src: asset('/images/products/cimkek.jpg'),
+    src: asset('/images/products/cimkek.webp'),
     alt: dict.products.labelsTile.title,
     href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });

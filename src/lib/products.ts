@@ -212,7 +212,7 @@ export const products: Product[] = [
       { hu: 'Keskeny, kis címkékhez', en: 'For narrow, small labels' },
       { hu: 'SQUIX elektronika és tartozékok', en: 'SQUIX electronics and accessories' },
     ],
-    image: '/images/products/cab-squix-2.png',
+    image: '/images/products/cab-squix-2.webp',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
   },
@@ -237,7 +237,7 @@ export const products: Product[] = [
       { hu: 'Letépő, adagoló vagy vágó kivitel', en: 'Tear-off, peel-off or cutter version' },
       { hu: 'Ethernet, USB, RS-232, opcionális Wi-Fi / RFID', en: 'Ethernet, USB, RS-232, optional Wi-Fi / RFID' },
     ],
-    image: '/images/products/cab-squix-4.png',
+    image: '/images/products/cab-squix-4.webp',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
   },
@@ -246,7 +246,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 4 M',
     brand: 'CAB',
-    image: '/images/products/cab-squix-4m.png',
+    image: '/images/products/cab-squix-4m.webp',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
     short: {
@@ -269,7 +269,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 4 MT',
     brand: 'CAB',
-    image: '/images/products/cab-squix-4mt.png',
+    image: '/images/products/cab-squix-4mt.webp',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
     short: {
@@ -292,7 +292,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB SQUIX 6.3',
     brand: 'CAB',
-    image: '/images/products/cab-squix-6.png',
+    image: '/images/products/cab-squix-6.webp',
     datasheet: '/datasheets/cab-squix.pdf',
     videoId: 'o2eKZGETCPk',
     short: {
@@ -331,7 +331,7 @@ export const products: Product[] = [
       { hu: 'Termotranszfer és direkt termál', en: 'Thermal transfer and direct thermal' },
       { hu: 'Opcionális mobil (akkumulátoros) kivitel', en: 'Optional mobile (battery) version' },
     ],
-    image: '/images/products/cab-eos2.png',
+    image: '/images/products/cab-eos2.webp',
     datasheet: '/datasheets/cab-eos.pdf',
     videoId: 'mFCv2GaNkg0',
   },
@@ -355,7 +355,7 @@ export const products: Product[] = [
       { hu: 'Termotranszfer és direkt termál', en: 'Thermal transfer and direct thermal' },
       { hu: 'Opcionális mobil (akkumulátoros) kivitel', en: 'Optional mobile (battery) version' },
     ],
-    image: '/images/products/cab-eos5.png',
+    image: '/images/products/cab-eos5.webp',
     datasheet: '/datasheets/cab-eos.pdf',
     videoId: 'mFCv2GaNkg0',
   },
@@ -379,7 +379,7 @@ export const products: Product[] = [
       { hu: 'Nyomógombos kezelés, LED-kijelző', en: 'Button operation, LED display' },
       { hu: 'RS232, USB, Ethernet; cablabel S3', en: 'RS232, USB, Ethernet; cablabel S3' },
     ],
-    image: '/images/products/cab-mach1.png',
+    image: '/images/products/cab-mach1.webp',
     datasheet: '/datasheets/cab-mach12.pdf',
   },
   {
@@ -402,7 +402,7 @@ export const products: Product[] = [
       { hu: 'Termotranszfer és direkt termál', en: 'Thermal transfer and direct thermal' },
       { hu: 'RS232, USB, Ethernet; cablabel S3', en: 'RS232, USB, Ethernet; cablabel S3' },
     ],
-    image: '/images/products/cab-mach2.png',
+    image: '/images/products/cab-mach2.webp',
     datasheet: '/datasheets/cab-mach12.pdf',
   },
   {
@@ -425,7 +425,7 @@ export const products: Product[] = [
       { hu: 'Nagy színes érintőkijelző', en: 'Large colored touch display' },
       { hu: 'Letépő, adagoló és vágó kivitel', en: 'Tear-off, peel-off and cutter versions' },
     ],
-    image: '/images/products/cab-mach4s.png',
+    image: '/images/products/cab-mach4s.webp',
     datasheet: '/datasheets/cab-mach4s.pdf',
   },
   {
@@ -448,7 +448,7 @@ export const products: Product[] = [
       { hu: 'Fejenként külön fűtésszabályzás', en: 'Separate heating per head' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/cab-xc4.png',
+    image: '/images/products/cab-xc4.webp',
     datasheet: '/datasheets/cab-xcq.pdf',
     videoId: 'xqlxvt3fOX4',
   },
@@ -472,7 +472,7 @@ export const products: Product[] = [
       { hu: 'Fejenként külön fűtésszabályzás', en: 'Separate heating per head' },
       { hu: 'GHS-megfelelő címkézés', en: 'GHS-compliant labeling' },
     ],
-    image: '/images/products/cab-xc6.png',
+    image: '/images/products/cab-xc6.webp',
     datasheet: '/datasheets/cab-xcq.pdf',
     videoId: 'xqlxvt3fOX4',
   },
@@ -481,7 +481,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'CAB XD Q',
     brand: 'CAB',
-    image: '/images/products/cab-xd-q.png',
+    image: '/images/products/cab-xd-q.webp',
     datasheet: '/datasheets/cab-xdq.pdf',
     short: {
       hu: 'Kétoldalas nyomtatás egy menetben — függőcímkékhez és flexibilis anyagokhoz.',
@@ -505,7 +505,7 @@ export const products: Product[] = [
     category: 'cimkezo-gepek',
     name: 'CAB HERMES Q',
     brand: 'CAB',
-    image: '/images/products/cab-hermes-q.png',
+    image: '/images/products/cab-hermes-q.webp',
     datasheet: '/datasheets/cab-hermes-q.pdf',
     videoId: 'HG9eudLWxfM',
     short: {
@@ -523,7 +523,7 @@ export const products: Product[] = [
       { hu: 'Gyártósori integráció', en: 'Production-line integration' },
     ],
     orientation: {
-      image: '/images/applicators/hermes-q-left-right.jpg',
+      image: '/images/applicators/hermes-q-left-right.webp',
       title: { hu: 'Két orientáció, három nyomtatófej-szélesség', en: 'Two orientations, three printhead widths' },
       text: {
         hu: 'A HERMES Q két kivitelben érhető el — jobbos (right) és balos (left) orientációban —, így bármelyik oldalról beépíthető a gyártósorba. A nyomtató modulok 2, 4 és 6 coll széles nyomtatófejjel rendelhetők.',
@@ -533,7 +533,7 @@ export const products: Product[] = [
     applicators: [
       {
         slug: 'hq-3014',
-        image: '/images/applicators/hq-3014.jpg',
+        image: '/images/applicators/hq-3014.webp',
         name: { hu: '3014/3016 Karos felrakó', en: '3014/3016 Arm applicator' },
         description: {
           hu: 'Nagyobb címkékhez, termék elejének, oldalának vagy hátának címkézése.',
@@ -559,7 +559,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4014',
-        image: '/images/applicators/hq-4014.jpg',
+        image: '/images/applicators/hq-4014.webp',
         name: { hu: '4014 Stroke applikátor', en: '4014 Stroke applicator' },
         description: {
           hu: 'Egyszerű címkézéshez.',
@@ -584,7 +584,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4114',
-        image: '/images/applicators/hq-4114.jpg',
+        image: '/images/applicators/hq-4114.webp',
         name: { hu: '4114 Stroke applikátor', en: '4114 Stroke applicator' },
         description: {
           hu: 'Nagy pontosságú címkézés kis címkékhez (min. 4x4mm).',
@@ -610,7 +610,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4214',
-        image: '/images/applicators/hq-4214.jpg',
+        image: '/images/applicators/hq-4214.webp',
         name: { hu: '4214 Stroke turn applikátor', en: '4214 Stroke turn applicator' },
         description: {
           hu: 'Kis címkék minden oldalról, nehezen beépíthető helyeken is.',
@@ -636,7 +636,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4414',
-        image: '/images/applicators/hq-4414.jpg',
+        image: '/images/applicators/hq-4414.webp',
         name: { hu: '4414 Stroke applikátor', en: '4414 Stroke applicator' },
         description: {
           hu: 'Kis és közepes címkék minden oldalról, x-y irányban állítható pozícióval.',
@@ -662,7 +662,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4714',
-        image: '/images/applicators/hq-4714.jpg',
+        image: '/images/applicators/hq-4714.webp',
         name: { hu: '4714 Zászló címkéző', en: '4714 Flag applicator' },
         description: {
           hu: 'Kábelek címkézése nagy pontossággal.',
@@ -688,7 +688,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-6014',
-        image: '/images/applicators/hq-6014.jpg',
+        image: '/images/applicators/hq-6014.webp',
         name: { hu: '6014 Ráfújó címkéző', en: '6014 Blow-on applicator' },
         description: {
           hu: 'Törékeny vagy egyenetlen felületek címkézése, nagy sebességgel.',
@@ -713,7 +713,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-5314',
-        image: '/images/applicators/hq-5314.jpg',
+        image: '/images/applicators/hq-5314.webp',
         name: { hu: '5314 Vákuumszalagos applikátor', en: '5314 Vacuum-belt applicator' },
         description: {
           hu: 'Címkézés nagy sebességgel, mozgásban lévő termékeknél.',
@@ -738,7 +738,7 @@ export const products: Product[] = [
       },
       {
         slug: 'hq-4514',
-        image: '/images/applicators/hq-4514.jpg',
+        image: '/images/applicators/hq-4514.webp',
         name: { hu: '4514 Swing Stroke applikátor', en: '4514 Swing stroke applicator' },
         description: {
           hu: 'Belső címkézés.',
@@ -785,7 +785,7 @@ export const products: Product[] = [
       { hu: 'Anyagszélesség akár 306 mm, tekercs max. 410 mm', en: 'Material width up to 306 mm, roll up to 410 mm' },
       { hu: 'Moduláris gép- és szalagintegráció', en: 'Modular machine / conveyor integration' },
     ],
-    image: '/images/products/cab-ixor.jpg',
+    image: '/images/products/cab-ixor.webp',
     datasheet: '/datasheets/cab-ixor.pdf',
     videoId: 'te_UCjKplTI',
   },
@@ -810,7 +810,7 @@ export const products: Product[] = [
       { hu: 'HERMES HQ applikátorokkal', en: 'Works with HERMES HQ applicators' },
       { hu: 'Függőleges és vízszintes beépítés', en: 'Vertical and horizontal installation' },
     ],
-    image: '/images/products/cab-roxi.png',
+    image: '/images/products/cab-roxi.webp',
     datasheet: '/datasheets/cab-roxi.pdf',
     videoId: '1gc7P-fNwJc',
   },
@@ -834,7 +834,7 @@ export const products: Product[] = [
       { hu: 'Teljesen automatikus ipari üzem (PX utód)', en: 'Fully automatic industrial operation (PX successor)' },
       { hu: 'Applikátor / OEM integráció', en: 'Applicator / OEM integration' },
     ],
-    image: '/images/products/cab-pxq.png',
+    image: '/images/products/cab-pxq.webp',
     datasheet: '/datasheets/cab-pxq.pdf',
     videoId: 'AOjwwv_yzbc',
   },
@@ -857,7 +857,7 @@ export const products: Product[] = [
       { hu: 'Valós idejű gyártósori címkézés', en: 'Real-time production-line labeling' },
       { hu: 'HERMES termékcsalád, ipari kivitel', en: 'HERMES family, industrial build' },
     ],
-    image: '/images/products/cab-hermes-c.png',
+    image: '/images/products/cab-hermes-c.webp',
     datasheet: '/datasheets/cab-hermes-c.pdf',
   },
 
@@ -867,7 +867,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB HS',
     brand: 'CAB',
-    image: '/images/products/cab-hs.png',
+    image: '/images/products/cab-hs.webp',
     datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
       hu: 'Címkeadagoló minden címkemérethez — hézag nélkül vágott vagy stancolt címkékhez.',
@@ -889,7 +889,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB VS',
     brand: 'CAB',
-    image: '/images/products/cab-vs.png',
+    image: '/images/products/cab-vs.webp',
     datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
       hu: 'Kompakt címkeadagoló munkaállomásokra, egyszerű, gyors kézi címkézéshez.',
@@ -953,7 +953,7 @@ export const products: Product[] = [
       { hu: 'Integrált fókuszkereső, belső LED-világítás', en: 'Integrated focus finder, interior LED lighting' },
       { hu: 'Opcionális forgótengely hengeres darabokhoz', en: 'Optional rotary axis for cylindrical parts' },
     ],
-    image: '/images/products/cab-xeno-1.jpg',
+    image: '/images/products/cab-xeno-1.webp',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'eDgChgvtAzc',
   },
@@ -978,7 +978,7 @@ export const products: Product[] = [
       { hu: 'Tartós, jól olvasható jelölés zord környezetben', en: 'Durable, legible marking in harsh environments' },
       { hu: 'cabLase szoftver, hálózati vezérlés', en: 'cabLase software, network control' },
     ],
-    image: '/images/products/cab-xeno-3.jpg',
+    image: '/images/products/cab-xeno-3.webp',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'b3xeRtxdFy8',
   },
@@ -1003,7 +1003,7 @@ export const products: Product[] = [
       { hu: 'Nincs szükség stanc- vagy egyéb szerszámra', en: 'No dies or additional tooling needed' },
       { hu: '1. lézerosztály, cabLase szoftver', en: 'Class 1, cabLase software' },
     ],
-    image: '/images/products/cab-lm-plus.jpg',
+    image: '/images/products/cab-lm-plus.webp',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
     videoId: 'Q7-qCKuZ708',
   },
@@ -1027,7 +1027,7 @@ export const products: Product[] = [
       { hu: 'Motoros ajtó, 0,02 mm pozicionálás', en: 'Motor-driven door, 0.02 mm positioning' },
       { hu: '19"-os rack a lézerforrásnak és ipari PC-nek', en: '19" rack for laser source & industrial PC' },
     ],
-    image: '/images/products/cab-lsg100-plus.jpg',
+    image: '/images/products/cab-lsg100-plus.webp',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
   },
   {
@@ -1051,7 +1051,7 @@ export const products: Product[] = [
       { hu: 'Védi a kezelő egészségét és az optikát', en: 'Protects operator health and optics' },
       { hu: 'XENO rendszerekhez és LSG+100E-hez', en: 'For XENO systems and the LSG+100E' },
     ],
-    image: '/images/products/cab-af5.jpg',
+    image: '/images/products/cab-af5.webp',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
   },
 
@@ -1107,7 +1107,7 @@ export const products: Product[] = [
     category: 'szoftverek',
     name: 'Egyedi szoftverfejlesztés',
     brand: 'Blueway Trade',
-    image: '/images/products/egyedi-szoftver.png',
+    image: '/images/products/egyedi-szoftver.webp',
     short: {
       hu: 'Egyedi szoftverek tervezése és kivitelezése az Ön folyamataira szabva.',
       en: 'Custom software designed and built around your processes.',
@@ -1130,7 +1130,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK OX',
     brand: 'POSTEK',
-    image: '/images/products/postek-ox.png',
+    image: '/images/products/postek-ox.webp',
     videoId: '3WoA_Zb9zb4',
     extraVideos: [
       {
@@ -1163,7 +1163,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK TX',
     brand: 'POSTEK',
-    image: '/images/products/postek-tx.png',
+    image: '/images/products/postek-tx.webp',
     videoId: 'qAcJTzTMTnI',
     datasheet: '/datasheets/postek-tx-datasheet.pdf',
     short: {
@@ -1187,7 +1187,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK GX',
     brand: 'POSTEK',
-    image: '/images/products/postek-gx.png',
+    image: '/images/products/postek-gx.webp',
     videoId: 'XcnaxfjbTwc',
     datasheet: '/datasheets/postek-gx-datasheet.pdf',
     short: {
@@ -1211,7 +1211,7 @@ export const products: Product[] = [
     category: 'cimkenyomtatok',
     name: 'POSTEK C168',
     brand: 'POSTEK',
-    image: '/images/products/postek-c168.jpg',
+    image: '/images/products/postek-c168.webp',
     datasheet: '/datasheets/postek-c168-datasheet.pdf',
     short: {
       hu: 'Kereskedelmi asztali nyomtató egyszerű, mindennapi címkézéshez.',
@@ -1236,7 +1236,7 @@ export const products: Product[] = [
     category: 'lezer-gravirozok',
     name: 'TYKMA Minilase',
     brand: 'Tykma Electrox',
-    image: '/images/products/tykma-minilase.jpg',
+    image: '/images/products/tykma-minilase.webp',
     datasheet: '/datasheets/tykma-electrox-brochure.pdf',
     short: {
       hu: 'Asztali Class 1 fiber lézerjelölő — gyors, karbantartásmentes, nagy darabszámhoz.',
@@ -1260,7 +1260,7 @@ export const products: Product[] = [
     category: 'lezer-gravirozok',
     name: 'TYKMA Minilase XL',
     brand: 'Tykma Electrox',
-    image: '/images/products/tykma-minilase-xl.jpg',
+    image: '/images/products/tykma-minilase-xl.webp',
     datasheet: '/datasheets/tykma-electrox-brochure.pdf',
     short: {
       hu: 'Nagyobb, nyitott munkaterű fiber lézerjelölő — akár Class 4 üzemmódban is.',
@@ -1284,7 +1284,7 @@ export const products: Product[] = [
     category: 'lezer-gravirozok',
     name: 'TYKMA Vereo',
     brand: 'Tykma Electrox',
-    image: '/images/products/tykma-vereo.jpg',
+    image: '/images/products/tykma-vereo.webp',
     datasheet: '/datasheets/tykma-electrox-brochure.pdf',
     short: {
       hu: 'Kompakt fiber integrációs lézer gyártósorokba és munkacellákba.',
@@ -1307,7 +1307,7 @@ export const products: Product[] = [
     category: 'lezer-gravirozok',
     name: 'TYKMA Vereo Smart',
     brand: 'Tykma Electrox',
-    image: '/images/products/tykma-vereo-smart.jpg',
+    image: '/images/products/tykma-vereo-smart.webp',
     datasheet: '/datasheets/tykma-electrox-brochure.pdf',
     short: {
       hu: 'Integrációs lézer PC nélkül — érintőképernyő és vezérlés bármely eszközről.',
@@ -1330,7 +1330,7 @@ export const products: Product[] = [
     category: 'lezer-gravirozok',
     name: 'TYKMA Virtus',
     brand: 'Tykma Electrox',
-    image: '/images/products/tykma-virtus.jpg',
+    image: '/images/products/tykma-virtus.webp',
     datasheet: '/datasheets/tykma-electrox-brochure.pdf',
     short: {
       hu: 'Kompakt, belépő szintű Class 4 fiber lézerjelölő és -gravírozó.',
@@ -1399,7 +1399,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LD3000',
     brand: 'START International',
-    image: '/images/products/ld3000.jpg',
+    image: '/images/products/ld3000.webp',
     datasheet: '/datasheets/start-ld3000.pdf',
     short: {
       hu: 'Nagy sebességű elektromos címkeadagoló kis címkékhez, kis munkaterületre.',
@@ -1422,7 +1422,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LD3500',
     brand: 'START International',
-    image: '/images/products/ld3500.jpg',
+    image: '/images/products/ld3500.webp',
     datasheet: '/datasheets/start-ld3500.pdf',
     short: {
       hu: 'Elektromos címkeadagoló átlátszó és nehezen kezelhető anyagokhoz.',
@@ -1445,7 +1445,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LD6050',
     brand: 'START International',
-    image: '/images/products/ld6050.jpg',
+    image: '/images/products/ld6050.webp',
     datasheet: '/datasheets/start-ld6050.pdf',
     short: {
       hu: 'Nagy sebességű elektromos címkeadagoló szélesebb, 121 mm-es címkékhez.',
@@ -1468,7 +1468,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LD8100',
     brand: 'START International',
-    image: '/images/products/ld8100.jpg',
+    image: '/images/products/ld8100.webp',
     datasheet: '/datasheets/start-ld8100.pdf',
     short: {
       hu: 'Szupergyors elektromos címkeadagoló hosszú, széles csomagoló-címkékhez.',
@@ -1491,7 +1491,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LDX8050',
     brand: 'START International',
-    image: '/images/products/ldx8050.jpg',
+    image: '/images/products/ldx8050.webp',
     datasheet: '/datasheets/start-ldx8050.pdf',
     short: {
       hu: 'Nagy sebességű címkeadagoló hosszú, széles (max. 203 mm) címkékhez.',
@@ -1514,7 +1514,7 @@ export const products: Product[] = [
     category: 'cimke-adagolo-gepek',
     name: 'START LDX8100',
     brand: 'START International',
-    image: '/images/products/ldx8100.jpg',
+    image: '/images/products/ldx8100.webp',
     datasheet: '/datasheets/start-ldx8100.pdf',
     short: {
       hu: 'Szupergyors címkeadagoló hosszú, széles címkékhez, 198 mm/s sebességgel.',
@@ -1537,7 +1537,7 @@ export const products: Product[] = [
     category: 'ragaszto-adagolok',
     name: 'START TDA080',
     brand: 'START International',
-    image: '/images/products/tda080.jpg',
+    image: '/images/products/tda080.webp',
     datasheet: '/datasheets/start-tda080.pdf',
     short: {
       hu: 'Elektromos, automata nagy teherbírású szalagadagoló akár 80 mm széles szalaghoz.',
@@ -1560,7 +1560,7 @@ export const products: Product[] = [
     category: 'ragaszto-adagolok',
     name: 'START TDA080-NS',
     brand: 'START International',
-    image: '/images/products/tda080-ns.jpg',
+    image: '/images/products/tda080-ns.webp',
     datasheet: '/datasheets/start-tda080-ns.pdf',
     short: {
       hu: 'Szalagadagoló erős tapadású, technikai szalagokhoz (VHB, ACX, hab).',
@@ -1583,7 +1583,7 @@ export const products: Product[] = [
     category: 'ragaszto-adagolok',
     name: 'START TDA150-M',
     brand: 'START International',
-    image: '/images/products/tda150-m.jpg',
+    image: '/images/products/tda150-m.webp',
     datasheet: '/datasheets/start-tda150-m.pdf',
     short: {
       hu: 'Nagy teherbírású szalagadagoló akár 150 mm széles szalaghoz, 5 hossz memóriával.',
