@@ -11,7 +11,6 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/termekek`, label: dict.nav.products },
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
-    { href: `/${lang}/partnereink`, label: dict.nav.partners },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
   const otherLang: Locale = lang === 'hu' ? 'en' : 'hu';
