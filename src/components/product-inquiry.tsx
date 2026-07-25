@@ -8,7 +8,7 @@ import type { Dictionary } from '@/lib/i18n';
 type Labels = Dictionary['products']['inquiry'];
 
 const fieldClass =
-  'mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/60 focus:border-brand-500 focus:ring-2 focus:ring-brand-100';
+  'mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/70 focus:border-brand-500 focus:ring-2 focus:ring-brand-100';
 const labelClass = 'block text-sm font-medium text-ink';
 
 export function ProductInquiry({
