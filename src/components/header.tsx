@@ -16,12 +16,23 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   ];
   const otherLang: Locale = lang === 'hu' ? 'en' : 'hu';
 
-  const searchItems: SearchItem[] = products.map((p) => ({
-    name: p.name,
-    brand: p.brand,
-    image: p.image ? asset(p.image) : '',
-    href: `/${lang}/termekek/${p.category}/${p.slug}`,
-  }));
+  const searchItems: SearchItem[] = [
+    ...products.map((p) => ({
+      name: p.name,
+      brand: p.brand,
+      image: p.image ? asset(p.image) : '',
+      href: `/${lang}/termekek/${p.category}/${p.slug}`,
+    })),
+    // Applikátorok is kereshetők — a szülő termék nevével a második sorban
+    ...products.flatMap((p) =>
+      (p.applicators ?? []).map((a) => ({
+        name: a.name[lang],
+        brand: `${p.name} — ${lang === 'hu' ? 'applikátor' : 'applicator'}`,
+        image: a.image ? asset(a.image) : '',
+        href: `/${lang}/termekek/${p.category}/${p.slug}/applikator/${a.slug}`,
+      })),
+    ),
+  ];
   const search = (
     <ProductSearch
       items={searchItems}

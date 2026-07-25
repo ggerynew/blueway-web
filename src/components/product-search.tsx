@@ -115,7 +115,7 @@ export function ProductSearch({
       />
 
       {open && query.trim() && (
-        <div className="absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-lg">
+        <div className="absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-lg sm:left-auto sm:w-80">
           {results.length === 0 ? (
             <p className="px-4 py-3 text-sm text-ink-muted">{noResults}</p>
           ) : (
