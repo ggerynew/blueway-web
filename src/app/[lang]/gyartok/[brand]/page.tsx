@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { categories, manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
+import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => manufacturers.map((m) => ({ lang, brand: m.slug })));
@@ -19,7 +20,13 @@ export async function generateMetadata({
   const { lang, brand } = await params;
   if (!isLocale(lang)) return {};
   const m = getManufacturer(brand);
-  return { title: m ? m.name : getDictionary(lang).manufacturers.title };
+  if (!m) return {};
+  return pageMetadata({
+    lang,
+    path: `gyartok/${m.slug}`,
+    title: m.name,
+    description: m.description[lang],
+  });
 }
 
 export default async function ManufacturerPage({

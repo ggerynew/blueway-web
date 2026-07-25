@@ -3,6 +3,24 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getProductsByCategory } from '@/lib/products';
+import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const dict = getDictionary(lang);
+  return pageMetadata({
+    lang,
+    path: 'termekek',
+    title: dict.products.title,
+    description: dict.products.lead,
+  });
+}
 
 export default async function ProductsPage({
   params,

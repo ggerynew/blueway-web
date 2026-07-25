@@ -5,6 +5,7 @@ import { LegalNotice } from '@/components/legal-notice';
 import { LabelDiagram } from '@/components/label-diagram';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -17,7 +18,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   if (!isLocale(lang)) return {};
-  return { title: getDictionary(lang).labelQuote.title };
+  const dict = getDictionary(lang);
+  return pageMetadata({
+    lang,
+    path: 'cimke-ajanlatkero',
+    title: dict.labelQuote.title,
+    description: dict.labelQuote.lead,
+  });
 }
 
 export default async function LabelQuotePage({
