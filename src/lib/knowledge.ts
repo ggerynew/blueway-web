@@ -4,6 +4,8 @@ export interface GuideSection {
   title: LocalizedText;
   paragraphs: LocalizedText[];
   bullets?: LocalizedText[];
+  /** Kiemelt link a szekció végén (nyelvi előtag nélküli útvonal). */
+  link?: { href: string; label: LocalizedText };
 }
 
 export interface Guide {
@@ -157,10 +159,14 @@ export const guides: Guide[] = [
         title: { hu: 'Egyedi címkegyártás', en: 'Custom label production' },
         paragraphs: [
           {
-            hu: 'Egyedi méretben, anyagból és kivitelben gyártunk címkét — a fenti kombinációkban segítünk választani, mintát is biztosítunk. Használja címke-ajánlatkérő űrlapunkat, ahol a méreteket ábra segíti.',
+            hu: 'Egyedi méretben, anyagból és kivitelben gyártunk címkét — a fenti kombinációkban segítünk választani, mintát is biztosítunk. Használja címke-ajánlatkérő űrlapunkat, ahol a méretek megadását ábra segíti.',
             en: 'We produce labels in custom sizes, materials and constructions — we help pick from the combinations above and provide samples. Use our label quote form, where a diagram helps with the dimensions.',
           },
         ],
+        link: {
+          href: '/cimke-ajanlatkero',
+          label: { hu: 'Címke-ajánlatkérő űrlap megnyitása', en: 'Open the label quote form' },
+        },
       },
     ],
   },
