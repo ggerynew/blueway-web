@@ -15,6 +15,8 @@ export const dictionaries = {
       contact: 'Kapcsolat',
       labelQuote: 'Címke ajánlat',
       quote: 'Ajánlatkérés',
+      searchPlaceholder: 'Termék keresése…',
+      searchNoResults: 'Nincs találat',
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
@@ -259,6 +261,8 @@ export const dictionaries = {
       contact: 'Contact',
       labelQuote: 'Label quote',
       quote: 'Request a quote',
+      searchPlaceholder: 'Search products…',
+      searchNoResults: 'No results',
     },
     hero: {
       eyebrow: 'Blueway Trade Ltd.',
