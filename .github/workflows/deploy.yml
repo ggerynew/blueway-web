@@ -31,6 +31,9 @@ jobs:
           # Add a repo secret named FORMSPREE_ENDPOINT (e.g. https://formspree.io/f/xxxxxxx)
           # to enable server-side form sending; empty falls back to mailto.
           NEXT_PUBLIC_FORMSPREE_ENDPOINT: ${{ secrets.FORMSPREE_ENDPOINT }}
+          # Add a repo secret named GOATCOUNTER_CODE (the yoursite part of
+          # yoursite.goatcounter.com) to enable cookieless visitor analytics.
+          NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

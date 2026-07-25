@@ -1,0 +1,101 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Reveal } from '@/components/reveal';
+import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { pageMetadata } from '@/lib/site';
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const dict = getDictionary(lang);
+  return pageMetadata({
+    lang,
+    path: 'gyik',
+    title: dict.faq.title,
+    description: dict.faq.lead,
+  });
+}
+
+export default async function FaqPage({
+  params,
+}: Readonly<{ params: Promise<{ lang: string }> }>) {
+  const { lang } = await params;
+  if (!isLocale(lang)) notFound();
+  const dict = getDictionary(lang);
+  const { faq } = dict;
+
+  // FAQPage strukturált adat — a Google ebből építhet gazdag találatot
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  };
+
+  return (
+    <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Reveal>
+        <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">{faq.title}</h1>
+      </Reveal>
+      <Reveal delay={0.08}>
+        <p className="mt-4 max-w-2xl text-lg text-ink-muted">{faq.lead}</p>
+      </Reveal>
+
+      <div className="mt-12 space-y-3">
+        {faq.items.map((item, i) => (
+          <Reveal key={item.q} delay={Math.min(i * 0.03, 0.15)}>
+            <details className="group rounded-2xl border border-line bg-white open:shadow-sm">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 px-6 py-4 font-medium tracking-tight select-none [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <span
+                  aria-hidden="true"
+                  className="shrink-0 text-brand-700 transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p className="px-6 pb-5 text-ink-muted">{item.a}</p>
+            </details>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal delay={0.05}>
+        <div className="mt-14 rounded-2xl border border-line bg-white p-8">
+          <h2 className="text-lg font-semibold tracking-tight">{dict.knowledge.ctaTitle}</h2>
+          <p className="mt-2 max-w-xl text-ink-muted">{dict.knowledge.ctaText}</p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href={`/${lang}/kapcsolat`}
+              className="rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+            >
+              {dict.knowledge.ctaButton}
+            </Link>
+            <Link
+              href={`/${lang}/tudastar`}
+              className="rounded-full border border-line bg-white px-6 py-3 text-sm font-medium transition-colors hover:border-ink-muted"
+            >
+              {dict.knowledge.title}
+            </Link>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  );
+}

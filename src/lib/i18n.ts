@@ -233,10 +233,55 @@ export const dictionaries = {
       ctaText: 'Írja meg a feladatot, és javaslatot adunk a megfelelő címke–szalag–nyomtató kombinációra.',
       ctaButton: 'Kapcsolatfelvétel',
     },
+    faq: {
+      title: 'Gyakori kérdések',
+      lead: 'A leggyakoribb kérdések a gépekről, szervizről, garanciáról és a címkegyártásról — ha nem talál választ, írjon nekünk.',
+      short: 'Garancia, szerviz, ajánlatkérés, minták — a leggyakoribb kérdések egy helyen.',
+      items: [
+        {
+          q: 'Milyen gyártók termékeit forgalmazzák?',
+          a: 'A CAB, a POSTEK és a TYKMA Electrox gépeit, a START International adagolóberendezéseit, DNP és ARMOR-IIMAK festékszalagokat, valamint a Loftware / NiceLabel címkéző szoftvereket forgalmazzuk. A gépekhez kellékanyagot és alkatrészt is biztosítunk.',
+        },
+        {
+          q: 'Vállalnak szervizt és alkatrész-ellátást?',
+          a: 'Igen — az általunk forgalmazott eszközökhöz teljes körű szerviz- és alkatrész-támogatást nyújtunk, szükség esetén helyszíni hibaelhárítással. Más forrásból vásárolt gépeknél egyedi egyeztetés alapján tudunk segíteni.',
+        },
+        {
+          q: 'Mennyi idő alatt kapok árajánlatot?',
+          a: 'Jellemzően 1–2 munkanapon belül válaszolunk. Összetettebb, egyedi rendszereknél az ajánlat kidolgozása több időt vehet igénybe — erről előre egyeztetünk.',
+        },
+        {
+          q: 'Vállalnak telepítést és betanítást?',
+          a: 'Igen, kérésre a gépek helyszíni telepítését, beüzemelését és a kezelők betanítását is elvégezzük.',
+        },
+        {
+          q: 'Milyen garancia vonatkozik a gépekre?',
+          a: 'A gépekre gyártói garancia vonatkozik, amelynek időtartama típusonként eltérő — a pontos feltételeket minden esetben az árajánlatban rögzítjük.',
+        },
+        {
+          q: 'Gyártanak egyedi címkét?',
+          a: 'Igen, egyedi méretben, anyagból és kivitelben gyártunk öntapadós címkét. A címke-ajánlatkérő űrlapon ábra segíti a méretek megadását.',
+        },
+        {
+          q: 'Kaphatok mintát címkéből vagy festékszalagból?',
+          a: 'Igen, tesztelési célra mintát biztosítunk, hogy éles körülmények között győződhessen meg arról, hogy az anyag megfelel a feladatnak.',
+        },
+        {
+          q: 'Melyik festékszalagot válasszam?',
+          a: 'A wax, wax-resin és resin szalagok közötti választáshoz készítettünk útmutatót a Tudástárban — kérdés esetén a konkrét nyomtató–címke–szalag párosításban is segítünk.',
+        },
+        {
+          q: 'A címkéző szoftverekhez adnak támogatást?',
+          a: 'Igen — a cab cablabel S3 és a Loftware / NiceLabel szoftverek kiválasztásában, bevezetésében és használatában is segítünk.',
+        },
+      ],
+    },
     footer: {
       company: 'Blueway Trade Kft.',
       address: 'Telephely: 2142 Nagytarcsa, Déri Miksa u. 10/A.',
       billing: 'Számlázási cím: 2234 Maglód, Lövéte u. 35.',
+      taxNumber: 'Adószám: 25051632-2-13',
+      regNumber: 'Cégjegyzékszám: 13-09-206022',
       phone: '+36 30 279 6679',
       email: 'info@blueway.hu',
       rights: 'Minden jog fenntartva.',
@@ -474,10 +519,55 @@ export const dictionaries = {
       ctaText: 'Describe the task and we will suggest the right label-ribbon-printer combination.',
       ctaButton: 'Contact us',
     },
+    faq: {
+      title: 'Frequently asked questions',
+      lead: 'The most common questions about machines, service, warranty and label production — if you cannot find an answer, write to us.',
+      short: 'Warranty, service, quotes, samples — the most common questions in one place.',
+      items: [
+        {
+          q: 'Which manufacturers do you represent?',
+          a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
+        },
+        {
+          q: 'Do you provide service and spare parts?',
+          a: 'Yes — we provide full service and spare part support for the equipment we distribute, including on-site troubleshooting when needed. For machines purchased elsewhere we can help based on individual agreement.',
+        },
+        {
+          q: 'How quickly will I get a quote?',
+          a: 'We typically reply within 1–2 business days. For complex, custom systems preparing the quote may take longer — we agree on this in advance.',
+        },
+        {
+          q: 'Do you install machines and train operators?',
+          a: 'Yes, on request we install and commission the machines on site and train the operators.',
+        },
+        {
+          q: 'What warranty applies to the machines?',
+          a: 'The machines carry a manufacturer warranty whose duration varies by model — the exact terms are always stated in the quotation.',
+        },
+        {
+          q: 'Do you produce custom labels?',
+          a: 'Yes, we produce self-adhesive labels in custom sizes, materials and constructions. On the label quote form a diagram helps with the dimensions.',
+        },
+        {
+          q: 'Can I get samples of labels or ribbons?',
+          a: 'Yes, we provide samples for testing so you can verify under real conditions that the material suits the task.',
+        },
+        {
+          q: 'Which thermal transfer ribbon should I choose?',
+          a: 'We wrote a guide in the Knowledge base on choosing between wax, wax-resin and resin ribbons — and we are happy to help match the exact printer-label-ribbon combination.',
+        },
+        {
+          q: 'Do you support the labeling software?',
+          a: 'Yes — we help with selecting, implementing and using cab cablabel S3 and Loftware / NiceLabel software.',
+        },
+      ],
+    },
     footer: {
       company: 'Blueway Trade Ltd.',
       address: 'Site: Déri Miksa u. 10/A, 2142 Nagytarcsa, Hungary',
       billing: 'Billing: Lövéte u. 35, 2234 Maglód, Hungary',
+      taxNumber: 'Tax number: 25051632-2-13',
+      regNumber: 'Company reg. no.: 13-09-206022',
       phone: '+36 30 279 6679',
       email: 'info@blueway.hu',
       rights: 'All rights reserved.',
