@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
@@ -5,6 +6,26 @@ import { HeroTileWall } from '@/components/hero-tile-wall';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { products } from '@/lib/products';
+import { pageMetadata } from '@/lib/site';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const dict = getDictionary(lang);
+  return pageMetadata({
+    lang,
+    path: '',
+    title:
+      lang === 'hu'
+        ? 'Blueway Trade Kft. — Termékjelölési megoldások'
+        : 'Blueway Trade Ltd. — Product marking solutions',
+    description: dict.hero.lead,
+  });
+}
 
 export default async function HomePage({
   params,

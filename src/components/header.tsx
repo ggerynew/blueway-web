@@ -4,13 +4,15 @@ import { MobileNav } from '@/components/mobile-nav';
 import { Logo } from '@/components/logo';
 import { ProductSearch, type SearchItem } from '@/components/product-search';
 import { asset } from '@/lib/asset';
-import { products } from '@/lib/products';
+import { categories, manufacturers, products } from '@/lib/products';
+import { guides } from '@/lib/knowledge';
 
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const nav = [
     { href: `/${lang}/termekek`, label: dict.nav.products },
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
+    { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
   const otherLang: Locale = lang === 'hu' ? 'en' : 'hu';
@@ -31,6 +33,26 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         href: `/${lang}/termekek/${p.category}/${p.slug}/applikator/${a.slug}`,
       })),
     ),
+    // Kategóriák és gyártók
+    ...categories.map((c) => ({
+      name: c.name[lang],
+      brand: lang === 'hu' ? 'Kategória' : 'Category',
+      image: '',
+      href: `/${lang}/termekek/${c.slug}`,
+    })),
+    ...manufacturers.map((m) => ({
+      name: m.name,
+      brand: lang === 'hu' ? 'Gyártó' : 'Manufacturer',
+      image: m.logo ? asset(m.logo) : '',
+      href: `/${lang}/gyartok/${m.slug}`,
+    })),
+    // Tudástár-cikkek
+    ...guides.map((g) => ({
+      name: g.title[lang],
+      brand: dict.nav.knowledge,
+      image: '',
+      href: `/${lang}/tudastar/${g.slug}`,
+    })),
   ];
   const search = (
     <ProductSearch

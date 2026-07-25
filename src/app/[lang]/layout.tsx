@@ -5,6 +5,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { SITE_URL, absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -22,8 +23,30 @@ export default async function LangLayout({
   const dict = getDictionary(lang);
   const skipLabel = lang === 'hu' ? 'Ugrás a tartalomra' : 'Skip to content';
 
+  // Cégadatok strukturált formában a keresőknek (Organization / LocalBusiness)
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Blueway Trade Kft.',
+    url: SITE_URL,
+    logo: absUrl('images/brand/blueway-logo-still.png'),
+    email: 'info@blueway.hu',
+    telephone: '+36302796679',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Déri Miksa u. 10/A.',
+      addressLocality: 'Nagytarcsa',
+      postalCode: '2142',
+      addressCountry: 'HU',
+    },
+  };
+
   return (
     <div className="flex min-h-screen flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
       {/* Sets the correct document language per locale (root <html> defaults to hu). WCAG 3.1.1
           Also exposes the basePath for the cookie-consent script (policy URLs). */}
       <script

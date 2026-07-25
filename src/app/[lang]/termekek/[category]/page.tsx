@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
@@ -5,9 +6,27 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getCategory, getProductsByCategory, manufacturers } from '@/lib/products';
+import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string; category: string }>;
+}): Promise<Metadata> {
+  const { lang, category } = await params;
+  if (!isLocale(lang)) return {};
+  const cat = getCategory(category);
+  if (!cat) return {};
+  return pageMetadata({
+    lang,
+    path: `termekek/${cat.slug}`,
+    title: cat.name[lang],
+    description: cat.description[lang],
+  });
 }
 
 export default async function CategoryPage({

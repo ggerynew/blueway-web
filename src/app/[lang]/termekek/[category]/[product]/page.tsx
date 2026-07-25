@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { LegalNotice } from '@/components/legal-notice';
@@ -8,9 +9,28 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products } from '@/lib/products';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return products.map((p) => ({ category: p.category, product: p.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string; category: string; product: string }>;
+}): Promise<Metadata> {
+  const { lang, category, product: productSlug } = await params;
+  if (!isLocale(lang)) return {};
+  const product = getProduct(category, productSlug);
+  if (!product) return {};
+  return pageMetadata({
+    lang,
+    path: `termekek/${category}/${product.slug}`,
+    title: product.name,
+    description: product.short[lang],
+    image: product.image ? absUrl(product.image.replace(/^\//, '')) : undefined,
+  });
 }
 
 export default async function ProductPage({
@@ -25,8 +45,37 @@ export default async function ProductPage({
   const others = getProductsByCategory(cat.slug).filter((p) => p.slug !== product.slug);
   const brandLogo = product.brandLogo ?? getBrandLogo(product.brand);
 
+  // Product + breadcrumb strukturált adat a keresőknek
+  const productUrl = absUrl(`${lang}/termekek/${cat.slug}/${product.slug}`);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Product',
+        name: product.name,
+        description: product.short[lang],
+        brand: { '@type': 'Brand', name: product.brand },
+        category: cat.name[lang],
+        url: productUrl,
+        ...(product.image ? { image: absUrl(product.image.replace(/^\//, '')) } : {}),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
+          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
+          { '@type': 'ListItem', position: 3, name: product.name, item: productUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <nav className="text-sm text-ink-muted">
           <Link href={`/${lang}/termekek`} className="transition-colors hover:text-ink">
