@@ -8,6 +8,7 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/termekek`, label: dict.nav.products },
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
+    { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
     { href: `/${lang}/cimke-ajanlatkero`, label: dict.nav.labelQuote },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
