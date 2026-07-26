@@ -5,7 +5,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { getApplicator, getBrandLogo, getCategory, products } from '@/lib/products';
+import { getApplicator, getBrandLogo, getCategory, products , productName } from '@/lib/products';
 import type { Metadata } from 'next';
 import { absUrl, pageMetadata } from '@/lib/site';
 
@@ -32,7 +32,7 @@ export async function generateMetadata({
   return pageMetadata({
     lang,
     path: `termekek/${category}/${product.slug}/applikator/${applicator.slug}`,
-    title: `${applicator.name[lang]} — ${product.name}`,
+    title: `${applicator.name[lang]} — ${productName(product, lang)}`,
     description: applicator.description[lang],
     image: applicator.image ? absUrl(applicator.image.replace(/^\//, '')) : undefined,
   });
@@ -59,12 +59,12 @@ export default async function ApplicatorPage({
     '@graph': [
       {
         '@type': 'Product',
-        name: `${applicator.name[lang]} — ${product.name}`,
+        name: `${applicator.name[lang]} — ${productName(product, lang)}`,
         description: applicator.description[lang],
         brand: { '@type': 'Brand', name: product.brand },
         isAccessoryOrSparePartFor: {
           '@type': 'Product',
-          name: product.name,
+          name: productName(product, lang),
           url: absUrl(`${lang}/termekek/${category}/${product.slug}`),
         },
         url: appUrl,
@@ -75,7 +75,7 @@ export default async function ApplicatorPage({
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
           { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
-          { '@type': 'ListItem', position: 3, name: product.name, item: absUrl(`${lang}/termekek/${category}/${product.slug}`) },
+          { '@type': 'ListItem', position: 3, name: productName(product, lang), item: absUrl(`${lang}/termekek/${category}/${product.slug}`) },
           { '@type': 'ListItem', position: 4, name: applicator.name[lang], item: appUrl },
         ],
       },
@@ -102,7 +102,7 @@ export default async function ApplicatorPage({
             href={`/${lang}/termekek/${cat.slug}/${product.slug}`}
             className="transition-colors hover:text-ink"
           >
-            {product.name}
+            {productName(product, lang)}
           </Link>
           <span className="mx-2">/</span>
           <span className="text-ink">{applicator.name[lang]}</span>
@@ -136,7 +136,7 @@ export default async function ApplicatorPage({
               />
             ) : (
               <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">
-                {product.brand} · {product.name}
+                {product.brand} · {productName(product, lang)}
               </p>
             )}
             <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
@@ -224,7 +224,7 @@ export default async function ApplicatorPage({
             <ProductInquiry
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
-              productName={`${product.name} — ${applicator.name[lang]}`}
+              productName={`${productName(product, lang)} — ${applicator.name[lang]}`}
               lang={lang}
             />
             <LegalNotice lang={lang} />
