@@ -70,7 +70,17 @@ export default async function FaqPage({
                   +
                 </span>
               </summary>
-              <p className="px-6 pb-5 text-ink-muted">{item.a}</p>
+              <div className="px-6 pb-5">
+                <p className="text-ink-muted">{item.a}</p>
+                {item.href && (
+                  <Link
+                    href={`/${lang}${item.href}`}
+                    className="mt-3 inline-block text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+                  >
+                    {dict.knowledge.readMore} →
+                  </Link>
+                )}
+              </div>
             </details>
           </Reveal>
         ))}
