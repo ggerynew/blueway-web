@@ -241,38 +241,92 @@ export const dictionaries = {
         {
           q: 'Milyen gyártók termékeit forgalmazzák?',
           a: 'A CAB, a POSTEK és a TYKMA Electrox gépeit, a START International adagolóberendezéseit, DNP és ARMOR-IIMAK festékszalagokat, valamint a Loftware / NiceLabel címkéző szoftvereket forgalmazzuk. A gépekhez kellékanyagot és alkatrészt is biztosítunk.',
+          href: '',
         },
         {
           q: 'Vállalnak szervizt és alkatrész-ellátást?',
           a: 'Igen — az általunk forgalmazott eszközökhöz teljes körű szerviz- és alkatrész-támogatást nyújtunk, szükség esetén helyszíni hibaelhárítással. Más forrásból vásárolt gépeknél egyedi egyeztetés alapján tudunk segíteni.',
+          href: '',
         },
         {
           q: 'Mennyi idő alatt kapok árajánlatot?',
           a: 'Jellemzően 1–2 munkanapon belül válaszolunk. Összetettebb, egyedi rendszereknél az ajánlat kidolgozása több időt vehet igénybe — erről előre egyeztetünk.',
+          href: '',
         },
         {
           q: 'Vállalnak telepítést és betanítást?',
           a: 'Igen, kérésre a gépek helyszíni telepítését, beüzemelését és a kezelők betanítását is elvégezzük.',
+          href: '',
         },
         {
           q: 'Milyen garancia vonatkozik a gépekre?',
           a: 'A gépekre gyártói garancia vonatkozik, amelynek időtartama típusonként eltérő — a pontos feltételeket minden esetben az árajánlatban rögzítjük.',
+          href: '',
         },
         {
           q: 'Gyártanak egyedi címkét?',
           a: 'Igen, egyedi méretben, anyagból és kivitelben gyártunk öntapadós címkét. A címke-ajánlatkérő űrlapon ábra segíti a méretek megadását.',
+          href: '',
         },
         {
           q: 'Kaphatok mintát címkéből vagy festékszalagból?',
           a: 'Igen, tesztelési célra mintát biztosítunk, hogy éles körülmények között győződhessen meg arról, hogy az anyag megfelel a feladatnak.',
+          href: '',
         },
         {
           q: 'Melyik festékszalagot válasszam?',
           a: 'A wax, wax-resin és resin szalagok közötti választáshoz készítettünk útmutatót a Tudástárban — kérdés esetén a konkrét nyomtató–címke–szalag párosításban is segítünk.',
+          href: '',
         },
         {
           q: 'A címkéző szoftverekhez adnak támogatást?',
           a: 'Igen — a cab cablabel S3 és a Loftware / NiceLabel szoftverek kiválasztásában, bevezetésében és használatában is segítünk.',
+          href: '',
+        },
+        {
+          q: 'Miért nem olvassa a szkenner az elforgatott vonalkódot?',
+          a: 'A nyomtatófej soronként dolgozik, ezért a futásirányhoz képest 90°-kal elforgatott, „létra” állású kód vonalai több száz egymás utáni fűtésből állnak össze — ez könnyen elkenődéshez vezet. Segít a nagyobb felbontású fej, a kisebb sebesség és a modulszélesség helyes megválasztása.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Nyomtathatunk inverz (negatív) vonalkódot?',
+          a: 'Technikailag igen, de a klasszikus lézeres kódolvasók többsége nem olvassa: azok világos alapon sötét vonalakra készültek. A kamerás olvasók és a Data Matrix szabvány kezelik a fordított polaritást — ha a kódot idegen rendszerben is beolvassák, inkább kerüljük az inverz kivitelt.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Mikor érdemes 2D kódra (Data Matrix, QR) váltani?',
+          a: 'Ha a kód sérülésnek van kitéve, vagy sok adatot kis helyre kell felvinni. A 2D kódok Reed–Solomon hibajavítást tartalmaznak, így a felület egy részének elvesztése mellett is dekódolhatók, ráadásul minden irányból olvashatók. Kamerás olvasó viszont kell hozzájuk.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Hogyan ellenőrizhető, hogy megfelelő minőségű-e a nyomtatott kód?',
+          a: 'Szabványos minősítéssel (ISO/IEC 15416 és 15415), amely A-tól F-ig osztályozza a nyomatot. Ez történhet kézi verifikátorral szúrópróbaszerűen, vagy 100 %-osan a nyomtatásba integrálva — utóbbira a POSTEK OX sorozat kínál megoldást.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Milyen anyagokat lehet lézerrel jelölni?',
+          a: 'A fiber lézerek fémeken (acél, rozsdamentes, alumínium, réz) mély gravírozásra és hőkezeléses sötét jelölésre is alkalmasak, műanyagokon pedig jellemzően színváltó jelölést készítenek. Kérésre mintajelölést készítünk az Ön darabján.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Kell-e védőszemüveg és külön munkaterület a lézer mellé?',
+          a: 'A zárt, 1. lézerosztályú gépek (például a cab XENO 1 vagy a TYKMA Minilase) nyílt műhelyben, védőszemüveg nélkül üzemeltethetők. A nyitott, 4. osztályú rendszerekhez viszont lézervédelmi felelős, szemvédelem és elkerített munkaterület szükséges.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Szükség van-e elszívásra a lézeres jelölésnél?',
+          a: 'Igen. A keletkező füst és por nemcsak a kezelő egészségét veszélyezteti, hanem lerakódik az optikán is, rontva annak élettartamát. Erre való a cab AF5 elszívó- és szűrőegység elő-, H13 és aktívszén-szűrővel.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Milyen adatok kellenek egy automata címkéző rendszer ajánlatához?',
+          a: 'A címke méretei és a tekercs adatai, a termék anyaga és mérete, a folyamat (indítás, sebesség, ciklusidő), a címke helye a terméken a tűréssel, valamint a beépítési helyzet. Ezt a cab hivatalos címkézési adatlapja végigkérdezi — a Tudástárból letölthető.',
+          href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Melyik festékszalagot válasszam a címkéhez?',
+          a: 'Papír címkéhez általában wax, műnyomó papírhoz és PP/PE fóliához wax-resin, PET-hez és vegyszernek kitett felülethez resin szalag való. A választást ábrával és példákkal segíti a Tudástár szalagválasztó cikke.',
+          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -527,38 +581,92 @@ export const dictionaries = {
         {
           q: 'Which manufacturers do you represent?',
           a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
+          href: '',
         },
         {
           q: 'Do you provide service and spare parts?',
           a: 'Yes — we provide full service and spare part support for the equipment we distribute, including on-site troubleshooting when needed. For machines purchased elsewhere we can help based on individual agreement.',
+          href: '',
         },
         {
           q: 'How quickly will I get a quote?',
           a: 'We typically reply within 1–2 business days. For complex, custom systems preparing the quote may take longer — we agree on this in advance.',
+          href: '',
         },
         {
           q: 'Do you install machines and train operators?',
           a: 'Yes, on request we install and commission the machines on site and train the operators.',
+          href: '',
         },
         {
           q: 'What warranty applies to the machines?',
           a: 'The machines carry a manufacturer warranty whose duration varies by model — the exact terms are always stated in the quotation.',
+          href: '',
         },
         {
           q: 'Do you produce custom labels?',
           a: 'Yes, we produce self-adhesive labels in custom sizes, materials and constructions. On the label quote form a diagram helps with the dimensions.',
+          href: '',
         },
         {
           q: 'Can I get samples of labels or ribbons?',
           a: 'Yes, we provide samples for testing so you can verify under real conditions that the material suits the task.',
+          href: '',
         },
         {
           q: 'Which thermal transfer ribbon should I choose?',
           a: 'We wrote a guide in the Knowledge base on choosing between wax, wax-resin and resin ribbons — and we are happy to help match the exact printer-label-ribbon combination.',
+          href: '',
         },
         {
           q: 'Do you support the labeling software?',
           a: 'Yes — we help with selecting, implementing and using cab cablabel S3 and Loftware / NiceLabel software.',
+          href: '',
+        },
+        {
+          q: 'Why does the scanner fail to read a rotated barcode?',
+          a: 'The printhead works line by line, so in a code rotated 90° to the running direction (“ladder” orientation) every bar is built from hundreds of consecutive firings — which easily leads to smearing. A higher-resolution head, a lower speed and a correctly chosen module width all help.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Can we print inverse (reversed) barcodes?',
+          a: 'Technically yes, but most classic laser scanners will not read them: they are designed for dark bars on a light background. Imagers and the Data Matrix standard do handle reversed polarity — if the code is also scanned in someone else’s system, it is better to avoid the inverse version.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'When is it worth switching to a 2D code (Data Matrix, QR)?',
+          a: 'When the code is exposed to damage, or a lot of data has to fit into a small area. 2D codes include Reed–Solomon error correction, so they decode even when part of the surface is lost, and they read from any direction. They do require an imaging scanner.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'How can we check that a printed code is good enough?',
+          a: 'By standard grading (ISO/IEC 15416 and 15415), which rates the print from A to F. It can be done on a sample basis with a handheld verifier, or 100 % integrated into printing — the POSTEK OX series offers the latter.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Which materials can be laser marked?',
+          a: 'Fiber lasers can deep-engrave and anneal-mark metals (steel, stainless, aluminium, copper), and typically produce colour-change marks on plastics. On request we produce a sample marking on your own part.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Do we need protective eyewear and a separate area for a laser?',
+          a: 'Enclosed Class 1 machines (such as the cab XENO 1 or the TYKMA Minilase) can be run in an open workshop without protective eyewear. Open Class 4 systems, however, require a laser safety officer, eye protection and a restricted area.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Is fume extraction needed for laser marking?',
+          a: 'Yes. The fume and dust generated not only endanger the operator’s health but also settle on the optics and shorten their life. That is what the cab AF5 extraction and filter unit is for, with pre-, H13 and activated carbon stages.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'What data is needed to quote an automatic labeling system?',
+          a: 'The label dimensions and roll data, the material and size of the product, the process (triggering, speed, cycle time), the label position on the product with its tolerance, and the installation situation. cab’s official labeling checklist walks through all of this — it is downloadable from the Knowledge base.',
+          href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Which ribbon should I choose for my labels?',
+          a: 'Wax is usually right for paper labels, wax-resin for coated paper and PP/PE film, and resin for PET and surfaces exposed to chemicals. Our ribbon guide in the Knowledge base helps with a chart and examples.',
+          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -812,38 +920,47 @@ export const dictionaries = {
         {
           q: 'Welche Hersteller vertreiben Sie?',
           a: 'Wir vertreiben die Maschinen von CAB, POSTEK und TYKMA Electrox, die Dosier- und Spendegeräte von START International, Thermotransfer-Farbbänder von DNP und ARMOR-IIMAK sowie die Etikettensoftware von Loftware / NiceLabel. Zu den Maschinen liefern wir auch Verbrauchsmaterial und Ersatzteile.',
+          href: '',
         },
         {
           q: 'Bieten Sie Service und Ersatzteilversorgung?',
           a: 'Ja — für die von uns vertriebenen Geräte bieten wir umfassenden Service- und Ersatzteil-Support, bei Bedarf mit Fehlerbehebung vor Ort. Bei anderweitig gekauften Maschinen helfen wir nach individueller Absprache.',
+          href: '',
         },
         {
           q: 'Wie schnell erhalte ich ein Angebot?',
           a: 'In der Regel antworten wir innerhalb von 1–2 Werktagen. Bei komplexeren, individuellen Systemen kann die Angebotserstellung länger dauern — das stimmen wir vorab ab.',
+          href: '',
         },
         {
           q: 'Übernehmen Sie Installation und Schulung?',
           a: 'Ja, auf Wunsch installieren wir die Maschinen vor Ort, nehmen sie in Betrieb und schulen die Bediener.',
+          href: '',
         },
         {
           q: 'Welche Garantie gilt für die Maschinen?',
           a: 'Für die Maschinen gilt die Herstellergarantie, deren Dauer je nach Modell unterschiedlich ist — die genauen Bedingungen halten wir immer im Angebot fest.',
+          href: '',
         },
         {
           q: 'Produzieren Sie individuelle Etiketten?',
           a: 'Ja, wir produzieren Selbstklebeetiketten in individuellen Größen, Materialien und Ausführungen. Im Angebotsformular hilft eine Maßzeichnung bei den Abmessungen.',
+          href: '',
         },
         {
           q: 'Kann ich Muster von Etiketten oder Farbbändern erhalten?',
           a: 'Ja, wir stellen Muster zu Testzwecken bereit, damit Sie unter realen Bedingungen prüfen können, ob das Material zur Aufgabe passt.',
+          href: '',
         },
         {
           q: 'Welches Farbband soll ich wählen?',
           a: 'Für die Wahl zwischen Wax-, Wax-Resin- und Resin-Bändern haben wir einen Leitfaden in der Wissensdatenbank erstellt — bei Fragen helfen wir auch bei der konkreten Drucker-Etikett-Farbband-Kombination.',
+          href: '',
         },
         {
           q: 'Unterstützen Sie die Etikettensoftware?',
           a: 'Ja — wir helfen bei Auswahl, Einführung und Nutzung der Software cab cablabel S3 und Loftware / NiceLabel.',
+          href: '',
         },
       ],
     },
@@ -1097,38 +1214,47 @@ export const dictionaries = {
         {
           q: '어떤 제조사의 제품을 취급하나요?',
           a: 'CAB, POSTEK, TYKMA Electrox의 장비, START International의 디스펜서, DNP 및 ARMOR-IIMAK 열전사 리본, Loftware / NiceLabel 라벨링 소프트웨어를 공급합니다. 장비에 필요한 소모품과 부품도 함께 공급합니다.',
+          href: '',
         },
         {
           q: '서비스와 부품 공급이 가능한가요?',
           a: '네 — 당사가 공급하는 장비에 대해 완전한 서비스 및 부품 지원을 제공하며, 필요시 현장 출장 수리도 가능합니다. 타사에서 구매한 장비는 개별 협의를 통해 지원해 드립니다.',
+          href: '',
         },
         {
           q: '견적은 얼마나 빨리 받을 수 있나요?',
           a: '보통 영업일 기준 1–2일 이내에 회신드립니다. 복잡한 맞춤형 시스템의 경우 견적 작성에 시간이 더 걸릴 수 있으며, 이 경우 사전에 안내드립니다.',
+          href: '',
         },
         {
           q: '설치와 교육도 해주시나요?',
           a: '네, 요청 시 장비의 현장 설치, 시운전 및 운영자 교육을 수행합니다.',
+          href: '',
         },
         {
           q: '장비 보증은 어떻게 되나요?',
           a: '장비에는 제조사 보증이 적용되며, 보증 기간은 모델에 따라 다릅니다 — 정확한 조건은 항상 견적서에 명시합니다.',
+          href: '',
         },
         {
           q: '맞춤형 라벨도 제작하나요?',
           a: '네, 맞춤형 크기, 소재, 구조의 접착 라벨을 제작합니다. 라벨 견적 양식에서 도면이 치수 입력을 도와줍니다.',
+          href: '',
         },
         {
           q: '라벨이나 리본 샘플을 받을 수 있나요?',
           a: '네, 실제 조건에서 소재가 작업에 적합한지 확인하실 수 있도록 테스트용 샘플을 제공합니다.',
+          href: '',
         },
         {
           q: '어떤 열전사 리본을 선택해야 하나요?',
           a: 'Wax, Wax-Resin, Resin 리본 선택에 관한 가이드를 지식 센터에 준비했습니다 — 구체적인 프린터–라벨–리본 조합도 도와드립니다.',
+          href: '',
         },
         {
           q: '라벨링 소프트웨어 지원도 제공하나요?',
           a: '네 — cab cablabel S3 및 Loftware / NiceLabel 소프트웨어의 선택, 도입, 사용을 지원합니다.',
+          href: '',
         },
       ],
     },
@@ -1382,38 +1508,47 @@ export const dictionaries = {
         {
           q: '你们代理哪些制造商的产品？',
           a: '我们代理 CAB、POSTEK 和 TYKMA Electrox 的设备、START International 的点胶与分配设备、DNP 和 ARMOR-IIMAK 热转印碳带，以及 Loftware / NiceLabel 标签软件。同时为设备提供耗材和备件。',
+          href: '',
         },
         {
           q: '你们提供维修和备件供应吗？',
           a: '是的 — 我们为所售设备提供全面的维修和备件支持，必要时可上门排除故障。对于从其他渠道购买的设备，可根据具体情况协商提供帮助。',
+          href: '',
         },
         {
           q: '多久能收到报价？',
           a: '通常我们会在 1–2 个工作日内回复。对于复杂的定制系统，报价可能需要更长时间 — 我们会提前与您沟通。',
+          href: '',
         },
         {
           q: '你们提供安装和培训吗？',
           a: '是的，应要求我们可在现场完成设备的安装、调试，并对操作人员进行培训。',
+          href: '',
         },
         {
           q: '设备的保修政策是怎样的？',
           a: '设备享受制造商保修，保修期因型号而异 — 具体条款始终在报价单中注明。',
+          href: '',
         },
         {
           q: '你们生产定制标签吗？',
           a: '是的，我们生产定制尺寸、材质和结构的不干胶标签。标签询价表单中的示意图可帮助您填写尺寸。',
+          href: '',
         },
         {
           q: '可以获得标签或碳带样品吗？',
           a: '可以，我们提供测试样品，让您在实际条件下确认材料是否符合要求。',
+          href: '',
         },
         {
           q: '应该选择哪种碳带？',
           a: '关于蜡基、混合基和树脂基碳带的选择，我们在知识库中准备了指南 — 也可以帮您确定具体的打印机–标签–碳带组合。',
+          href: '',
         },
         {
           q: '你们提供标签软件支持吗？',
           a: '是的 — 我们协助选择、部署和使用 cab cablabel S3 和 Loftware / NiceLabel 软件。',
+          href: '',
         },
       ],
     },
