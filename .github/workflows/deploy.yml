@@ -28,11 +28,12 @@ jobs:
         env:
           STATIC_EXPORT: '1'
           NEXT_PUBLIC_BASE_PATH: /blueway-web
-          # Server-side form sending. Defaults to the live Formspree form; a
-          # FORMSPREE_ENDPOINT repo secret overrides it (set it to an empty
-          # string to go back to the mailto-only behaviour). The endpoint is
-          # public either way — it ships in the client bundle.
-          NEXT_PUBLIC_FORMSPREE_ENDPOINT: ${{ secrets.FORMSPREE_ENDPOINT || 'https://formspree.io/f/mgogrvpe' }}
+          # Server-side form sending. Any endpoint that accepts a multipart
+          # POST and answers 2xx works: the live Formspree form by default,
+          # or server/send.php once the site moves to PHP hosting. A
+          # FORMSPREE_ENDPOINT repo secret overrides it (empty = mailto only).
+          # The endpoint is public either way — it ships in the client bundle.
+          NEXT_PUBLIC_FORM_ENDPOINT: ${{ secrets.FORMSPREE_ENDPOINT || 'https://formspree.io/f/mgogrvpe' }}
           # Cookieless visitor analytics. Defaults to the live blueway account;
           # a GOATCOUNTER_CODE repo secret overrides it (set it to an empty
           # string to switch the measurement off).
