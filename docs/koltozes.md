@@ -9,7 +9,8 @@ nélkül a linkek vagy az űrlapok nem működnének.
 - **PHP-verzió.** A klaszterre költöztetés a meglévő PHP-verziót megtartja, tehát
   előfordulhat, hogy a tárhely még 5.x-en vagy 7.0-n áll. Az ügyfélfiókban állítsd
   **8.x-re**. A `send.php` 7.0-tól fut, de a régi verziók évek óta nem kapnak
-  biztonsági javítást.
+  biztonsági javítást. A szkript PHP 8.4-en, `E_ALL` hibajelzéssel végig
+  ellenőrizve — minden ága figyelmeztetés és deprecation nélkül fut.
 - **Levelezés.** Külön postafiók nem kell: a `send.php` feladója és címzettje is
   `info@blueway.hu`. Ez azért fontos, mert ha feladóként a látogató címét írnánk
   be, az SPF/DKIM megbukna, és a levél spam mappába kerülne. A látogató címe
