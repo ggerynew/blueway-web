@@ -10,8 +10,9 @@
  *
  * Telepítés:
  *   1. Másold a weboldal gyökerébe (pl. /send.php).
- *   2. Állítsd be lent a RECIPIENT és a FROM címet. A FROM a saját domainen
- *      lévő cím legyen (SPF/DKIM miatt) — a látogató címe Reply-To-ba kerül.
+ *   2. A RECIPIENT és a FROM is info@blueway.hu — más címre irányításhoz lent
+ *      írd át. A FROM mindig a saját domainen lévő cím legyen (SPF/DKIM miatt);
+ *      a látogató címe Reply-To-ba kerül, így a Válasz gomb neki válaszol.
  *   3. Másold mellé a `.user.ini`-t is: a PHP alapértelmezett feltöltési
  *      korlátja gyakran 2 MB, a weblap viszont 10 MB-ig enged csatolni.
  *   4. A build: NEXT_PUBLIC_FORM_ENDPOINT=https://<domain>/send.php
@@ -23,7 +24,7 @@ declare(strict_types=1);
 
 // ——— Beállítások ———————————————————————————————————————————————
 const RECIPIENT      = 'info@blueway.hu';
-const FROM           = 'noreply@blueway.hu';       // saját domain, SPF/DKIM alá
+const FROM           = 'info@blueway.hu';          // saját domain, SPF/DKIM alá
 const FROM_NAME      = 'Blueway Trade weboldal';
 const MAX_TOTAL_SIZE = 10 * 1024 * 1024;           // csatolmányok együtt, mint a kliensen
 const RATE_LIMIT     = 5;                          // küldés / IP / óra
