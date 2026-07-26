@@ -12,7 +12,9 @@
  *   1. Másold a weboldal gyökerébe (pl. /send.php).
  *   2. Állítsd be lent a RECIPIENT és a FROM címet. A FROM a saját domainen
  *      lévő cím legyen (SPF/DKIM miatt) — a látogató címe Reply-To-ba kerül.
- *   3. A build: NEXT_PUBLIC_FORM_ENDPOINT=https://<domain>/send.php
+ *   3. Másold mellé a `.user.ini`-t is: a PHP alapértelmezett feltöltési
+ *      korlátja gyakran 2 MB, a weblap viszont 10 MB-ig enged csatolni.
+ *   4. A build: NEXT_PUBLIC_FORM_ENDPOINT=https://<domain>/send.php
  *
  * Nem igényel Composer-t és külső könyvtárat: sima mail() hívás.
  */
@@ -48,9 +50,37 @@ function encodeHeader(string $value): string
     return '=?UTF-8?B?' . base64_encode(headerSafe($value)) . '?=';
 }
 
+/** php.ini méret („12M”, „8K”, „1G” vagy csupasz bájt) bájtra váltása. */
+function iniBytes(string $value): int
+{
+    $value = trim($value);
+    if ($value === '') {
+        return 0;
+    }
+    $number = (int) $value;
+    switch (strtoupper(substr($value, -1))) {
+        case 'G':
+            return $number * 1024 * 1024 * 1024;
+        case 'M':
+            return $number * 1024 * 1024;
+        case 'K':
+            return $number * 1024;
+        default:
+            return $number;
+    }
+}
+
 // ——— Előellenőrzések ———————————————————————————————————————————
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     fail(405, 'Method not allowed');
+}
+
+// A post_max_size túllépésekor a PHP üres $_POST-ot és $_FILES-t ad, hibaüzenet
+// nélkül. Ezt külön kell elkapni, különben „hiányzó e-mail cím” lenne a válasz.
+$postMaxBytes  = iniBytes((string) ini_get('post_max_size'));
+$contentLength = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
+if ($_POST === [] && $postMaxBytes > 0 && $contentLength > $postMaxBytes) {
+    fail(413, 'The submission is larger than the server accepts.');
 }
 
 // Rejtett csapdamező: valódi látogató sosem tölti ki, a robotok igen.
@@ -66,7 +96,9 @@ $ip     = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 $bucket = sys_get_temp_dir() . '/bw-form-' . hash('sha256', $ip) . '.txt';
 $hits   = is_readable($bucket) ? array_filter(
     array_map('intval', explode(',', (string) file_get_contents($bucket))),
-    static fn (int $t): bool => $t > time() - 3600
+    function (int $t): bool {
+        return $t > time() - 3600;
+    }
 ) : [];
 if (count($hits) >= RATE_LIMIT) {
     fail(429, 'Too many submissions, please try again later.');
