@@ -21,6 +21,18 @@ export function absUrl(path: string) {
  * Open Graph / Twitter kártya. A `path` a nyelvi előtag NÉLKÜLI útvonal
  * (pl. 'termekek/cimkenyomtatok' vagy '' a főoldalhoz).
  */
+/** Open Graph nyelvkódok — a hreflang-gal együtt ez mondja meg a közösségi
+ *  megosztóknak és a keresőknek, melyik nyelvi változatot látják. */
+const OG_LOCALE: Record<Locale, string> = {
+  hu: 'hu_HU',
+  en: 'en_US',
+  de: 'de_DE',
+  it: 'it_IT',
+  es: 'es_ES',
+  ko: 'ko_KR',
+  zh: 'zh_CN',
+};
+
 export function pageMetadata({
   lang,
   path,
@@ -53,7 +65,7 @@ export function pageMetadata({
       description,
       url: canonical,
       siteName: SITE_NAME,
-      locale: lang === 'hu' ? 'hu_HU' : 'en_US',
+      locale: OG_LOCALE[lang],
       type: 'website',
       images: [{ url: ogImage, width: 1200, height: 630 }],
     },

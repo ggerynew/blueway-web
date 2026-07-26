@@ -54,7 +54,7 @@ export default async function LabelQuotePage({
 
       <Reveal delay={0.18}>
         <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
-          <LabelQuoteForm labels={labelQuote} recipient={dict.contact.email} />
+          <LabelQuoteForm labels={labelQuote} recipient={dict.contact.email} lang={lang} />
           <LegalNotice lang={lang} />
         </div>
       </Reveal>

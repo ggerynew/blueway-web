@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { sendForm } from '@/lib/send-form';
-import type { Dictionary } from '@/lib/i18n';
+import { FileField } from '@/components/file-field';
+import type { Dictionary, Locale } from '@/lib/i18n';
 
 type Labels = Dictionary['products']['inquiry'];
 
@@ -15,10 +16,12 @@ export function ProductInquiry({
   labels,
   recipient,
   productName,
+  lang,
 }: {
   labels: Labels;
   recipient: string;
   productName: string;
+  lang: Locale;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -110,18 +113,14 @@ export function ProductInquiry({
         </div>
       </div>
 
-      <div>
-        <label htmlFor="pi-attachments" className={labelClass}>{labels.attach}</label>
-        <input
-          id="pi-attachments"
-          name="attachments"
-          type="file"
-          multiple
-          accept="image/*,.pdf,.ai,.eps,.svg,.zip"
-          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink transition-colors file:mr-4 file:rounded-full file:border-0 file:bg-brand-700 file:px-4 file:py-1.5 file:text-xs file:font-medium file:text-white hover:file:bg-brand-800"
-        />
-        <p className="mt-1.5 text-xs text-ink-muted">{labels.attachHint}</p>
-      </div>
+      <FileField
+        id="pi-attachments"
+        name="attachments"
+        label={labels.attach}
+        hint={labels.attachHint}
+        lang={lang}
+        accept="image/*,.pdf,.ai,.eps,.svg,.zip"
+      />
 
       <div className="flex flex-wrap items-center gap-4">
         <button

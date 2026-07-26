@@ -21,7 +21,7 @@ export default async function LangLayout({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
-  const skipLabel = lang === 'hu' ? 'Ugrás a tartalomra' : 'Skip to content';
+  const skipLabel = dict.ui.skipToContent;
 
   // Cégadatok strukturált formában a keresőknek (Organization / LocalBusiness)
   const orgJsonLd = {
