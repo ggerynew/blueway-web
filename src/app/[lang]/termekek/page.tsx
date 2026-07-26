@@ -4,7 +4,7 @@ import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getProductsByCategory } from '@/lib/products';
 import type { Metadata } from 'next';
-import { pageMetadata } from '@/lib/site';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
   params,
@@ -29,8 +29,30 @@ export default async function ProductsPage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: dict.products.title,
+    description: dict.products.lead,
+    inLanguage: lang,
+    url: absUrl(`${lang}/termekek`),
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: categories.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.name[lang],
+        url: absUrl(`${lang}/termekek/${c.slug}`),
+      })),
+    },
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {dict.products.title}

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { guides } from '@/lib/knowledge';
-import { pageMetadata } from '@/lib/site';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -33,8 +33,31 @@ export default async function KnowledgePage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
+  // Útmutató-lista strukturált adatként (CollectionPage + ItemList)
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: dict.knowledge.title,
+    description: dict.knowledge.lead,
+    inLanguage: lang,
+    url: absUrl(`${lang}/tudastar`),
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: guides.map((g, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: g.title[lang],
+        url: absUrl(`${lang}/tudastar/${g.slug}`),
+      })),
+    },
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {dict.knowledge.title}

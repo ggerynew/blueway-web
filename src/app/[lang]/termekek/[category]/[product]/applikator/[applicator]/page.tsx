@@ -52,8 +52,42 @@ export default async function ApplicatorPage({
   const dict = getDictionary(lang);
   const brandLogo = product.brandLogo ?? getBrandLogo(product.brand);
 
+  // Applikátor mint termék + morzsamenü a keresőknek
+  const appUrl = absUrl(`${lang}/termekek/${category}/${product.slug}/applikator/${applicator.slug}`);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Product',
+        name: `${applicator.name[lang]} — ${product.name}`,
+        description: applicator.description[lang],
+        brand: { '@type': 'Brand', name: product.brand },
+        isAccessoryOrSparePartFor: {
+          '@type': 'Product',
+          name: product.name,
+          url: absUrl(`${lang}/termekek/${category}/${product.slug}`),
+        },
+        url: appUrl,
+        ...(applicator.image ? { image: absUrl(applicator.image.replace(/^\//, '')) } : {}),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
+          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
+          { '@type': 'ListItem', position: 3, name: product.name, item: absUrl(`${lang}/termekek/${category}/${product.slug}`) },
+          { '@type': 'ListItem', position: 4, name: applicator.name[lang], item: appUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <nav className="text-sm text-ink-muted">
           <Link href={`/${lang}/termekek`} className="transition-colors hover:text-ink">

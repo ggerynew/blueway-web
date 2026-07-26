@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getCategory, getProductsByCategory, manufacturers } from '@/lib/products';
-import { pageMetadata } from '@/lib/site';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
@@ -49,8 +49,36 @@ export default async function CategoryPage({
   const groupedCount = brandGroups.reduce((n, g) => n + g.list.length, 0);
   const multiBrand = groupedCount === items.length && cat.slug !== 'cimkek-es-festekszalagok';
 
+  // Morzsamenü + terméklista strukturált adatként
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
+          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: cat.name[lang],
+        itemListElement: items.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: absUrl(`${lang}/termekek/${p.category}/${p.slug}`),
+        })),
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <Link
           href={`/${lang}/termekek`}

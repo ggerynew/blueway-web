@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getProductsByBrand } from '@/lib/products';
-import { pageMetadata } from '@/lib/site';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -34,8 +34,30 @@ export default async function ManufacturersPage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: dict.manufacturers.title,
+    description: dict.manufacturers.lead,
+    inLanguage: lang,
+    url: absUrl(`${lang}/gyartok`),
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: manufacturers.map((mf, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: mf.name,
+        url: absUrl(`${lang}/gyartok/${mf.slug}`),
+      })),
+    },
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {dict.manufacturers.title}
