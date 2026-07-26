@@ -64,11 +64,26 @@ function Flag({ code }: { code: Locale }) {
         <svg viewBox="0 0 24 16" {...common}>
           <rect width="24" height="16" fill="#fff" stroke="#d4d4d8" strokeWidth="0.5" />
           <g transform="rotate(-33 12 8)">
-            <path d="M7.5,8 a4.5,4.5 0 0 1 9,0 z" fill="#CD2E3A" />
-            <path d="M16.5,8 a4.5,4.5 0 0 1 -9,0 z" fill="#0047A0" />
-            <circle cx="9.75" cy="8" r="2.25" fill="#CD2E3A" />
-            <circle cx="14.25" cy="8" r="2.25" fill="#0047A0" />
+            <path d="M8,8 a4,4 0 0 1 8,0 z" fill="#CD2E3A" />
+            <path d="M16,8 a4,4 0 0 1 -8,0 z" fill="#0047A0" />
+            <circle cx="10" cy="8" r="2" fill="#CD2E3A" />
+            <circle cx="14" cy="8" r="2" fill="#0047A0" />
           </g>
+          {/* A négy sarokban a trigramok — nélkülük a zászló egy halvány pötty */}
+          {(
+            [
+              [4.6, 3.6, 33],
+              [19.4, 12.4, 33],
+              [19.4, 3.6, -33],
+              [4.6, 12.4, -33],
+            ] as const
+          ).map(([cx, cy, angle]) => (
+            <g key={`${cx}-${cy}`} transform={`rotate(${angle} ${cx} ${cy})`} fill="#0A0A0A">
+              <rect x={cx - 2.5} y={cy - 1.7} width="5" height="0.9" />
+              <rect x={cx - 2.5} y={cy - 0.45} width="5" height="0.9" />
+              <rect x={cx - 2.5} y={cy + 0.8} width="5" height="0.9" />
+            </g>
+          ))}
         </svg>
       );
     case 'zh':

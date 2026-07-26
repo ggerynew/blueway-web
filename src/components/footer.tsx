@@ -11,6 +11,7 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
     { href: `/${lang}/gyik`, label: dict.faq.title },
     { href: `/${lang}/cimke-ajanlatkero`, label: dict.nav.labelQuote },
+    { href: `/${lang}/rolunk`, label: dict.nav.about },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
 
@@ -23,6 +24,18 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <p>{dict.footer.billing}</p>
           <p className="mt-2">{dict.footer.taxNumber}</p>
           <p>{dict.footer.regNumber}</p>
+
+          {/* Dun & Bradstreet (Bisnode) AAA tanúsítvány — minden oldal alján */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset('/images/brand/dnb-aaa-certificate.webp')}
+            alt={dict.ui.certificateAlt}
+            width={350}
+            height={95}
+            loading="lazy"
+            decoding="async"
+            className="mt-5 h-auto w-full max-w-[300px] rounded-lg bg-white p-2"
+          />
         </div>
 
         <nav className="flex flex-col gap-2" aria-label={dict.footer.company}>

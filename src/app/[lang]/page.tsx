@@ -67,14 +67,14 @@ export default async function HomePage({
       />
       <section className="mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-36 md:pb-28">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
+          <div className="min-w-0">
             <Reveal>
               <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">
                 {dict.hero.eyebrow}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
-              <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
+              <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-balance hyphens-auto break-words md:text-6xl">
                 {dict.hero.title}
               </h1>
             </Reveal>

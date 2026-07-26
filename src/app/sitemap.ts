@@ -33,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   add('tudastar', 0.7);
   add('gyik', 0.7);
   add('cimke-ajanlatkero', 0.8);
+  add('rolunk', 0.6);
   add('kapcsolat', 0.7);
   for (const c of categories) add(`termekek/${c.slug}`, 0.8);
   for (const p of products) add(`termekek/${p.category}/${p.slug}`, 0.7);
