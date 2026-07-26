@@ -324,7 +324,7 @@ export const dictionaries = {
         },
         {
           q: 'Melyik festékszalagot válasszam?',
-          a: 'A wax, wax-resin és resin szalagok közötti választáshoz készítettünk útmutatót a Tudástárban — kérdés esetén a konkrét nyomtató–címke–szalag párosításban is segítünk.',
+          a: 'Papír címkéhez általában wax, műnyomó papírhoz és PP/PE fóliához wax-resin, PET-hez és vegyszernek kitett felülethez resin szalag való. A Tudástár szalagválasztó cikke ábrával és példákkal segít, kérdés esetén pedig a konkrét nyomtató–címke–szalag párosításban is segítünk.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -371,11 +371,6 @@ export const dictionaries = {
           q: 'Milyen adatok kellenek egy automata címkéző rendszer ajánlatához?',
           a: 'A címke méretei és a tekercs adatai, a termék anyaga és mérete, a folyamat (indítás, sebesség, ciklusidő), a címke helye a terméken a tűréssel, valamint a beépítési helyzet. Ezt a cab hivatalos címkézési adatlapja végigkérdezi — a Tudástárból letölthető.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: 'Melyik festékszalagot válasszam a címkéhez?',
-          a: 'Papír címkéhez általában wax, műnyomó papírhoz és PP/PE fóliához wax-resin, PET-hez és vegyszernek kitett felülethez resin szalag való. A választást ábrával és példákkal segíti a Tudástár szalagválasztó cikke.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -713,7 +708,7 @@ export const dictionaries = {
         },
         {
           q: 'Which thermal transfer ribbon should I choose?',
-          a: 'We wrote a guide in the Knowledge base on choosing between wax, wax-resin and resin ribbons — and we are happy to help match the exact printer-label-ribbon combination.',
+          a: 'Wax is usually right for paper labels, wax-resin for coated paper and PP/PE film, and resin for PET and surfaces exposed to chemicals. Our ribbon guide helps with a chart and examples, and we are happy to work out the exact printer-label-ribbon combination with you.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -760,11 +755,6 @@ export const dictionaries = {
           q: 'What data is needed to quote an automatic labeling system?',
           a: 'The label dimensions and roll data, the material and size of the product, the process (triggering, speed, cycle time), the label position on the product with its tolerance, and the installation situation. cab’s official labeling checklist walks through all of this — it is downloadable from the Knowledge base.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: 'Which ribbon should I choose for my labels?',
-          a: 'Wax is usually right for paper labels, wax-resin for coated paper and PP/PE film, and resin for PET and surfaces exposed to chemicals. Our ribbon guide in the Knowledge base helps with a chart and examples.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -1101,7 +1091,7 @@ export const dictionaries = {
         },
         {
           q: 'Welches Farbband soll ich wählen?',
-          a: 'Für die Wahl zwischen Wax-, Wax-Resin- und Resin-Bändern haben wir einen Leitfaden in der Wissensdatenbank erstellt — bei Fragen helfen wir auch bei der konkreten Drucker-Etikett-Farbband-Kombination.',
+          a: 'Für Papieretiketten ist in der Regel wax richtig, für gestrichenes Papier und PP/PE-Folien wax-resin und für PET sowie chemisch beanspruchte Oberflächen resin. Unser Farbband-Ratgeber hilft mit einer Übersichtstabelle und Beispielen weiter — bei Fragen finden wir die konkrete Drucker-Etikett-Farbband-Kombination gemeinsam mit Ihnen.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -1148,11 +1138,6 @@ export const dictionaries = {
           q: 'Welche Daten werden für das Angebot eines automatischen Etikettiersystems benötigt?',
           a: 'Die Etikettenmaße und Rollendaten, Material und Größe des Produkts, der Prozess (Auslösung, Geschwindigkeit, Taktzeit), die Etikettenposition auf dem Produkt samt Toleranz sowie die Einbausituation. Die offizielle Checkliste Etikettierung von cab führt Sie durch all diese Punkte — sie steht in der Wissensdatenbank zum Download bereit.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: 'Welches Farbband sollte ich für meine Etiketten wählen?',
-          a: 'Für Papieretiketten ist in der Regel wax richtig, für gestrichenes Papier und PP/PE-Folien wax-resin und für PET sowie chemisch beanspruchte Oberflächen resin. Unser Farbband-Ratgeber in der Wissensdatenbank hilft Ihnen mit einer Übersichtstabelle und Beispielen weiter.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -1490,7 +1475,7 @@ export const dictionaries = {
         },
         {
           q: 'Quale ribbon a trasferimento termico devo scegliere?',
-          a: 'Nel Centro conoscenze abbiamo pubblicato una guida alla scelta tra ribbon Wax, Wax / Resin e Resin — e siamo lieti di aiutarLa a individuare l’esatta combinazione di stampante, etichetta e ribbon.',
+          a: 'Per le etichette in carta è di norma indicato il Wax, per la carta patinata e i film in PP/PE il Wax / Resin, mentre il Resin è adatto al PET e alle superfici esposte agli agenti chimici. La nostra guida ai ribbon aiuta con una tabella ed esempi e siamo lieti di individuare con Lei l’esatta combinazione di stampante, etichetta e ribbon.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -1537,11 +1522,6 @@ export const dictionaries = {
           q: 'Quali dati servono per preventivare un sistema di etichettatura automatica?',
           a: 'Le dimensioni dell’etichetta e i dati del rotolo, il materiale e le dimensioni del prodotto, il processo (attivazione, velocità, tempo ciclo), la posizione dell’etichetta sul prodotto con la relativa tolleranza e la situazione di installazione. La checklist ufficiale di etichettatura di cab passa in rassegna tutti questi aspetti — è scaricabile dal Centro conoscenze.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: 'Quale ribbon devo scegliere per le mie etichette?',
-          a: 'Per le etichette in carta è di norma indicato il Wax, per la carta patinata e i film in PP/PE il Wax / Resin, mentre il Resin è adatto al PET e alle superfici esposte agli agenti chimici. La nostra guida ai ribbon nel Centro conoscenze aiuta con una tabella ed esempi.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -1879,7 +1859,7 @@ export const dictionaries = {
         },
         {
           q: '¿Qué ribbon de transferencia térmica debo elegir?',
-          a: 'Hemos publicado en el Centro de conocimiento una guía sobre cómo elegir entre ribbons Wax, Wax / Resin y Resin — y le ayudamos encantados a ajustar la combinación exacta de impresora, etiqueta y ribbon.',
+          a: 'Para etiquetas de papel suele ser adecuado el Wax; para papel estucado y film de PP/PE, el Wax / Resin; y para PET y superficies expuestas a productos químicos, el Resin. Nuestra guía de ribbons le ayuda con una tabla y ejemplos, y con mucho gusto ajustamos con usted la combinación exacta de impresora, etiqueta y ribbon.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -1926,11 +1906,6 @@ export const dictionaries = {
           q: '¿Qué datos se necesitan para presupuestar un sistema de etiquetado automático?',
           a: 'Las dimensiones de la etiqueta y los datos del rollo, el material y el tamaño del producto, el proceso (activación, velocidad, tiempo de ciclo), la posición de la etiqueta sobre el producto con su tolerancia y la situación de instalación. La lista de comprobación de etiquetado oficial de cab recoge todos estos puntos — puede descargarse en el Centro de conocimiento.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: '¿Qué ribbon debo elegir para mis etiquetas?',
-          a: 'Para etiquetas de papel suele ser adecuado el Wax; para papel estucado y film de PP/PE, el Wax / Resin; y para PET y superficies expuestas a productos químicos, el Resin. Nuestra guía de ribbons del Centro de conocimiento le ayuda con una tabla y ejemplos.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -2267,7 +2242,7 @@ export const dictionaries = {
         },
         {
           q: '어떤 열전사 리본을 선택해야 하나요?',
-          a: 'Wax, Wax-Resin, Resin 리본 선택에 관한 가이드를 지식 센터에 준비했습니다 — 구체적인 프린터–라벨–리본 조합도 도와드립니다.',
+          a: '일반적으로 종이 라벨에는 wax, 코팅지와 PP/PE 필름에는 wax-resin, PET와 화학물질에 노출되는 표면에는 resin이 적합합니다. 지식 센터의 리본 가이드가 도표와 예시로 선택을 돕고, 구체적인 프린터–라벨–리본 조합도 함께 찾아드립니다.',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -2314,11 +2289,6 @@ export const dictionaries = {
           q: '자동 라벨링 시스템을 견적하려면 어떤 자료가 필요합니까?',
           a: '라벨 치수와 롤 사양, 제품의 재질과 크기, 공정 조건(트리거 방식, 속도, 사이클 타임), 제품상의 라벨 부착 위치와 공차, 그리고 설치 환경입니다. cab의 공식 라벨링 체크리스트가 이 모든 항목을 안내하며, 지식 센터에서 내려받으실 수 있습니다.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: '라벨에는 어떤 리본을 선택해야 합니까?',
-          a: '일반적으로 종이 라벨에는 wax, 코팅지와 PP/PE 필름에는 wax-resin, PET와 화학물질에 노출되는 표면에는 resin이 적합합니다. 지식 센터의 리본 가이드가 도표와 예시로 선택을 돕습니다.',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
@@ -2655,7 +2625,7 @@ export const dictionaries = {
         },
         {
           q: '应该选择哪种碳带？',
-          a: '关于蜡基、混合基和树脂基碳带的选择，我们在知识库中准备了指南 — 也可以帮您确定具体的打印机–标签–碳带组合。',
+          a: '纸质标签通常适合蜡基碳带，铜版纸和 PP/PE 薄膜适合混合基碳带，PET 以及会接触化学品的表面则适合树脂基碳带。知识库中的碳带选型指南提供了对照表和示例，我们也可以帮您确定具体的打印机–标签–碳带组合。',
           href: '/tudastar/festekszalag-valaszto',
         },
         {
@@ -2702,11 +2672,6 @@ export const dictionaries = {
           q: '为自动贴标系统报价需要哪些资料？',
           a: '标签尺寸与卷料参数、产品的材质与尺寸、工艺条件（触发方式、速度、节拍时间）、标签在产品上的位置及其公差，以及安装现场情况。cab 官方的贴标项目清单涵盖了上述全部内容，可从知识库下载。',
           href: '/tudastar/cimkezo-rendszer-tervezese',
-        },
-        {
-          q: '我该为标签选择哪种碳带？',
-          a: '纸质标签通常适合蜡基碳带，铜版纸和 PP/PE 薄膜适合混合基碳带，PET 以及会接触化学品的表面则适合树脂基碳带。知识库中的碳带选型指南提供了对照表和示例，可供参考。',
-          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
