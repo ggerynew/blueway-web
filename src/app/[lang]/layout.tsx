@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { Toaster } from 'sonner';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { AnalyticsRouteTracker } from '@/components/analytics';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { SITE_URL, absUrl } from '@/lib/site';
@@ -72,14 +73,20 @@ export default async function LangLayout({
       <Toaster position="bottom-right" richColors />
       {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
       <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
-      {/* Látogatottságmérés (GoatCounter): süti- és személyesadat-mentes, ezért
-          consent nélkül futhat. A GOATCOUNTER_CODE repo-secret bekapcsolja. */}
+      {/* Látogatottságmérés (GoatCounter): sütit nem tesz le, IP-címet és
+          teljes User-Agentet nem tárol, csak napi összesítést — ezért
+          jogos érdek alapján, consent nélkül futhat (lásd az adatkezelési
+          tájékoztató III/5. pontját). A GOATCOUNTER_CODE repo-secret
+          felülírja, üres értékkel kikapcsolható. */}
       {process.env.NEXT_PUBLIC_GOATCOUNTER_CODE && (
-        <Script
-          data-goatcounter={`https://${process.env.NEXT_PUBLIC_GOATCOUNTER_CODE}.goatcounter.com/count`}
-          src="https://gc.zgo.at/count.js"
-          strategy="afterInteractive"
-        />
+        <>
+          <Script
+            data-goatcounter={`https://${process.env.NEXT_PUBLIC_GOATCOUNTER_CODE}.goatcounter.com/count`}
+            src="https://gc.zgo.at/count.js"
+            strategy="afterInteractive"
+          />
+          <AnalyticsRouteTracker />
+        </>
       )}
     </div>
   );

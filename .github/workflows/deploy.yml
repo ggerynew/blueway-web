@@ -31,9 +31,10 @@ jobs:
           # Add a repo secret named FORMSPREE_ENDPOINT (e.g. https://formspree.io/f/xxxxxxx)
           # to enable server-side form sending; empty falls back to mailto.
           NEXT_PUBLIC_FORMSPREE_ENDPOINT: ${{ secrets.FORMSPREE_ENDPOINT }}
-          # Add a repo secret named GOATCOUNTER_CODE (the yoursite part of
-          # yoursite.goatcounter.com) to enable cookieless visitor analytics.
-          NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE }}
+          # Cookieless visitor analytics. Defaults to the live blueway account;
+          # a GOATCOUNTER_CODE repo secret overrides it (set it to an empty
+          # string to switch the measurement off).
+          NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE || 'blueway' }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
