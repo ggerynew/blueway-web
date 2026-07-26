@@ -14,6 +14,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
+    { href: `/${lang}/rolunk`, label: dict.nav.about },
     { href: `/${lang}/kapcsolat`, label: dict.nav.contact },
   ];
 
@@ -65,8 +66,10 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6">
-        <Logo lang={lang} mediaClassName="h-12 w-auto" />
-        <nav className="hidden items-center gap-6 text-sm text-ink-muted md:flex">
+        <Logo lang={lang} className="shrink-0" mediaClassName="h-12 w-auto" />
+        {/* A teljes menüsor csak lg-től fér el a hét zászló és a kereső mellett;
+            alatta a hamburgermenü viszi ugyanezeket a pontokat. */}
+        <nav className="hidden items-center gap-4 text-sm whitespace-nowrap text-ink-muted lg:flex xl:gap-5">
           {nav.map((item) => (
             <Link
               key={item.href}
@@ -77,12 +80,11 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             </Link>
           ))}
         </nav>
-        <div className="hidden w-44 xl:w-56 lg:block">{search}</div>
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden shrink-0 items-center gap-3 lg:flex">
           <LangSwitcher lang={lang} compact />
           <Link
             href={`/${lang}/kapcsolat`}
-            className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+            className="hidden rounded-full bg-ink px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-brand-700 xl:inline-block"
           >
             {dict.nav.quote}
           </Link>
@@ -91,8 +93,9 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <MobileNav lang={lang} quoteLabel={dict.nav.quote} items={nav} />
       </div>
 
-      {/* Kereső külön sorban, amíg a fejléc-sorban nem fér el (mobil / tablet) */}
-      <div className="border-t border-line px-6 py-2.5 lg:hidden">
+      {/* A kereső saját sorban: a fejléc-sorban a hét zászló, a menü és az
+          ajánlatkérő gomb mellett egyetlen nyelven sem maradna neki hely. */}
+      <div className="border-t border-line px-6 py-2.5">
         <div className="mx-auto max-w-6xl">{search}</div>
       </div>
     </header>
