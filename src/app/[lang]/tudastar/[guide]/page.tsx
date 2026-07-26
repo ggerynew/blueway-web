@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { RibbonSpectrum } from '@/components/ribbon-spectrum';
+import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
@@ -97,7 +98,7 @@ export default async function GuidePage({
               </h2>
               {section.paragraphs.map((p) => (
                 <p key={p[lang].slice(0, 32)} className="mt-4 leading-relaxed text-ink-muted">
-                  {p[lang]}
+                  <LinkedText text={p[lang]} lang={lang} />
                 </p>
               ))}
               {section.bullets && (
@@ -105,7 +106,9 @@ export default async function GuidePage({
                   {section.bullets.map((b) => (
                     <li key={b[lang].slice(0, 32)} className="flex gap-3 text-ink-muted">
                       <span aria-hidden="true" className="mt-0.5 shrink-0 text-brand-700">—</span>
-                      <span>{b[lang]}</span>
+                      <span>
+                        <LinkedText text={b[lang]} lang={lang} />
+                      </span>
                     </li>
                   ))}
                 </ul>

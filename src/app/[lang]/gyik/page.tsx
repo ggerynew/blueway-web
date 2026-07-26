@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { LinkedText } from '@/components/linked-text';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { pageMetadata } from '@/lib/site';
 
@@ -71,7 +72,9 @@ export default async function FaqPage({
                 </span>
               </summary>
               <div className="px-6 pb-5">
-                <p className="text-ink-muted">{item.a}</p>
+                <p className="text-ink-muted">
+                  <LinkedText text={item.a} lang={lang} />
+                </p>
                 {item.href && (
                   <Link
                     href={`/${lang}${item.href}`}
