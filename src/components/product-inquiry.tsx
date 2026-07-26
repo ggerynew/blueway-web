@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import { FileField } from '@/components/file-field';
 import type { Dictionary, Locale } from '@/lib/i18n';
@@ -56,6 +57,7 @@ export function ProductInquiry({
     try {
       const result = await sendForm({
         fields: {
+          _gotcha: g('_gotcha'),
           product: productName,
           name: g('name'),
           company: g('company'),
@@ -81,6 +83,7 @@ export function ProductInquiry({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <Honeypot />
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label htmlFor="pi-name" className={labelClass}>

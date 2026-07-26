@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import { asset } from '@/lib/asset';
 import { FileField } from '@/components/file-field';
@@ -109,6 +110,7 @@ export function LabelQuoteForm({
 
     const subjectWho = g('company') || g('name') || g('email');
     const fields: Record<string, string> = {
+      _gotcha: g('_gotcha'),
       name: g('name'),
       company: g('company'),
       email: g('email'),
@@ -148,6 +150,7 @@ export function LabelQuoteForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
+      <Honeypot />
       {/* Kapcsolattartó */}
       <section>
         <h2 className="text-sm font-medium tracking-wide text-ink uppercase">

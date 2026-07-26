@@ -1,8 +1,12 @@
 /**
- * Űrlapküldés: ha be van állítva a NEXT_PUBLIC_FORMSPREE_ENDPOINT, akkor a
- * szerver (Formspree) küldi a levelet AJAX-szal; egyébként `mailto` fallback
- * (a látogató levelezője nyílik meg). Így statikus hostingon (GitHub Pages) is
- * működik, és a mailto mindig tartalék marad.
+ * Űrlapküldés: ha be van állítva a NEXT_PUBLIC_FORM_ENDPOINT, akkor az küldi a
+ * levelet AJAX-szal; egyébként `mailto` fallback (a látogató levelezője nyílik
+ * meg). Így statikus hostingon (GitHub Pages) is működik, és a mailto mindig
+ * tartalék marad.
+ *
+ * A végpont bármi lehet, ami multipart POST-ot fogad és 2xx-szel válaszol:
+ * jelenleg Formspree, a költözés után a saját tárhelyen futó `server/send.php`.
+ * A régi NEXT_PUBLIC_FORMSPREE_ENDPOINT nevet is elfogadjuk.
  */
 export type SendResult = 'sent' | 'mailto';
 
@@ -26,7 +30,8 @@ export async function sendForm(opts: {
   /** Csatolt fájlok — Formspree-n feltöltve; mailto esetén a levélhez kézzel kell mellékelni. */
   files?: File[];
 }): Promise<SendResult> {
-  const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+  const endpoint =
+    process.env.NEXT_PUBLIC_FORM_ENDPOINT || process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
   const files = opts.files ?? [];
 
   if (endpoint) {

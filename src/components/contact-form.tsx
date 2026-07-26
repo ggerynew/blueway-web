@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import type { Dictionary } from '@/lib/i18n';
 
@@ -27,6 +28,7 @@ export function ContactForm({
     const company = String(data.get('company') ?? '').trim();
     const subject = String(data.get('subject') ?? '').trim();
     const message = String(data.get('message') ?? '').trim();
+    const _gotcha = String(data.get('_gotcha') ?? '').trim();
 
     const bodyLines = [
       message,
@@ -39,7 +41,7 @@ export function ContactForm({
 
     try {
       const result = await sendForm({
-        fields: { name, email, company, subject, message },
+        fields: { name, email, company, subject, message, _gotcha },
         subject: subject || `${labels.subject}: ${name}`,
         bodyLines,
         recipient,
@@ -59,6 +61,7 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate={false}>
+      <Honeypot />
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
