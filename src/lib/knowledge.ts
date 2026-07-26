@@ -182,83 +182,83 @@ const guidesSource: Sourced<Guide[]> = [
     slug: 'lezeres-jeloles',
     title: {
       hu: 'Lézeres jelölés: melyik gép való a feladathoz?',
-      en: 'Laser marking: which machine fits the job?',
+      en: 'Laser marking: which machine fits the job?', de: 'Lasermarkierung: Welche Maschine passt zur Aufgabe?', ko: '레이저 마킹: 어떤 장비가 작업에 적합합니까?', zh: '激光打标：哪种设备适合您的作业？',
     },
     short: {
       hu: 'Fiber lézer fémre és műanyagra — asztali géptől a gyártósori integrációig, biztonsági osztályokkal.',
-      en: 'Fiber lasers for metal and plastic — from benchtop units to in-line integration, with safety classes explained.',
+      en: 'Fiber lasers for metal and plastic — from benchtop units to in-line integration, with safety classes explained.', de: 'Faserlaser für Metall und Kunststoff — vom Tischgerät bis zur Inline-Integration, mit Erläuterung der Sicherheitsklassen.', ko: '금속과 플라스틱을 위한 파이버 레이저 — 탁상형 장비부터 인라인 통합까지, 안전 등급 설명과 함께 살펴봅니다.', zh: '适用于金属和塑料的光纤激光器 —— 从台式机型到在线集成，并详解安全等级。',
     },
     lead: {
       hu: 'A lézeres jelölés kellékanyag nélkül, kopásálló és lemoshatatlan jelet készít: adattáblát, sorozatszámot, Data Matrix kódot, logót. A választás három kérdésen múlik — milyen anyagra, mekkora darabszámban és milyen környezetben kell jelölni.',
-      en: 'Laser marking creates wear-resistant, indelible marks with no consumables: rating plates, serial numbers, Data Matrix codes, logos. The choice comes down to three questions — what material, in what volume and in what environment.',
+      en: 'Laser marking creates wear-resistant, indelible marks with no consumables: rating plates, serial numbers, Data Matrix codes, logos. The choice comes down to three questions — what material, in what volume and in what environment.', de: 'Die Lasermarkierung erzeugt verschleißfeste, unauslöschliche Kennzeichnungen ohne Verbrauchsmaterial: Typenschilder, Seriennummern, Data-Matrix-Codes, Logos. Die Auswahl hängt von drei Fragen ab — welches Material, in welcher Stückzahl und in welcher Umgebung.', ko: '레이저 마킹은 소모품 없이 내마모성이 뛰어나고 지워지지 않는 표시를 만듭니다: 명판, 일련번호, Data Matrix 코드, 로고. 선택은 결국 세 가지 질문으로 귀결됩니다 — 어떤 소재를, 어느 정도 물량으로, 어떤 환경에서 마킹하는가입니다.', zh: '激光打标无需耗材即可形成耐磨、不可磨灭的标记：铭牌、序列号、Data Matrix 码、标识。选型归结为三个问题 —— 什么材料、多大批量、何种环境。',
     },
     sections: [
       {
-        title: { hu: 'Mit tud a fiber lézer?', en: 'What a fiber laser can do' },
+        title: { hu: 'Mit tud a fiber lézer?', en: 'What a fiber laser can do', de: 'Was ein Faserlaser leisten kann', ko: '파이버 레이저로 할 수 있는 것', zh: '光纤激光器能做什么' },
         paragraphs: [
           {
             hu: 'Az általunk forgalmazott gépek ytterbium fiber lézerrel dolgoznak. Fémeken (acél, rozsdamentes, alumínium, réz) egyaránt alkalmasak mély gravírozásra és felületkímélő, hőkezeléses (anneal) sötét jelölésre, műanyagokon pedig a színváltó jelölés a jellemző. A MOPA-technikás lézerek impulzushossza állítható, így vékony fémlemezen és festett felületen is torzulásmentes, akár színes jelölés készíthető.',
-            en: 'The machines we distribute work with ytterbium fiber lasers. On metals (steel, stainless, aluminium, copper) they can deep-engrave, anneal and produce dark, high-contrast marks; on plastics colour-change marking is typical. MOPA lasers have an adjustable pulse duration, which allows distortion-free — and even coloured — marking on thin sheet metal and painted surfaces.',
+            en: 'The machines we distribute work with ytterbium fiber lasers. On metals (steel, stainless, aluminium, copper) they can deep-engrave, anneal and produce dark, high-contrast marks; on plastics colour-change marking is typical. MOPA lasers have an adjustable pulse duration, which allows distortion-free — and even coloured — marking on thin sheet metal and painted surfaces.', de: 'Die von uns vertriebenen Maschinen arbeiten mit Ytterbium-Faserlasern. Auf Metallen (Stahl, Edelstahl, Aluminium, Kupfer) können sie tief gravieren, Anlassbeschriftungen erzeugen und dunkle, kontrastreiche Markierungen herstellen; auf Kunststoffen ist die Farbumschlagmarkierung typisch. MOPA-Laser verfügen über eine einstellbare Pulsdauer, was eine verzugsfreie — und sogar farbige — Markierung auf dünnen Blechen und lackierten Oberflächen ermöglicht.', ko: '당사가 공급하는 장비는 이터븀 파이버 레이저를 사용합니다. 금속(강, 스테인리스, 알루미늄, 구리)에는 깊은 각인과 어닐링 마킹이 가능하며 어둡고 대비가 높은 표시를 구현합니다. 플라스틱에는 색상 변화 마킹이 일반적입니다. MOPA 레이저는 펄스 지속 시간을 조절할 수 있어 얇은 판금과 도장면에 변형 없는 — 나아가 컬러 — 마킹까지 구현합니다.', zh: '我们代理的设备采用镱光纤激光器。在金属（碳钢、不锈钢、铝、铜）上可实现深雕刻、退火打标以及深色高对比度标记；在塑料上则以变色打标为主。MOPA 激光器的脉冲宽度可调，因而能在薄板金属和涂装表面上实现无变形 —— 甚至彩色 —— 的打标。',
           },
           {
             hu: 'A jelölés kellékanyag-mentes: nincs festékszalag, tinta vagy oldószer, a költség gyakorlatilag az áramfogyasztásra korlátozódik. Cserébe a beruházás magasabb, ezért érdemes előre végiggondolni a darabszámot és a jövőbeli feladatokat is.',
-            en: 'Marking is consumable-free: no ribbon, ink or solvent, so running costs are essentially just electricity. In exchange the investment is higher, so it is worth thinking through the volumes and future tasks in advance.',
+            en: 'Marking is consumable-free: no ribbon, ink or solvent, so running costs are essentially just electricity. In exchange the investment is higher, so it is worth thinking through the volumes and future tasks in advance.', de: 'Die Markierung kommt ohne Verbrauchsmaterial aus: kein Farbband, keine Tinte, kein Lösemittel, sodass die Betriebskosten im Wesentlichen nur aus Strom bestehen. Im Gegenzug ist die Investition höher, weshalb es sich lohnt, die Stückzahlen und künftigen Aufgaben vorab zu durchdenken.', ko: '마킹에는 소모품이 필요하지 않습니다. 리본, 잉크, 용제가 없으므로 운영 비용은 사실상 전기 요금뿐입니다. 대신 초기 투자 비용이 높으므로 물량과 향후 작업을 미리 검토해 보시는 것이 좋습니다.', zh: '打标过程无耗材：无需色带、油墨或溶剂，因此运行成本基本上仅为电费。相应地，设备投资较高，所以值得提前把批量需求和未来的作业任务考虑清楚。',
           },
         ],
       },
       {
-        title: { hu: 'Zárt asztali gép vagy integrált lézer?', en: 'Enclosed benchtop unit or integrated laser?' },
+        title: { hu: 'Zárt asztali gép vagy integrált lézer?', en: 'Enclosed benchtop unit or integrated laser?', de: 'Geschlossenes Tischgerät oder integrierter Laser?', ko: '밀폐형 탁상 장비입니까, 통합형 레이저입니까?', zh: '封闭式台式机型还是集成式激光器？' },
         paragraphs: [
           {
             hu: 'Kézi behelyezésű, kisebb szériákhoz a zárt asztali gépek valók: a cab XENO 1 és a TYKMA Minilase teljesen burkolt, 1. lézerosztályú rendszer, motoros vagy pneumatikus ajtóval — nyílt műhelyben is biztonságosan üzemeltethető, védőszemüveg nélkül. Nagyobb vagy hosszabb darabokhoz a Minilase XL nyitott munkatere ad helyet.',
-            en: 'For manual loading and smaller batches, enclosed benchtop machines are the answer: the cab XENO 1 and the TYKMA Minilase are fully enclosed Class 1 systems with a motorised or pneumatic door — safe to run in an open workshop without protective eyewear. For larger or longer parts the Minilase XL offers an open work area.',
+            en: 'For manual loading and smaller batches, enclosed benchtop machines are the answer: the cab XENO 1 and the TYKMA Minilase are fully enclosed Class 1 systems with a motorised or pneumatic door — safe to run in an open workshop without protective eyewear. For larger or longer parts the Minilase XL offers an open work area.', de: 'Für manuelle Beladung und kleinere Losgrößen sind geschlossene Tischgeräte die Antwort: cab XENO 1 und TYKMA Minilase sind vollständig gekapselte Systeme der Laserklasse 1 mit motorischer oder pneumatischer Tür — sicher im Betrieb in einer offenen Werkstatt, ohne Schutzbrille. Für größere oder längere Teile bietet die Minilase XL einen offenen Arbeitsraum.', ko: '수동 로딩과 소량 배치에는 밀폐형 탁상 장비가 해답입니다. cab XENO 1과 TYKMA Minilase는 전동식 또는 공압식 도어를 갖춘 완전 밀폐형 클래스 1 시스템으로, 개방된 작업장에서도 보호 안경 없이 안전하게 운전할 수 있습니다. 더 크거나 긴 부품에는 Minilase XL이 개방형 작업 공간을 제공합니다.', zh: '对于人工上料和小批量生产，封闭式台式设备就是答案：cab XENO 1 和 TYKMA Minilase 均为全封闭 1 类系统，配备电动或气动门 —— 可在开放式车间内安全运行，无需佩戴护目镜。对于更大或更长的零件，Minilase XL 提供开放式工作区域。',
           },
           {
             hu: 'Gyártósorba vagy munkacellába a jelölőfejet önmagában építjük be: a cab XENO 4 és a TYKMA Vereo erre készült, utóbbi Smart változata PC nélkül, saját érintőképernyőről is működik. Ha kész, sorozatgyártásra való munkaállomás kell, a cab LSG+100 egy XENO 4-et zár 1. lézerosztályú, motoros ajtós kabinba.',
-            en: 'For a production line or work cell the marking head is integrated on its own: the cab XENO 4 and the TYKMA Vereo are built for this, and the Vereo Smart version runs from its own touchscreen without a PC. If you need a finished workstation for series production, the cab LSG+100 encloses a XENO 4 in a Class 1 cabinet with a motorised door.',
+            en: 'For a production line or work cell the marking head is integrated on its own: the cab XENO 4 and the TYKMA Vereo are built for this, and the Vereo Smart version runs from its own touchscreen without a PC. If you need a finished workstation for series production, the cab LSG+100 encloses a XENO 4 in a Class 1 cabinet with a motorised door.', de: 'Für eine Produktionslinie oder Fertigungszelle wird der Markierkopf für sich allein integriert: cab XENO 4 und TYKMA Vereo sind dafür konzipiert, und die Version Vereo Smart läuft ohne PC über ihren eigenen Touchscreen. Wenn Sie eine fertige Arbeitsstation für die Serienfertigung benötigen, kapselt die cab LSG+100 einen XENO 4 in einem Gehäuse der Laserklasse 1 mit motorischer Tür.', ko: '생산 라인이나 작업 셀에는 마킹 헤드를 단독으로 통합합니다. cab XENO 4와 TYKMA Vereo가 이를 위해 설계되었으며, Vereo Smart 버전은 PC 없이 자체 터치스크린으로 구동됩니다. 양산용 완성형 작업대가 필요하시다면 cab LSG+100이 XENO 4를 전동 도어가 적용된 클래스 1 캐비닛에 수납합니다.', zh: '对于生产线或工作单元，打标头可单独集成：cab XENO 4 和 TYKMA Vereo 正是为此而设计，其中 Vereo Smart 版本无需 PC，通过自带触摸屏即可运行。如果您需要用于批量生产的成套工作站，cab LSG+100 可将 XENO 4 封装在配备电动门的 1 类机柜内。',
           },
         ],
       },
       {
-        title: { hu: 'Speciális feladatok', en: 'Special tasks' },
+        title: { hu: 'Speciális feladatok', en: 'Special tasks', de: 'Besondere Aufgaben', ko: '특수 작업', zh: '特殊作业' },
         paragraphs: [
           {
             hu: 'Néhány feladatra célgép való. Fém- és műanyag táblák sorozatjelölésére a cab XENO 3 magazinos rendszere készült, amely köteges adagolással dolgozik. Címkékhez pedig ott a cab LM+, amely a tekercsről érkező anyagot egy menetben jelöli meg és vágja körbe — stancszerszám nélkül, így egyedi méretű címkék is készülhetnek kis darabszámban.',
-            en: 'Some jobs call for a dedicated machine. For series marking of metal and plastic plates the cab XENO 3 uses a magazine system with stacked feeding. For labels there is the cab LM+, which marks and cuts roll-fed material in a single pass — with no die tooling, so custom-sized labels can be made in small runs.',
+            en: 'Some jobs call for a dedicated machine. For series marking of metal and plastic plates the cab XENO 3 uses a magazine system with stacked feeding. For labels there is the cab LM+, which marks and cuts roll-fed material in a single pass — with no die tooling, so custom-sized labels can be made in small runs.', de: 'Manche Aufgaben verlangen nach einer dedizierten Maschine. Für die Serienmarkierung von Metall- und Kunststoffschildern nutzt die cab XENO 3 ein Magazinsystem mit Stapelzuführung. Für Etiketten gibt es die cab LM+, die Rollenmaterial in einem einzigen Durchgang markiert und schneidet — ohne Stanzwerkzeug, sodass Etiketten in Sondergrößen auch in Kleinserien gefertigt werden können.', ko: '일부 작업에는 전용 장비가 필요합니다. 금속 및 플라스틱 플레이트의 양산 마킹에는 cab XENO 3가 적재 공급 방식의 매거진 시스템을 사용합니다. 라벨용으로는 cab LM+가 있으며, 롤 공급 소재를 한 번의 공정으로 마킹하고 절단합니다 — 별도의 금형이 필요 없어 맞춤 규격 라벨을 소량으로도 제작할 수 있습니다.', zh: '有些作业需要专用设备。对于金属和塑料标牌的批量打标，cab XENO 3 采用堆叠送料的料仓系统。针对标签，则有 cab LM+，可对卷装材料一次完成打标和裁切 —— 无需刀模，因此小批量也能制作定制尺寸的标签。',
           },
         ],
       },
       {
-        title: { hu: 'Biztonság és elszívás', en: 'Safety and fume extraction' },
+        title: { hu: 'Biztonság és elszívás', en: 'Safety and fume extraction', de: 'Sicherheit und Absaugung', ko: '안전과 흄 집진', zh: '安全与烟尘抽吸' },
         paragraphs: [
           {
             hu: 'A lézerosztály nem műszaki apróság: az 1. osztályú, zárt gép mellett védőszemüveg nélkül lehet dolgozni, míg a nyitott, 4. osztályú rendszerhez (pl. TYKMA Virtus vagy a Minilase XL Class 4 üzemmódja) lézervédelmi felelős, szemvédelem és elkerített munkaterület kell.',
-            en: 'The laser class is not a technicality: next to an enclosed Class 1 machine you can work without protective eyewear, whereas an open Class 4 system (e.g. the TYKMA Virtus or the Minilase XL in Class 4 mode) requires a laser safety officer, eye protection and a restricted area.',
+            en: 'The laser class is not a technicality: next to an enclosed Class 1 machine you can work without protective eyewear, whereas an open Class 4 system (e.g. the TYKMA Virtus or the Minilase XL in Class 4 mode) requires a laser safety officer, eye protection and a restricted area.', de: 'Die Laserklasse ist keine Formsache: Neben einer gekapselten Maschine der Laserklasse 1 können Sie ohne Schutzbrille arbeiten, während ein offenes System der Laserklasse 4 (z. B. die TYKMA Virtus oder die Minilase XL im Modus Laserklasse 4) einen Laserschutzbeauftragten, Augenschutz und einen abgesperrten Bereich erfordert.', ko: '레이저 등급은 형식적인 사항이 아닙니다. 밀폐형 클래스 1 장비 옆에서는 보호 안경 없이 작업할 수 있지만, 개방형 클래스 4 시스템(예: TYKMA Virtus 또는 클래스 4 모드의 Minilase XL)에는 레이저 안전 관리자와 눈 보호구, 그리고 출입 제한 구역이 필요합니다.', zh: '激光等级并非细枝末节：在封闭式 1 类设备旁可以不戴护目镜作业，而开放式 4 类系统（例如 TYKMA Virtus 或处于 4 类模式的 Minilase XL）则需要配备激光安全员、眼部防护以及管制区域。',
           },
           {
             hu: 'A jelölés közben keletkező füstöt és port mindig el kell szívni — nemcsak a kezelő egészsége miatt, hanem mert a lerakódás rontja az optika élettartamát. Erre való a cab AF5 elszívó- és szűrőegység, amely elő-, H13 szálló-por- és aktívszén-szűrővel dolgozik.',
-            en: 'The fume and dust generated during marking must always be extracted — not only for the operator’s health, but because deposits shorten the life of the optics. That is the job of the cab AF5 extraction and filter unit, which works with a pre-filter, an H13 particulate filter and an activated carbon stage.',
+            en: 'The fume and dust generated during marking must always be extracted — not only for the operator’s health, but because deposits shorten the life of the optics. That is the job of the cab AF5 extraction and filter unit, which works with a pre-filter, an H13 particulate filter and an activated carbon stage.', de: 'Die bei der Markierung entstehenden Rauche und Stäube müssen stets abgesaugt werden — nicht nur zum Schutz der Gesundheit des Bedieners, sondern auch, weil Ablagerungen die Lebensdauer der Optik verkürzen. Das ist die Aufgabe der Absaug- und Filteranlage cab AF5, die mit einem Vorfilter, einem H13-Partikelfilter und einer Aktivkohlestufe arbeitet.', ko: '마킹 중 발생하는 흄과 분진은 반드시 집진해야 합니다 — 작업자의 건강을 위해서만이 아니라, 침착물이 광학계의 수명을 단축시키기 때문입니다. 이것이 바로 cab AF5 집진 및 필터 장치의 역할이며, 이 장치는 프리필터와 H13 미립자 필터, 활성탄 단계로 작동합니다.', zh: '打标过程中产生的烟尘和粉尘必须始终予以抽吸 —— 这不仅关乎操作人员的健康，还因为沉积物会缩短光学元件的使用寿命。这正是 cab AF5 抽吸过滤装置的职责所在，该装置采用预过滤器、H13 微粒过滤器和活性炭过滤级。',
           },
         ],
       },
       {
-        title: { hu: 'Mit adjon meg ajánlatkéréskor?', en: 'What to tell us when asking for a quote' },
+        title: { hu: 'Mit adjon meg ajánlatkéréskor?', en: 'What to tell us when asking for a quote', de: 'Was Sie uns bei einer Angebotsanfrage mitteilen sollten', ko: '견적 문의 시 알려주셔야 할 사항', zh: '询价时请告知我们哪些信息' },
         paragraphs: [
           {
             hu: 'Ezekből az adatokból már megmondjuk, melyik teljesítmény és felépítés a megfelelő — és szívesen készítünk mintajelölést az Ön darabjára:',
-            en: 'From these details we can tell which power level and configuration fits — and we are happy to produce a sample marking on your own part:',
+            en: 'From these details we can tell which power level and configuration fits — and we are happy to produce a sample marking on your own part:', de: 'Anhand dieser Angaben können wir Ihnen sagen, welche Leistungsklasse und Konfiguration passt — und gern erstellen wir eine Mustermarkierung auf Ihrem eigenen Teil:', ko: '이러한 정보를 바탕으로 어떤 출력과 구성이 적합한지 안내해 드릴 수 있으며, 고객님의 실제 부품에 샘플 마킹도 기꺼이 진행해 드립니다:', zh: '根据这些信息，我们即可判断哪一功率级别和配置适合您 —— 我们也乐于在您自己的零件上制作打标样品：',
           },
         ],
         bullets: [
-          { hu: 'A munkadarab anyaga és felülete (nyers fém, eloxált, festett, műanyag típusa)', en: 'Material and surface of the workpiece (bare metal, anodised, painted, type of plastic)' },
-          { hu: 'A jelölés tartalma és mérete: szöveg, logó, Data Matrix / QR kód, sorozatszám', en: 'Content and size of the mark: text, logo, Data Matrix / QR code, serial number' },
-          { hu: 'Elvárt jelölési idő darabonként és a napi/éves darabszám', en: 'Required marking time per part and the daily/annual volume' },
-          { hu: 'Kézi behelyezés vagy gyártósori integráció; mozgó terméken kell-e jelölni', en: 'Manual loading or in-line integration; whether marking on moving products is needed' },
-          { hu: 'Van-e előírás a jelölés tartósságára (pl. autóipari, orvostechnikai követelmény)', en: 'Any requirement for mark durability (e.g. automotive or medical device standards)' },
+          { hu: 'A munkadarab anyaga és felülete (nyers fém, eloxált, festett, műanyag típusa)', en: 'Material and surface of the workpiece (bare metal, anodised, painted, type of plastic)', de: 'Werkstoff und Oberfläche des Werkstücks (blankes Metall, eloxiert, lackiert, Kunststoffart)', ko: '작업물의 소재와 표면 상태(무처리 금속, 아노다이징, 도장, 플라스틱 종류)', zh: '工件的材料和表面状态（裸金属、阳极氧化、涂装、塑料种类）' },
+          { hu: 'A jelölés tartalma és mérete: szöveg, logó, Data Matrix / QR kód, sorozatszám', en: 'Content and size of the mark: text, logo, Data Matrix / QR code, serial number', de: 'Inhalt und Größe der Markierung: Text, Logo, Data Matrix / QR-Code, Seriennummer', ko: '마킹의 내용과 크기: 텍스트, 로고, Data Matrix / QR 코드, 일련번호', zh: '标记的内容和尺寸：文字、标识、Data Matrix / QR 码、序列号' },
+          { hu: 'Elvárt jelölési idő darabonként és a napi/éves darabszám', en: 'Required marking time per part and the daily/annual volume', de: 'Erforderliche Markierzeit pro Teil sowie die tägliche/jährliche Stückzahl', ko: '부품당 요구되는 마킹 시간과 일일/연간 물량', zh: '每件所需的打标时间以及日产量/年产量' },
+          { hu: 'Kézi behelyezés vagy gyártósori integráció; mozgó terméken kell-e jelölni', en: 'Manual loading or in-line integration; whether marking on moving products is needed', de: 'Manuelle Beladung oder Inline-Integration; ob eine Markierung auf bewegten Produkten erforderlich ist', ko: '수동 로딩인지 인라인 통합인지, 이동 중인 제품에 마킹이 필요한지 여부', zh: '人工上料还是在线集成；是否需要对运动中的产品进行打标' },
+          { hu: 'Van-e előírás a jelölés tartósságára (pl. autóipari, orvostechnikai követelmény)', en: 'Any requirement for mark durability (e.g. automotive or medical device standards)', de: 'Etwaige Anforderungen an die Beständigkeit der Markierung (z. B. Normen der Automobil- oder Medizintechnik)', ko: '마킹 내구성에 대한 요구 사항(예: 자동차 또는 의료기기 표준)', zh: '对标记耐久性的任何要求（例如汽车或医疗器械标准）' },
         ],
         link: {
           href: '/termekek/lezer-gravirozok',
-          label: { hu: 'Lézeres jelölők megtekintése', en: 'Browse the laser markers' },
+          label: { hu: 'Lézeres jelölők megtekintése', en: 'Browse the laser markers', de: 'Lasermarkierer ansehen', ko: '레이저 마킹기 둘러보기', zh: '浏览激光打标机' },
         },
       },
     ],
