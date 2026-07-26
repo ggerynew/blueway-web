@@ -260,6 +260,7 @@ export default async function ProductPage({
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
               productName={product.name}
+              lang={lang}
             />
             <LegalNotice lang={lang} />
           </div>

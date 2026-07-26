@@ -225,6 +225,7 @@ export default async function ApplicatorPage({
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
               productName={`${product.name} — ${applicator.name[lang]}`}
+              lang={lang}
             />
             <LegalNotice lang={lang} />
           </div>

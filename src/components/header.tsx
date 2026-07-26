@@ -28,7 +28,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     ...products.flatMap((p) =>
       (p.applicators ?? []).map((a) => ({
         name: a.name[lang],
-        brand: `${p.name} — ${lang === 'hu' ? 'applikátor' : 'applicator'}`,
+        brand: `${p.name} — ${dict.ui.searchApplicator}`,
         image: a.image ? asset(a.image) : '',
         href: `/${lang}/termekek/${p.category}/${p.slug}/applikator/${a.slug}`,
       })),
@@ -36,13 +36,13 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     // Kategóriák és gyártók
     ...categories.map((c) => ({
       name: c.name[lang],
-      brand: lang === 'hu' ? 'Kategória' : 'Category',
+      brand: dict.ui.searchCategory,
       image: '',
       href: `/${lang}/termekek/${c.slug}`,
     })),
     ...manufacturers.map((m) => ({
       name: m.name,
-      brand: lang === 'hu' ? 'Gyártó' : 'Manufacturer',
+      brand: dict.ui.searchManufacturer,
       image: m.logo ? asset(m.logo) : '',
       href: `/${lang}/gyartok/${m.slug}`,
     })),

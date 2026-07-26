@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { LangSwitcher } from '@/components/lang-switcher';
-import type { Locale } from '@/lib/i18n';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 export function MobileNav({
   lang,
@@ -16,6 +16,7 @@ export function MobileNav({
 }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const t = getDictionary(lang).ui;
 
   return (
     <div className="md:hidden">
@@ -24,7 +25,7 @@ export function MobileNav({
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        aria-label={open ? (lang === 'hu' ? 'Menü bezárása' : 'Close menu') : lang === 'hu' ? 'Menü megnyitása' : 'Open menu'}
+        aria-label={open ? t.closeMenu : t.openMenu}
         className="-mr-1 flex h-10 w-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-line/60"
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
