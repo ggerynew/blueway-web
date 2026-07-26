@@ -327,6 +327,63 @@ const guidesSource: Sourced<Guide[]> = [
       },
     ],
   },
+  {
+    slug: 'ragaszto-adagolok',
+    title: {
+      hu: 'Szalag- és címkeadagolók: mikor éri meg?',
+      en: 'Tape and label dispensers: when do they pay off?', de: 'Band- und Etikettenspender: Wann lohnen sie sich?', ko: '테이프 및 라벨 디스펜서: 언제 도입할 가치가 있을까요?', zh: '胶带与标签剥离机：何时值得投入？',
+    },
+    short: {
+      hu: 'Kézi vágás helyett pontos, ismételhető darabolás — röviden arról, mit érdemes tudni az adagolókról.',
+      en: 'Precise, repeatable cutting instead of cutting by hand — a short guide to dispensers.', de: 'Präzises, wiederholbares Schneiden statt Abreißen von Hand — ein kurzer Leitfaden zu Spendern.', ko: '손으로 자르는 대신 정확하고 반복 가능한 절단. 디스펜서에 대한 짧은 안내입니다.', zh: '用精确、可重复的切割取代手工撕取——剥离机简明指南。',
+    },
+    lead: {
+      hu: 'Ha naponta sokszor kell azonos hosszúságú ragasztószalagot vagy címkét leszakítani, egy asztali adagoló pár hét alatt megtérül: nincs több elrontott hossz, gyűrődés vagy elkezdett szalagvég keresgélése.',
+      en: 'If you tear off tape or labels to the same length many times a day, a benchtop dispenser pays for itself within weeks: no more wrong lengths, creases or hunting for the start of the roll.', de: 'Wenn Sie täglich viele Male Klebeband oder Etiketten in gleicher Länge abreißen, amortisiert sich ein Tischspender innerhalb weniger Wochen: keine falschen Längen mehr, kein Verknittern und kein Suchen nach dem Rollenanfang.', ko: '매일 같은 길이의 테이프나 라벨을 여러 번 떼어내야 한다면, 탁상형 디스펜서는 몇 주 안에 투자 비용을 회수합니다. 길이 오류, 구겨짐, 롤 시작점 찾기가 사라집니다.', zh: '如果每天需要多次撕取相同长度的胶带或标签，台式剥离机通常几周内即可收回成本：不再出现长度错误、褶皱，也无需再寻找卷料的起始端。',
+    },
+    sections: [
+      {
+        title: { hu: 'Szalagadagolók (TDA)', en: 'Tape dispensers (TDA)', de: 'Bandspender (TDA)', ko: '테이프 디스펜서 (TDA)', zh: '胶带切割机 (TDA)' },
+        paragraphs: [
+          {
+            hu: 'Az elektromos szalagadagoló beállított hosszra vágja a ragasztószalagot, és a következő darabot már előre is tolja, így a kezelő csak leveszi. A START TDA sorozat 6–150 mm széles szalagot kezel, a vágáshossz 40–9999 mm között állítható, több gyakori hossz pedig memóriába menthető.',
+            en: 'An electric tape dispenser cuts tape to a preset length and feeds the next piece forward, so the operator only has to pick it up. The START TDA series handles tape 6–150 mm wide, the cut length is adjustable between 40 and 9999 mm, and frequently used lengths can be stored in memory.', de: 'Ein elektrischer Bandspender schneidet das Klebeband auf eine voreingestellte Länge und schiebt das nächste Stück vor, sodass der Bediener es nur noch abnehmen muss. Die START TDA-Serie verarbeitet Bänder von 6–150 mm Breite, die Schnittlänge ist zwischen 40 und 9999 mm einstellbar, und häufig genutzte Längen lassen sich speichern.', ko: '전동 테이프 디스펜서는 설정된 길이로 테이프를 절단하고 다음 조각을 미리 밀어내므로, 작업자는 집어 들기만 하면 됩니다. START TDA 시리즈는 폭 6–150 mm 테이프를 처리하며, 절단 길이는 40–9999 mm 범위에서 설정할 수 있고 자주 쓰는 길이는 메모리에 저장할 수 있습니다.', zh: '电动胶带切割机按预设长度切断胶带，并将下一段预先送出，操作员只需取走即可。START TDA 系列可处理宽度 6–150 mm 的胶带，切割长度可在 40–9999 mm 之间设定，常用长度还可存入记忆位。',
+          },
+          {
+            hu: 'Erős tapadású technikai szalagokhoz (VHB, ACX, habszalag) külön, nem tapadó kivitelű görgőkkel szerelt változat készül — ez akadályozza meg, hogy a szalag a gépre ragadjon.',
+            en: 'For high-tack technical tapes (VHB, ACX, foam) there is a version with non-stick feed rollers — this keeps the tape from sticking to the machine itself.', de: 'Für hochhaftende technische Bänder (VHB, ACX, Schaumband) gibt es eine Ausführung mit antihaftbeschichteten Vorschubrollen — so klebt das Band nicht an der Maschine selbst fest.', ko: '고점착 기술용 테이프(VHB, ACX, 폼 테이프)를 위해 비점착 이송 롤러를 적용한 사양이 있습니다. 테이프가 장비 자체에 달라붙는 것을 방지합니다.', zh: '针对高粘性技术胶带（VHB、ACX、泡棉胶带），提供配备不粘送料辊的机型，可防止胶带粘附在设备上。',
+          },
+        ],
+      },
+      {
+        title: { hu: 'Címkeadagolók (LD / LDX)', en: 'Label dispensers (LD / LDX)', de: 'Etikettenspender (LD / LDX)', ko: '라벨 디스펜서 (LD / LDX)', zh: '标签剥离机 (LD / LDX)' },
+        paragraphs: [
+          {
+            hu: 'A címkeadagoló lefejti az öntapadós címkét a hordozóról, és félig kitolva megállítja, hogy egy mozdulattal fel lehessen venni. Kis címkékhez a kompakt LD3000 való, nagy, hosszú címkékhez az LDX8100, amely 203 mm széles címkét is kezel, 198 mm/s sebességgel.',
+            en: 'A label dispenser peels the self-adhesive label off the liner and stops it half-way out, so it can be picked up in a single motion. The compact LD3000 suits small labels, while the LDX8100 handles labels up to 203 mm wide at 198 mm/s.', de: 'Ein Etikettenspender löst das Selbstklebeetikett vom Trägermaterial und stoppt es halb ausgeschoben, sodass es in einer Bewegung entnommen werden kann. Der kompakte LD3000 eignet sich für kleine Etiketten, der LDX8100 verarbeitet Etiketten bis 203 mm Breite mit 198 mm/s.', ko: '라벨 디스펜서는 점착 라벨을 라이너에서 벗겨내 절반쯤 나온 상태에서 정지시켜, 한 동작으로 집어 들 수 있게 합니다. 소형 라벨에는 콤팩트한 LD3000이, 최대 폭 203 mm 라벨에는 198 mm/s 속도의 LDX8100이 적합합니다.', zh: '标签剥离机将不干胶标签从底纸上剥离，并在送出一半时停住，便于一次取用。紧凑型 LD3000 适合小标签，LDX8100 则可处理最大宽度 203 mm 的标签，速度达 198 mm/s。',
+          },
+        ],
+      },
+      {
+        title: { hu: 'Mit adjon meg ajánlatkéréskor?', en: 'What to tell us when asking for a quote', de: 'Was Sie bei der Anfrage angeben sollten', ko: '견적 요청 시 알려주실 사항', zh: '询价时请告知我们的信息' },
+        paragraphs: [
+          {
+            hu: 'Elég néhány adat ahhoz, hogy a megfelelő típust ajánljuk:',
+            en: 'A few details are enough for us to recommend the right model:', de: 'Wenige Angaben genügen, damit wir das passende Modell empfehlen können:', ko: '몇 가지 정보만으로 적합한 모델을 추천해 드릴 수 있습니다.', zh: '只需几项信息，我们即可为您推荐合适的机型：',
+          },
+        ],
+        bullets: [
+          { hu: 'A szalag vagy címke szélessége és a kívánt hossz (fix vagy több változó hossz)', en: 'Width of the tape or label and the required length (fixed or several varying lengths)', de: 'Breite des Bandes oder Etiketts und die benötigte Länge (feste oder mehrere wechselnde Längen)', ko: '테이프 또는 라벨의 폭과 필요한 길이 (고정 길이 또는 여러 가변 길이)', zh: '胶带或标签的宽度以及所需长度（固定长度或多种可变长度）' },
+          { hu: 'A szalag típusa — hagyományos ragasztószalag vagy erős tapadású technikai szalag', en: 'Type of tape — ordinary adhesive tape or a high-tack technical tape', de: 'Art des Bandes — herkömmliches Klebeband oder hochhaftendes technisches Band', ko: '테이프 종류 — 일반 접착 테이프 또는 고점착 기술용 테이프', zh: '胶带类型——普通胶带或高粘性技术胶带' },
+          { hu: 'Napi darabszám és a tekercs átmérője', en: 'Daily piece count and the roll diameter', de: 'Tagesstückzahl und Rollendurchmesser', ko: '일일 사용 수량과 롤 외경', zh: '每日用量与卷料外径' },
+        ],
+        link: {
+          href: '/termekek/ragaszto-adagolok',
+          label: { hu: 'Szalagadagolók megtekintése', en: 'Browse the tape dispensers', de: 'Zu den Bandspendern', ko: '테이프 디스펜서 살펴보기', zh: '查看胶带切割机' },
+        },
+      },
+    ],
+  },
 ];
 export const guides: Guide[] = localize<Guide[]>(guidesSource);
 
