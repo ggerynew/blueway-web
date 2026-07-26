@@ -264,6 +264,104 @@ const guidesSource: Sourced<Guide[]> = [
     ],
   },
   {
+    slug: 'vonalkod-nyomtatas',
+    title: {
+      hu: 'Vonalkódok nyomtatása: irány, inverz kódok, 2D és validálás',
+      en: 'Printing barcodes: orientation, inverse codes, 2D and verification',
+    },
+    short: {
+      hu: 'Miért olvashatatlan néha a jó tartalmú kód? Nyomtatási irány, inverz kódok, 1D vs. 2D és a minősítés.',
+      en: 'Why is a technically correct code sometimes unreadable? Print orientation, inverse codes, 1D vs 2D and grading.',
+    },
+    lead: {
+      hu: 'Egy vonalkód akkor ér valamit, ha az élet minden pontján beolvassák: az árukiadásnál, a vevő raktárában, évekkel később a reklamációnál is. A tartalom megtervezése csak a feladat fele — a nyomtatás módja legalább annyira eldönti, hogy a kód olvasható marad-e.',
+      en: 'A barcode is only worth something if it scans everywhere along the way: at dispatch, in the customer’s warehouse, and years later during a complaint. Designing the content is only half the job — how it is printed decides just as much whether the code stays readable.',
+    },
+    sections: [
+      {
+        title: { hu: 'Nyomtatási irány: létra vagy kerítés?', en: 'Print orientation: ladder or picket fence?' },
+        paragraphs: [
+          {
+            hu: 'A termotranszfer nyomtatófej egy sor fűtőpontból áll, és a címke soronként halad el alatta. Ez két, egymástól nagyon eltérő helyzetet eredményez. Ha a vonalak merőlegesek a futásirányra — vagyis a kód „kerítés” állásban van (picket fence) —, minden vonal egyetlen fűtőpont-sorból készül, így a szélek élesek maradnak.',
+            en: 'A thermal transfer printhead is a row of heating dots, and the label passes under it line by line. This creates two very different situations. When the bars are perpendicular to the running direction — the code is in “picket fence” orientation — each bar is printed by a single row of dots, so the edges stay crisp.',
+          },
+          {
+            hu: 'A 90°-kal elforgatott, „létra” állású (ladder) kód esetén viszont minden vonal több száz egymás utáni fűtésből áll össze. Itt jelentkezik a legtöbb hiba: a fej hőtehetetlensége miatt a vonalak elkenődhetnek vagy összeérhetnek, a modulszélesség pedig a fej és az anyagtovábbítás pontosságától függ. Létra állásban ezért érdemes:',
+            en: 'In the 90°-rotated “ladder” orientation, however, every bar is built up from hundreds of consecutive firings. This is where most problems appear: because of the printhead’s thermal inertia the bars can smear or merge, and the module width depends on the accuracy of the head and the media transport. In ladder orientation it is therefore worth:',
+          },
+        ],
+        bullets: [
+          { hu: 'Nagyobb felbontású fejet választani (300 vagy 600 dpi) — a keskeny modulok így is kiadják a névleges méretet', en: 'Choosing a higher-resolution head (300 or 600 dpi) — narrow modules then still hit their nominal width' },
+          { hu: 'Csökkenteni a nyomtatási sebességet, és inkább a hőmérsékletet finomhangolni, mint túlfűteni', en: 'Reducing the print speed and fine-tuning the temperature rather than overheating' },
+          { hu: 'A modulszélességet (a legkeskenyebb vonalat) a fej pontméretének egész számú többszörösére tervezni', en: 'Designing the module width (the narrowest bar) as a whole multiple of the head’s dot size' },
+          { hu: 'Ha az alkalmazás engedi, inkább kerítés állásban nyomtatni — vagy 2D kódra váltani', en: 'Printing in picket fence orientation where the application allows — or switching to a 2D code' },
+        ],
+      },
+      {
+        title: { hu: 'Inverz (negatív) vonalkódok', en: 'Inverse (reversed) barcodes' },
+        paragraphs: [
+          {
+            hu: 'Inverz kódnál a sötét háttérben világos vonalak futnak. Ez látványos, de kockázatos: a szabványok (ISO/IEC 15416 és 15415) a kód kontrasztját mindig a világos és sötét elemek reflexiókülönbségéből számolják, és a klasszikus lézeres (1D) olvasók többsége világos alapon sötét vonalakra van tervezve — inverz kódot sok esetben egyáltalán nem olvas.',
+            en: 'In an inverse code light bars run on a dark background. It looks striking but is risky: the standards (ISO/IEC 15416 and 15415) always calculate contrast from the reflectance difference between light and dark elements, and most classic laser (1D) scanners are designed for dark bars on a light background — many will not read an inverse code at all.',
+          },
+          {
+            hu: 'A kamerás (imager) olvasók már többnyire kezelik az inverz kódokat, a 2D szabványok közül pedig a Data Matrix kifejezetten megengedi a fordított polaritást, és a jobb dekóderek automatikusan felismerik. A gyakorlati szabály mégis az: ha a kódot idegen rendszerben is be kell olvasni — vevőnél, futárszolgálatnál, hatósági ellenőrzésnél —, inverz kódot ne használjunk. Ha mégis muszáj (például sötét alapanyagra vagy lézeres jelöléshez), előbb teszteljük azzal az olvasóval, amelyik éles helyzetben olvasni fogja.',
+            en: 'Camera-based (imager) scanners mostly handle inverse codes, and among the 2D standards Data Matrix explicitly permits reversed polarity, which better decoders detect automatically. The practical rule still stands: if the code has to be read in someone else’s system — at a customer, a courier or an official inspection — do not use an inverse code. If you must (for example on dark stock or with laser marking), test it first with the scanner that will actually read it in the field.',
+          },
+        ],
+      },
+      {
+        title: { hu: '1D vagy 2D kód?', en: '1D or 2D code?' },
+        paragraphs: [
+          {
+            hu: 'A vonalkódok (Code 128, EAN, Code 39) egyetlen irányban hordoznak adatot, és nincs bennük hibajavítás: egy karcolás, egy festékszalag-hiba vagy egy gyűrődés a kódot olvashatatlanná teszi. A 2D kódok (Data Matrix, QR) ezzel szemben Reed–Solomon hibajavítást tartalmaznak, ami a kód egy részének elvesztése esetén is helyreállítja az adatot.',
+            en: 'Linear barcodes (Code 128, EAN, Code 39) carry data in one direction only and contain no error correction: a scratch, a ribbon fault or a crease makes the code unreadable. 2D codes (Data Matrix, QR), by contrast, include Reed–Solomon error correction, which restores the data even when part of the code is lost.',
+          },
+        ],
+        bullets: [
+          { hu: 'Data Matrix ECC 200: a kód mintegy 25–30 %-ának sérülése mellett is dekódolható', en: 'Data Matrix ECC 200: still decodable with roughly 25–30 % of the code damaged' },
+          { hu: 'QR kód: négy hibajavítási szint (L ≈ 7 %, M ≈ 15 %, Q ≈ 25 %, H ≈ 30 %) — a magasabb szint nagyobb kódot jelent', en: 'QR code: four error-correction levels (L ≈ 7 %, M ≈ 15 %, Q ≈ 25 %, H ≈ 30 %) — a higher level means a larger code' },
+          { hu: 'Sokkal több adat sokkal kisebb helyen — alkatrészjelölésnél gyakran ez az egyetlen járható út', en: 'Far more data in far less space — for part marking this is often the only workable route' },
+          { hu: 'A 2D kód minden irányból olvasható, így az elforgatás kérdése is megszűnik', en: 'A 2D code reads from any direction, so the orientation question disappears' },
+          { hu: 'Cserébe kamerás olvasó kell hozzá: a régi, lézeres kézi olvasók nem látják a 2D kódot', en: 'In exchange it needs an imager: old laser handheld scanners cannot see a 2D code' },
+        ],
+      },
+      {
+        title: { hu: 'Validálás: honnan tudjuk, hogy jó a kód?', en: 'Verification: how do we know the code is good?' },
+        paragraphs: [
+          {
+            hu: 'Az „olvassa a kézi olvasóm” nem bizonyíték. A szabványos minősítés (ISO/IEC 15416 az 1D, 15415 a 2D kódokra) A-tól F-ig osztályozza a nyomatot, és külön értékeli a kontrasztot, a modulációt, a dekódolhatóságot és a hibás elemeket. Az autóiparban, az elektronikai gyártásban és a gyógyszeriparban jellemzően minimum „C” (2,5) osztályt írnak elő — és a szállítót teszik felelőssé érte.',
+            en: 'That “my handheld reads it” is not proof. Standard grading (ISO/IEC 15416 for 1D, 15415 for 2D) rates the print from A to F, scoring contrast, modulation, decodability and defects separately. Automotive, electronics and pharma typically require at least a “C” (2.5) grade — and hold the supplier responsible for it.',
+          },
+          {
+            hu: 'A minősítés lehet szúrópróbaszerű (kézi verifikátorral) vagy 100 %-os, a nyomtatásba integrálva. Utóbbira kínál megoldást a POSTEK OX sorozat: a nyomtatóba épített vizuális ellenőrzés minden egyes címkét minősít ANSI/ISO szerint, és a hibás címkét megjelöli vagy a nyomtatást leállítja — így hibás kód el sem hagyja a gyártósort.',
+            en: 'Grading can be done on a sample basis (with a handheld verifier) or 100 %, integrated into printing. The POSTEK OX series offers the latter: the printer’s built-in visual inspection grades every single label to ANSI/ISO and marks the faulty label or stops printing — so a bad code never leaves the production line.',
+          },
+        ],
+        link: {
+          href: '/termekek/cimkenyomtatok/postek-ox',
+          label: { hu: 'POSTEK OX — nyomtató integrált ellenőrzéssel', en: 'POSTEK OX — printer with built-in verification' },
+        },
+      },
+      {
+        title: { hu: 'Gyakorlati ellenőrzőlista', en: 'Practical checklist' },
+        paragraphs: [
+          {
+            hu: 'Mielőtt élesbe áll egy új címke, érdemes ezeken végigmenni:',
+            en: 'Before a new label goes live, it is worth going through these:',
+          },
+        ],
+        bullets: [
+          { hu: 'Van-e elég csendzóna (quiet zone) a kód két oldalán — jellemzően a modulszélesség tízszerese', en: 'Is there enough quiet zone on both sides of the code — typically ten times the module width' },
+          { hu: 'A felbontás és a modulszélesség összhangban van-e (600 dpi kis Data Matrixhoz, 300 dpi általános feladathoz)', en: 'Do the resolution and module width match (600 dpi for a small Data Matrix, 300 dpi for general work)' },
+          { hu: 'Megfelelő-e a festékszalag–címke páros: a resin szalag élesebb kódot ad, mint a wax', en: 'Is the ribbon-label pairing right: a resin ribbon gives a sharper code than wax' },
+          { hu: 'Fényes vagy laminált felületnél a tükröződés zavarhatja az olvasót — matt anyag biztonságosabb', en: 'On glossy or laminated surfaces reflection can disturb the scanner — a matte material is safer' },
+          { hu: 'Teszteljük azzal az olvasóval és abban a környezetben, ahol a kódot valóban be fogják olvasni', en: 'Test with the scanner and in the environment where the code will actually be read' },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'festekszalag-valaszto',
     title: {
       hu: 'Festékszalag-választó: wax, wax-resin vagy resin?',
