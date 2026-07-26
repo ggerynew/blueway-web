@@ -20,10 +20,8 @@ export async function generateMetadata({
   return pageMetadata({
     lang,
     path: '',
-    title:
-      lang === 'hu'
-        ? 'Blueway Trade Kft. — Termékjelölési megoldások'
-        : 'Blueway Trade Ltd. — Product marking solutions',
+    // A címsorhoz a gyökér-layout hozzáfűzi a cégnevet, ezért itt a szlogen áll.
+    title: dict.hero.title,
     description: dict.hero.lead,
   });
 }

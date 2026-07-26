@@ -8,6 +8,8 @@ const NAMES: Record<Locale, string> = {
   hu: 'Magyar',
   en: 'English',
   de: 'Deutsch',
+  it: 'Italiano',
+  es: 'Español',
   ko: '한국어',
   zh: '中文',
 };
@@ -40,6 +42,21 @@ function Flag({ code }: { code: Locale }) {
           <rect width="24" height="5.33" fill="#000" />
           <rect y="5.33" width="24" height="5.33" fill="#D00" />
           <rect y="10.67" width="24" height="5.33" fill="#FFCE00" />
+        </svg>
+      );
+    case 'it':
+      return (
+        <svg viewBox="0 0 24 16" {...common}>
+          <rect width="8" height="16" fill="#009246" />
+          <rect x="8" width="8" height="16" fill="#fff" />
+          <rect x="16" width="8" height="16" fill="#CE2B37" />
+        </svg>
+      );
+    case 'es':
+      return (
+        <svg viewBox="0 0 24 16" {...common}>
+          <rect width="24" height="16" fill="#AA151B" />
+          <rect y="4" width="24" height="8" fill="#F1BF00" />
         </svg>
       );
     case 'ko':
