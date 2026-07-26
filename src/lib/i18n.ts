@@ -280,7 +280,7 @@ export const dictionaries = {
         {
           q: 'Gyártanak egyedi címkét?',
           a: 'Igen, egyedi méretben, anyagból és kivitelben gyártunk öntapadós címkét. A címke-ajánlatkérő űrlapon ábra segíti a méretek megadását.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: 'Kaphatok mintát címkéből vagy festékszalagból?',
@@ -290,7 +290,7 @@ export const dictionaries = {
         {
           q: 'Melyik festékszalagot válasszam?',
           a: 'A wax, wax-resin és resin szalagok közötti választáshoz készítettünk útmutatót a Tudástárban — kérdés esetén a konkrét nyomtató–címke–szalag párosításban is segítünk.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: 'A címkéző szoftverekhez adnak támogatást?',
@@ -634,7 +634,7 @@ export const dictionaries = {
         {
           q: 'Do you produce custom labels?',
           a: 'Yes, we produce self-adhesive labels in custom sizes, materials and constructions. On the label quote form a diagram helps with the dimensions.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: 'Can I get samples of labels or ribbons?',
@@ -644,7 +644,7 @@ export const dictionaries = {
         {
           q: 'Which thermal transfer ribbon should I choose?',
           a: 'We wrote a guide in the Knowledge base on choosing between wax, wax-resin and resin ribbons — and we are happy to help match the exact printer-label-ribbon combination.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: 'Do you support the labeling software?',
@@ -987,7 +987,7 @@ export const dictionaries = {
         {
           q: 'Produzieren Sie individuelle Etiketten?',
           a: 'Ja, wir produzieren Selbstklebeetiketten in individuellen Größen, Materialien und Ausführungen. Im Angebotsformular hilft eine Maßzeichnung bei den Abmessungen.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: 'Kann ich Muster von Etiketten oder Farbbändern erhalten?',
@@ -997,7 +997,7 @@ export const dictionaries = {
         {
           q: 'Welches Farbband soll ich wählen?',
           a: 'Für die Wahl zwischen Wax-, Wax-Resin- und Resin-Bändern haben wir einen Leitfaden in der Wissensdatenbank erstellt — bei Fragen helfen wir auch bei der konkreten Drucker-Etikett-Farbband-Kombination.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: 'Unterstützen Sie die Etikettensoftware?',
@@ -1341,7 +1341,7 @@ export const dictionaries = {
         {
           q: 'Producete etichette su misura?',
           a: 'Sì, produciamo etichette autoadesive in dimensioni, materiali e costruzioni personalizzati. Nel modulo di richiesta di preventivo per le etichette uno schema aiuta a indicare le dimensioni.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: 'È possibile ricevere campioni di etichette o ribbon?',
@@ -1351,7 +1351,7 @@ export const dictionaries = {
         {
           q: 'Quale ribbon a trasferimento termico devo scegliere?',
           a: 'Nel Centro conoscenze abbiamo pubblicato una guida alla scelta tra ribbon Wax, Wax / Resin e Resin — e siamo lieti di aiutarLa a individuare l’esatta combinazione di stampante, etichetta e ribbon.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: 'Offrite supporto per il software di etichettatura?',
@@ -1695,7 +1695,7 @@ export const dictionaries = {
         {
           q: '¿Fabrican etiquetas a medida?',
           a: 'Sí, fabricamos etiquetas autoadhesivas en tamaños, materiales y construcciones a medida. En el formulario de presupuesto de etiquetas, un diagrama le ayuda con las dimensiones.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: '¿Puedo obtener muestras de etiquetas o de ribbon?',
@@ -1705,7 +1705,7 @@ export const dictionaries = {
         {
           q: '¿Qué ribbon de transferencia térmica debo elegir?',
           a: 'Hemos publicado en el Centro de conocimiento una guía sobre cómo elegir entre ribbons Wax, Wax / Resin y Resin — y le ayudamos encantados a ajustar la combinación exacta de impresora, etiqueta y ribbon.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: '¿Dan soporte al software de etiquetado?',
@@ -2048,7 +2048,7 @@ export const dictionaries = {
         {
           q: '맞춤형 라벨도 제작하나요?',
           a: '네, 맞춤형 크기, 소재, 구조의 접착 라벨을 제작합니다. 라벨 견적 양식에서 도면이 치수 입력을 도와줍니다.',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: '라벨이나 리본 샘플을 받을 수 있나요?',
@@ -2058,7 +2058,7 @@ export const dictionaries = {
         {
           q: '어떤 열전사 리본을 선택해야 하나요?',
           a: 'Wax, Wax-Resin, Resin 리본 선택에 관한 가이드를 지식 센터에 준비했습니다 — 구체적인 프린터–라벨–리본 조합도 도와드립니다.',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: '라벨링 소프트웨어 지원도 제공하나요?',
@@ -2401,7 +2401,7 @@ export const dictionaries = {
         {
           q: '你们生产定制标签吗？',
           a: '是的，我们生产定制尺寸、材质和结构的不干胶标签。标签询价表单中的示意图可帮助您填写尺寸。',
-          href: '',
+          href: '/cimke-ajanlatkero',
         },
         {
           q: '可以获得标签或碳带样品吗？',
@@ -2411,7 +2411,7 @@ export const dictionaries = {
         {
           q: '应该选择哪种碳带？',
           a: '关于蜡基、混合基和树脂基碳带的选择，我们在知识库中准备了指南 — 也可以帮您确定具体的打印机–标签–碳带组合。',
-          href: '',
+          href: '/tudastar/festekszalag-valaszto',
         },
         {
           q: '你们提供标签软件支持吗？',

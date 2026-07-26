@@ -80,7 +80,10 @@ export default async function FaqPage({
                     href={`/${lang}${item.href}`}
                     className="mt-3 inline-block text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
                   >
-                    {dict.knowledge.readMore} →
+                    {item.href.startsWith('/tudastar')
+                      ? dict.knowledge.readMore
+                      : dict.nav.labelQuote}{' '}
+                    →
                   </Link>
                 )}
               </div>
