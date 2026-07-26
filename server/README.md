@@ -12,12 +12,12 @@ címét kell átállítani.
 ## Telepítés
 
 1. Töltsd fel a `send.php`-t a weboldal gyökerébe (`https://<domain>/send.php`).
-2. A fájl elején állítsd be:
-   - `RECIPIENT` — ide érkezzenek az üzenetek (alapból `info@blueway.hu`);
-   - `FROM` — **a saját domainen lévő cím** (pl. `noreply@blueway.hu`).
-     Ez fontos: ha feladóként a látogató címét írnánk be, az SPF/DKIM
-     ellenőrzés megbukna, és a levél spam mappába kerülne. A látogató címe
-     `Reply-To`-ként megy, tehát a válasz gomb helyesen működik.
+2. A fájl eleji `RECIPIENT` és `FROM` is `info@blueway.hu` — külön postafiók
+   nem kell hozzá. Ha máshová szeretnéd a leveleket, a `RECIPIENT`-et írd át.
+   A `FROM` **mindig a saját domainen lévő cím maradjon**: ha feladóként a
+   látogató címét írnánk be, az SPF/DKIM ellenőrzés megbukna, és a levél a
+   spam mappába kerülne. A látogató címe `Reply-To`-ként megy, tehát a Válasz
+   gomb neki válaszol.
 3. Építsd a weblapot a végpont címével:
 
    ```

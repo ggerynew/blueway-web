@@ -10,10 +10,10 @@ nélkül a linkek vagy az űrlapok nem működnének.
   előfordulhat, hogy a tárhely még 5.x-en vagy 7.0-n áll. Az ügyfélfiókban állítsd
   **8.x-re**. A `send.php` 7.0-tól fut, de a régi verziók évek óta nem kapnak
   biztonsági javítást.
-- **Levelezőfiók.** Kell egy saját domainen lévő feladócím, pl. `noreply@blueway.hu`.
-  Ha a látogató címét írnánk feladónak, az SPF/DKIM megbukna, és a levél spam
-  mappába kerülne. A látogató címe `Reply-To`-ba megy, tehát a válasz gomb jól
-  működik.
+- **Levelezés.** Külön postafiók nem kell: a `send.php` feladója és címzettje is
+  `info@blueway.hu`. Ez azért fontos, mert ha feladóként a látogató címét írnánk
+  be, az SPF/DKIM megbukna, és a levél spam mappába kerülne. A látogató címe
+  `Reply-To`-ba megy, tehát a Válasz gomb neki válaszol.
 - **Tanúsítvány.** A weblap kanonikus URL-jei és a sitemap `https://`-t használnak,
   tehát a HTTPS-nek működnie kell, mielőtt élesítjük.
 
@@ -57,10 +57,8 @@ A weblap linkjei kiterjesztés nélküliek (`/hu/rolunk`), a fájlok viszont
 
 ### A `send.php` beállítása
 
-A fájl elején:
-
-- `RECIPIENT` — ide érkezzenek az üzenetek (alapból `info@blueway.hu`);
-- `FROM` — a saját domainen lévő feladócím.
+A `RECIPIENT` és a `FROM` is `info@blueway.hu`, tehát alapból nincs mit
+átírni benne. Más címzetthez a fájl elején a `RECIPIENT`-et állítsd át.
 
 A `.user.ini` a feltöltési korlátot emeli 12 MB-ra: a weblap 10 MB-ig enged
 csatolmányt, a PHP alapértéke viszont sokszor csak 2 MB, és a túllépés néma
