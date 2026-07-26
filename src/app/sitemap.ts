@@ -44,5 +44,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const m of manufacturers) add(`gyartok/${m.slug}`, 0.7);
   for (const g of guides) add(`tudastar/${g.slug}`, 0.7);
 
+  // Statikus jogi oldalak (nem nyelvi útvonalon)
+  for (const f of ['adatkezelesi-tajekoztato.html', 'altalanos-szerzodesi-feltetelek.html', 'privacy-policy.html']) {
+    entries.push({ url: absUrl(f), changeFrequency: 'yearly', priority: 0.3 });
+  }
+
   return entries;
 }

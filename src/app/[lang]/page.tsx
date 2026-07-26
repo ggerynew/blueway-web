@@ -6,7 +6,8 @@ import { HeroTileWall } from '@/components/hero-tile-wall';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { products } from '@/lib/products';
-import { pageMetadata } from '@/lib/site';
+import { guides } from '@/lib/knowledge';
+import { SITE_URL, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
   params,
@@ -52,8 +53,20 @@ export default async function HomePage({
     href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Blueway Trade Kft.',
+    url: SITE_URL,
+    inLanguage: lang,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-36 md:pb-28">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
@@ -109,6 +122,46 @@ export default async function HomePage({
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* Tudástár-ajánló: a legfrissebb útmutatók a főoldalról is elérhetők */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  {dict.knowledge.title}
+                </h2>
+                <p className="mt-3 max-w-xl text-ink-muted">{dict.knowledge.lead}</p>
+              </div>
+              <Link
+                href={`/${lang}/tudastar`}
+                className="text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+              >
+                {dict.knowledge.title} →
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {guides.slice(0, 3).map((guide, i) => (
+              <Reveal key={guide.slug} delay={i * 0.06} className="h-full">
+                <Link
+                  href={`/${lang}/tudastar/${guide.slug}`}
+                  className="group flex h-full flex-col rounded-2xl border border-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                >
+                  <h3 className="font-semibold tracking-tight group-hover:text-brand-700">
+                    {guide.title[lang]}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm text-ink-muted">{guide.short[lang]}</p>
+                  <span className="mt-4 text-sm font-medium text-brand-700">
+                    {dict.knowledge.readMore} →
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
     </>

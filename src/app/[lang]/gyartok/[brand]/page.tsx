@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { categories, manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
-import { pageMetadata } from '@/lib/site';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => manufacturers.map((m) => ({ lang, brand: m.slug })));
@@ -44,8 +44,36 @@ export default async function ManufacturerPage({
     .map((c) => ({ category: c, list: items.filter((p) => p.category === c.slug) }))
     .filter((g) => g.list.length > 0);
 
+  // Morzsamenü + terméklista strukturált adatként
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: dict.manufacturers.title, item: absUrl(`${lang}/gyartok`) },
+          { '@type': 'ListItem', position: 2, name: manufacturer.name, item: absUrl(`${lang}/gyartok/${manufacturer.slug}`) },
+        ],
+      },
+      {
+        '@type': 'ItemList',
+        name: manufacturer.name,
+        itemListElement: items.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: absUrl(`${lang}/termekek/${p.category}/${p.slug}`),
+        })),
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <Link
           href={`/${lang}/gyartok`}

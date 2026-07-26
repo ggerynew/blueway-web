@@ -9,6 +9,9 @@ import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
 import { absUrl, pageMetadata } from '@/lib/site';
 
+/** A tudástár-cikkek első publikálásának dátuma (strukturált adathoz). */
+const PUBLISHED = '2026-07-26';
+
 export function generateStaticParams() {
   return locales.flatMap((lang) => guides.map((g) => ({ lang, guide: g.slug })));
 }
@@ -48,6 +51,9 @@ export default async function GuidePage({
         headline: guide.title[lang],
         description: guide.short[lang],
         inLanguage: lang,
+        image: absUrl('images/og.png'),
+        datePublished: PUBLISHED,
+        dateModified: PUBLISHED,
         author: { '@type': 'Organization', name: 'Blueway Trade Kft.' },
         publisher: { '@type': 'Organization', name: 'Blueway Trade Kft.' },
         mainEntityOfPage: absUrl(`${lang}/tudastar/${guide.slug}`),
