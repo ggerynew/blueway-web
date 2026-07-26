@@ -962,6 +962,51 @@ export const dictionaries = {
           a: 'Ja — wir helfen bei Auswahl, Einführung und Nutzung der Software cab cablabel S3 und Loftware / NiceLabel.',
           href: '',
         },
+        {
+          q: 'Warum kann der Scanner einen gedrehten Barcode nicht lesen?',
+          a: 'Der Druckkopf arbeitet zeilenweise: Bei einem um 90° zur Laufrichtung gedrehten Code (Leiter-Ausrichtung, ladder) entsteht jeder Balken aus Hunderten aufeinanderfolgender Aktivierungen — was leicht zum Verschmieren führt. Ein Kopf mit höherer Auflösung, eine geringere Geschwindigkeit und eine richtig gewählte Modulbreite helfen dabei.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Können wir inverse (invertierte) Barcodes drucken?',
+          a: 'Technisch ja, die meisten klassischen Laserscanner lesen sie jedoch nicht: Sie sind auf dunkle Balken auf hellem Untergrund ausgelegt. Imager-Scanner und Data Matrix beherrschen die umgekehrte Polarität — wird der Code auch im System eines Dritten gescannt, verzichten Sie besser auf die inverse Variante.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Wann lohnt sich der Wechsel zu einem 2D-Code (Data Matrix, QR)?',
+          a: 'Wenn der Code Beschädigungen ausgesetzt ist oder viele Daten auf kleiner Fläche untergebracht werden müssen. 2D-Codes enthalten eine Reed–Solomon-Fehlerkorrektur und lassen sich daher auch dann decodieren, wenn ein Teil der Fläche verloren geht; zudem sind sie aus jeder Richtung lesbar. Erforderlich ist dafür allerdings ein Imager-Scanner.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Wie lässt sich prüfen, ob ein gedruckter Code gut genug ist?',
+          a: 'Durch die genormte Klassifizierung (ISO/IEC 15416 und ISO/IEC 15415), die den Druck von A bis F bewertet. Sie kann stichprobenweise mit einem Handheld-Verifizierer erfolgen oder zu 100 % in den Druck integriert werden — Letzteres bietet die POSTEK OX Serie.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Welche Materialien lassen sich laserbeschriften?',
+          a: 'Faserlaser können Metalle (Stahl, Edelstahl, Aluminium, Kupfer) tief gravieren und mit Anlassbeschriftung versehen; auf Kunststoffen erzeugen sie in der Regel eine Markierung durch Farbumschlag. Auf Wunsch fertigen wir eine Musterbeschriftung auf Ihrem eigenen Bauteil an.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Benötigen wir für einen Laser eine Schutzbrille und einen separaten Bereich?',
+          a: 'Geschlossene Maschinen der Laserklasse 1 (etwa cab XENO 1 oder TYKMA Minilase) lassen sich ohne Schutzbrille in einer offenen Werkstatt betreiben. Offene Anlagen der Laserklasse 4 erfordern dagegen einen Laserschutzbeauftragten, Augenschutz und einen abgesperrten Bereich.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Ist bei der Laserbeschriftung eine Absaugung erforderlich?',
+          a: 'Ja. Die entstehenden Rauchgase und Stäube gefährden nicht nur die Gesundheit des Bedieners, sondern setzen sich auch auf der Optik ab und verkürzen deren Lebensdauer. Dafür ist die Absaug- und Filtereinheit cab AF5 mit Vorfilter-, H13- und Aktivkohlestufe vorgesehen.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: 'Welche Daten werden für das Angebot eines automatischen Etikettiersystems benötigt?',
+          a: 'Die Etikettenmaße und Rollendaten, Material und Größe des Produkts, der Prozess (Auslösung, Geschwindigkeit, Taktzeit), die Etikettenposition auf dem Produkt samt Toleranz sowie die Einbausituation. Die offizielle Checkliste Etikettierung von cab führt Sie durch all diese Punkte — sie steht in der Wissensdatenbank zum Download bereit.',
+          href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Welches Farbband sollte ich für meine Etiketten wählen?',
+          a: 'Für Papieretiketten ist in der Regel wax richtig, für gestrichenes Papier und PP/PE-Folien wax-resin und für PET sowie chemisch beanspruchte Oberflächen resin. Unser Farbband-Ratgeber in der Wissensdatenbank hilft Ihnen mit einer Übersichtstabelle und Beispielen weiter.',
+          href: '/tudastar/festekszalag-valaszto',
+        },
       ],
     },
     footer: {
@@ -1256,6 +1301,51 @@ export const dictionaries = {
           a: '네 — cab cablabel S3 및 Loftware / NiceLabel 소프트웨어의 선택, 도입, 사용을 지원합니다.',
           href: '',
         },
+        {
+          q: '회전된 바코드를 스캐너가 읽지 못하는 이유는 무엇입니까?',
+          a: '프린트 헤드는 라인 단위로 인쇄하므로, 진행 방향에 대해 90° 회전된 코드(래더(ladder) 방향)에서는 각 바가 수백 번의 연속 발열로 형성되며, 이는 쉽게 번짐으로 이어집니다. 해상도가 더 높은 헤드, 낮은 인쇄 속도, 올바르게 선정한 모듈 폭이 모두 도움이 됩니다.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '역상(반전) 바코드도 인쇄할 수 있습니까?',
+          a: '기술적으로는 가능하지만 대부분의 기존 레이저 스캐너는 이를 읽지 못합니다. 밝은 바탕에 어두운 바를 전제로 설계되었기 때문입니다. 이미저 스캐너와 Data Matrix 규격은 반전 극성을 지원하지만, 해당 코드가 타사 시스템에서도 스캔된다면 역상 버전은 피하는 것이 좋습니다.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '2D 코드(Data Matrix, QR)로 전환할 만한 시점은 언제입니까?',
+          a: '코드가 손상에 노출되거나 좁은 면적에 많은 데이터를 담아야 할 때입니다. 2D 코드는 Reed–Solomon 오류 정정을 포함하므로 표면 일부가 손실되어도 해독되며, 어느 방향에서나 읽힙니다. 다만 이미저 스캐너가 필요합니다.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '인쇄된 코드가 충분히 양호한지 어떻게 확인할 수 있습니까?',
+          a: '표준 등급 판정(ISO/IEC 15416 및 ISO/IEC 15415)을 통해 확인하며, 인쇄 품질을 A부터 F까지 평가합니다. 휴대용 검증기로 표본 검사할 수도 있고, 인쇄 공정에 100% 통합할 수도 있습니다. 후자는 POSTEK OX 시리즈가 제공합니다.',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '레이저 마킹이 가능한 소재는 무엇입니까?',
+          a: '파이버 레이저는 금속(강, 스테인리스, 알루미늄, 구리)에 깊은 각인과 어닐링 마킹을 구현할 수 있으며, 플라스틱에는 일반적으로 변색 마킹을 형성합니다. 요청하시면 고객사의 실제 부품에 샘플 마킹을 진행해 드립니다.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '레이저 장비에는 보호 안경과 별도의 구역이 필요합니까?',
+          a: '밀폐형 클래스 1 장비(예: cab XENO 1 또는 TYKMA Minilase)는 보호 안경 없이 개방된 작업장에서 운용할 수 있습니다. 반면 개방형 클래스 4 장비는 레이저 안전 관리자, 눈 보호구, 통제 구역이 필요합니다.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '레이저 마킹에 흄 집진이 필요합니까?',
+          a: '필요합니다. 발생하는 흄과 분진은 작업자의 건강을 위협할 뿐 아니라 광학계에 침착되어 수명을 단축시킵니다. 이를 위해 프리 필터, H13, 활성탄 단계를 갖춘 cab AF5 집진 및 필터 장치가 마련되어 있습니다.',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '자동 라벨링 시스템을 견적하려면 어떤 자료가 필요합니까?',
+          a: '라벨 치수와 롤 사양, 제품의 재질과 크기, 공정 조건(트리거 방식, 속도, 사이클 타임), 제품상의 라벨 부착 위치와 공차, 그리고 설치 환경입니다. cab의 공식 라벨링 체크리스트가 이 모든 항목을 안내하며, 지식 센터에서 내려받으실 수 있습니다.',
+          href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: '라벨에는 어떤 리본을 선택해야 합니까?',
+          a: '일반적으로 종이 라벨에는 wax, 코팅지와 PP/PE 필름에는 wax-resin, PET와 화학물질에 노출되는 표면에는 resin이 적합합니다. 지식 센터의 리본 가이드가 도표와 예시로 선택을 돕습니다.',
+          href: '/tudastar/festekszalag-valaszto',
+        },
       ],
     },
     footer: {
@@ -1549,6 +1639,51 @@ export const dictionaries = {
           q: '你们提供标签软件支持吗？',
           a: '是的 — 我们协助选择、部署和使用 cab cablabel S3 和 Loftware / NiceLabel 软件。',
           href: '',
+        },
+        {
+          q: '扫描器为什么读不出旋转后的条码？',
+          a: '打印头是逐行工作的，因此当条码相对于走料方向旋转 90°（即梯形（ladder）方向）时，每一根条都由数百次连续发热形成，很容易出现拖墨。选用分辨率更高的打印头、降低打印速度并正确选定模块宽度，都会有所帮助。',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '我们可以打印反色（反相）条码吗？',
+          a: '技术上可以，但大多数传统激光扫描器无法读取：它们是按浅底深条的方式设计的。影像式扫描器和 Data Matrix 标准确实支持反相极性——如果该条码还要在其他公司的系统中扫描，最好不要采用反色版本。',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '什么情况下值得改用二维码（Data Matrix、QR）？',
+          a: '当条码可能受到损伤，或需要在很小的面积内容纳大量数据时。二维码带有 Reed–Solomon 纠错，即使部分表面受损仍可解码，并且可从任意方向读取。不过它需要配合影像式扫描器使用。',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '如何检查打印出的条码是否足够好？',
+          a: '采用标准等级评定（ISO/IEC 15416 和 ISO/IEC 15415），按 A 到 F 对打印质量进行分级。既可以用手持式验证仪抽样检测，也可以 100% 集成到打印过程中——后者由 POSTEK OX 系列提供。',
+          href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '哪些材料可以进行激光打标？',
+          a: '光纤激光器可对金属（碳钢、不锈钢、铝、铜）进行深雕和退火打标，在塑料上通常可实现变色打标。如有需要，我们可在您自己的工件上制作打标样品。',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '使用激光设备是否需要护目镜和独立区域？',
+          a: '全封闭的 1 类设备（例如 cab XENO 1 或 TYKMA Minilase）无需护目镜即可在开放式车间中运行。而开放式的 4 类设备则需要配备激光安全负责人、眼部防护以及受限区域。',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '激光打标是否需要烟尘抽吸？',
+          a: '需要。产生的烟尘和粉尘不仅危害操作人员的健康，还会附着在光学镜片上并缩短其使用寿命。cab AF5 抽吸与过滤装置正是为此而设，配有预过滤、H13 和活性炭三级滤芯。',
+          href: '/tudastar/lezeres-jeloles',
+        },
+        {
+          q: '为自动贴标系统报价需要哪些资料？',
+          a: '标签尺寸与卷料参数、产品的材质与尺寸、工艺条件（触发方式、速度、节拍时间）、标签在产品上的位置及其公差，以及安装现场情况。cab 官方的贴标项目清单涵盖了上述全部内容，可从知识库下载。',
+          href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: '我该为标签选择哪种碳带？',
+          a: '纸质标签通常适合蜡基碳带，铜版纸和 PP/PE 薄膜适合混合基碳带，PET 以及会接触化学品的表面则适合树脂基碳带。知识库中的碳带选型指南提供了对照表和示例，可供参考。',
+          href: '/tudastar/festekszalag-valaszto',
         },
       ],
     },
