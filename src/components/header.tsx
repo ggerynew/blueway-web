@@ -5,7 +5,7 @@ import { LangSwitcher } from '@/components/lang-switcher';
 import { Logo } from '@/components/logo';
 import { ProductSearch, type SearchItem } from '@/components/product-search';
 import { asset } from '@/lib/asset';
-import { categories, manufacturers, products } from '@/lib/products';
+import { categories, manufacturers, products , productName } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
 
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
@@ -20,7 +20,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
   const searchItems: SearchItem[] = [
     ...products.map((p) => ({
-      name: p.name,
+      name: productName(p, lang),
       brand: p.brand,
       image: p.image ? asset(p.image) : '',
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
@@ -29,7 +29,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     ...products.flatMap((p) =>
       (p.applicators ?? []).map((a) => ({
         name: a.name[lang],
-        brand: `${p.name} — ${dict.ui.searchApplicator}`,
+        brand: `${productName(p, lang)} — ${dict.ui.searchApplicator}`,
         image: a.image ? asset(a.image) : '',
         href: `/${lang}/termekek/${p.category}/${p.slug}/applikator/${a.slug}`,
       })),

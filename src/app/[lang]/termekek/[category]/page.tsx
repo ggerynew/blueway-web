@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { categories, getCategory, getProductsByCategory, manufacturers } from '@/lib/products';
+import { categories, getCategory, getProductsByCategory, manufacturers , productName } from '@/lib/products';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -66,7 +66,7 @@ export default async function CategoryPage({
         itemListElement: items.map((p, i) => ({
           '@type': 'ListItem',
           position: i + 1,
-          name: p.name,
+          name: productName(p, lang),
           url: absUrl(`${lang}/termekek/${p.category}/${p.slug}`),
         })),
       },
@@ -109,6 +109,8 @@ export default async function CategoryPage({
           {brandGroups.map((group) => (
             <section key={group.manufacturer.slug}>
               <Reveal>
+                {/* A gyártó neve a szakasz címe — a kártyák így h3-ak maradnak. */}
+                <h2>
                 <Link
                   href={`/${lang}/gyartok/${group.manufacturer.slug}`}
                   className="group inline-flex items-center gap-3 text-brand-700 transition-colors hover:text-brand-800"
@@ -138,10 +140,17 @@ export default async function CategoryPage({
                     →
                   </span>
                 </Link>
+                </h2>
               </Reveal>
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {group.list.map((product, i) => (
-                  <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
+                  <ProductCard
+              key={product.slug}
+              product={product}
+              lang={lang}
+              delay={(i % 3) * 0.05}
+              headingLevel="h2"
+            />
                 ))}
               </div>
             </section>
@@ -164,9 +173,9 @@ export default async function CategoryPage({
                   />
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-semibold tracking-tight group-hover:text-brand-700">
+                  <h2 className="font-semibold tracking-tight group-hover:text-brand-700">
                     {dict.products.labelsTile.title}
-                  </h3>
+                  </h2>
                   <p className="mt-1 text-sm text-ink-muted">
                     {dict.products.labelsTile.text}
                   </p>
@@ -175,7 +184,13 @@ export default async function CategoryPage({
             </Reveal>
           )}
           {items.map((product, i) => (
-            <ProductCard key={product.slug} product={product} lang={lang} delay={(i % 3) * 0.05} />
+            <ProductCard
+              key={product.slug}
+              product={product}
+              lang={lang}
+              delay={(i % 3) * 0.05}
+              headingLevel="h2"
+            />
           ))}
         </div>
       )}

@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { HeroTileWall } from '@/components/hero-tile-wall';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { products } from '@/lib/products';
+import { productName, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
 import { SITE_URL, pageMetadata } from '@/lib/site';
 
@@ -40,7 +40,7 @@ export default async function HomePage({
     const p = withImage[Math.round((i * (withImage.length - 1)) / (TILE_COUNT - 1))];
     return {
       src: asset(p.image as string),
-      alt: p.name,
+      alt: productName(p, lang),
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     };
   });

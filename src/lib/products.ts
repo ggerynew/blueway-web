@@ -34,6 +34,11 @@ export function localize<T>(data: Sourced<T>): T {
   return fill(data) as T;
 }
 
+/** A terméknév a megadott nyelven; ahol nincs fordítás, a típusnév marad. */
+export function productName(product: Product, lang: Locale): string {
+  return product.displayName?.[lang] ?? product.name;
+}
+
 export interface Category {
   slug: string;
   name: LocalizedText;
@@ -43,7 +48,13 @@ export interface Category {
 export interface Product {
   slug: string;
   category: string;
+  /** Típusnév — egyben azonosító a szövegbeli hivatkozásokhoz. */
   name: string;
+  /**
+   * Megjelenítendő név, ha a típusnév köznyelvi szót tartalmaz (pl. „DNP
+   * festékszalagok”), és az minden nyelven magyarul jelenne meg.
+   */
+  displayName?: LocalizedText;
   brand: string;
   short: LocalizedText;
   description: LocalizedText;
@@ -1140,6 +1151,7 @@ const productsSource: Sourced<Product[]> = [
     slug: 'egyedi-szoftverfejlesztes',
     category: 'szoftverek',
     name: 'Egyedi szoftverfejlesztés',
+    displayName: { hu: 'Egyedi szoftverfejlesztés', en: 'Custom software development', de: 'Individuelle Softwareentwicklung', it: 'Sviluppo software su misura', es: 'Desarrollo de software a medida', ko: '맞춤형 소프트웨어 개발', zh: '定制软件开发' },
     brand: 'Blueway Trade',
     image: '/images/products/egyedi-szoftver.webp',
     short: {
@@ -1388,6 +1400,7 @@ const productsSource: Sourced<Product[]> = [
     slug: 'dnp-festekszalagok',
     category: 'cimkek-es-festekszalagok',
     name: 'DNP festékszalagok',
+    displayName: { hu: 'DNP festékszalagok', en: 'DNP thermal transfer ribbons', de: 'DNP Farbbänder', it: 'Ribbon DNP', es: 'Ribbons DNP', ko: 'DNP 열전사 리본', zh: 'DNP 碳带' },
     brand: 'DNP',
     image: '/images/brand/dnp-logo.png',
     datasheet: '/datasheets/dnp-ttr-brochure.pdf',
@@ -1410,6 +1423,7 @@ const productsSource: Sourced<Product[]> = [
     slug: 'armor-iimak-festekszalagok',
     category: 'cimkek-es-festekszalagok',
     name: 'ARMOR-IIMAK festékszalagok',
+    displayName: { hu: 'ARMOR-IIMAK festékszalagok', en: 'ARMOR-IIMAK thermal transfer ribbons', de: 'ARMOR-IIMAK Farbbänder', it: 'Ribbon ARMOR-IIMAK', es: 'Ribbons ARMOR-IIMAK', ko: 'ARMOR-IIMAK 열전사 리본', zh: 'ARMOR-IIMAK 碳带' },
     brand: 'ARMOR-IIMAK',
     image: '/images/brand/armor-iimak-logo.png',
     datasheet: '/datasheets/armor-iimak-ribbons-overview.pdf',

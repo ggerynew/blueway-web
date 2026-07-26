@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { categories, manufacturers, getManufacturer, getProductsByBrand } from '@/lib/products';
+import { categories, manufacturers, getManufacturer, getProductsByBrand , productName } from '@/lib/products';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -21,10 +21,12 @@ export async function generateMetadata({
   if (!isLocale(lang)) return {};
   const m = getManufacturer(brand);
   if (!m) return {};
+  // A márkanév minden nyelven ugyanaz — a „Gyártó / Hersteller / 제조사” utótag
+  // teszi egyértelművé, mit talál az olvasó, és különbözteti meg a változatokat.
   return pageMetadata({
     lang,
     path: `gyartok/${m.slug}`,
-    title: m.name,
+    title: `${m.name} — ${getDictionary(lang).ui.searchManufacturer}`,
     description: m.description[lang],
   });
 }
@@ -61,7 +63,7 @@ export default async function ManufacturerPage({
         itemListElement: items.map((p, i) => ({
           '@type': 'ListItem',
           position: i + 1,
-          name: p.name,
+          name: productName(p, lang),
           url: absUrl(`${lang}/termekek/${p.category}/${p.slug}`),
         })),
       },
@@ -106,12 +108,15 @@ export default async function ManufacturerPage({
         {categoryGroups.map((group) => (
           <section key={group.category.slug}>
             <Reveal>
-              <Link
-                href={`/${lang}/termekek/${group.category.slug}`}
-                className="text-xl font-semibold tracking-tight transition-colors hover:text-brand-700"
-              >
-                {group.category.name[lang]}
-              </Link>
+              {/* A kategória neve a szakasz címe — a kártyák h3-ak maradnak. */}
+              <h2 className="text-xl font-semibold tracking-tight">
+                <Link
+                  href={`/${lang}/termekek/${group.category.slug}`}
+                  className="transition-colors hover:text-brand-700"
+                >
+                  {group.category.name[lang]}
+                </Link>
+              </h2>
             </Reveal>
             <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {group.list.map((product, i) => (

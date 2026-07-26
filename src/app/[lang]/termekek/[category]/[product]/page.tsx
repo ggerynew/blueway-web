@@ -8,7 +8,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
-import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products } from '@/lib/products';
+import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName } from '@/lib/products';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -24,10 +24,13 @@ export async function generateMetadata({
   if (!isLocale(lang)) return {};
   const product = getProduct(category, productSlug);
   if (!product) return {};
+  // A típusnév önmagában minden nyelven ugyanaz és nem árulja el, mi a gép —
+  // a kategória neve viszont már lefordítva megvan, tegyük mellé.
+  const cat = getCategory(category);
   return pageMetadata({
     lang,
     path: `termekek/${category}/${product.slug}`,
-    title: product.name,
+    title: cat ? `${productName(product, lang)} — ${cat.name[lang]}` : productName(product, lang),
     description: product.short[lang],
     image: product.image ? absUrl(product.image.replace(/^\//, '')) : undefined,
   });
@@ -52,7 +55,7 @@ export default async function ProductPage({
     '@graph': [
       {
         '@type': 'Product',
-        name: product.name,
+        name: productName(product, lang),
         description: product.short[lang],
         brand: { '@type': 'Brand', name: product.brand },
         category: cat.name[lang],
@@ -64,7 +67,7 @@ export default async function ProductPage({
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
           { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
-          { '@type': 'ListItem', position: 3, name: product.name, item: productUrl },
+          { '@type': 'ListItem', position: 3, name: productName(product, lang), item: productUrl },
         ],
       },
     ],
@@ -89,14 +92,14 @@ export default async function ProductPage({
             {cat.name[lang]}
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-ink">{product.name}</span>
+          <span className="text-ink">{productName(product, lang)}</span>
         </nav>
       </Reveal>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
         <Reveal delay={0.05}>
           <ProductMedia
-            name={product.name}
+            name={productName(product, lang)}
             image={product.image}
             videoId={product.videoId}
             model3d={product.model3d}
@@ -124,7 +127,7 @@ export default async function ProductPage({
               </p>
             )}
             <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-              {product.name}
+              {productName(product, lang)}
             </h1>
             <p className="mt-4 text-lg text-ink-muted">{product.description[lang]}</p>
 
@@ -259,7 +262,7 @@ export default async function ProductPage({
             <ProductInquiry
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
-              productName={product.name}
+              productName={productName(product, lang)}
               lang={lang}
             />
             <LegalNotice lang={lang} />
@@ -281,10 +284,10 @@ export default async function ProductPage({
                   className="group product-tile p-4"
                 >
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-3">
-                    <ProductThumb image={p.image} name={p.name} />
+                    <ProductThumb image={p.image} name={productName(p, lang)} />
                   </div>
                   <p className="mt-3 text-sm font-medium group-hover:text-brand-700">
-                    {p.name}
+                    {productName(p, lang)}
                   </p>
                 </Link>
               ))}
