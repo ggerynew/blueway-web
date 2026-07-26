@@ -23,7 +23,7 @@ export function localize<T>(data: Sourced<T>): T {
     if (node && typeof node === 'object') {
       const rec = node as Record<string, unknown>;
       if (typeof rec.hu === 'string' && typeof rec.en === 'string') {
-        return { de: rec.en, ko: rec.en, zh: rec.en, ...rec };
+        return { de: rec.en, ko: rec.en, zh: rec.en, it: rec.en, es: rec.en, ...rec };
       }
       const out: Record<string, unknown> = {};
       for (const k of Object.keys(rec)) out[k] = fill(rec[k]);

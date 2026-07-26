@@ -1,7 +1,8 @@
 /*!
- * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN + DE + KO + ZH)
- * Verzió: 1.2 (2026-07-25) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
+ * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN + DE + IT + ES + KO + ZH)
+ * Verzió: 1.3 (2026-07-26) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
  * 1.2: német, koreai és kínai felirat-fordítások; a szöveg tartalma változatlan.
+ * 1.3: olasz és spanyol felirat-fordítások.
  *
  * BEILLESZTÉS / INTEGRATION
  * -------------------------
@@ -104,6 +105,46 @@
       cancel: 'Abbrechen',
       placeholder: 'Zur Anzeige dieses Inhalts (Google Maps) müssen Drittanbieter-Cookies aktiviert werden. ',
       placeholderLink: 'Cookie-Einstellungen öffnen'
+    },
+    it: {
+      policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
+      bannerTitle: 'Utilizziamo i cookie',
+      bannerText: 'Il nostro sito utilizza cookie strettamente necessari e \u2013 solo con il Suo consenso \u2013 cookie di preferenza (impostazione della lingua) e cookie di terze parti (Google Maps). Dettagli: ',
+      policyLink: 'Informativa sulla privacy (EN)',
+      acceptAll: 'Accetta tutti',
+      rejectAll: 'Solo necessari',
+      settings: 'Impostazioni',
+      dialogTitle: 'Impostazioni dei cookie',
+      catNecessary: 'Cookie strettamente necessari',
+      catNecessaryDesc: 'Necessari per il funzionamento del sito e per memorizzare la Sua scelta (blueway_consent). Non richiedono consenso.',
+      catPref: 'Cookie di preferenza',
+      catPrefDesc: 'Memorizzazione della lingua scelta (blueway_lang, 6 mesi).',
+      catThird: 'Cookie di terze parti',
+      catThirdDesc: 'Visualizzazione della mappa Google Maps (cookie impostati da google.com, ad es. NID). I dati possono essere trasferiti negli USA con le garanzie del quadro UE-USA sulla privacy dei dati (DPF).',
+      save: 'Salva le impostazioni',
+      cancel: 'Annulla',
+      placeholder: 'Per visualizzare questo contenuto (Google Maps) \u00e8 necessario abilitare i cookie di terze parti. ',
+      placeholderLink: 'Apri le impostazioni dei cookie'
+    },
+    es: {
+      policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
+      bannerTitle: 'Utilizamos cookies',
+      bannerText: 'Nuestro sitio web utiliza cookies estrictamente necesarias y \u2013 solo con su consentimiento \u2013 cookies de preferencia (configuraci\u00f3n de idioma) y cookies de terceros (Google Maps). Detalles: ',
+      policyLink: 'Pol\u00edtica de privacidad (EN)',
+      acceptAll: 'Aceptar todas',
+      rejectAll: 'Solo las necesarias',
+      settings: 'Configuraci\u00f3n',
+      dialogTitle: 'Configuraci\u00f3n de cookies',
+      catNecessary: 'Cookies estrictamente necesarias',
+      catNecessaryDesc: 'Necesarias para el funcionamiento del sitio y para guardar su elecci\u00f3n (blueway_consent). No requieren consentimiento.',
+      catPref: 'Cookies de preferencia',
+      catPrefDesc: 'Memorizaci\u00f3n del idioma elegido (blueway_lang, 6 meses).',
+      catThird: 'Cookies de terceros',
+      catThirdDesc: 'Visualizaci\u00f3n del mapa de Google Maps (cookies establecidas por google.com, p. ej. NID). Los datos pueden transferirse a EE. UU. con las garant\u00edas del Marco de Privacidad de Datos UE-EE. UU. (DPF).',
+      save: 'Guardar configuraci\u00f3n',
+      cancel: 'Cancelar',
+      placeholder: 'Para mostrar este contenido (Google Maps) es necesario habilitar las cookies de terceros. ',
+      placeholderLink: 'Abrir la configuraci\u00f3n de cookies'
     },
     ko: {
       policyUrl: (window.__BLUEWAY_BASE__ || '') + '/privacy-policy.html',
