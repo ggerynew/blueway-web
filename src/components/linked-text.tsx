@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import type { Locale } from '@/lib/i18n';
-import { products } from '@/lib/products';
+import { manufacturers, products } from '@/lib/products';
 
-/** Egy felismerhető géphivatkozás: a szövegben keresett név és a termék útvonala. */
+/** Egy felismerhető hivatkozás: a szövegben keresett név és a céloldal útvonala. */
 interface Alias {
   text: string;
   path: string;
@@ -14,36 +14,48 @@ const BRAND_PREFIXES = ['CAB ', 'POSTEK ', 'TYKMA ', 'START '];
 const ALIASES: Alias[] = (() => {
   const list: Alias[] = [];
   const seen = new Set<string>();
+  const add = (name: string, path: string) => {
+    const key = name.toLowerCase();
+    // A túl rövid alakok (pl. „OX”) félreérthetők lennének, azokat kihagyjuk.
+    if (name.length < 3 || seen.has(key)) return;
+    seen.add(key);
+    list.push({ text: name, path });
+  };
+
   for (const p of products) {
     const path = `/termekek/${p.category}/${p.slug}`;
-    const names = [p.name];
+    add(p.name, path);
     for (const prefix of BRAND_PREFIXES) {
-      if (p.name.toUpperCase().startsWith(prefix)) names.push(p.name.slice(prefix.length));
-    }
-    for (const n of names) {
-      const key = n.toLowerCase();
-      // A túl rövid alakok (pl. „OX”) félreérthetők lennének, azokat kihagyjuk.
-      if (n.length < 3 || seen.has(key)) continue;
-      seen.add(key);
-      list.push({ text: n, path });
+      if (p.name.toUpperCase().startsWith(prefix)) add(p.name.slice(prefix.length), path);
     }
   }
-  // Hosszabb név előbb, hogy a „SQUIX 4 M” ne „SQUIX 4”-ként illeszkedjen.
+  // Gyártónevek is hivatkozzanak — a márkanév (CAB) és a hivatalos írásmód (cab)
+  // ugyanarra a gyártói oldalra mutat.
+  for (const m of manufacturers) {
+    const path = `/gyartok/${m.slug}`;
+    add(m.name, path);
+    add(m.brand, path);
+  }
+
+  // Hosszabb név előbb, hogy a „SQUIX 4 M” ne „SQUIX 4”-ként illeszkedjen, és
+  // hogy a „CAB XENO 1” verje a puszta „cab” gyártónevet.
   return list.sort((a, b) => b.text.length - a.text.length);
 })();
+
+const ESCAPED = ALIASES.map((a) => a.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 
 // A gépnevek latin betűsek, ezért csak latin betű/szám tapadását zárjuk ki. A
 // koreai és kínai ragok/írásjelek közvetlenül a névhez érnek — azokat engedjük.
 const BOUNDARY = 'A-Za-z0-9\\u00C0-\\u024F';
-const PATTERN = new RegExp(
-  `(?<![${BOUNDARY}])(${ALIASES.map((a) => a.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})(?![${BOUNDARY}])`,
-  'giu',
-);
+const PATTERN = new RegExp(`(?<![${BOUNDARY}])(${ESCAPED.join('|')})(?![${BOUNDARY}])`, 'giu');
+/** Ugyanaz, de a vizsgált pozícióhoz kötve — a szomszédos találat kiszűréséhez. */
+const AT_START = new RegExp(`^(${ESCAPED.join('|')})(?![${BOUNDARY}])`, 'iu');
 
 /**
- * Szöveg megjelenítése úgy, hogy az ismert gépnevek a termékoldalra mutató
- * linkké válnak. Szövegrészenként csak az első előfordulást linkeljük, hogy a
- * bekezdés ne teljen meg ismétlődő hivatkozásokkal.
+ * Szöveg megjelenítése úgy, hogy az ismert gép- és gyártónevek a megfelelő
+ * oldalra mutató linkké válnak. Szövegrészenként célonként csak az első
+ * előfordulást linkeljük, hogy a bekezdés ne teljen meg ismétlődő
+ * hivatkozásokkal.
  */
 export function LinkedText({ text, lang }: { text: string; lang: Locale }) {
   const parts: React.ReactNode[] = [];
@@ -56,6 +68,10 @@ export function LinkedText({ text, lang }: { text: string; lang: Locale }) {
     const matched = m[1];
     const alias = ALIASES.find((a) => a.text.toLowerCase() === matched.toLowerCase());
     if (!alias || linked.has(alias.path)) continue;
+    // „cab cablabel S3”: a gyártónevet ne linkeljük, ha rögtön utána egy másik
+    // név kezdődik — két egymás melletti link egyetlen aláhúzásnak látszana.
+    const rest = text.slice(m.index + matched.length);
+    if (AT_START.test(rest.replace(/^ /, ''))) continue;
     linked.add(alias.path);
     if (m.index > last) parts.push(text.slice(last, m.index));
     parts.push(
