@@ -14,25 +14,48 @@ DirectoryIndex index.html index.htm
 # hivatkozás 404 lenne.
 RewriteEngine On
 
+# ——— HTTPS ————————————————————————————————————————————————————————
+# Kapcsold be (vedd le a # jeleket), MIUTÁN a tanúsítvány kiállt és a
+# https://blueway.hu betölt. Előbb bekapcsolva minden látogató hibaoldalt
+# kapna. Fontos: ennek a két sornak minden más szabály ELŐTT kell állnia,
+# különben a lenti átírások [L] jelzője miatt vagy le sem futna, vagy a
+# .html-re átírt címre irányítana át.
+# RewriteCond %{HTTPS} !=on
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# FONTOS: a Next.js egyszerre készít mappát és azonos nevű .html fájlt.
+# A /hu útvonalon például MINDKETTŐ létezik: a hu/ mappa (benne az aloldalak)
+# és a hu.html (maga a nyitóoldal). 84 ilyen útvonal van, köztük mind a hét
+# nyelvi nyitóoldal. Ezért a szabályok nem nézhetik azt, hogy a kért útvonal
+# mappa-e — ha azt néznék, az Apache a mappát szolgálná ki, amiben nincs
+# index.html, tehát fájllista vagy 403 jönne a nyitóoldalak helyett.
+# A döntő feltétel mindenhol az, hogy létezik-e a hozzá tartozó .html.
+
 # Záró perjel levágása (a /hu/rolunk/ alak is a helyes oldalra vigyen),
-# de csak akkor, ha nem létező könyvtárról van szó.
-RewriteCond %{REQUEST_FILENAME} !-d
+# de csak akkor, ha van hozzá .html — a valódi mappákat (pl. /images/)
+# nem bántjuk.
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ /$1 [R=301,L]
 
 # /hu/rolunk -> hu/rolunk.html, ha a .html létezik és nincs pontos találat.
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
 RewriteRule ^(.*)$ /$1.html [L]
 
-# ——— HTTPS ————————————————————————————————————————————————————————
-# Kapcsold be, MIUTÁN a tanúsítvány kiállt és a https://blueway.hu betölt.
-# Előbb bekapcsolva minden látogató hibaoldalt kapna.
-# RewriteCond %{HTTPS} !=on
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# Valódi mappa nyitóoldal nélkül (pl. /images/) ne fájllistát adjon, hanem
+# 404-et. Ez a szabály csak az előző után futhat: a /hu ilyenkor már
+# /hu.html-lé alakult, tehát nem esik ide.
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html !-f
+RewriteRule ^ - [R=404,L]
 
 # ——— Hibaoldal ————————————————————————————————————————————————————
 ErrorDocument 404 /404.html
+
+# Fájllista tiltása a képmappákban. Csak akkor kapcsold be, ha a tárhelyen
+# engedélyezett az Options felülbírálása — ha nem az, az egész .htaccess
+# hibára fut (500). Előbb próbáld ki egy tesztfájllal.
+# Options -Indexes
 
 # ——— Gyorsítótár ——————————————————————————————————————————————————
 # A /_next/static alatti fájlnevekben hash van, ezért korlátlanul
