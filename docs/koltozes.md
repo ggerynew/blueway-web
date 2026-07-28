@@ -197,8 +197,15 @@ hozzáférési adatok, tehát nyugodtan ott lehet a repóban a bekapcsolás elő
 
 ### Beállítás
 
-GitHub → **Settings** → *Secrets and variables* → **Actions** → *New repository
-secret*.
+A secretek helye:
+`https://github.com/ggerynew/blueway-web/settings/secrets/actions`
+(vagy: a repó oldalán **Settings** → bal oldalt *Secrets and variables* →
+**Actions**), majd a zöld **New repository secret** gomb. Minden secret egy külön
+felvétel: felül a **Name**, alul a **Secret** mező, aztán **Add secret**.
+
+A beírt érték utólag **nem olvasható vissza**, csak felülírható — ez normális.
+A titkos adatok (jelszó, privát kulcs) ne menjenek se e-mailben, se csevegésben:
+közvetlenül ide másold őket.
 
 **SSH-val** (ez az ajánlott — gyorsabb, és csak a változott fájlokat viszi át):
 
@@ -220,6 +227,35 @@ secret*.
 
 Ha mindkettő be van állítva, az SSH-t használja.
 
+### Az SSH-kulcs elkészítése
+
+Az SSH-hoz kulcspár kell: a **publikus** fele a szerverre kerül, a **privát** fele
+a GitHub secretbe. Jelszó helyett ez azonosít.
+
+A saját gépeden (Windowson PowerShellben is megy):
+
+```bash
+ssh-keygen -t ed25519 -C "github-deploy blueway" -f blueway-deploy -N ""
+```
+
+Két fájl készül a mappában:
+
+- `blueway-deploy.pub` — ez a **publikus** kulcs. Ennek a tartalmát kell a FORPSI
+  ügyfélközpontban az SSH-hozzáféréshez megadni (vagy a szerveren a
+  `~/.ssh/authorized_keys` fájlba beírni).
+- `blueway-deploy` — ez a **privát** kulcs. A teljes tartalmát, a
+  `-----BEGIN...` és `-----END...` sorokkal együtt, a `FORPSI_SSH_KEY` secretbe
+  kell bemásolni.
+
+A privát kulcsot senkinek ne add ki, és ne töltsd fel sehová.
+
+### A webgyökér útvonala
+
+A `FORPSI_WEB_ROOT` az a mappa a szerveren, ahová a weblap fájljai kerülnek —
+FTP-vel belépve az a könyvtár, amiben a jelenlegi weblap `index` fájlja van
+(gyakran `/web`, `/www` vagy maga a gyökér). Ha bizonytalan vagy, az
+ügyfélszolgálat megmondja.
+
 ### Mit csinál
 
 1. Az éles domainre épít (üres base path, `https://blueway.hu`, `send.php`).
@@ -232,6 +268,9 @@ Ha mindkettő be van állítva, az SSH-t használja.
    tartalmi javítás néhány másodperc.
 5. Megnézi, hogy a `https://blueway.hu/hu` 200-zal válaszol-e. Ha nem, csak
    figyelmeztet (a DNS-átállítás előtt ez természetes).
+
+A secretek felvétele után nem kell push-ra várni: **Actions** → *Deploy to
+FORPSI* → **Run workflow** — így rögtön kipróbálható.
 
 **A szerveren lévő, buildben nem szereplő fájlokat alapból nem törli** — a régi
 weblap maradványai megmaradnak, amíg kézzel el nem takarítod. Ha egyszer teljes
