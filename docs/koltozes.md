@@ -47,10 +47,16 @@ a méret önmagában nem szempont a választásnál:
 **Az Advanced elég ehhez a weblaphoz.** Adatbázis nem kell (statikus oldal + egy
 PHP szkript), egy fő domain van.
 
-> **Amit előtte ellenőrizni kell: a levelezés mérete.** A mostani DYNAMIC
-> csomagban 30 GB a postafiók-kapacitás, az Advanceben 20 GB, az Easyben 10 GB.
-> Tíz postafiók és több év levelezése mellett ez szűk lehet — nézd meg az
-> ügyfélközpontban a tényleges használatot, mielőtt váltasz.
+A postafiók-kapacitás a mostani csomagban 30 GB, az Advanceben 20 GB. Ez itt nem
+korlát: a levelezés úgy van beállítva, hogy az Outlook által letöltött, 14 napnál
+régebbi leveleket a szerver automatikusan törli, tehát a szerveroldali tárhely
+tartósan alacsony marad.
+
+> Ennek egy következménye viszont a weblap szempontjából is van: a `send.php` az
+> `info@blueway.hu` címre küldi az ajánlatkéréseket, tehát azokra is vonatkozik a
+> 14 napos takarítás. Ha egy megkeresés csak azon a gépen marad meg, amelyik
+> letöltötte, érdemes lehet az ajánlatkéréseket külön mappába vagy címre is
+> archiválni.
 
 Az akciós ár csak az első évre szól; a megújítási ár ennél magasabb. A váltás
 előtt érdemes megnézni a **második évi** díjat is, mert hosszú távon az számít.
