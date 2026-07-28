@@ -73,42 +73,70 @@ Az ügyfélközpont erre a hibára fut: *„A szolgáltatás nem megfelelő az i
 DV SSL tanúsítványhoz.”* Ez nem a visszavonás utáni 14 napos tiltás, hanem azt
 jelenti, hogy a feltételek valamelyike nem teljesül.
 
-**A legvalószínűbb ok: az A rekord nem erre a tárhelyre mutat.**
+**Az ok: az A rekord nem erre a tárhelyre mutat.**
+
+A többi feltétel teljesül — a domain a FORPSI-nál van (aktív, lejárat 2034. 09. 30.),
+a névszerverek is a FORPSI-é (`ns.forpsi.it`, `ns.forpsi.net`), tehát a DNS-t is
+innen lehet szerkeszteni. Egyedül ez az egy nem stimmel:
 
 | | |
 |---|---|
-| `blueway.hu` A rekordja most | `81.2.194.244` (visszafejtve: `244.194.forpsi.net`) |
-| A tárhely web IP-je az ügyfélközpont szerint | `185.129.138.202` |
+| `blueway.hu` és `www.blueway.hu` A rekordja | `81.2.194.244` (visszafejtve: `244.194.forpsi.net`) |
+| A tárhely web IP-je | `185.129.138.202` |
 
-Tehát a domain egy **másik (régebbi) FORPSI gépre** mutat, nem arra a tárhelyre,
-amelyikhez a tanúsítványt kérnénk. Az ingyenes DV SSL egyik kimondott feltétele,
-hogy „a domain … beállított A rekordja Forpsi webtárhelyre mutat” — ezen bukik el.
+A domain tehát egy **másik, régebbi FORPSI gépre** mutat — arra, amelyiken a
+mostani weblap fut —, nem arra a tárhelyre, amelyikhez a tanúsítványt kérnénk.
+Az ingyenes DV SSL kimondott feltétele, hogy „a domain … beállított A rekordja
+Forpsi webtárhelyre mutat”; ezen bukik el az igénylés.
 
-Amit sorban ellenőrizni kell (ügyfélközpont):
+**Vagyis a megoldás és az élesítés ugyanaz a lépés:** az A rekordot át kell
+állítani `185.129.138.202`-re. A TTL 1800 másodperc, tehát a változás nagyjából
+fél óra alatt terjed szét; utána újra kell próbálni az SSL-igénylést.
 
-1. **DNS szerkesztése** → mire mutat az `A` rekord? Ha a FORPSI kezeli a DNS-t,
-   az átírás `185.129.138.202`-re egy kattintás. Ha máshol van a DNS (pl. másik
-   szolgáltató névszerverein), ott kell átírni.
-2. **Névszerverek** → a domain FORPSI névszervereken fut-e.
-3. **Regisztrátor** → a `.hu` domain regisztrátora a BlazeArts Kft. (FORPSI)-e.
-   Ha nem, az ingyenes DV SSL nem jár hozzá.
-4. **Fő kapcsolattartó** → a domainnél és a tárhelynél ugyanaz-e.
-5. **Másik SSL** → nincs-e még élő, korábban megrendelt tanúsítvány a tárhelyen.
+Ezért a helyes sorrend:
 
-Ha az 1–2. pont rendbe jön, az igénylés jó eséllyel átmegy. A DNS-változás
-terjedése után (jellemzően néhány óra) próbáld újra.
+1. Az új weblap felmegy a tárhelyre (a domain még a régire mutat, tehát a
+   látogatók nem látnak semmit a váltásból).
+2. `hosts` fájllal leteszteled az új oldalt az új IP-n — lásd a 3. szakaszt.
+3. Az A rekord átállítása `185.129.138.202`-re (`blueway.hu` és `www.blueway.hu`
+   is). Ettől a pillanattól az új weblap az éles.
+4. Fél óra múlva SSL-igénylés — most már teljesülnie kell a feltételnek.
+5. A tanúsítvány telepítése után **SSL redirect** bekapcsolása.
 
-**Ha a 3. vagy 4. ponton bukik**, az ingyenes tanúsítvány nem jár. Ilyenkor:
-- vagy a domaint kell FORPSI-hoz hozni (regisztrátorváltás),
-- vagy a fizetős **„SSL szolgáltatás”** kiegészítőt kell megrendelni — ezzel
-  Let's Encrypt vagy saját hozott tanúsítvány is telepíthető,
-- vagy írj az ügyfélszolgálatnak a `W00080673` azonosítóval, és kérdezd meg,
-  pontosan melyik feltétel nem teljesül. Ez a leggyorsabb út, mert a panel
-  üzenete nem árulja el.
+Ha az igénylés a 4. lépésnél mégis elutasítana, írj az ügyfélszolgálatnak a
+`W00080673` azonosítóval, és kérdezd meg, pontosan melyik feltétel nem teljesül —
+a panel üzenete ezt nem árulja el.
 
-> A régi weblap jelenleg a `81.2.194.244` címen szolgál ki. Az élesítés
-> tulajdonképpen az A rekord átállítása `185.129.138.202`-re — érdemes ezt és az
-> SSL-t egyszerre kezelni, mert a tanúsítvány feltétele is ez.
+### Hiányzó levelezési rekordok
+
+A DNS-zóna exportjából kiderült, hogy **nincs SPF és nincs DMARC rekord** (DKIM
+van: `f2019._domainkey`). Ez a mi szempontunkból is számít: a `send.php` az
+`info@blueway.hu` címről küld a webszerverről, és SPF nélkül az ajánlatkérések
+könnyebben landolnak a spam mappában.
+
+A FORPSI által javasolt SPF, a domain **TXT** rekordjaként (Hostname üresen):
+
+```
+v=spf1 a mx include:_spf.forpsi.com ~all
+```
+
+Az `a` mechanizmus a domain A rekordjában szereplő gépet engedélyezi — vagyis a
+webszervert, ahonnan a `send.php` küld. Az `mx` és az `include` a FORPSI
+levelezőszervereit fedi le.
+
+- A `~all` (softfail) a biztonságos kezdés: az idegen szerverről érkező levél
+  átmegy, de gyanúsnak jelölődik.
+- Ha egy-két hét alatt kiderült, hogy semmi más nem küld a domainről (hírlevél,
+  számlázó, CRM), akkor érdemes `-all`-ra szigorítani.
+
+DMARC ugyanígy, TXT rekordként, `_dmarc` hostnévvel — figyelő üzemmódban indulva:
+
+```
+v=DMARC1; p=none; rua=mailto:info@blueway.hu
+```
+
+Egy domainhez **csak egy** SPF rekord tartozhat; ha később másik szolgáltató is
+küldene, annak az `include`-ját ebbe kell beleírni, nem új rekordba.
 
 ### Az igénylés menete
 
@@ -127,9 +155,9 @@ Egyéb dokumentumot nem kell küldeni.
 Az ingyenes DV SSL feltételei — ha valamelyik nem teljesül, az igénylés elakad:
 
 - a tárhelyhez **nincs másik aktivált SSL** (pl. Let's Encrypt);
-- a domain **FORPSI névszervereken** fut, és az A rekordja a FORPSI tárhelyre
-  mutat (`185.129.138.202`);
-- a domain regisztrátora is a FORPSI (BlazeArts Kft.);
+- a domain **FORPSI névszervereken** fut ✔ (`ns.forpsi.it`, `ns.forpsi.net`), és
+  az A rekordja a FORPSI tárhelyre mutat — **ez az, ami még nem teljesül**;
+- a domain regisztrátora is a FORPSI (BlazeArts Kft.) ✔;
 - a domain és a tárhely fő kapcsolattartója **ugyanaz**;
 - a tanúsítvány kiállítása előtt a szolgáltató biztonsági ellenőrzést futtat a
   weblapon — ha a **régi oldal fertőzött**, nem állítják ki. Ez a mi esetünkben
