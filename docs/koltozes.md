@@ -20,6 +20,29 @@ sorrendjét** írja le; a magyarázatok a lépések alatt vannak.
 | SSL redirect | letiltva — a 7. lépésben kapcsoljuk be |
 | Dynamic cache | letiltva — maradjon így |
 
+## Előfeltétel: a tárhely mérete
+
+**A jelenlegi 100 MB kevés.** A legenerált weblap 141 MB:
+
+| rész | méret |
+|---|---|
+| adatlapok (32 PDF) | 69 MB |
+| HTML-oldalak (607 db, 7 nyelven) | 41 MB |
+| kliensoldali navigáció adatai (`.txt`) | 22 MB |
+| képek, videó, JS, CSS | 9 MB |
+
+Ebből a PDF-ek viszik a felét. Két út van:
+
+1. **Csomagbővítés** (pl. Professional, korlátlan) — ez a javasolt. A 141 MB
+   nagyrészt valódi tartalom: gyártói adatlapok, amiket az ügyfelek letöltenek,
+   és amiket a kereső is indexel.
+2. **Az adatlapok elhagyása** — nélkülük a weblap 72 MB, tehát beférne. Cserébe
+   viszont elvesznek a letölthető adatlapok, ami a termékoldalak egyik értéke.
+
+A PDF-ek utólagos tömörítése nem járható út: megnéztem a legnagyobbat (7 MB,
+36 oldal), abból mindössze 1,6 MB a kép — a többi vektoros rajz és betűkészlet,
+amin az újratömörítés alig fog.
+
 ## A lépések áttekintése
 
 | # | lépés | mikor | mennyi idő |
