@@ -414,7 +414,11 @@ látogató hibaoldalt kapna.
 **engedélyezés**.
 
 A `.htaccess`-ben lévő HTTPS-blokk maradjon kikommentezve: elég az egyik, és a
-szolgáltatóé hamarabb lefut, mint a mi átírási szabályunk.
+szolgáltatóé hamarabb lefut, mint a mi átírási szabályunk. (Ha valamiért mégis a
+`.htaccess`-est használnád, a fájl elején lévő blokkot vedd elő — az áll minden
+más szabály előtt, ez pedig fontos: a lentebbi átírások `[L]` jelzője miatt egy
+alább elhelyezett HTTPS-szabály vagy le sem futna, vagy a `.html`-re végződő
+címre irányítana át.)
 
 Ezután ellenőrizd, hogy a `http://blueway.hu` átdob-e `https://blueway.hu`-ra, és
 hogy a `www.blueway.hu` a www nélküli alakra megy-e (a WWW redirect már be van
@@ -450,3 +454,5 @@ kapcsolva).
 | Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |
 | A levél **spam mappába** kerül | hiányzik vagy hibás az SPF (1. lépés) |
 | A `https://` **nem tölt be** | a tanúsítvány még nincs telepítve (6. lépés) |
+| A nyitóoldalak helyett **fájllista vagy 403** jelenik meg | régi `.htaccess` van fenn. A Next.js egyszerre készít `hu/` mappát és `hu.html` fájlt; az átírási szabály nem vizsgálhatja, hogy a kért útvonal mappa-e. A repóban lévő mostani `.htaccess` ezt már kezeli |
+| **Az egész oldal 500**-at ad, pedig a fájlok fenn vannak | a `.htaccess` egy sorát nem engedi a tárhely. Kommentezd ki az utoljára hozzáadott sort, és próbáld újra — jellemzően az `Options` sor szokott ilyen lenni |
