@@ -1,8 +1,8 @@
-# Költözés a FORPSI tárhelyre
+# Élesítési forgatókönyv — költözés a FORPSI tárhelyre
 
-A weblap statikus export: nincs mögötte futó alkalmazás, csak fájlok. A
-költözés ezért fájlfeltöltés — a lényeg a sorrend és néhány beállítás, ami
-nélkül a linkek vagy az űrlapok nem működnének.
+A weblap statikus export: nincs mögötte futó alkalmazás, csak fájlok. A költözés
+ezért fájlfeltöltés plusz néhány beállítás. Ez a dokumentum a **végrehajtás
+sorrendjét** írja le; a magyarázatok a lépések alatt vannak.
 
 ## A tárhely adatai
 
@@ -11,167 +11,68 @@ nélkül a linkek vagy az űrlapok nem működnének.
 | Termék | DYNAMIC webtárhely, `blueway.hu` |
 | Megrendelő azonosító | W00080673 |
 | FTP-szerver | `ftpx.forpsi.com` |
-| Web IP (DNS A) | `185.129.138.202` |
-| Operációs rendszer | Linux |
+| Tárhely web IP-je | `185.129.138.202` |
+| A domain jelenlegi A rekordja | `81.2.194.244` (a régi weblap) |
+| Névszerverek | `ns.forpsi.it`, `ns.forpsi.net` |
+| PHP | 8.5 ✔ |
+| WWW redirect | engedélyezve ✔ |
+| SSL tanúsítvány | visszavonva — a 6. lépés állítja helyre |
+| SSL redirect | letiltva — a 7. lépésben kapcsoljuk be |
+| Dynamic cache | letiltva — maradjon így |
 
-## 0. Előkészítés a FORPSI-oldalon
+## A lépések áttekintése
 
-| beállítás | állapot | teendő |
-|---|---|---|
-| PHP | **8.5** | ✔ kész |
-| WWW redirect | **engedélyezve** | ✔ kész |
-| SSL tanúsítvány | `visszavonva` | **blokkoló** — lásd a 0/a. szakaszt |
-| SSL redirect | `letiltva` | a tanúsítvány kiállása **után** kapcsold be |
-| A rekord | `81.2.194.244` | átállítás `185.129.138.202`-re (ez maga az élesítés) |
-| Dynamic cache | `letiltva` | maradjon így |
-| SSH | `letiltva` | a költözés idejére érdemes bekapcsolni |
+| # | lépés | mikor | mennyi idő |
+|---|---|---|---|
+| 1 | SPF és DMARC felvétele | bármikor, akár most | 5 perc + fél óra terjedés |
+| 2 | Build | élesítés napján | 2 perc |
+| 3 | Feltöltés | élesítés napján | 15–60 perc |
+| 4 | Tesztelés `hosts` fájllal | feltöltés után | 15 perc |
+| 5 | **A rekord átállítása = élesítés** | amikor a teszt rendben | 1 perc + fél óra terjedés |
+| 6 | SSL igénylése és telepítése | az 5. után fél órával | max. 2 óra |
+| 7 | SSL redirect bekapcsolása | a tanúsítvány telepítése után | 1 perc |
+| 8 | Utómunka | utána | — |
 
-Részletek:
+A 2–4. lépés alatt a látogatók még a régi weblapot látják, tehát nyugodtan lehet
+vele bíbelődni. Az éles váltás az 5. lépés.
 
-1. **SSL-tanúsítvány — `visszavonva`.** Ez az egyetlen blokkoló. A weblap
-   kanonikus URL-jei, a `hreflang`-ok, a sitemap és a robots.txt mind
-   `https://`-sel mutatnak a domainre. Amíg nincs érvényes tanúsítvány, a
-   `https://blueway.hu` egyáltalán nem tölt be. A lépések a 0/a. szakaszban.
+---
 
-2. **SSL redirect — `letiltva`.** Kapcsold be, de **csak azután, hogy a
-   tanúsítvány kiállt** — előbb bekapcsolva minden látogató hibaoldalt kapna. Ha
-   ezt használod, a `.htaccess`-ben lévő HTTPS-blokk maradjon kikommentezve:
-   elég az egyik, és a szolgáltató sajátja hamarabb lefut.
+## 1. SPF és DMARC felvétele
 
-3. **PHP — 8.5.** Beállítva. A `send.php` PHP 7.0-tól fut, és 8.4-en, `E_ALL`
-   hibajelzéssel minden ága végig ellenőrizve — figyelmeztetés és deprecation
-   nélkül. A 8.5 ennél is újabb, de a szkript semmilyen elavuló elemet nem
-   használ; az első próbaküldésnél azért érdemes ránézni a hibanaplóra.
+**Ez független a költözéstől — akár most megcsinálható**, és a mostani szerverre
+is érvényes lesz.
 
-4. **WWW redirect — engedélyezve.** Beállítva. A weblap kanonikus URL-jei a www
-   nélküli alakra mutatnak, tehát a `www` → `blueway.hu` irány a helyes.
+A zónában van DKIM (`f2019._domainkey`), de **SPF és DMARC nincs**. Enélkül a
+weblapról küldött ajánlatkérések könnyebben landolnak a spam mappában.
 
-Amivel nem kell foglalkozni:
+1. Ügyfélközpont → **Domainek** → `blueway.hu` → **DNS-rekordok szerkesztése**
+2. Új rekord:
+   - Típus: **TXT**
+   - Hostname: **üresen hagyni**
+   - TTL: 1800 (marad)
+   - Érték: `v=spf1 a mx include:_spf.forpsi.com ~all`
+3. Még egy új rekord:
+   - Típus: **TXT**
+   - Hostname: **`_dmarc`**
+   - Érték: `v=DMARC1; p=none; rua=mailto:info@blueway.hu`
 
-- **Levelezés.** Külön postafiók nem kell: a `send.php` feladója és címzettje is
-  `info@blueway.hu`, és a tárhelyen már van 10 postafiók. Ez azért fontos, mert
-  ha feladóként a látogató címét írnánk be, az SPF/DKIM megbukna, és a levél spam
-  mappába kerülne. A látogató címe `Reply-To`-ba megy, tehát a Válasz gomb neki
-  válaszol.
-- **Dynamic cache.** Maradjon letiltva. A weblap statikus fájlokból áll, a
-  gyorsítótárazást a `.htaccess` fejlécei intézik; a szolgáltató dinamikus
-  gyorsítótára ehhez nem tesz hozzá, viszont hibakeresésnél zavaró tud lenni.
-- **SSH — letiltva.** Nem kötelező, de **érdemes bekapcsolni a
-  költözésre**: a feltöltendő anyag ~138 MB, 1362 fájlban. FTP-n ez sok száz
-  külön kapcsolat és könnyen félbeszakad; `rsync`-kel vagy `scp`-vel egyetlen
-  menetben, folytathatóan megy át.
-
-## 0/a. SSL újraigénylése
-
-A DYNAMIC webtárhelyhez jár ingyenes **DV SSL** tanúsítvány (kiállító: Actalis,
-wildcard, az aldomainekre is érvényes). Nem alapértelmezetten aktív, magadtól
-igényelheted.
-
-### Jelenlegi állapot: az igénylés elutasítva
-
-Az ügyfélközpont erre a hibára fut: *„A szolgáltatás nem megfelelő az ingyenes
-DV SSL tanúsítványhoz.”* Ez nem a visszavonás utáni 14 napos tiltás, hanem azt
-jelenti, hogy a feltételek valamelyike nem teljesül.
-
-**Az ok: az A rekord nem erre a tárhelyre mutat.**
-
-A többi feltétel teljesül — a domain a FORPSI-nál van (aktív, lejárat 2034. 09. 30.),
-a névszerverek is a FORPSI-é (`ns.forpsi.it`, `ns.forpsi.net`), tehát a DNS-t is
-innen lehet szerkeszteni. Egyedül ez az egy nem stimmel:
-
-| | |
-|---|---|
-| `blueway.hu` és `www.blueway.hu` A rekordja | `81.2.194.244` (visszafejtve: `244.194.forpsi.net`) |
-| A tárhely web IP-je | `185.129.138.202` |
-
-A domain tehát egy **másik, régebbi FORPSI gépre** mutat — arra, amelyiken a
-mostani weblap fut —, nem arra a tárhelyre, amelyikhez a tanúsítványt kérnénk.
-Az ingyenes DV SSL kimondott feltétele, hogy „a domain … beállított A rekordja
-Forpsi webtárhelyre mutat”; ezen bukik el az igénylés.
-
-**Vagyis a megoldás és az élesítés ugyanaz a lépés:** az A rekordot át kell
-állítani `185.129.138.202`-re. A TTL 1800 másodperc, tehát a változás nagyjából
-fél óra alatt terjed szét; utána újra kell próbálni az SSL-igénylést.
-
-Ezért a helyes sorrend:
-
-1. Az új weblap felmegy a tárhelyre (a domain még a régire mutat, tehát a
-   látogatók nem látnak semmit a váltásból).
-2. `hosts` fájllal leteszteled az új oldalt az új IP-n — lásd a 3. szakaszt.
-3. Az A rekord átállítása `185.129.138.202`-re (`blueway.hu` és `www.blueway.hu`
-   is). Ettől a pillanattól az új weblap az éles.
-4. Fél óra múlva SSL-igénylés — most már teljesülnie kell a feltételnek.
-5. A tanúsítvány telepítése után **SSL redirect** bekapcsolása.
-
-Ha az igénylés a 4. lépésnél mégis elutasítana, írj az ügyfélszolgálatnak a
-`W00080673` azonosítóval, és kérdezd meg, pontosan melyik feltétel nem teljesül —
-a panel üzenete ezt nem árulja el.
-
-### Hiányzó levelezési rekordok
-
-A DNS-zóna exportjából kiderült, hogy **nincs SPF és nincs DMARC rekord** (DKIM
-van: `f2019._domainkey`). Ez a mi szempontunkból is számít: a `send.php` az
-`info@blueway.hu` címről küld a webszerverről, és SPF nélkül az ajánlatkérések
-könnyebben landolnak a spam mappában.
-
-A FORPSI által javasolt SPF, a domain **TXT** rekordjaként (Hostname üresen):
-
-```
-v=spf1 a mx include:_spf.forpsi.com ~all
-```
-
-Az `a` mechanizmus a domain A rekordjában szereplő gépet engedélyezi — vagyis a
-webszervert, ahonnan a `send.php` küld. Az `mx` és az `include` a FORPSI
+Az `a` mechanizmus azt a gépet engedélyezi, amire a domain A rekordja mutat —
+vagyis a webszervert, ahonnan a `send.php` küld. Az `mx` és az `include` a FORPSI
 levelezőszervereit fedi le.
 
-- A `~all` (softfail) a biztonságos kezdés: az idegen szerverről érkező levél
-  átmegy, de gyanúsnak jelölődik.
-- Ha egy-két hét alatt kiderült, hogy semmi más nem küld a domainről (hírlevél,
-  számlázó, CRM), akkor érdemes `-all`-ra szigorítani.
+A `~all` (softfail) a biztonságos kezdés: idegen szerverről érkező levél átmegy,
+csak gyanúsnak jelölődik. Ha egy-két hét múlva biztos, hogy semmi más nem küld a
+domainről (hírlevél, számlázó, CRM), akkor érdemes `-all`-ra szigorítani.
 
-DMARC ugyanígy, TXT rekordként, `_dmarc` hostnévvel — figyelő üzemmódban indulva:
+A DMARC `p=none` figyelő üzemmód: nem dob el semmit, csak jelentést kérünk.
 
-```
-v=DMARC1; p=none; rua=mailto:info@blueway.hu
-```
+> Egy domainhez **csak egy** SPF rekord tartozhat. Ha később másik szolgáltató is
+> küldene, annak az `include`-ját ebbe a rekordba kell beírni, nem újat felvenni.
 
-Egy domainhez **csak egy** SPF rekord tartozhat; ha később másik szolgáltató is
-küldene, annak az `include`-ját ebbe kell beleírni, nem új rekordba.
+---
 
-### Az igénylés menete
-
-1. Ügyfélközpont → bal oldali menü: **Webtárhelyek** → a listából `blueway.hu`.
-2. Az **Alap információk** lapon, az `SSL tanúsítvány` sorban: **Kezelés**.
-3. Pipa: *„Egyetértek az SSL tanúsítványokkal kapcsolatos szerződési
-   feltételekkel”*, majd **Tanúsítvány igénylése**.
-4. Amikor megjön az e-mail, hogy telepíthető: **Kezelés** → **Telepítés**.
-5. A kiállítás és telepítés együtt **legfeljebb 2 óra**. Utána a Státusz
-   `telepítve`, és a Telepítés gomb helyén `Eltávolítás` jelenik meg.
-
-Egyéb dokumentumot nem kell küldeni.
-
-### Amit előtte érdemes ellenőrizni
-
-Az ingyenes DV SSL feltételei — ha valamelyik nem teljesül, az igénylés elakad:
-
-- a tárhelyhez **nincs másik aktivált SSL** (pl. Let's Encrypt);
-- a domain **FORPSI névszervereken** fut ✔ (`ns.forpsi.it`, `ns.forpsi.net`), és
-  az A rekordja a FORPSI tárhelyre mutat — **ez az, ami még nem teljesül**;
-- a domain regisztrátora is a FORPSI (BlazeArts Kft.) ✔;
-- a domain és a tárhely fő kapcsolattartója **ugyanaz**;
-- a tanúsítvány kiállítása előtt a szolgáltató biztonsági ellenőrzést futtat a
-  weblapon — ha a **régi oldal fertőzött**, nem állítják ki. Ez a mi esetünkben
-  érv amellett, hogy előbb menjen fel az új, statikus weblap, és utána kérjük a
-  tanúsítványt.
-
-### A megújítás
-
-A tanúsítvány a kiállítástól számítva **1 évig** érvényes, és a lejárat előtt 7
-nappal automatikusan, díjmentesen megújul, ha a fenti feltételek továbbra is
-teljesülnek. A privát kulcs nem exportálható — a tanúsítvány csak FORPSI
-tárhelyen használható.
-
-## 1. Build
+## 2. Build
 
 ```bash
 npm ci
@@ -179,7 +80,10 @@ npm run build:live
 ```
 
 Ez üres base path-tal épít, és a `https://blueway.hu` címet írja a kanonikus
-URL-ekbe, a sitemapbe és a robots.txt-be. Más domain esetén:
+URL-ekbe, a sitemapbe és a robots.txt-be. Az eredmény az `out/` mappában van
+(~138 MB, 1362 fájl — a zömét az adatlap-PDF-ek adják).
+
+Más domain esetén:
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://<domain> \
@@ -187,35 +91,37 @@ NEXT_PUBLIC_FORM_ENDPOINT=https://<domain>/send.php \
 npm run build:live
 ```
 
-Az eredmény az `out/` mappában van.
+---
 
-## 2. Feltöltés
+## 3. Feltöltés
 
-A weboldal gyökerébe:
+A weboldal gyökerébe négy dolog kerül:
 
 1. az `out/` mappa **tartalma** (nem maga a mappa);
 2. `server/.htaccess`;
 3. `server/send.php`;
 4. `server/.user.ini`.
 
-A `.htaccess` és a `.user.ini` rejtett fájl — az FTP-kliensben be kell kapcsolni
-a rejtett fájlok mutatását, különben kimaradnak.
+A `.htaccess` és a `.user.ini` **rejtett fájl** — az FTP-kliensben be kell
+kapcsolni a rejtett fájlok mutatását, különben kimaradnak. Enélkül a weblap nem
+fog működni (lásd lentebb).
 
-Az anyag ~138 MB, 1362 fájl (a zömét az adatlap-PDF-ek adják). SSH-val:
+### SSH-val (ajánlott)
+
+Az SSH-t az ügyfélközpontban lehet bekapcsolni. 1362 fájl FTP-n sok száz külön
+kapcsolat, és félbeszakadás esetén nehéz megmondani, mi ment át; `rsync`-kel egy
+menetben, folytathatóan megy:
 
 ```bash
-rsync -avz --delete out/ <felhasznalo>@ftpx.forpsi.com:<webgyoker>/
+rsync -avz out/ <felhasznalo>@ftpx.forpsi.com:<webgyoker>/
 rsync -avz server/.htaccess server/send.php server/.user.ini \
   <felhasznalo>@ftpx.forpsi.com:<webgyoker>/
 ```
 
-A `--delete` a régi weblap fájljait is eltakarítja. **Csak akkor használd, ha a
-régi oldalról már van mentésed**, és a webgyökérben nincs más, amire szükség van
-(pl. a levelezés vagy egy aldomain fájljai). Ha bizonytalan, hagyd el, és a
-régi fájlokat töröld kézzel, miután az új oldal működik.
-
-FTP-n ugyanez sok száz külön kapcsolat, és félbeszakadás esetén nehéz megmondani,
-mi ment át — ezért érdemes az SSH-t bekapcsolni a költözés idejére.
+A régi weblap fájljait a `--delete` kapcsoló takarítaná el, de **csak akkor
+használd, ha a régi oldalról már van mentésed**, és a webgyökérben nincs más,
+amire szükség van. Biztonságosabb kihagyni, és a régi fájlokat kézzel törölni,
+miután az új oldal működik.
 
 ### Miért kell a `.htaccess`
 
@@ -225,18 +131,23 @@ A weblap linkjei kiterjesztés nélküliek (`/hu/rolunk`), a fájlok viszont
 átírási szabálya ezt oldja meg, és beállítja a 404-es oldalt, a gyorsítótárazást
 és a tömörítést is.
 
+### Miért kell a `.user.ini`
+
+A PHP alapértelmezett feltöltési korlátja gyakran 2 MB, a weblap viszont 10 MB-ig
+enged csatolmányt. A `.user.ini` 12 MB-ra emeli; enélkül a nagyobb csatolmánnyal
+küldött ajánlatkérés néma hibára futna.
+
 ### A `send.php` beállítása
 
-A `RECIPIENT` és a `FROM` is `info@blueway.hu`, tehát alapból nincs mit
-átírni benne. Más címzetthez a fájl elején a `RECIPIENT`-et állítsd át.
+A `RECIPIENT` és a `FROM` is `info@blueway.hu`, tehát alapból **nincs mit átírni
+benne**. Más címzetthez a fájl elején a `RECIPIENT`-et állítsd át.
 
-A `.user.ini` a feltöltési korlátot emeli 12 MB-ra: a weblap 10 MB-ig enged
-csatolmányt, a PHP alapértéke viszont sokszor csak 2 MB, és a túllépés néma
-hibát okozna.
+---
 
-## 3. Ellenőrzés élesítés előtt
+## 4. Tesztelés `hosts` fájllal
 
-A FORPSI a `hosts` fájllal engedi tesztelni az új klasztert még átállás előtt:
+Az új oldal így megnézhető, mielőtt a világ is látná. A gépeden a `hosts` fájlba
+(Windows: `C:\Windows\System32\drivers\etc\hosts`) vedd fel:
 
 ```
 185.129.138.202 blueway.hu www.blueway.hu
@@ -244,36 +155,123 @@ A FORPSI a `hosts` fájllal engedi tesztelni az új klasztert még átállás el
 
 Amit végig kell nézni:
 
-- a nyitóoldal és néhány mély link (termékoldal, tudástár-cikk, GYIK) — ezek
-  bizonyítják, hogy a `.htaccess` átírás működik;
+- **a nyitóoldal és néhány mély link** (termékoldal, tudástár-cikk, GYIK) — ezek
+  bizonyítják, hogy a `.htaccess` átírás működik. Ha ezek 404-et adnak, a
+  `.htaccess` nem került fel;
 - nyelvváltás a zászlókkal;
 - **egy próba-ajánlatkérés elküldése**, csatolt fájllal is — és nézd meg a
   postafiókot, a spam mappát is;
 - a süti-sáv megjelenik-e, és a beállítások menthetők-e.
 
-## 4. Élesítés után
+A teszt végén **vedd ki a sort a `hosts` fájlból**, különben a saját géped
+továbbra is az új IP-t használja, és nem azt látod, amit a látogatók.
 
-- **HTTPS- és WWW-átirányítás.** Mindkettőt az ügyfélfiókban kapcsold be
-  (SSL redirect, WWW redirect), miután a tanúsítvány kiállt. A `.htaccess`-ben
-  lévő HTTPS-blokk maradjon kikommentezve — ez a tartalék arra az esetre, ha a
-  szolgáltatói kapcsoló valamiért nem elérhető.
-- **Search Console.** Vedd fel a domaint, és küldd be a `https://blueway.hu/sitemap.xml`
-  címet. 605 URL van benne.
+> Ebben a fázisban a `https://blueway.hu` még nem fog működni (nincs tanúsítvány)
+> — `http://`-val nézd.
+
+---
+
+## 5. A rekord átállítása — ez az élesítés
+
+Ügyfélközpont → **Domainek** → `blueway.hu` → **DNS-rekordok szerkesztése**.
+
+Két rekordot kell átírni `81.2.194.244`-ről `185.129.138.202`-re:
+
+| Hostname | Típus | Új érték |
+|---|---|---|
+| `blueway.hu` | A | `185.129.138.202` |
+| `www.blueway.hu` | A | `185.129.138.202` |
+
+A TTL 1800 másodperc, tehát a változás **kb. fél óra alatt** terjed szét. Ettől a
+pillanattól az új weblap az éles.
+
+A levelezést ez **nem érinti**: az MX és a levelezéshez tartozó CNAME-ek
+(`imap`, `pop3`, `smtp`, `webmail`) változatlanul a FORPSI szervereire mutatnak.
+
+---
+
+## 6. SSL igénylése és telepítése
+
+Az A rekord átállítása után **kb. fél órát várj**, aztán:
+
+1. Ügyfélközpont → **Webtárhelyek** → `blueway.hu`
+2. Az **Alap információk** lapon az `SSL tanúsítvány` sorban: **Kezelés**
+3. Pipa: *„Egyetértek az SSL tanúsítványokkal kapcsolatos szerződési
+   feltételekkel”* → **Tanúsítvány igénylése**
+4. Amikor megjön az e-mail, hogy telepíthető: **Kezelés** → **Telepítés**
+5. A kiállítás és telepítés együtt legfeljebb **2 óra**. Utána a Státusz
+   `telepítve`, és a Telepítés gomb helyén `Eltávolítás` jelenik meg.
+
+Egyéb dokumentumot nem kell küldeni.
+
+### Miért csak most
+
+Eddig az igénylés erre futott: *„A szolgáltatás nem megfelelő az ingyenes DV SSL
+tanúsítványhoz.”* Az összes feltétel teljesült — a domain a FORPSI-nál van, aktív,
+FORPSI névszerverekkel — **egy kivételével**: az ingyenes DV SSL megköveteli, hogy
+a domain A rekordja arra a tárhelyre mutasson, amelyikhez a tanúsítványt kérjük.
+Az A rekord viszont a régi gépre (`81.2.194.244`) mutatott. Az 5. lépés éppen ezt
+javítja — ezért kell utána újrapróbálni.
+
+Ha az igénylés ekkor is elutasítana, írj az ügyfélszolgálatnak a `W00080673`
+azonosítóval, és kérdezd meg, **pontosan melyik feltétel nem teljesül** — a panel
+üzenete ezt nem árulja el.
+
+### A tanúsítványról
+
+Kiállító: Actalis, wildcard (az aldomainekre is érvényes), érvényesség **1 év**.
+A lejárat előtt 7 nappal automatikusan, díjmentesen megújul, ha a feltételek
+továbbra is teljesülnek. A privát kulcs nem exportálható — a tanúsítvány csak
+FORPSI tárhelyen használható.
+
+Fizetős tanúsítványra **nincs szükség**. Ha valamiért mégis, a legolcsóbb
+(Actalis DV SSL, 2.500 Ft+áfa/év) ugyanazt a DV szintet adja, mint a drágábbak; a
+magasabb ár csak márkanevet és egy soha le nem hívott garanciaösszeget fedez.
+
+---
+
+## 7. SSL redirect bekapcsolása
+
+**Csak azután, hogy a tanúsítvány telepítve van** — előbb bekapcsolva minden
+látogató hibaoldalt kapna.
+
+Ügyfélközpont → **Webtárhelyek** → `blueway.hu` → `SSL redirect` sor →
+**engedélyezés**.
+
+A `.htaccess`-ben lévő HTTPS-blokk maradjon kikommentezve: elég az egyik, és a
+szolgáltatóé hamarabb lefut, mint a mi átírási szabályunk.
+
+Ezután ellenőrizd, hogy a `http://blueway.hu` átdob-e `https://blueway.hu`-ra, és
+hogy a `www.blueway.hu` a www nélküli alakra megy-e (a WWW redirect már be van
+kapcsolva).
+
+---
+
+## 8. Utómunka
+
+- **Search Console.** Vedd fel a domaint, és küldd be a
+  `https://blueway.hu/sitemap.xml` címet. 605 URL van benne.
 - **Régi URL-ek.** Ha a mostani weblapnak más az útvonalszerkezete, a régi
   címekről 301-es átirányítás kell az újakra, különben a meglévő találatok
-  404-re futnak. Ehhez a régi oldaltérkép kell — szólj, és megírom a
-  szabályokat a `.htaccess`-be.
+  404-re futnak. Ehhez a régi oldaltérkép kell — szólj, és megírom a szabályokat
+  a `.htaccess`-be.
+- **Formspree kivezetése.** A `send.php` átvette a szerepét, a Formspree-fiók
+  elhagyható. Érdemes egy-két hétig meghagyni, amíg biztos, hogy a saját végpont
+  hibátlanul kézbesít.
 - **GoatCounter.** A statisztikában eddig `/blueway-web/...` útvonalak
   szerepeltek, ezután `/hu/...` alakúak lesznek. A régi adatok megmaradnak.
-- **Formspree.** A `send.php` átvette a szerepét, a Formspree-fiók elhagyható.
-  Érdemes egy-két hétig meghagyni, amíg biztos, hogy a saját végpont hibátlanul
-  kézbesít.
+- **SPF szigorítása.** Egy-két hét után `~all` helyett `-all`, ha semmi más nem
+  küld a domainről.
+
+---
 
 ## Ha valami nem megy
 
-- **Minden link 404** → a `.htaccess` nem került fel, vagy a tárhelyen nincs
-  engedélyezve az `AllowOverride`. Ez utóbbin a FORPSI ügyfélszolgálata segít.
-- **Az űrlap hibát ad** → nézd meg a böngésző konzolját. Ha a `send.php` 500-at
-  ad, a PHP-verzió a gyanús; ha 413-at, a `.user.ini` nem került fel.
-- **Az űrlap megnyitja a levelezőt küldés helyett** → a végpont nem elérhető.
-  Ez a beépített tartalék, tehát nem vész el érdeklődés, de a végpontot javítani kell.
+| tünet | ok |
+|---|---|
+| A nyitóoldalon kívül **minden link 404** | a `.htaccess` nem került fel (rejtett fájl!), vagy a tárhelyen nincs engedélyezve az `AllowOverride` — ez utóbbin az ügyfélszolgálat segít |
+| Az űrlap **413**-at ad | a `.user.ini` nem került fel |
+| Az űrlap **500**-at ad | a `send.php` hibára fut — nézd meg a tárhely hibanaplóját |
+| Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |
+| A levél **spam mappába** kerül | hiányzik vagy hibás az SPF (1. lépés) |
+| A `https://` **nem tölt be** | a tanúsítvány még nincs telepítve (6. lépés) |
