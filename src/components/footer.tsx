@@ -70,6 +70,13 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
               {dict.footer.email}
             </a>
           </p>
+          {/* Az ajánlatkérő gomb a fejlécből került ide, az elérhetőségek alá. */}
+          <Link
+            href={`/${lang}/kapcsolat`}
+            className="mt-4 inline-block rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+          >
+            {dict.nav.quote}
+          </Link>
         </div>
       </div>
 

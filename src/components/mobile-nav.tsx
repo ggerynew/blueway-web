@@ -7,11 +7,9 @@ import { getDictionary, type Locale } from '@/lib/i18n';
 
 export function MobileNav({
   lang,
-  quoteLabel,
   items,
 }: {
   lang: Locale;
-  quoteLabel: string;
   items: { href: string; label: string }[];
 }) {
   const [open, setOpen] = useState(false);
@@ -40,7 +38,9 @@ export function MobileNav({
       {open && (
         <div
           id="mobile-menu"
-          className="absolute inset-x-0 top-16 border-b border-line bg-surface shadow-lg"
+          /* top-full: a fejléc ALJÁTÓL nyílik, a kereső sorát is beleértve —
+             fix 64 px-nél az első menüpont a kereső mögé kerülne. */
+          className="absolute inset-x-0 top-full border-b border-line bg-surface shadow-lg"
         >
           <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
             {items.map((item) => (
@@ -53,15 +53,8 @@ export function MobileNav({
                 {item.label}
               </Link>
             ))}
-            <div className="mt-3 flex items-center justify-between border-t border-line pt-4">
+            <div className="mt-3 border-t border-line pt-4">
               <LangSwitcher lang={lang} />
-              <Link
-                href={`/${lang}/kapcsolat`}
-                onClick={close}
-                className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-700"
-              >
-                {quoteLabel}
-              </Link>
             </div>
           </nav>
         </div>

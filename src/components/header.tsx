@@ -80,17 +80,11 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
             </Link>
           ))}
         </nav>
-        <div className="hidden shrink-0 items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center lg:flex">
           <LangSwitcher lang={lang} compact />
-          <Link
-            href={`/${lang}/kapcsolat`}
-            className="hidden rounded-full bg-ink px-4 py-2 text-sm font-medium whitespace-nowrap text-white transition-colors hover:bg-brand-700 xl:inline-block"
-          >
-            {dict.nav.quote}
-          </Link>
         </div>
 
-        <MobileNav lang={lang} quoteLabel={dict.nav.quote} items={nav} />
+        <MobileNav lang={lang} items={nav} />
       </div>
 
       {/* A kereső saját sorban: a fejléc-sorban a hét zászló, a menü és az
