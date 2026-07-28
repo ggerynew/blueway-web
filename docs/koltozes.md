@@ -16,30 +16,35 @@ nélkül a linkek vagy az űrlapok nem működnének.
 
 ## 0. Előkészítés a FORPSI-oldalon
 
-A tárhely jelenlegi állapota alapján négy dolgot kell átállítani. Az első
-kettő **blokkoló**: nélkülük az új weblap nem tud élesen működni.
+| beállítás | állapot | teendő |
+|---|---|---|
+| PHP | **8.5** | ✔ kész |
+| WWW redirect | **engedélyezve** | ✔ kész |
+| SSL tanúsítvány | `visszavonva` | **blokkoló** — lásd a 0/a. szakaszt |
+| SSL redirect | `letiltva` | a tanúsítvány kiállása **után** kapcsold be |
+| A rekord | `81.2.194.244` | átállítás `185.129.138.202`-re (ez maga az élesítés) |
+| Dynamic cache | `letiltva` | maradjon így |
+| SSH | `letiltva` | a költözés idejére érdemes bekapcsolni |
 
-1. **SSL-tanúsítvány — jelenleg `visszavonva`.** Ez blokkoló. A weblap kanonikus
-   URL-jei, a `hreflang`-ok, a sitemap és a robots.txt mind `https://`-sel
-   mutatnak a domainre. Amíg nincs érvényes tanúsítvány, a `https://blueway.hu`
-   egyáltalán nem tölt be, és a kereső is hibás címekre futna. Ezt kell először
-   újra kiállíttatni — a lépések lentebb, az „SSL újraigénylése” szakaszban.
+Részletek:
 
-2. **PHP — jelenleg `7.0`.** Az ügyfélfiókban állítsd **8.x-re**. A `send.php`
-   7.0-tól elfut, tehát elvileg működne, de a 7.0 2019 óta nem kap biztonsági
-   javítást, és a tárhelyen más is futhat rajta. A szkript PHP 8.4-en, `E_ALL`
-   hibajelzéssel végig ellenőrizve — minden ága figyelmeztetés és deprecation
-   nélkül fut.
+1. **SSL-tanúsítvány — `visszavonva`.** Ez az egyetlen blokkoló. A weblap
+   kanonikus URL-jei, a `hreflang`-ok, a sitemap és a robots.txt mind
+   `https://`-sel mutatnak a domainre. Amíg nincs érvényes tanúsítvány, a
+   `https://blueway.hu` egyáltalán nem tölt be. A lépések a 0/a. szakaszban.
 
-3. **WWW redirect — jelenleg `letiltva`.** Kapcsold be. Enélkül a
-   `www.blueway.hu` és a `blueway.hu` is kiszolgálja ugyanazt a tartalmat két
-   külön címen, ami a keresőnek duplikált tartalom. A weblap kanonikus URL-jei a
-   **www nélküli** alakra mutatnak, tehát a `www` → `blueway.hu` irány a helyes.
+2. **SSL redirect — `letiltva`.** Kapcsold be, de **csak azután, hogy a
+   tanúsítvány kiállt** — előbb bekapcsolva minden látogató hibaoldalt kapna. Ha
+   ezt használod, a `.htaccess`-ben lévő HTTPS-blokk maradjon kikommentezve:
+   elég az egyik, és a szolgáltató sajátja hamarabb lefut.
 
-4. **SSL redirect — jelenleg `letiltva`.** Kapcsold be, de **csak azután, hogy a
-   tanúsítvány kiállt**. Ha ezt használod, a `.htaccess`-ben lévő HTTPS-blokk
-   maradjon kikommentezve — elég az egyik, és a szolgáltató sajátja hamarabb fut
-   le, mint a mi átírási szabályunk.
+3. **PHP — 8.5.** Beállítva. A `send.php` PHP 7.0-tól fut, és 8.4-en, `E_ALL`
+   hibajelzéssel minden ága végig ellenőrizve — figyelmeztetés és deprecation
+   nélkül. A 8.5 ennél is újabb, de a szkript semmilyen elavuló elemet nem
+   használ; az első próbaküldésnél azért érdemes ránézni a hibanaplóra.
+
+4. **WWW redirect — engedélyezve.** Beállítva. A weblap kanonikus URL-jei a www
+   nélküli alakra mutatnak, tehát a `www` → `blueway.hu` irány a helyes.
 
 Amivel nem kell foglalkozni:
 
@@ -48,10 +53,10 @@ Amivel nem kell foglalkozni:
   ha feladóként a látogató címét írnánk be, az SPF/DKIM megbukna, és a levél spam
   mappába kerülne. A látogató címe `Reply-To`-ba megy, tehát a Válasz gomb neki
   válaszol.
-- **Dynamic cache.** Hagyd letiltva. A weblap statikus fájlokból áll, a
+- **Dynamic cache.** Maradjon letiltva. A weblap statikus fájlokból áll, a
   gyorsítótárazást a `.htaccess` fejlécei intézik; a szolgáltató dinamikus
   gyorsítótára ehhez nem tesz hozzá, viszont hibakeresésnél zavaró tud lenni.
-- **SSH — jelenleg letiltva.** Nem kötelező, de **érdemes bekapcsolni a
+- **SSH — letiltva.** Nem kötelező, de **érdemes bekapcsolni a
   költözésre**: a feltöltendő anyag ~138 MB, 1362 fájlban. FTP-n ez sok száz
   külön kapcsolat és könnyen félbeszakad; `rsync`-kel vagy `scp`-vel egyetlen
   menetben, folytathatóan megy át.
