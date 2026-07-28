@@ -1,6 +1,13 @@
 # Blueway Trade — statikus weblap Apache-on (FORPSI Linux klaszter).
 # A weboldal gyökerébe kell másolni, a feltöltött oldalak mellé.
 
+# ——— Melyik fájl a nyitóoldal ————————————————————————————————————————
+# A régi weblap egy PHP-alkalmazás volt, aminek a webgyökerében index.php áll.
+# Az Apache alapbeállítása a legtöbb tárhelyen az index.php-t részesíti előnyben
+# az index.html-lel szemben, tehát ha a régi fájl ottmarad, továbbra is az
+# jelenne meg. Ezért itt kimondjuk, hogy a mi nyitóoldalunk az index.html.
+DirectoryIndex index.html index.htm
+
 # ——— Kiterjesztés nélküli URL-ek ————————————————————————————————————
 # A weblap linkjei /hu/rolunk alakúak, a fájl viszont hu/rolunk.html.
 # GitHub Pages ezt magától feloldja, Apache nem — enélkül minden belső

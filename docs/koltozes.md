@@ -251,10 +251,27 @@ A privát kulcsot senkinek ne add ki, és ne töltsd fel sehová.
 
 ### A webgyökér útvonala
 
-A `FORPSI_WEB_ROOT` az a mappa a szerveren, ahová a weblap fájljai kerülnek —
-FTP-vel belépve az a könyvtár, amiben a jelenlegi weblap `index` fájlja van
-(gyakran `/web`, `/www` vagy maga a gyökér). Ha bizonytalan vagy, az
-ügyfélszolgálat megmondja.
+**Ezen a tárhelyen: `/www`.**
+
+Az FTP gyökerében ezek a könyvtárak vannak:
+
+| könyvtár | mi ez |
+|---|---|
+| `www` | **a webgyökér — ide megy a weblap** |
+| `www_` | egy korábbi weblap félretett példánya (2016) |
+| `app`, `src`, `data`, `vendor` | a régi PHP-alkalmazás fájljai, a webgyökéren kívül |
+| `backups-forpsi` | a szolgáltató mentései (csak olvasható) |
+| `stat`, `tmp`, `softaculous` | statisztika, ideiglenes fájlok, telepítő |
+
+A weblap fájljai **csak a `www` mappába** kerülnek; a többihez nem nyúlunk.
+Ellenőrzésképp nyisd meg a `www`-t: ott kell lennie a mostani weblap
+nyitófájljának.
+
+> **Figyelem a nyitóoldalra.** Ha a `www`-ben marad a régi `index.php`, az
+> Apache alapból azt részesíti előnyben az `index.html`-lel szemben — a régi
+> weblap jelenne meg az új helyett. A `.htaccess` ezért kimondja, hogy a
+> nyitóoldal az `index.html`. A régi fájlokat érdemes ettől függetlenül
+> eltakarítani, miután az új oldal működik.
 
 ### Mit csinál
 
