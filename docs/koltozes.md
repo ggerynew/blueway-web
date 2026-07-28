@@ -245,18 +245,35 @@ Az A rekord átállítása után **kb. fél órát várj**, aztán:
 
 Egyéb dokumentumot nem kell küldeni.
 
-### Miért csak most
+### Miért csak most — az öt feltétel
 
 Eddig az igénylés erre futott: *„A szolgáltatás nem megfelelő az ingyenes DV SSL
-tanúsítványhoz.”* Az összes feltétel teljesült — a domain a FORPSI-nál van, aktív,
-FORPSI névszerverekkel — **egy kivételével**: az ingyenes DV SSL megköveteli, hogy
-a domain A rekordja arra a tárhelyre mutasson, amelyikhez a tanúsítványt kérjük.
-Az A rekord viszont a régi gépre (`81.2.194.244`) mutatott. Az 5. lépés éppen ezt
-javítja — ezért kell utána újrapróbálni.
+tanúsítványhoz.”* A FORPSI tudásbázisa (a528. cikk) pontosan öt feltételt sorol
+fel; a jelenlegi állás:
 
-Ha az igénylés ekkor is elutasítana, írj az ügyfélszolgálatnak a `W00080673`
-azonosítóval, és kérdezd meg, **pontosan melyik feltétel nem teljesül** — a panel
-üzenete ezt nem árulja el.
+| # | feltétel | állapot |
+|---|---|---|
+| 1 | a BlazeArts Kft. (FORPSI) a domain regisztrátora, nem IDN | ✔ |
+| 2 | FORPSI névszerverek, **és az A rekord FORPSI webtárhelyre mutat** | NS ✔ · **A rekord: ez a gyanús** |
+| 3 | a domain és a webtárhely **fő kapcsolattartója megegyezik** | ellenőrizendő |
+| 4 | a FORPSI a webtárhely-szolgáltató | ✔ |
+| 5 | nincs másik megrendelt és aktivált SSL a tárhelyen | ✔ (a régi visszavonva) |
+
+A **2. pont** a legvalószínűbb ok: az A rekord egy régebbi FORPSI gépre mutat
+(`81.2.194.244`), nem arra a tárhelyre, amelyikhez a tanúsítványt kérjük
+(`185.129.138.202`). Ezt az 5. lépés amúgy is javítja — ezért kell utána
+újrapróbálni.
+
+A **3. pontot viszont érdemes már most megnézni**, mert ha az a baj, a DNS-váltás
+nem fogja megoldani: az ügyfélközpontban a domain és a webtárhely adatlapján a fő
+kapcsolattartónak ugyanannak kell lennie.
+
+Ha az igénylés a DNS-váltás után is elutasítana, írj az ügyfélszolgálatnak a
+`W00080673` azonosítóval, és kérdezd meg, **pontosan melyik feltétel nem
+teljesül** — a panel üzenete ezt nem árulja el.
+
+A tanúsítvány csak másod- és harmadszintű nevekhez jár (`blueway.hu` ✔), és
+ékezetes (IDN) domainhez nem.
 
 ### A tanúsítványról
 
