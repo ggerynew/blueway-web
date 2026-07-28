@@ -23,7 +23,7 @@ kettő **blokkoló**: nélkülük az új weblap nem tud élesen működni.
    URL-jei, a `hreflang`-ok, a sitemap és a robots.txt mind `https://`-sel
    mutatnak a domainre. Amíg nincs érvényes tanúsítvány, a `https://blueway.hu`
    egyáltalán nem tölt be, és a kereső is hibás címekre futna. Ezt kell először
-   újra kiállíttatni.
+   újra kiállíttatni — a lépések lentebb, az „SSL újraigénylése” szakaszban.
 
 2. **PHP — jelenleg `7.0`.** Az ügyfélfiókban állítsd **8.x-re**. A `send.php`
    7.0-tól elfut, tehát elvileg működne, de a 7.0 2019 óta nem kap biztonsági
@@ -55,6 +55,61 @@ Amivel nem kell foglalkozni:
   költözésre**: a feltöltendő anyag ~138 MB, 1362 fájlban. FTP-n ez sok száz
   külön kapcsolat és könnyen félbeszakad; `rsync`-kel vagy `scp`-vel egyetlen
   menetben, folytathatóan megy át.
+
+## 0/a. SSL újraigénylése
+
+A DYNAMIC webtárhelyhez jár ingyenes **DV SSL** tanúsítvány (kiállító: Actalis,
+wildcard, az aldomainekre is érvényes). Nem alapértelmezetten aktív, magadtól
+igényelheted.
+
+### Figyelem: visszavonás után 14 nap várakozás
+
+A FORPSI leírása szerint **a visszavonástól számított két hétig nem lehet új
+tanúsítványt kérni**. A tárhely státusza most `visszavonva`, tehát az első dolog,
+hogy megnézed, **mikor** vonták vissza:
+
+Ügyfélközpont → **Webtárhelyek** → `blueway.hu` → az `SSL tanúsítvány` sorban a
+**[Részlet]** link.
+
+- Ha a visszavonás **14 napnál régebbi**, azonnal igényelhető.
+- Ha **frissebb**, a költözés élesítését ehhez kell időzíteni — vagy írj az
+  ügyfélszolgálatnak, hogy sürgősséggel oldják fel.
+
+Ez az egyetlen olyan pont a költözésben, amit nem lehet „gyorsabban megcsinálni”,
+ezért érdemes vele kezdeni.
+
+### Az igénylés menete
+
+1. Ügyfélközpont → bal oldali menü: **Webtárhelyek** → a listából `blueway.hu`.
+2. Az **Alap információk** lapon, az `SSL tanúsítvány` sorban: **Kezelés**.
+3. Pipa: *„Egyetértek az SSL tanúsítványokkal kapcsolatos szerződési
+   feltételekkel”*, majd **Tanúsítvány igénylése**.
+4. Amikor megjön az e-mail, hogy telepíthető: **Kezelés** → **Telepítés**.
+5. A kiállítás és telepítés együtt **legfeljebb 2 óra**. Utána a Státusz
+   `telepítve`, és a Telepítés gomb helyén `Eltávolítás` jelenik meg.
+
+Egyéb dokumentumot nem kell küldeni.
+
+### Amit előtte érdemes ellenőrizni
+
+Az ingyenes DV SSL feltételei — ha valamelyik nem teljesül, az igénylés elakad:
+
+- a tárhelyhez **nincs másik aktivált SSL** (pl. Let's Encrypt);
+- a domain **FORPSI névszervereken** fut, és az A rekordja a FORPSI tárhelyre
+  mutat (`185.129.138.202`);
+- a domain regisztrátora is a FORPSI (BlazeArts Kft.);
+- a domain és a tárhely fő kapcsolattartója **ugyanaz**;
+- a tanúsítvány kiállítása előtt a szolgáltató biztonsági ellenőrzést futtat a
+  weblapon — ha a **régi oldal fertőzött**, nem állítják ki. Ez a mi esetünkben
+  érv amellett, hogy előbb menjen fel az új, statikus weblap, és utána kérjük a
+  tanúsítványt.
+
+### A megújítás
+
+A tanúsítvány a kiállítástól számítva **1 évig** érvényes, és a lejárat előtt 7
+nappal automatikusan, díjmentesen megújul, ha a fenti feltételek továbbra is
+teljesülnek. A privát kulcs nem exportálható — a tanúsítvány csak FORPSI
+tárhelyen használható.
 
 ## 1. Build
 
