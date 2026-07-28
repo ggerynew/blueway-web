@@ -126,17 +126,27 @@ jobs:
           DELETE_EXTRA: ${{ inputs.delete_extra }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+          # A jelszó környezeti változóban megy át, nem a parancssorban: így a
+          # benne lévő idézőjel, szóköz vagy $ nem töri el a parancsot, és nem
+          # is kerül bele a folyamatlistába.
+          export LFTP_PASSWORD="$FTP_PASSWORD"
+
+          SETTINGS="set ssl:verify-certificate yes; set ftp:ssl-force true; set ftp:ssl-protect-data true; set net:max-retries 2; set net:timeout 20;"
+
+          echo "Bejelentkezés ellenőrzése: $FTP_USER @ $FTP_HOST"
+          if ! lftp -u "$FTP_USER" --env-password \
+                 -e "$SETTINGS cd '$WEB_ROOT'; pwd; bye" "$FTP_HOST"; then
+            echo "::error::Az FTP bejelentkezés vagy a webgyökér elérése nem sikerült. Ellenőrizd a FORPSI_FTP_USER, FORPSI_FTP_PASSWORD és FORPSI_WEB_ROOT secreteket (a beillesztésnél könnyen bekerül egy fölösleges szóköz vagy sortörés)."
+            exit 1
+          fi
+
           DEL=""
           if [ "$DELETE_EXTRA" = "true" ]; then DEL="--delete"; fi
           # --only-newer: csak a változott fájlok; -P4: négy párhuzamos átvitel.
-          lftp -c "
-            set ssl:verify-certificate yes;
-            set ftp:ssl-force true;
-            set ftp:ssl-protect-data true;
-            set net:max-retries 3;
-            open -u '$FTP_USER','$FTP_PASSWORD' '$FTP_HOST';
-            mirror -R --only-newer --parallel=4 $DEL --verbose out/ '$WEB_ROOT/';
-          "
+          lftp -u "$FTP_USER" --env-password \
+            -e "$SETTINGS mirror -R --only-newer --parallel=4 $DEL --verbose out/ '$WEB_ROOT/'; bye" \
+            "$FTP_HOST"
 
       - name: Ellenőrzés — betölt-e az oldal
         if: steps.gate.outputs.go == 'true'
