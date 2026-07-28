@@ -1,0 +1,150 @@
+name: Deploy to FORPSI
+
+# Élesítés a saját tárhelyre: minden main-re érkező változtatás pár percen
+# belül kikerül a blueway.hu-ra. A GitHub Pages-es deploy megmarad
+# előnézetnek, ez a munkafolyamat attól független.
+#
+# Addig nem csinál semmit, amíg nincsenek beállítva a hozzáférési adatok
+# (repo secrets) — így a bekapcsolás egyetlen lépés, kódmódosítás nélkül.
+#
+# Beállítandó secretek — Settings → Secrets and variables → Actions:
+#
+#   SSH-val (ajánlott, gyorsabb és megbízhatóbb):
+#     FORPSI_SSH_HOST     pl. ftpx.forpsi.com
+#     FORPSI_SSH_USER     az SSH felhasználónév
+#     FORPSI_SSH_KEY      a privát kulcs teljes tartalma
+#     FORPSI_WEB_ROOT     a webgyökér útvonala a szerveren, pl. /web
+#
+#   vagy FTP-vel (ha az SSH nincs bekapcsolva):
+#     FORPSI_FTP_HOST     ftpx.forpsi.com
+#     FORPSI_FTP_USER     az FTP felhasználónév
+#     FORPSI_FTP_PASSWORD az FTP jelszó
+#     FORPSI_WEB_ROOT     a webgyökér útvonala, pl. / vagy /web
+#
+#   közös, opcionális:
+#     SITE_URL            alapértelmezés: https://blueway.hu
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      delete_extra:
+        description: 'A szerveren lévő, a buildben nem szereplő fájlok törlése'
+        type: boolean
+        default: false
+
+concurrency:
+  group: forpsi
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ secrets.SITE_URL || 'https://blueway.hu' }}
+      HAS_SSH: ${{ secrets.FORPSI_SSH_KEY != '' }}
+      HAS_FTP: ${{ secrets.FORPSI_FTP_PASSWORD != '' }}
+    steps:
+      - name: Van-e mihez kapcsolódni?
+        id: gate
+        run: |
+          if [ "$HAS_SSH" = "true" ] || [ "$HAS_FTP" = "true" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "go=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Nincsenek beállítva a FORPSI hozzáférési adatok — a deploy kimarad."
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.go == 'true'
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+        if: steps.gate.outputs.go == 'true'
+
+      - name: Build az éles domainre
+        if: steps.gate.outputs.go == 'true'
+        run: npm run build
+        env:
+          STATIC_EXPORT: '1'
+          # Üres base path: a weblap a domain gyökerében lakik, nem alkönyvtárban.
+          NEXT_PUBLIC_BASE_PATH: ''
+          NEXT_PUBLIC_SITE_URL: ${{ env.SITE_URL }}
+          # A saját tárhelyen a send.php küld, nem a Formspree.
+          NEXT_PUBLIC_FORM_ENDPOINT: ${{ secrets.FORM_ENDPOINT || format('{0}/send.php', env.SITE_URL) }}
+          NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE || 'blueway' }}
+
+      - name: A szerveroldali fájlok a feltöltendő mappába
+        if: steps.gate.outputs.go == 'true'
+        run: cp server/.htaccess server/send.php server/.user.ini out/
+
+      - name: Ellenőrzés — a build nem üres
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          # Egy elrontott build ne törölje le a működő weblapot.
+          count=$(find out -type f | wc -l)
+          echo "Feltöltendő fájlok: $count"
+          test "$count" -gt 500 || { echo "::error::Gyanúsan kevés fájl ($count) — a deploy leáll."; exit 1; }
+          test -f out/index.html || { echo "::error::Hiányzik az out/index.html."; exit 1; }
+          test -f out/send.php || { echo "::error::Hiányzik az out/send.php."; exit 1; }
+
+      # ——— SSH / rsync ———————————————————————————————————————————
+      - name: Feltöltés SSH-val
+        if: steps.gate.outputs.go == 'true' && env.HAS_SSH == 'true'
+        env:
+          SSH_KEY: ${{ secrets.FORPSI_SSH_KEY }}
+          SSH_HOST: ${{ secrets.FORPSI_SSH_HOST }}
+          SSH_USER: ${{ secrets.FORPSI_SSH_USER }}
+          WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
+          DELETE_EXTRA: ${{ inputs.delete_extra }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          # Csak a megváltozott fájlok mennek át — a második deploytól ez
+          # néhány másodperc az első teljes szinkron után.
+          FLAGS="-rlvz --checksum --omit-dir-times --no-perms"
+          if [ "$DELETE_EXTRA" = "true" ]; then FLAGS="$FLAGS --delete"; fi
+          rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -o StrictHostKeyChecking=yes" \
+            out/ "$SSH_USER@$SSH_HOST:$WEB_ROOT/"
+          rm -f ~/.ssh/id_deploy
+
+      # ——— FTP ———————————————————————————————————————————————————
+      - name: Feltöltés FTP-vel
+        if: steps.gate.outputs.go == 'true' && env.HAS_SSH != 'true' && env.HAS_FTP == 'true'
+        env:
+          FTP_HOST: ${{ secrets.FORPSI_FTP_HOST }}
+          FTP_USER: ${{ secrets.FORPSI_FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FORPSI_FTP_PASSWORD }}
+          WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
+          DELETE_EXTRA: ${{ inputs.delete_extra }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          DEL=""
+          if [ "$DELETE_EXTRA" = "true" ]; then DEL="--delete"; fi
+          # --only-newer: csak a változott fájlok; -P4: négy párhuzamos átvitel.
+          lftp -c "
+            set ssl:verify-certificate yes;
+            set ftp:ssl-force true;
+            set ftp:ssl-protect-data true;
+            set net:max-retries 3;
+            open -u '$FTP_USER','$FTP_PASSWORD' '$FTP_HOST';
+            mirror -R --only-newer --parallel=4 $DEL --verbose out/ '$WEB_ROOT/';
+          "
+
+      - name: Ellenőrzés — betölt-e az oldal
+        if: steps.gate.outputs.go == 'true'
+        run: |
+          # A DNS-átállás előtt a domain még a régi gépre mutat, ezért ez
+          # csak figyelmeztet, nem bukik el.
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$SITE_URL/hu" || echo 000)
+          echo "GET $SITE_URL/hu -> $code"
+          if [ "$code" != "200" ]; then
+            echo "::warning::A weblap nem 200-zal válaszolt ($code). Ha még nem történt meg a DNS-átállítás, ez várható."
+          fi

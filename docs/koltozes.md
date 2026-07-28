@@ -185,6 +185,67 @@ benne**. Más címzetthez a fájl elején a `RECIPIENT`-et állítsd át.
 
 ---
 
+## 3/a. Automatikus feltöltés GitHubról
+
+A kézi feltöltés csak az első alkalommal kell. Utána a
+`.github/workflows/deploy-forpsi.yml` munkafolyamat minden `main`-re érkező
+változtatást kitesz a tárhelyre — tartalmi javítás után nincs teendő, pár perccel
+később már az éles oldalon van.
+
+A munkafolyamat addig **nem csinál semmit**, amíg nincsenek beállítva a
+hozzáférési adatok, tehát nyugodtan ott lehet a repóban a bekapcsolás előtt is.
+
+### Beállítás
+
+GitHub → **Settings** → *Secrets and variables* → **Actions** → *New repository
+secret*.
+
+**SSH-val** (ez az ajánlott — gyorsabb, és csak a változott fájlokat viszi át):
+
+| secret | érték |
+|---|---|
+| `FORPSI_SSH_HOST` | `ftpx.forpsi.com` |
+| `FORPSI_SSH_USER` | az SSH felhasználónév |
+| `FORPSI_SSH_KEY` | a privát kulcs teljes tartalma |
+| `FORPSI_WEB_ROOT` | a webgyökér útvonala a szerveren |
+
+**FTP-vel** (ha az SSH nincs bekapcsolva):
+
+| secret | érték |
+|---|---|
+| `FORPSI_FTP_HOST` | `ftpx.forpsi.com` |
+| `FORPSI_FTP_USER` | az FTP felhasználónév |
+| `FORPSI_FTP_PASSWORD` | az FTP jelszó |
+| `FORPSI_WEB_ROOT` | a webgyökér útvonala |
+
+Ha mindkettő be van állítva, az SSH-t használja.
+
+### Mit csinál
+
+1. Az éles domainre épít (üres base path, `https://blueway.hu`, `send.php`).
+2. A `server/` fájljait (`.htaccess`, `send.php`, `.user.ini`) a feltöltendő
+   mappába másolja — így azok is frissülnek.
+3. **Leáll, ha a build gyanús**: ha 500-nál kevesebb fájl készült, vagy hiányzik
+   az `index.html` vagy a `send.php`. Egy elrontott build így nem törli le a
+   működő weblapot.
+4. Feltölti — csak a megváltozott fájlokat. Az első teljes szinkron után egy-egy
+   tartalmi javítás néhány másodperc.
+5. Megnézi, hogy a `https://blueway.hu/hu` 200-zal válaszol-e. Ha nem, csak
+   figyelmeztet (a DNS-átállítás előtt ez természetes).
+
+**A szerveren lévő, buildben nem szereplő fájlokat alapból nem törli** — a régi
+weblap maradványai megmaradnak, amíg kézzel el nem takarítod. Ha egyszer teljes
+takarítást szeretnél: Actions → *Deploy to FORPSI* → **Run workflow**, és pipáld
+be a törlést. Ezt csak akkor, ha a régi oldalról már van mentés.
+
+### Ami megmarad
+
+A GitHub Pages-es deploy nem szűnik meg: az továbbra is épül minden változtatásra,
+és jó **előnézetnek** — ott meg lehet nézni egy módosítást, mielőtt az élesre
+kerül.
+
+---
+
 ## 4. Tesztelés `hosts` fájllal
 
 Az új oldal így megnézhető, mielőtt a világ is látná. A gépeden a `hosts` fájlba
