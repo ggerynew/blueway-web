@@ -20,9 +20,9 @@ sorrendjét** írja le; a magyarázatok a lépések alatt vannak.
 | SSL redirect | letiltva — a 7. lépésben kapcsoljuk be |
 | Dynamic cache | letiltva — maradjon így |
 
-## Előfeltétel: a tárhely mérete
+## Előfeltétel: nagyobb csomag
 
-**A jelenlegi 100 MB kevés.** A legenerált weblap 141 MB:
+**A mostani 100 MB kevés.** A legenerált weblap 141 MB:
 
 | rész | méret |
 |---|---|
@@ -31,17 +31,29 @@ sorrendjét** írja le; a magyarázatok a lépések alatt vannak.
 | kliensoldali navigáció adatai (`.txt`) | 22 MB |
 | képek, videó, JS, CSS | 9 MB |
 
-Ebből a PDF-ek viszik a felét. Két út van:
+A PDF-ek utólagos tömörítése nem járható út: a legnagyobból (7 MB, 36 oldal)
+mindössze 1,6 MB a kép, a többi vektoros rajz és betűkészlet.
 
-1. **Csomagbővítés** (pl. Professional, korlátlan) — ez a javasolt. A 141 MB
-   nagyrészt valódi tartalom: gyártói adatlapok, amiket az ügyfelek letöltenek,
-   és amiket a kereső is indexel.
-2. **Az adatlapok elhagyása** — nélkülük a weblap 72 MB, tehát beférne. Cserébe
-   viszont elvesznek a letölthető adatlapok, ami a termékoldalak egyik értéke.
+Jó hír, hogy a mai Linux csomagokban **mindháromban korlátlan a tárhely** — tehát
+a méret önmagában nem szempont a választásnál:
 
-A PDF-ek utólagos tömörítése nem járható út: megnéztem a legnagyobbat (7 MB,
-36 oldal), abból mindössze 1,6 MB a kép — a többi vektoros rajz és betűkészlet,
-amin az újratömörítés alig fog.
+| | Easy | Advanced | Professional |
+|---|---|---|---|
+| tárhely | korlátlan | korlátlan | korlátlan |
+| fő domainek | 1 | max. 3 | max. 10 |
+| adatbázisok | 1 | 3 | 10 |
+| e-mail fiók max. mérete | 10 GB | 20 GB | 30 GB |
+
+**Az Advanced elég ehhez a weblaphoz.** Adatbázis nem kell (statikus oldal + egy
+PHP szkript), egy fő domain van.
+
+> **Amit előtte ellenőrizni kell: a levelezés mérete.** A mostani DYNAMIC
+> csomagban 30 GB a postafiók-kapacitás, az Advanceben 20 GB, az Easyben 10 GB.
+> Tíz postafiók és több év levelezése mellett ez szűk lehet — nézd meg az
+> ügyfélközpontban a tényleges használatot, mielőtt váltasz.
+
+Az akciós ár csak az első évre szól; a megújítási ár ennél magasabb. A váltás
+előtt érdemes megnézni a **második évi** díjat is, mert hosszú távon az számít.
 
 ## A lépések áttekintése
 
