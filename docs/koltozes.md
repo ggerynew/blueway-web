@@ -62,21 +62,48 @@ A DYNAMIC webtárhelyhez jár ingyenes **DV SSL** tanúsítvány (kiállító: A
 wildcard, az aldomainekre is érvényes). Nem alapértelmezetten aktív, magadtól
 igényelheted.
 
-### Figyelem: visszavonás után 14 nap várakozás
+### Jelenlegi állapot: az igénylés elutasítva
 
-A FORPSI leírása szerint **a visszavonástól számított két hétig nem lehet új
-tanúsítványt kérni**. A tárhely státusza most `visszavonva`, tehát az első dolog,
-hogy megnézed, **mikor** vonták vissza:
+Az ügyfélközpont erre a hibára fut: *„A szolgáltatás nem megfelelő az ingyenes
+DV SSL tanúsítványhoz.”* Ez nem a visszavonás utáni 14 napos tiltás, hanem azt
+jelenti, hogy a feltételek valamelyike nem teljesül.
 
-Ügyfélközpont → **Webtárhelyek** → `blueway.hu` → az `SSL tanúsítvány` sorban a
-**[Részlet]** link.
+**A legvalószínűbb ok: az A rekord nem erre a tárhelyre mutat.**
 
-- Ha a visszavonás **14 napnál régebbi**, azonnal igényelhető.
-- Ha **frissebb**, a költözés élesítését ehhez kell időzíteni — vagy írj az
-  ügyfélszolgálatnak, hogy sürgősséggel oldják fel.
+| | |
+|---|---|
+| `blueway.hu` A rekordja most | `81.2.194.244` (visszafejtve: `244.194.forpsi.net`) |
+| A tárhely web IP-je az ügyfélközpont szerint | `185.129.138.202` |
 
-Ez az egyetlen olyan pont a költözésben, amit nem lehet „gyorsabban megcsinálni”,
-ezért érdemes vele kezdeni.
+Tehát a domain egy **másik (régebbi) FORPSI gépre** mutat, nem arra a tárhelyre,
+amelyikhez a tanúsítványt kérnénk. Az ingyenes DV SSL egyik kimondott feltétele,
+hogy „a domain … beállított A rekordja Forpsi webtárhelyre mutat” — ezen bukik el.
+
+Amit sorban ellenőrizni kell (ügyfélközpont):
+
+1. **DNS szerkesztése** → mire mutat az `A` rekord? Ha a FORPSI kezeli a DNS-t,
+   az átírás `185.129.138.202`-re egy kattintás. Ha máshol van a DNS (pl. másik
+   szolgáltató névszerverein), ott kell átírni.
+2. **Névszerverek** → a domain FORPSI névszervereken fut-e.
+3. **Regisztrátor** → a `.hu` domain regisztrátora a BlazeArts Kft. (FORPSI)-e.
+   Ha nem, az ingyenes DV SSL nem jár hozzá.
+4. **Fő kapcsolattartó** → a domainnél és a tárhelynél ugyanaz-e.
+5. **Másik SSL** → nincs-e még élő, korábban megrendelt tanúsítvány a tárhelyen.
+
+Ha az 1–2. pont rendbe jön, az igénylés jó eséllyel átmegy. A DNS-változás
+terjedése után (jellemzően néhány óra) próbáld újra.
+
+**Ha a 3. vagy 4. ponton bukik**, az ingyenes tanúsítvány nem jár. Ilyenkor:
+- vagy a domaint kell FORPSI-hoz hozni (regisztrátorváltás),
+- vagy a fizetős **„SSL szolgáltatás”** kiegészítőt kell megrendelni — ezzel
+  Let's Encrypt vagy saját hozott tanúsítvány is telepíthető,
+- vagy írj az ügyfélszolgálatnak a `W00080673` azonosítóval, és kérdezd meg,
+  pontosan melyik feltétel nem teljesül. Ez a leggyorsabb út, mert a panel
+  üzenete nem árulja el.
+
+> A régi weblap jelenleg a `81.2.194.244` címen szolgál ki. Az élesítés
+> tulajdonképpen az A rekord átállítása `185.129.138.202`-re — érdemes ezt és az
+> SSL-t egyszerre kezelni, mert a tanúsítvány feltétele is ez.
 
 ### Az igénylés menete
 
