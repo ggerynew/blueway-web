@@ -111,7 +111,9 @@ fi
 # lftp az alapbeállítása szerint egy hibás parancs után is folytatja, tehát
 # egy elakadt bejegyzés nem viszi el a többit. Shell-szintaxist (zárójel,
 # && , ||) szándékosan nem használunk — az lftp nem shell.
-PARANCS="$SETTINGS mkdir -p '$ARCHIVE';"
+# A -f elnyeli a "File exists" üzenetet: a mappa a második futástól kezdve
+# már megvan, és ilyenkor az lftp egyébként riasztó "Access failed" sort ír.
+PARANCS="$SETTINGS mkdir -p -f '$ARCHIVE';"
 for nev in "${MOZGATANDO[@]}"; do
   PARANCS="$PARANCS mv '$WEB_ROOT/$nev' '$ARCHIVE/$nev';"
 done

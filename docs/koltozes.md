@@ -187,8 +187,24 @@ bárki számára elérhetővé válna:
 | `index.php`, `index2.php` | a régi nyitóoldal |
 | `css`, `fonts`, `js`, `less`, régi `favicon.*`, `.gitignore` | maradék |
 
-Ezeket **át kell helyezni** a webgyökérből — a legegyszerűbb a `www` mellé, egy
-`ARCHIVE` mappába. Így megmaradnak, de nem kiszolgálhatók.
+**Ez 2026. 07. 29-én megtörtént**: mind a 16 bejegyzés a `www` melletti
+`ARCHIVE` mappába került. Megmaradtak, de nem kiszolgálhatók.
+
+Az áthelyezést a deploy végzi, kézi indításra. **Actions → Deploy to FORPSI →
+Run workflow**, és az `archivalas` mezőben:
+
+| érték | mit tesz |
+|---|---|
+| `kihagy` (alap) | semmit |
+| `probafutas` | kiírja, mit mozgatna — a szervert nem érinti |
+| `vegrehajt` | el is végzi |
+
+**Visszavonás:** a fájlok nem vesztek el, csak átnevezés történt. Az `ARCHIVE`
+mappából bármelyik bejegyzés visszamozgatható a `www`-be a net2ftp-vel.
+
+Ha később újabb régi fájl kerülne elő, a `scripts/ftp-archive.sh` elején lévő
+`JELOLTEK` listát kell bővíteni. A szkript **csak a felsorolt nevekhez nyúl**, és
+kihagy mindent, ami a saját buildünkben is szerepel.
 
 **A `.well-known` mappa maradjon a helyén** — az ingyenes DV SSL kiállításakor a
 tanúsítvány-ellenőrzés ide teszi az ideiglenes fájlját. Ha elmozdítod, a
