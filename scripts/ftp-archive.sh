@@ -52,19 +52,29 @@ echo "webgyökér: $WEB_ROOT"
 echo "cél:       $ARCHIVE"
 
 # Mi van most a webgyökérben?
-LISTA=$(lftp -u "$FTP_USER" --env-password \
-  -e "$SETTINGS cls -1 '$WEB_ROOT/'; bye" "$FTP_HOST" 2>/dev/null) || {
-  echo "::error::A webgyökeret nem sikerült listázni — az archiválás kimarad."
-  exit 1
+#
+# Előbb belépünk a mappába, és csak utána listázunk: útvonallal meghívva az
+# lftp a teljes útvonalat írja ki (/www/index.php), csupasz nevet viszont a
+# munkakönyvtárból. A sed ezen felül is levágja az esetleges útvonalat és a
+# mappákat jelölő záró perjelet, hogy az összehasonlítás ne az alakon múljon.
+webgyoker_lista() {
+  lftp -u "$FTP_USER" --env-password \
+    -e "$SETTINGS cd '$WEB_ROOT'; cls -1; bye" "$FTP_HOST" 2>/dev/null |
+    sed 's#/*$##; s#.*/##' | sed '/^$/d'
 }
+
+LISTA=$(webgyoker_lista)
+DB=$(printf '%s\n' "$LISTA" | grep -c . || true)
+echo "a webgyökérben $DB bejegyzés van"
+if [ "$DB" -eq 0 ]; then
+  echo "::error::A webgyökér listája üres — ez nem lehet helyes, hiszen a weblap fent van. Az archiválás kimarad."
+  exit 1
+fi
 
 MOZGATANDO=()
 for nev in "${JELOLTEK[@]}"; do
   # Ott van-e egyáltalán a szerveren?
-  if ! printf '%s\n' "$LISTA" | grep -qxF -- "$nev" &&
-     ! printf '%s\n' "$LISTA" | grep -qxF -- "$nev/"; then
-    continue
-  fi
+  printf '%s\n' "$LISTA" | grep -qxF -- "$nev" || continue
 
   # Tiltólista.
   kihagy=""
@@ -109,12 +119,10 @@ lftp -u "$FTP_USER" --env-password -e "$PARANCS bye" "$FTP_HOST"
 
 # Az eredményt nem az lftp kimenetéből olvassuk ki, hanem abból, hogy mi
 # maradt a webgyökérben — ez akkor is igazat mond, ha egy mv némán elszállt.
-MARADT=$(lftp -u "$FTP_USER" --env-password \
-  -e "$SETTINGS cls -1 '$WEB_ROOT/'; bye" "$FTP_HOST" 2>/dev/null)
+MARADT=$(webgyoker_lista)
 HIBAS=0
 for nev in "${MOZGATANDO[@]}"; do
-  if printf '%s\n' "$MARADT" | grep -qxF -- "$nev" ||
-     printf '%s\n' "$MARADT" | grep -qxF -- "$nev/"; then
+  if printf '%s\n' "$MARADT" | grep -qxF -- "$nev"; then
     echo "::warning::Nem sikerült áthelyezni: $nev"
     HIBAS=$((HIBAS + 1))
   else
@@ -124,6 +132,5 @@ done
 [ "$HIBAS" -gt 0 ] && echo "::warning::$HIBAS bejegyzés a webgyökérben maradt."
 
 echo "— az archiválás után a webgyökér —"
-lftp -u "$FTP_USER" --env-password \
-  -e "$SETTINGS cls -1 '$WEB_ROOT/'; bye" "$FTP_HOST" 2>/dev/null | sort | tr '\n' ' '
+printf '%s\n' "$MARADT" | sort | tr '\n' ' '
 echo
