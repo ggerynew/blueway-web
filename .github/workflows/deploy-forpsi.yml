@@ -143,26 +143,33 @@ jobs:
           case "$FTP_PASSWORD" in *[[:space:]]) echo "::warning::A jelszó végén szóköz vagy sortörés van!";; esac
           case "$FTP_HOST" in *[[:space:]]) echo "::warning::A kiszolgáló neve végén szóköz vagy sortörés van!";; esac
 
-          # A FORPSI Linux tárhelyen a felhasználónév kétféle lehet:
+          # A FORPSI Linux tárhelyen a felhasználónév kétféle szokott lenni:
           #   www.blueway.hu   — csak ehhez a weboldalhoz ad hozzáférést
           #   bXXXXXXX.multi   — a fő fiók, a szolgáltatás összes weboldalához
-          # Se a rendelésszám, se a domain www nélkül nem jó. Az alábbi
-          # ellenőrzés csak azt írja ki, hogy melyik alakra hasonlít — a
+          # Az alábbi sor csak azt írja ki, hogy melyik alakra hasonlít — a
           # felhasználónevet magát nem.
-          FORMA="ismeretlen"
           case "$FTP_USER" in
-            www.*) FORMA="www.<domain> — weboldal FTP fiók, ez jó" ;;
-            *.multi) FORMA="<szolgaltatas>.multi — fő FTP fiók, ez is jó" ;;
-            *.*) FORMA="tartalmaz pontot, de se www.-vel nem kezdődik, se .multi-ra nem végződik" ;;
-            *) FORMA="nincs benne pont — ez NEM FORPSI FTP felhasználónév (valószínűleg a rendelésszám)" ;;
+            www.*)   echo "felhasznalonev alakja: www.<domain> — weboldal FTP fiók" ;;
+            *.multi) echo "felhasznalonev alakja: <szolgaltatas>.multi — fő FTP fiók" ;;
+            *.*)     echo "felhasznalonev alakja: pontot tartalmaz, de egyik szokásos alak sem" ;;
+            *)       echo "felhasznalonev alakja: nincs benne pont" ;;
           esac
-          echo "felhasznalonev alakja: $FORMA"
 
           if [ "$WEB_ROOT" = "/www" ]; then
             echo "webgyoker:             /www (helyes)"
           else
             echo "::warning::A webgyökér nem /www. A weboldal FTP fiókjával belépve a www, subdoms és backups-forpsi mappák látszanak; a weblap a www mappába való."
           fi
+
+          # Erről a címről érkezik a bejelentkezés. Ha a tárhelyen IP-korlátozás
+          # van az FTP fiókon, ezt kell engedélyezni — ez a leggyakoribb oka
+          # annak, hogy ugyanaz az adat a TotalCommanderből működik, innen nem.
+          echo "a futtató publikus IP-cime: $(curl -s --max-time 10 https://api.ipify.org || echo ismeretlen)"
+
+          # Beszélgetés magával a kiszolgálóval, hogy lássuk a válaszait. Nem
+          # állítja meg a folyamatot: a tényleges feltöltési kísérlet utána jön.
+          python3 scripts/ftp-diag.py || true
+          echo "— a tényleges feltöltés következik —"
 
           # Titkosított kapcsolat az alapértelmezés. Ha a kiszolgáló nem tudja,
           # a FORPSI_FTP_PLAIN secret bármilyen értékre állításával kikapcsolható.
@@ -176,7 +183,7 @@ jobs:
           echo "Bejelentkezés ellenőrzése: $FTP_USER @ $FTP_HOST"
           if ! lftp -u "$FTP_USER" --env-password \
                  -e "$SETTINGS cd '$WEB_ROOT'; pwd; bye" "$FTP_HOST"; then
-            echo "::error::Az FTP bejelentkezés nem sikerült (530). A felhasználónevet és a jelszót az Ügyfélközpontban, a Webtárhely → blueway.hu → FTP fülön találod (ott újra is küldethető a jelszó). A felhasználónév vagy www.blueway.hu, vagy bXXXXXXX.multi alakú — a rendelésszám nem FTP belépő. A fenti sorokból látszik, hogy a beírt érték melyik alakra hasonlít, és hogy nem került-e a végére szóköz."
+            echo "::error::Az FTP bejelentkezés nem sikerült. A fenti diagnosztika megmondja, hol romlik el: ha ott is 530-at ad a PASS, akkor a kiszolgáló utasítja el ezt a gépet (jellemzően IP-korlátozás az FTP fiókon — a futtató IP-címe fentebb ki van írva), nem az lftp hívása a hibás. Ha viszont a diagnosztika belépett, akkor az lftp beállításain kell igazítani."
             exit 1
           fi
 

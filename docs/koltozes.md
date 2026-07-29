@@ -469,7 +469,7 @@ kapcsolva).
 | tünet | ok |
 |---|---|
 | A nyitóoldalon kívül **minden link 404** | a `.htaccess` nem került fel (rejtett fájl!), vagy a tárhelyen nincs engedélyezve az `AllowOverride` — ez utóbbin az ügyfélszolgálat segít |
-| Az automata feltöltés **530 Login authentication failed** | nem az FTP felhasználónév van a secretben. A helyes alak `www.blueway.hu` vagy `bXXXXXXX.multi`, a rendelésszám nem az. Az Ügyfélközpont FTP fülén nézd meg |
+| Az automata feltöltés **530 Login authentication failed**, pedig a TotalCommander belép | a kiszolgáló ezt a *gépet* utasítja el, nem az adatokat. Jellemzően IP-korlátozás van az FTP fiókon (Ügyfélközpont → FTP fül); a GitHub futtatójának IP-címe minden futásnál változik, ezért azt nem lehet felvenni — ilyenkor vagy le kell venni a korlátozást, vagy SSH-ra váltani. A workflow diagnosztikája kiírja a kiszolgáló pontos válaszait |
 | Az űrlap **413**-at ad | a `.user.ini` nem került fel |
 | Az űrlap **500**-at ad | a `send.php` hibára fut — nézd meg a tárhely hibanaplóját |
 | Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |
