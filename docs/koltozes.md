@@ -474,7 +474,7 @@ kapcsolva).
 | tünet | ok |
 |---|---|
 | A nyitóoldalon kívül **minden link 404** | a `.htaccess` nem került fel (rejtett fájl!), vagy a tárhelyen nincs engedélyezve az `AllowOverride` — ez utóbbin az ügyfélszolgálat segít |
-| Az automata feltöltés **530 Login authentication failed**, pedig a TotalCommander belép | ha a felhasználónév, a jelszó és a kiszolgáló bizonyítottan ugyanaz, akkor a fiók **IP-korlátozása** marad: Ügyfélközpont → FTP fül → *korlátozza az IP-címeket*. A GitHub futtatójának címe futásonként változik, ezért azt nem lehet engedélyezett listára tenni — a korlátozást kell levenni, vagy SSH-ra váltani. **A válaszidőből nem lehet dönteni**: a szolgáltató a címellenőrzést is az azonosítási lépésben végzi, tehát a letiltott címről érkező helyes jelszó ugyanolyan késleltetett 530-at kap, mint egy rossz jelszó |
+| Az automata feltöltés **530 Login authentication failed**, pedig a TotalCommander belép | a fiók **országlistája** zárja ki a futtatót: Ügyfélközpont → FTP fül → *Engedélyezett országok*. Alapból csak Csehország és Magyarország van benne, a GitHub futtatói viszont sosem onnan jönnek. A workflow kiírja a futtató országát — azt kell felvenni. **A válaszidőből nem lehet dönteni**: a szolgáltató a címellenőrzést is az azonosítási lépésben végzi, tehát a letiltott országból érkező helyes jelszó ugyanolyan késleltetett 530-at kap, mint egy rossz jelszó |
 | Az űrlap **413**-at ad | a `.user.ini` nem került fel |
 | Az űrlap **500**-at ad | a `send.php` hibára fut — nézd meg a tárhely hibanaplóját |
 | Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |

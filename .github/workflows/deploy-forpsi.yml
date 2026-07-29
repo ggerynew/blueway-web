@@ -178,10 +178,15 @@ jobs:
               ;;
           esac
 
-          # Erről a címről érkezik a bejelentkezés. Ha a tárhelyen IP-korlátozás
-          # van az FTP fiókon, ezt kell engedélyezni — ez a leggyakoribb oka
-          # annak, hogy ugyanaz az adat a TotalCommanderből működik, innen nem.
-          echo "a futtató publikus IP-cime: $(curl -s --max-time 10 https://api.ipify.org || echo ismeretlen)"
+          # Erről a címről és ebből az országból érkezik a bejelentkezés. A
+          # FORPSI FTP fiókján országlista szűr (Ügyfélközpont → FTP fül →
+          # "Engedélyezett országok"), és a futtató sosem Magyarországon van —
+          # ez az oka annak, hogy ugyanaz az adat asztali kliensből működik,
+          # innen nem. Az IP futásonként változik, az ország jellemzően nem.
+          futtato_ip=$(curl -s --max-time 10 https://api.ipify.org || echo ismeretlen)
+          futtato_orszag=$(curl -s --max-time 10 https://ipinfo.io/country || echo ismeretlen)
+          echo "a futtató publikus IP-cime: $futtato_ip"
+          echo "a futtató országa:          ${futtato_orszag:-ismeretlen}"
 
           # Beszélgetés magával a kiszolgálóval, hogy lássuk a válaszait. Nem
           # állítja meg a folyamatot: a tényleges feltöltési kísérlet utána jön.
