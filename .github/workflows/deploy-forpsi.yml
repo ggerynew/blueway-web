@@ -202,6 +202,9 @@ jobs:
           # Passzív mód. A kiszolgáló az aktív átvitelt (PORT) elutasítja —
           # asztali kliensből "PORT failed. Try PASV mode!" a válasza. Az lftp
           # alapból passzív, de mivel tudjuk, hogy másképp nem megy, kimondjuk.
+          # Az export azért kell, mert az archiváló szkript külön folyamat:
+          # sima shell-változót nem örökölne meg.
+          export SETTINGS COMMON
           COMMON="set ftp:passive-mode true; set net:max-retries 2; set net:timeout 20;"
 
           # Titkosított kapcsolat az alapértelmezés. Ha a kiszolgáló nem tudja,

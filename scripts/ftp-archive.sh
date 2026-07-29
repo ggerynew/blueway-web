@@ -17,6 +17,15 @@ set -uo pipefail
 
 MOD="${1:-probafutas}"
 
+# A hívó shell-jéből ezeknek exportálva kell megérkezniük. Enélkül a set -u
+# egy "unbound variable" sorral állna meg, amiből nem derül ki, mi hiányzik.
+for valtozo in FTP_HOST FTP_USER LFTP_PASSWORD WEB_ROOT SETTINGS; do
+  if [ -z "${!valtozo:-}" ]; then
+    echo "::error::Az archiváláshoz hiányzik a(z) $valtozo környezeti változó. A hívó lépésben exportálni kell — a szkript külön folyamatban fut."
+    exit 1
+  fi
+done
+
 # A régi weblapból ismert bejegyzések. Csak ezekhez nyúlunk — nem "minden,
 # ami nem a miénk", mert egy téves listázás akkor a weblapot vinné el.
 JELOLTEK=(
