@@ -16,6 +16,10 @@ A kimenet alapján szétválasztható a négy lehetséges ok:
   * a bejelentkezés itt sikerül     -> az lftp hívásával van baj;
   * a kapcsolat létre sem jön       -> tűzfal vagy rossz kiszolgálónév;
   * csak a titkosított ág megy      -> a titkosítás kikapcsolása volt a hiba.
+
+A PASS válaszidejét kiírjuk, de dönteni nem lehet belőle: a szolgáltató a
+megengedett IP-címeket is az azonosítási lépésben nézi, tehát a letiltott címről
+érkező helyes jelszó ugyanolyan késleltetett 530-at kap, mint egy rossz jelszó.
 """
 
 import ftplib
@@ -97,13 +101,14 @@ def attempt(label, secure):
         line('   A kiszolgáló megkapta a felhasználónevet és a jelszót, és nem')
         line('   fogadta el. Ha ugyanezekkel az adatokkal egy asztali kliens')
         line('   belép, két magyarázat marad:')
-        line('     1. a GitHub-titokba került jelszó mégsem azonos a beírttal')
-        line('        (elgépelés, félbevágott beillesztés, ékezetes karakter);')
-        line('     2. a fiókon IP-korlátozás van, és ez a gép nincs engedve —')
-        line('        a futtató címe fentebb ki van írva.')
-        line('   A válaszidő segít dönteni: a több másodperces késleltetés a')
-        line('   sikertelen jelszóellenőrzés büntetése, tehát inkább az elsőre')
-        line('   utal. Az azonnali elutasítás inkább a másodikra.')
+        line('     1. a fiókon IP-korlátozás van, és ez a gép nincs engedve —')
+        line('        a futtató címe fentebb ki van írva. Az Ügyfélközpontban')
+        line('        az FTP fülön, a "korlátozza az IP-címeket" résznél')
+        line('        nézhető meg;')
+        line('     2. a titokba került jelszó mégsem azonos a beírttal.')
+        line('   A válaszidőből NEM lehet dönteni: a szolgáltató a címellenőrzést')
+        line('   is az azonosítási lépésben végzi, tehát egy IP-tiltás ugyanúgy')
+        line('   késleltetett 530-at ad, mint egy rossz jelszó.')
         ftp.close()
         return False
 
