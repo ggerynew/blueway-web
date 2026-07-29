@@ -30,9 +30,51 @@ const MAX_TOTAL_SIZE = 10 * 1024 * 1024;           // csatolmányok együtt, min
 const RATE_LIMIT     = 5;                          // küldés / IP / óra
 const ALLOWED_EXT    = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'ai', 'eps', 'zip'];
 
+// ——— Naplózás ——————————————————————————————————————————————————
+/**
+ * Rövid sor a send-errors.log fájlba, a szkript mellé.
+ *
+ * Miért kell: ha a küldés elakad, a látogató csak annyit lát, hogy a
+ * levelezője nyílik meg — a weblap ilyenkor a tartalékra vált. Az ok
+ * (memóriakorlát, túl nagy levél, a mail() visszautasítása) enélkül csak a
+ * tárhely hibanaplójából derülne ki, ahhoz viszont nem mindig van hozzáférés.
+ *
+ * SZEMÉLYES ADAT NEM KERÜL BELE: se név, se e-mail cím, se üzenetszöveg, se
+ * fájlnév — csak időpont, státusz, méretek és a hiba szövege. A .htaccess a
+ * .log kiterjesztést amúgy sem szolgálja ki, tehát kívülről nem olvasható.
+ */
+function naploz(string $mit): void
+{
+    $sor = sprintf(
+        "%s\t%s\tcsatolmany=%s\tcsucsmemoria=%s\tmemory_limit=%s\n",
+        date('c'),
+        $mit,
+        number_format((float) ($GLOBALS['bw_meret'] ?? 0) / 1048576, 1) . 'MB',
+        number_format(memory_get_peak_usage(true) / 1048576, 1) . 'MB',
+        ini_get('memory_limit')
+    );
+    @file_put_contents(__DIR__ . '/send-errors.log', $sor, FILE_APPEND | LOCK_EX);
+}
+
+// Végzetes hiba (jellemzően memóriakorlát) esetén is maradjon nyoma, és a
+// böngésző is értelmes választ kapjon a néma üres 500 helyett.
+register_shutdown_function(static function (): void {
+    $e = error_get_last();
+    if ($e === null || !in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        return;
+    }
+    naploz('VEGZETES: ' . $e['message']);
+    if (!headers_sent()) {
+        http_response_code(500);
+        header('Content-Type: application/json; charset=utf-8');
+    }
+    echo json_encode(['ok' => false, 'error' => 'Server error while sending.'], JSON_UNESCAPED_UNICODE);
+});
+
 // ——— Segédek ———————————————————————————————————————————————————
 function fail(int $status, string $message): void
 {
+    naploz($status . ': ' . $message);
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['ok' => false, 'error' => $message], JSON_UNESCAPED_UNICODE);
@@ -146,14 +188,22 @@ foreach ($_FILES as $file) {
             fail(415, 'Unsupported file type: .' . $ext);
         }
         $totalSize += (int) filesize($tmps[$i]);
+        $GLOBALS['bw_meret'] = $totalSize;
         if ($totalSize > MAX_TOTAL_SIZE) {
             fail(413, 'The attachments exceed 10 MB in total.');
         }
+        // Rögtön kódolt alakban tároljuk, és a nyers tartalmat elengedjük.
+        // Enélkül a csúcsmemória a fájl méretének öt-hatszorosa lenne (nyers
+        // + base64 + tördelt másolat egyszerre), ami egy 8 MB-os képnél már
+        // 40 MB fölött jár — osztott tárhelyen ez memóriakorlát-túllépéssel,
+        // néma 500-as hibával végződhet.
+        $nyers = (string) file_get_contents($tmps[$i]);
         $attachments[] = [
             // A fájlnévből csak a nevet tartjuk meg, útvonalat sosem.
             'name' => headerSafe(basename((string) $name)),
-            'data' => (string) file_get_contents($tmps[$i]),
+            'b64'  => chunk_split(base64_encode($nyers)),
         ];
+        unset($nyers);
     }
 }
 
@@ -185,7 +235,7 @@ if ($attachments === []) {
         $parts[] = 'Content-Disposition: attachment; filename="' . $a['name'] . '"';
         $parts[] = 'Content-Transfer-Encoding: base64';
         $parts[] = '';
-        $parts[] = chunk_split(base64_encode($a['data']));
+        $parts[] = $a['b64'];
     }
     $parts[]  = '--' . $boundary . '--';
     $message  = implode("\r\n", $parts);
