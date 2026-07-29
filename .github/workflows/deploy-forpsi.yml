@@ -252,10 +252,24 @@ jobs:
       - name: Ellenőrzés — betölt-e az oldal
         if: steps.gate.outputs.go == 'true'
         run: |
-          # A DNS-átállás előtt a domain még a régi gépre mutat, ezért ez
-          # csak figyelmeztet, nem bukik el.
-          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$SITE_URL/hu" || echo 000)
-          echo "GET $SITE_URL/hu -> $code"
-          if [ "$code" != "200" ]; then
-            echo "::warning::A weblap nem 200-zal válaszolt ($code). Ha még nem történt meg a DNS-átállítás, ez várható."
+          # Az ellenőrzés HTTP-n megy, nem HTTPS-en: a tanúsítvány csak a
+          # DNS-átállás után igényelhető, addig a https:// eleve nem jöhet
+          # létre, és a hibája elfedné az igazi kérdést — kiszolgálja-e
+          # egyáltalán a weblapot az új szerver.
+          HOSZT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
+          echo "kiszolgáló IP-címe a futtató szerint: $(getent hosts "$HOSZT" | awk '{print $1}' | tr '\n' ' ')"
+
+          # A /robots.txt szándékosan van a listán: sima fájl, nem igényel
+          # átírást. Ha ez 200, de a /hu nem, akkor a .htaccess a hibás. Ha
+          # egyik sem, akkor a kiszolgálás maga.
+          BAJ=0
+          for ut in /robots.txt / /hu /hu/rolunk; do
+            V=$(curl -sS -o /dev/null --max-time 20 \
+                 -w '%{http_code} %{redirect_url}' "http://$HOSZT$ut" || echo "000 -")
+            echo "GET http://$HOSZT$ut -> $V"
+            case "$V" in 200*|301*|302*) ;; *) BAJ=$((BAJ + 1)) ;; esac
+          done
+
+          if [ "$BAJ" -gt 0 ]; then
+            echo "::warning::$BAJ útvonal nem válaszolt használhatóan. Ha a fenti IP-cím még a régi kiszolgálóé, a DNS terjedésére kell várni."
           fi
