@@ -308,6 +308,17 @@ jobs:
             echo "::error::A kiszolgáló a send.php FORRÁSKÓDJÁT adja vissza — a PHP nincs bekapcsolva ehhez a weboldalhoz. Amíg ez így van, az űrlap nem tud küldeni."
           elif [ "$GETK" = "405" ]; then
             echo "  a PHP fut (a csak-POST szabály érvényesül)"
+            # A 405 válasz tartalmazza az érvényes PHP-korlátokat. Ebből
+            # látszik, hogy a .user.ini érvényesül-e: ha a post_max_size 12M
+            # és a memory_limit 256M, akkor igen. Ha a PHP alapértékei (8M /
+            # 2M) jönnek vissza, a csatolmányos küldés eleve elakad, mielőtt a
+            # send.php bármit látna belőle.
+            echo "  érvényes PHP-korlátok: $(sed -n 's/.*"php":{\(.*\)}}/\1/p' /tmp/sendphp.txt)"
+            if grep -q '"post_max_size":"12M"' /tmp/sendphp.txt; then
+              echo "  a .user.ini érvényesül"
+            else
+              echo "::warning::A .user.ini láthatóan NEM érvényesül — a PHP a saját alapértékeit használja. Csatolmánnyal a küldés emiatt akad el. A tárhelyen a PHP-kezelés módjától függ, hogy a .user.ini vagy a .htaccess php_value a járható út; ezt az ügyfélszolgálat tudja megmondani."
+            fi
           else
             echo "::warning::Váratlan válasz GET-re ($GETK). Várt: 405."
           fi

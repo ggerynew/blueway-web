@@ -115,7 +115,22 @@ function iniBytes(string $value): int
 
 // ——— Előellenőrzések ———————————————————————————————————————————
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-    fail(405, 'Method not allowed');
+    // A 405 mellé kiírjuk az érvényes PHP-korlátokat. Ezekből látszik, hogy a
+    // .user.ini érvényesül-e: ha nem, a csatolmányos küldés a PHP alapértékein
+    // akad el, még mielőtt ez a szkript bármit látna belőle. A három érték nem
+    // titok, és semmilyen támadási felületet nem nyit.
+    http_response_code(405);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'ok'    => false,
+        'error' => 'Method not allowed',
+        'php'   => [
+            'post_max_size'       => ini_get('post_max_size'),
+            'upload_max_filesize' => ini_get('upload_max_filesize'),
+            'memory_limit'        => ini_get('memory_limit'),
+        ],
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
 // A post_max_size túllépésekor a PHP üres $_POST-ot és $_FILES-t ad, hibaüzenet
