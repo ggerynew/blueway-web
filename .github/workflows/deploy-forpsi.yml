@@ -33,6 +33,11 @@ on:
         description: 'A szerveren lévő, a buildben nem szereplő fájlok törlése'
         type: boolean
         default: false
+      archivalas:
+        description: 'A régi weblap maradékának áthelyezése az ARCHIVE mappába'
+        type: choice
+        default: kihagy
+        options: [kihagy, probafutas, vegrehajt]
 
 concurrency:
   group: forpsi
@@ -125,6 +130,7 @@ jobs:
           WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
           FTP_PLAIN: ${{ secrets.FORPSI_FTP_PLAIN }}
           DELETE_EXTRA: ${{ inputs.delete_extra }}
+          ARCHIVALAS: ${{ inputs.archivalas }}
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
@@ -212,6 +218,14 @@ jobs:
                  -e "$SETTINGS cd '$WEB_ROOT'; pwd; bye" "$FTP_HOST"; then
             echo "::error::Az FTP bejelentkezés nem sikerült. A fenti diagnosztika megmondja, hol romlik el: ha ott is 530-at ad a PASS, akkor a kiszolgáló utasítja el ezt a gépet (jellemzően IP-korlátozás az FTP fiókon — a futtató IP-címe fentebb ki van írva), nem az lftp hívása a hibás. Ha viszont a diagnosztika belépett, akkor az lftp beállításain kell igazítani."
             exit 1
+          fi
+
+          # ——— A régi weblap maradékának félretétele ———————————————
+          # Kézzel indítva, az "archivalas" beállítással kérhető. Áthelyez,
+          # nem töröl, és az ARCHIVE a webgyökéren KÍVÜLRE kerül, hogy a régi
+          # fájlok ne legyenek letölthetők.
+          if [ "$ARCHIVALAS" = "probafutas" ] || [ "$ARCHIVALAS" = "vegrehajt" ]; then
+            bash scripts/ftp-archive.sh "$ARCHIVALAS"
           fi
 
           DEL=""
