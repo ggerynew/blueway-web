@@ -233,6 +233,7 @@ export function LabelQuoteForm({
             hint={labels.attachHint}
             lang={lang}
             accept="image/*,.pdf,.ai,.eps,.svg,.zip"
+            tooLarge={labels.attachTooLarge}
           />
         </div>
       </section>
