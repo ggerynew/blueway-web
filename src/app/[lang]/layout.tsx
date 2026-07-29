@@ -35,6 +35,9 @@ export default async function LangLayout({
     telephone: '+36302796679',
     taxID: '25051632-2-13',
     vatID: 'HU25051632',
+    // A cég egyéb hivatalos jelenlétei — ettől a keresők ugyanahhoz a
+    // szervezethez kötik a Facebook-oldalt is.
+    sameAs: ['https://www.facebook.com/share/1Bb1i3eHqk/'],
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Déri Miksa u. 10/A.',
