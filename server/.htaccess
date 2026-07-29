@@ -62,6 +62,18 @@ RewriteRule (^|/)(\.git|\.env|\.htpasswd)  - [F,L]
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ $1.html [L]
 
+# A Next.js minden oldalhoz készít egy azonos nevű .txt fájlt is — ez a
+# böngészőn belüli lapozás adatcsomagja. A kiszolgálón be van kapcsolva a
+# MultiViews tartalom-egyeztetés, ami a kiterjesztés nélküli címre MAGA
+# választ változatot, és a .txt-t adja a .html helyett. A látogató ilyenkor
+# nyers kódot lát a weblap helyett.
+#
+# Ez a szabály visszatereli az ilyen kérést a .html-re. Csak akkor fut le, ha
+# a LÁTOGATÓ nem .txt-t kért: a robots.txt és a lapozás adatcsomagjai így
+# változatlanul elérhetők maradnak.
+RewriteCond %{REQUEST_URI} !\.txt$
+RewriteRule ^(.*)\.txt$ $1.html [L]
+
 # /hu/rolunk -> hu/rolunk.html, ha a .html létezik és nincs pontos találat.
 #
 # A cél RELATÍV ($1.html), nem abszolút (/$1.html). A .htaccess-ben az
@@ -69,11 +81,11 @@ RewriteRule ^(.+)/$ $1.html [L]
 # értelmezheti, és ilyenkor az átírás némán nem fut le. Ezen bukott el az
 # első éles próbán: a /hu nem hu.html-t adott, hanem a hu/ mappára irányított.
 #
-# A feltétel is REQUEST_FILENAME-re épül, nem a DOCUMENT_ROOT és a REQUEST_URI
-# összefűzésére: az előbbit az Apache maga állítja elő, tehát akkor is helyes,
-# ha a webgyökér máshova van felfűzve, mint amit a REQUEST_URI sugall.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME}.html -f
+# A feltételek a KÉRT címre (DOCUMENT_ROOT + REQUEST_URI) épülnek, nem a
+# REQUEST_FILENAME-re: az utóbbit a MultiViews már átírhatta a .txt-re, és
+# akkor a "nincs ilyen fájl" feltétel hamisan bukna el.
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
 RewriteRule ^(.*)$ $1.html [L]
 
 # Valódi mappa nyitóoldal nélkül (pl. /images/) ne fájllistát adjon, hanem
