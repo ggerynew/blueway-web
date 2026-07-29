@@ -262,14 +262,20 @@ jobs:
           # A /robots.txt szándékosan van a listán: sima fájl, nem igényel
           # átírást. Ha ez 200, de a /hu nem, akkor a .htaccess a hibás. Ha
           # egyik sem, akkor a kiszolgálás maga.
+          # -L: az átirányításokat követjük. A tárhelyen be van kapcsolva a
+          # WWW redirect, tehát a blueway.hu a www.blueway.hu-ra megy — a
+          # végállomás státusza az érdekes, nem az első lépésé.
           BAJ=0
-          for ut in /robots.txt / /hu /hu/rolunk; do
-            V=$(curl -sS -o /dev/null --max-time 20 \
-                 -w '%{http_code} %{redirect_url}' "http://$HOSZT$ut" || echo "000 -")
+          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat; do
+            V=$(curl -sSL -o /dev/null --max-time 25 \
+                 -w '%{http_code} vegallomas=%{url_effective} meret=%{size_download}' \
+                 "http://$HOSZT$ut" || echo "000 -")
             echo "GET http://$HOSZT$ut -> $V"
-            case "$V" in 200*|301*|302*) ;; *) BAJ=$((BAJ + 1)) ;; esac
+            case "$V" in 200\ *) ;; *) BAJ=$((BAJ + 1)) ;; esac
           done
 
           if [ "$BAJ" -gt 0 ]; then
-            echo "::warning::$BAJ útvonal nem válaszolt használhatóan. Ha a fenti IP-cím még a régi kiszolgálóé, a DNS terjedésére kell várni."
+            echo "::warning::$BAJ útvonal nem 200-zal zárult. Ha a fenti IP-cím még a régi kiszolgálóé, a DNS terjedésére kell várni."
+          else
+            echo "A weblap kiszolgálása rendben — minden próbált útvonal 200-zal zárult."
           fi
