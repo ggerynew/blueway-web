@@ -81,7 +81,15 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ''
           NEXT_PUBLIC_SITE_URL: ${{ env.SITE_URL }}
           # A saját tárhelyen a send.php küld, nem a Formspree.
-          NEXT_PUBLIC_FORM_ENDPOINT: ${{ secrets.FORM_ENDPOINT || format('{0}/send.php', env.SITE_URL) }}
+          #
+          # A végpont RELATÍV, szándékosan. Teljes címmel (https://blueway.hu/…)
+          # az űrlap küldése elbukik: a tárhely a www nélküli alakot 301-gyel a
+          # www.-re irányítja, a böngésző pedig 301-nél a POST-ot GET-re váltja
+          # és eldobja az adatokat. A send.php ilyenkor 405-öt ad, a weblap
+          # pedig a mailto-tartalékra vált — pontosan ez volt a tünet. Relatív
+          # címmel a kérés ugyanarra a gépre megy, ahonnan az oldal jött, tehát
+          # se átirányítás, se eltérő eredetből fakadó korlátozás nincs.
+          NEXT_PUBLIC_FORM_ENDPOINT: ${{ secrets.FORM_ENDPOINT || '/send.php' }}
           NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE || 'blueway' }}
 
       - name: A szerveroldali fájlok a feltöltendő mappába
@@ -285,6 +293,37 @@ jobs:
           # tehát egy hibás viselkedés a szabályaink hibája. Ha hiányzik, akkor
           # a tárhelyen nincs engedélyezve a felülbírálás, és az ügyfélszolgálat
           # tud segíteni.
+          # ——— Működik-e a levélküldő végpont? ———————————————————
+          # Két próba, egyik sem küld levelet és egyik sem fogyaszt a
+          # sebességkorlátból.
+          echo "— a levélküldő végpont —"
+
+          # 1. GET: a send.php csak POST-ot fogad, tehát 405-öt kell adnia.
+          #    Ha 200 jön, a kiszolgáló NEM futtatja a PHP-t, hanem a fájl
+          #    tartalmát adja ki — ez a forráskód nyilvánosságra kerülését
+          #    jelentené, ezért külön nézzük a válasz törzsét is.
+          GETK=$(curl -sSL -o /tmp/sendphp.txt --max-time 20 -w '%{http_code}' "http://$HOSZT/send.php" || echo 000)
+          echo "GET  /send.php -> $GETK"
+          if grep -q '<?php' /tmp/sendphp.txt 2>/dev/null; then
+            echo "::error::A kiszolgáló a send.php FORRÁSKÓDJÁT adja vissza — a PHP nincs bekapcsolva ehhez a weboldalhoz. Amíg ez így van, az űrlap nem tud küldeni."
+          elif [ "$GETK" = "405" ]; then
+            echo "  a PHP fut (a csak-POST szabály érvényesül)"
+          else
+            echo "::warning::Váratlan válasz GET-re ($GETK). Várt: 405."
+          fi
+
+          # 2. POST a rejtett csapdamezővel kitöltve: a send.php ilyenkor
+          #    csendben 200-at ad, levelet nem küld. Ez az egyetlen ág, amivel
+          #    a teljes POST-útvonal mellékhatás nélkül próbálható.
+          POSTV=$(curl -sS --max-time 25 -X POST -F '_gotcha=probe' "http://$HOSZT/send.php" \
+                  -o /tmp/sendpost.txt -w '%{http_code}' || echo 000)
+          echo "POST /send.php -> $POSTV  válasz: $(head -c 60 /tmp/sendpost.txt 2>/dev/null)"
+          if [ "$POSTV" = "200" ]; then
+            echo "  a levélküldés útvonala él — az űrlap közvetlenül küld, nem levelezőt nyit"
+          else
+            echo "::warning::A send.php nem 200-zal felelt a POST-ra ($POSTV). Az űrlap ilyenkor a mailto-tartalékra vált."
+          fi
+
           echo "— a .htaccess érvényesülése —"
           FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
                    grep -i '^cache-control:' | tail -1)
