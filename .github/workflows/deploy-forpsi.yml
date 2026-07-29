@@ -139,13 +139,12 @@ jobs:
           echo "— ellenőrzés —"
           printf 'felhasznalonev hossza: %s\n' "${#FTP_USER}"
 
-          # Karakter- és bájthossz. Ha eltér, ékezetes vagy más nem ASCII
-          # karakter van a jelszóban — ilyenkor a kliensek kódolása különbözhet,
-          # és a kiszolgáló mást lát, mint amit beírtál.
-          jelszo_karakter=${#FTP_PASSWORD}
-          jelszo_bajt=$(printf %s "$FTP_PASSWORD" | wc -c)
-          printf 'jelszo hossza:         %s karakter, %s bajt\n' "$jelszo_karakter" "$jelszo_bajt"
-          if [ "$jelszo_karakter" != "$jelszo_bajt" ]; then
+          # Van-e ékezetes vagy más nem ASCII karakter a jelszóban? Ilyenkor a
+          # kliensek kódolása különbözhet, és a kiszolgáló mást lát, mint amit
+          # beírtál. A vizsgálat Pythonnal megy: a bash ${#valtozo} C-locale
+          # alatt bájtot számol, nem karaktert, tehát arra nem lehet építeni.
+          printf 'jelszo hossza:         %s bajt\n' "$(printf %s "$FTP_PASSWORD" | wc -c)"
+          if ! python3 -c 'import os,sys; sys.exit(0 if os.environ["FTP_PASSWORD"].isascii() else 1)'; then
             echo "::warning::A jelszóban ékezetes vagy más nem ASCII karakter van. Ez kliensenként más bájtsorozatként megy el, és pont ilyen 530-at okoz. Kérj a FORPSI-tól új, csak angol betűkből és számokból álló jelszót."
           fi
 
