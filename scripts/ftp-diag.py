@@ -22,6 +22,7 @@ import ftplib
 import os
 import socket
 import sys
+import time
 
 HOST = os.environ.get('FTP_HOST', '').strip()
 USER = os.environ.get('FTP_USER', '').strip()
@@ -83,15 +84,23 @@ def attempt(label, secure):
         ftp.close()
         return False
 
+    started = time.monotonic()
     try:
         # A jelszó csak ide megy el; a naplóba a válasz kerül, nem a jelszó.
-        line('PASS -> %s' % ftp.sendcmd('PASS ' + PASSWORD))
+        answer = ftp.sendcmd('PASS ' + PASSWORD)
+        line('PASS -> %s   (%.1f mp alatt)' % (answer, time.monotonic() - started))
     except ftplib.Error as exc:
-        line('PASS elutasítva: %s' % exc)
-        line('   Ez azt jelenti, hogy a kiszolgáló látta a felhasználónevet és a')
-        line('   jelszót, és nem fogadta el. Ha ugyanezzel az adattal a')
-        line('   TotalCommander belép, akkor a fiókon IP-korlátozás van, és a')
-        line('   fenti GitHub-címet fel kell venni az engedélyezettek közé.')
+        line('PASS elutasítva: %s   (%.1f mp alatt)' % (exc, time.monotonic() - started))
+        line('   A kiszolgáló megkapta a felhasználónevet és a jelszót, és nem')
+        line('   fogadta el. Ha ugyanezekkel az adatokkal egy asztali kliens')
+        line('   belép, két magyarázat marad:')
+        line('     1. a GitHub-titokba került jelszó mégsem azonos a beírttal')
+        line('        (elgépelés, félbevágott beillesztés, ékezetes karakter);')
+        line('     2. a fiókon IP-korlátozás van, és ez a gép nincs engedve —')
+        line('        a futtató címe fentebb ki van írva.')
+        line('   A válaszidő segít dönteni: a több másodperces késleltetés a')
+        line('   sikertelen jelszóellenőrzés büntetése, tehát inkább az elsőre')
+        line('   utal. Az azonnali elutasítás inkább a másodikra.')
         ftp.close()
         return False
 
