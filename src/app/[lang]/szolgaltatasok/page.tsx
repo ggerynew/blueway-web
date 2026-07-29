@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { getProduct } from '@/lib/products';
+import { getProduct, productName } from '@/lib/products';
 import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -94,14 +94,14 @@ export default async function ServicesPage({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={asset(software.image)}
-                    alt={software.name}
+                    alt={productName(software, lang)}
                     className="h-full w-full object-cover"
                   />
                 </div>
               )}
               <div className="flex flex-1 flex-col p-8">
                 <h2 className="text-2xl font-semibold tracking-tight group-hover:text-brand-700">
-                  {software.name}
+                  {productName(software, lang)}
                 </h2>
                 <p className="mt-3 text-ink-muted">{software.short[lang]}</p>
                 <span className="mt-auto pt-6 text-sm font-medium text-brand-700">
