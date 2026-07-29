@@ -221,11 +221,31 @@ közvetlenül ide másold őket.
 | secret | érték |
 |---|---|
 | `FORPSI_FTP_HOST` | `ftpx.forpsi.com` |
-| `FORPSI_FTP_USER` | az FTP felhasználónév |
+| `FORPSI_FTP_USER` | az FTP felhasználónév — lásd alább |
 | `FORPSI_FTP_PASSWORD` | az FTP jelszó |
-| `FORPSI_WEB_ROOT` | a webgyökér útvonala |
+| `FORPSI_WEB_ROOT` | `/www` |
 
 Ha mindkettő be van állítva, az SSH-t használja.
+
+#### Hol van az FTP felhasználónév és jelszó
+
+Ügyfélközpont → **Webtárhely** → `blueway.hu` → **FTP** fül. Itt látszik a
+felhasználónév és a kiszolgáló neve, és innen újra is küldethető a jelszó, ha
+nincs meg (a régi jelszó ilyenkor megszűnik).
+
+A FORPSI Linux tárhelyén **kétféle** FTP felhasználónév van, és mindkettő
+tartalmaz pontot:
+
+| fiók | felhasználónév | mit lát |
+|---|---|---|
+| a weboldalé | `www.blueway.hu` | csak ezt a weboldalt — **ez kell nekünk** |
+| a fő fiók | `bXXXXXXX.multi` | a szolgáltatás összes weboldalát |
+
+**A rendelésszám (`W0008xxxx` alakú) nem FTP belépő** — ez a leggyakoribb
+tévedés, és pontosan `530 Login authentication failed` a következménye.
+
+A weboldal FTP fiókjával belépve három mappát látsz — `www`, `subdoms`,
+`backups-forpsi`. A weblap a **`www`** mappába való, ezért `/www` a webgyökér.
 
 ### Az SSH-kulcs elkészítése
 
@@ -449,6 +469,7 @@ kapcsolva).
 | tünet | ok |
 |---|---|
 | A nyitóoldalon kívül **minden link 404** | a `.htaccess` nem került fel (rejtett fájl!), vagy a tárhelyen nincs engedélyezve az `AllowOverride` — ez utóbbin az ügyfélszolgálat segít |
+| Az automata feltöltés **530 Login authentication failed** | nem az FTP felhasználónév van a secretben. A helyes alak `www.blueway.hu` vagy `bXXXXXXX.multi`, a rendelésszám nem az. Az Ügyfélközpont FTP fülén nézd meg |
 | Az űrlap **413**-at ad | a `.user.ini` nem került fel |
 | Az űrlap **500**-at ad | a `send.php` hibára fut — nézd meg a tárhely hibanaplóját |
 | Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |
