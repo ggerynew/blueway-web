@@ -119,9 +119,12 @@ def attempt(label, secure):
             line('PROT P nem ment: %s' % exc)
 
     line('BEJELENTKEZVE.')
+    tartalom = None
     try:
         line('munkakönyvtár: %s' % ftp.pwd())
-        line('itt található: %s' % ', '.join(sorted(ftp.nlst())[:20]))
+        # A "." és a ".." minden könyvtárban ott van, nem mond semmit.
+        tartalom = sorted(n for n in ftp.nlst() if n not in ('.', '..'))
+        line('itt található: %s' % (', '.join(tartalom[:20]) or '(üres)'))
     except (ftplib.Error, OSError) as exc:
         line('a könyvtár nem listázható: %s' % exc)
 
@@ -131,6 +134,14 @@ def attempt(label, secure):
             line('%s -> rendben, ez a webgyökér' % WEB_ROOT)
         except (ftplib.Error, OSError) as exc:
             line('%s -> nem elérhető: %s' % (WEB_ROOT, exc))
+            # Ha a fiókban egyáltalán nincs weboldal, akkor nem a webgyökér
+            # útvonala rossz, hanem rossz fiókkal léptünk be.
+            if tartalom is not None and not [n for n in tartalom
+                                             if not n.startswith('.')]:
+                line('   Ebben a fiókban nincs weboldal — a gyökere üres.')
+                line('   Nem az útvonal rossz, hanem a fiók: a weblap egy')
+                line('   másik FTP fiók mögött van. Az Ügyfélközpontban a')
+                line('   weboldal saját FTP fülén található a belépője.')
 
     try:
         ftp.quit()
