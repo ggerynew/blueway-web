@@ -139,10 +139,30 @@ jobs:
           echo "— ellenőrzés —"
           printf 'felhasznalonev hossza: %s\n' "${#FTP_USER}"
           printf 'jelszo hossza:         %s\n' "${#FTP_PASSWORD}"
-          printf 'webgyoker:             %s\n' "$WEB_ROOT"
           case "$FTP_USER" in *[[:space:]]) echo "::warning::A felhasználónév végén szóköz vagy sortörés van!";; esac
           case "$FTP_PASSWORD" in *[[:space:]]) echo "::warning::A jelszó végén szóköz vagy sortörés van!";; esac
           case "$FTP_HOST" in *[[:space:]]) echo "::warning::A kiszolgáló neve végén szóköz vagy sortörés van!";; esac
+
+          # A FORPSI Linux tárhelyen a felhasználónév kétféle lehet:
+          #   www.blueway.hu   — csak ehhez a weboldalhoz ad hozzáférést
+          #   bXXXXXXX.multi   — a fő fiók, a szolgáltatás összes weboldalához
+          # Se a rendelésszám, se a domain www nélkül nem jó. Az alábbi
+          # ellenőrzés csak azt írja ki, hogy melyik alakra hasonlít — a
+          # felhasználónevet magát nem.
+          FORMA="ismeretlen"
+          case "$FTP_USER" in
+            www.*) FORMA="www.<domain> — weboldal FTP fiók, ez jó" ;;
+            *.multi) FORMA="<szolgaltatas>.multi — fő FTP fiók, ez is jó" ;;
+            *.*) FORMA="tartalmaz pontot, de se www.-vel nem kezdődik, se .multi-ra nem végződik" ;;
+            *) FORMA="nincs benne pont — ez NEM FORPSI FTP felhasználónév (valószínűleg a rendelésszám)" ;;
+          esac
+          echo "felhasznalonev alakja: $FORMA"
+
+          if [ "$WEB_ROOT" = "/www" ]; then
+            echo "webgyoker:             /www (helyes)"
+          else
+            echo "::warning::A webgyökér nem /www. A weboldal FTP fiókjával belépve a www, subdoms és backups-forpsi mappák látszanak; a weblap a www mappába való."
+          fi
 
           # Titkosított kapcsolat az alapértelmezés. Ha a kiszolgáló nem tudja,
           # a FORPSI_FTP_PLAIN secret bármilyen értékre állításával kikapcsolható.
@@ -156,7 +176,7 @@ jobs:
           echo "Bejelentkezés ellenőrzése: $FTP_USER @ $FTP_HOST"
           if ! lftp -u "$FTP_USER" --env-password \
                  -e "$SETTINGS cd '$WEB_ROOT'; pwd; bye" "$FTP_HOST"; then
-            echo "::error::Az FTP bejelentkezés nem sikerült (530). Amit érdemes megnézni: (1) pontosan az a felhasználónév és jelszó van-e a secretekben, amivel a net2ftp-be belépsz; (2) nem került-e a végükre szóköz vagy sortörés — a fenti hosszakból látszik; (3) ha a kiszolgáló nem tud titkosított FTP-t, vedd fel a FORPSI_FTP_PLAIN secretet bármilyen értékkel."
+            echo "::error::Az FTP bejelentkezés nem sikerült (530). A felhasználónevet és a jelszót az Ügyfélközpontban, a Webtárhely → blueway.hu → FTP fülön találod (ott újra is küldethető a jelszó). A felhasználónév vagy www.blueway.hu, vagy bXXXXXXX.multi alakú — a rendelésszám nem FTP belépő. A fenti sorokból látszik, hogy a beírt érték melyik alakra hasonlít, és hogy nem került-e a végére szóköz."
             exit 1
           fi
 
