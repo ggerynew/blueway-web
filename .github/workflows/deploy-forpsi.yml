@@ -279,3 +279,17 @@ jobs:
           else
             echo "A weblap kiszolgálása rendben — minden próbált útvonal 200-zal zárult."
           fi
+
+          # Érvényesül-e egyáltalán a .htaccess? A gyorsítótár-fejlécet a mi
+          # fájlunk állítja be; ha megjelenik, a tárhely olvassa a .htaccess-t,
+          # tehát egy hibás viselkedés a szabályaink hibája. Ha hiányzik, akkor
+          # a tárhelyen nincs engedélyezve a felülbírálás, és az ügyfélszolgálat
+          # tud segíteni.
+          echo "— a .htaccess érvényesülése —"
+          FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
+                   grep -i '^cache-control:' | tail -1)
+          if printf '%s' "$FEJLEC" | grep -qi 'must-revalidate'; then
+            echo "a .htaccess érvényesül ($FEJLEC)"
+          else
+            echo "::warning::A .htaccess gyorsítótár-fejléce nem jelenik meg (kapott: '${FEJLEC:-semmi}'). Elképzelhető, hogy a tárhely nem olvassa a .htaccess-t."
+          fi

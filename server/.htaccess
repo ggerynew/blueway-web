@@ -55,9 +55,18 @@ RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ /$1 [R=301,L]
 
 # /hu/rolunk -> hu/rolunk.html, ha a .html létezik és nincs pontos találat.
+#
+# A cél RELATÍV ($1.html), nem abszolút (/$1.html). A .htaccess-ben az
+# abszolút alak kétértelmű: az Apache fájlrendszerbeli útvonalként is
+# értelmezheti, és ilyenkor az átírás némán nem fut le. Ezen bukott el az
+# első éles próbán: a /hu nem hu.html-t adott, hanem a hu/ mappára irányított.
+#
+# A feltétel is REQUEST_FILENAME-re épül, nem a DOCUMENT_ROOT és a REQUEST_URI
+# összefűzésére: az előbbit az Apache maga állítja elő, tehát akkor is helyes,
+# ha a webgyökér máshova van felfűzve, mint amit a REQUEST_URI sugall.
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
-RewriteRule ^(.*)$ /$1.html [L]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
 
 # Valódi mappa nyitóoldal nélkül (pl. /images/) ne fájllistát adjon, hanem
 # 404-et. Ez a szabály csak az előző után futhat: a /hu ilyenkor már
