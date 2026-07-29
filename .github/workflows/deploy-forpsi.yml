@@ -216,9 +216,20 @@ jobs:
 
           DEL=""
           if [ "$DELETE_EXTRA" = "true" ]; then DEL="--delete"; fi
-          # --only-newer: csak a változott fájlok; -P4: négy párhuzamos átvitel.
+
+          # Az --only-newer itt nem spórol semmit, ezért elhagyjuk. A fájlokat
+          # minden futásban újra legyártja a build, tehát a helyi módosítási
+          # idejük mindig frissebb a szerveren lévőnél — akkor is, ha a
+          # tartalmuk egy bájtot sem változott. A méret-alapú összehasonlítás
+          # (--ignore-time) gyorsabb lenne, de egy azonos hosszú javítás
+          # csendben kimaradna a feltöltésből; ezt nem kockáztatjuk.
+          # A gyors, mégis pontos megoldás az SSH ág: az rsync --checksum
+          # tartalom szerint dönt, nem időbélyeg szerint.
+          #
+          # A --verbose fájlonként naplóz; 600+ fájlnál ez több ezer sor, és
+          # elnyomja a fenti diagnosztikát. A mirror a végén összegzést ír.
           lftp -u "$FTP_USER" --env-password \
-            -e "$SETTINGS mirror -R --only-newer --parallel=4 $DEL --verbose out/ '$WEB_ROOT/'; bye" \
+            -e "$SETTINGS mirror -R --parallel=4 $DEL out/ '$WEB_ROOT/'; bye" \
             "$FTP_HOST"
 
       - name: Ellenőrzés — betölt-e az oldal
