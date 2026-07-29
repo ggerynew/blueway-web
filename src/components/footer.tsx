@@ -77,6 +77,24 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           >
             {dict.nav.quote}
           </Link>
+
+          {/* A cégoldal a Facebookon. Külső hivatkozás, ezért új lapon nyílik;
+              a rel="noopener" nélkül a megnyíló oldal hozzáférne ehhez az
+              ablakhoz. A felolvasó a szöveges címkét mondja, nem az ikont. */}
+          <div className="mt-5 flex md:justify-end">
+            <a
+              href="https://www.facebook.com/share/1Bb1i3eHqk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={dict.footer.facebookLabel}
+              title={dict.footer.facebookLabel}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink-muted transition-colors hover:border-brand-700 hover:text-brand-700"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M14 8.5V6.8c0-.7.5-.9.8-.9h2.1V3h-2.9C11.1 3 10.5 5 10.5 6.3v2.2H9V12h1.5v9H14v-9h2.4l.3-3.5H14Z" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
 

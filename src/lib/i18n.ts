@@ -388,6 +388,7 @@ export const dictionaries = {
       terms: 'Általános Szerződési Feltételek (ÁSZF)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Süti-beállítások',
+      facebookLabel: 'Blueway Trade Kft. a Facebookon',
     },
   },
   en: {
@@ -772,6 +773,7 @@ export const dictionaries = {
       terms: 'General Terms and Conditions (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Cookie settings',
+      facebookLabel: 'Blueway Trade Kft. on Facebook',
     },
   },
   de: {
@@ -1155,6 +1157,7 @@ export const dictionaries = {
       terms: 'Allgemeine Geschäftsbedingungen (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Cookie-Einstellungen',
+      facebookLabel: 'Blueway Trade Kft. auf Facebook',
     },
   },
   it: {
@@ -1539,6 +1542,7 @@ export const dictionaries = {
       terms: 'Condizioni generali di contratto (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Impostazioni dei cookie',
+      facebookLabel: 'Blueway Trade Kft. su Facebook',
     },
   },
   es: {
@@ -1923,6 +1927,7 @@ export const dictionaries = {
       terms: 'Condiciones generales de contratación (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Configuración de cookies',
+      facebookLabel: 'Blueway Trade Kft. en Facebook',
     },
   },
   ko: {
@@ -2306,6 +2311,7 @@ export const dictionaries = {
       terms: '이용약관 (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: '쿠키 설정',
+      facebookLabel: '페이스북의 Blueway Trade Kft.',
     },
   },
   zh: {
@@ -2689,6 +2695,7 @@ export const dictionaries = {
       terms: '通用条款与条件 (HU)',
       termsHref: '/altalanos-szerzodesi-feltetelek.html',
       cookieSettings: 'Cookie 设置',
+      facebookLabel: 'Blueway Trade Kft. 的 Facebook 主页',
     },
   },
 } as const;
