@@ -48,11 +48,19 @@ RewriteRule (^|/)(\.git|\.env|\.htpasswd)  - [F,L]
 # index.html, tehát fájllista vagy 403 jönne a nyitóoldalak helyett.
 # A döntő feltétel mindenhol az, hogy létezik-e a hozzá tartozó .html.
 
-# Záró perjel levágása (a /hu/rolunk/ alak is a helyes oldalra vigyen),
-# de csak akkor, ha van hozzá .html — a valódi mappákat (pl. /images/)
-# nem bántjuk.
+# Záró perjeles alak: a tartalmat KISZOLGÁLJUK, nem átirányítunk.
+#
+# Kézenfekvő lenne a /hu/ címet a /hu-ra irányítani, de ezen a kiszolgálón
+# az végtelen körhöz vezet. A mod_dir itt előbb fut, mint a mi átírásaink:
+# a /hu-t — ami mappa is, mert a Next.js azonos néven mappát és .html-t is
+# készít — átdobja /hu/-ra, a perjelet levágó szabály pedig vissza /hu-ra.
+# Élesben ez "Maximum (50) redirects followed" hibával állt elő minden
+# nyelvi nyitóoldalon.
+#
+# Belső átírással a kör nem jön létre: a /hu/ egyszerűen a hu.html tartalmát
+# adja. A /hu-ból így egy átirányítás lesz a /hu/-ra, utána 200.
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
-RewriteRule ^(.+)/$ /$1 [R=301,L]
+RewriteRule ^(.+)/$ $1.html [L]
 
 # /hu/rolunk -> hu/rolunk.html, ha a .html létezik és nincs pontos találat.
 #
