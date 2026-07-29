@@ -133,32 +133,36 @@ jobs:
           # is kerül bele a folyamatlistába.
           export LFTP_PASSWORD="$FTP_PASSWORD"
 
-          # Diagnosztika a leggyakoribb elgépelésekre. A tartalmat nem írjuk ki,
-          # csak a hosszt és azt, hogy van-e a végén fölösleges szóköz/sortörés —
-          # beillesztésnél ez a leggyakoribb hibaforrás, és 530-at okoz.
+          # A beillesztésnél elromló hozzáférési adatok kiszűrése. A napló
+          # nyilvános lehet, ezért a tartalomból semmit nem írunk ki — csak
+          # olyan tulajdonságokat, amikből a beírt érték nem állítható vissza.
           echo "— ellenőrzés —"
           printf 'felhasznalonev hossza: %s\n' "${#FTP_USER}"
-          printf 'jelszo hossza:         %s\n' "${#FTP_PASSWORD}"
-          case "$FTP_USER" in *[[:space:]]) echo "::warning::A felhasználónév végén szóköz vagy sortörés van!";; esac
-          case "$FTP_PASSWORD" in *[[:space:]]) echo "::warning::A jelszó végén szóköz vagy sortörés van!";; esac
-          case "$FTP_HOST" in *[[:space:]]) echo "::warning::A kiszolgáló neve végén szóköz vagy sortörés van!";; esac
 
-          # A FORPSI Linux tárhelyen a felhasználónév kétféle szokott lenni:
-          #   www.blueway.hu   — csak ehhez a weboldalhoz ad hozzáférést
-          #   bXXXXXXX.multi   — a fő fiók, a szolgáltatás összes weboldalához
-          # Az alábbi sor csak azt írja ki, hogy melyik alakra hasonlít — a
-          # felhasználónevet magát nem.
+          # Van-e ékezetes vagy más nem ASCII karakter a jelszóban? Ilyenkor a
+          # kliensek kódolása különbözhet, és a kiszolgáló mást lát, mint amit
+          # beírtál. A vizsgálat Pythonnal megy: a bash ${#valtozo} C-locale
+          # alatt bájtot számol, nem karaktert, tehát arra nem lehet építeni.
+          printf 'jelszo hossza:         %s bajt\n' "$(printf %s "$FTP_PASSWORD" | wc -c)"
+          if ! python3 -c 'import os,sys; sys.exit(0 if os.environ["FTP_PASSWORD"].isascii() else 1)'; then
+            echo "::warning::A jelszóban ékezetes vagy más nem ASCII karakter van. Ez kliensenként más bájtsorozatként megy el, és pont ilyen 530-at okoz. Kérj a FORPSI-tól új, csak angol betűkből és számokból álló jelszót."
+          fi
+
+          # Szóköz vagy sortörés az elején/végén — beillesztésnél a leggyakoribb.
           case "$FTP_USER" in
-            www.*)   echo "felhasznalonev alakja: www.<domain> — weboldal FTP fiók" ;;
-            *.multi) echo "felhasznalonev alakja: <szolgaltatas>.multi — fő FTP fiók" ;;
-            *.*)     echo "felhasznalonev alakja: pontot tartalmaz, de egyik szokásos alak sem" ;;
-            *)       echo "felhasznalonev alakja: nincs benne pont" ;;
+            [[:space:]]*|*[[:space:]]) echo "::warning::A felhasználónév elején vagy végén szóköz vagy sortörés van!";;
+          esac
+          case "$FTP_PASSWORD" in
+            [[:space:]]*|*[[:space:]]) echo "::warning::A jelszó elején vagy végén szóköz vagy sortörés van!";;
+          esac
+          case "$FTP_HOST" in
+            [[:space:]]*|*[[:space:]]) echo "::warning::A kiszolgáló neve elején vagy végén szóköz vagy sortörés van!";;
           esac
 
           if [ "$WEB_ROOT" = "/www" ]; then
             echo "webgyoker:             /www (helyes)"
           else
-            echo "::warning::A webgyökér nem /www. A weboldal FTP fiókjával belépve a www, subdoms és backups-forpsi mappák látszanak; a weblap a www mappába való."
+            echo "::warning::A webgyökér nem /www. Az FTP fiókkal belépve a www, subdoms és backups-forpsi mappák látszanak; a weblap a www mappába való."
           fi
 
           # Erről a címről érkezik a bejelentkezés. Ha a tárhelyen IP-korlátozás

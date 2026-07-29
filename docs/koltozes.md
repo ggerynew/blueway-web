@@ -233,19 +233,18 @@ Ha mindkettő be van állítva, az SSH-t használja.
 felhasználónév és a kiszolgáló neve, és innen újra is küldethető a jelszó, ha
 nincs meg (a régi jelszó ilyenkor megszűnik).
 
-A FORPSI Linux tárhelyén **kétféle** FTP felhasználónév van, és mindkettő
-tartalmaz pontot:
+Ennél a fióknál a belépő `bluewayhu` és a kiszolgáló `ftpx.forpsi.com` — ezt
+egy működő TotalCommander-beállítás igazolja. (A FORPSI újabb tárhelyein a
+felhasználónév `www.blueway.hu` vagy `bXXXXXXX.multi` alakú szokott lenni; ez a
+fiók a régebbi séma szerint készült. A panel FTP fülén látható érték a mérvadó,
+nem az általános leírás.)
 
-| fiók | felhasználónév | mit lát |
-|---|---|---|
-| a weboldalé | `www.blueway.hu` | csak ezt a weboldalt — **ez kell nekünk** |
-| a fő fiók | `bXXXXXXX.multi` | a szolgáltatás összes weboldalát |
+**A jelszóban csak angol betű és szám legyen.** Ékezetes karakter a különböző
+kliensekből más bájtsorozatként megy el, és a kiszolgáló ilyenkor `530 Login
+authentication failed`-del válaszol akkor is, ha „ugyanazt" írtad be.
 
-**A rendelésszám (`W0008xxxx` alakú) nem FTP belépő** — ez a leggyakoribb
-tévedés, és pontosan `530 Login authentication failed` a következménye.
-
-A weboldal FTP fiókjával belépve három mappát látsz — `www`, `subdoms`,
-`backups-forpsi`. A weblap a **`www`** mappába való, ezért `/www` a webgyökér.
+Belépés után három mappát látsz — `www`, `subdoms`, `backups-forpsi`. A weblap a
+**`www`** mappába való, ezért `/www` a webgyökér.
 
 ### Az SSH-kulcs elkészítése
 
@@ -469,7 +468,7 @@ kapcsolva).
 | tünet | ok |
 |---|---|
 | A nyitóoldalon kívül **minden link 404** | a `.htaccess` nem került fel (rejtett fájl!), vagy a tárhelyen nincs engedélyezve az `AllowOverride` — ez utóbbin az ügyfélszolgálat segít |
-| Az automata feltöltés **530 Login authentication failed**, pedig a TotalCommander belép | a kiszolgáló ezt a *gépet* utasítja el, nem az adatokat. Jellemzően IP-korlátozás van az FTP fiókon (Ügyfélközpont → FTP fül); a GitHub futtatójának IP-címe minden futásnál változik, ezért azt nem lehet felvenni — ilyenkor vagy le kell venni a korlátozást, vagy SSH-ra váltani. A workflow diagnosztikája kiírja a kiszolgáló pontos válaszait |
+| Az automata feltöltés **530 Login authentication failed**, pedig a TotalCommander belép | két oka lehet, és a workflow diagnosztikája megmondja, melyik. Ha az elutasítás **több másodperc után** jön, az a sikertelen jelszóellenőrzés büntetése: a titokba került jelszó nem azonos a beírttal — írd be újra kézzel, és nézd meg, nincs-e benne ékezet. Ha **azonnal** jön, akkor IP-korlátozás van az FTP fiókon; a GitHub futtatójának címe futásonként változik, ezért azt nem lehet engedélyezett listára tenni — ilyenkor a korlátozást kell levenni, vagy SSH-ra váltani |
 | Az űrlap **413**-at ad | a `.user.ini` nem került fel |
 | Az űrlap **500**-at ad | a `send.php` hibára fut — nézd meg a tárhely hibanaplóját |
 | Az űrlap **megnyitja a levelezőt** küldés helyett | a végpont nem érhető el. Ez a beépített tartalék, tehát érdeklődés nem vész el, de a `send.php`-t javítani kell |
