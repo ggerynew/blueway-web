@@ -315,7 +315,16 @@ jobs:
           # 2. POST a rejtett csapdamezővel kitöltve: a send.php ilyenkor
           #    csendben 200-at ad, levelet nem küld. Ez az egyetlen ág, amivel
           #    a teljes POST-útvonal mellékhatás nélkül próbálható.
-          POSTV=$(curl -sS --max-time 25 -X POST -F '_gotcha=probe' "http://$HOSZT/send.php" \
+          #
+          #    A kérés a VÉGLEGES gépnévre megy, nem a puszta domainre. A
+          #    tárhely a www nélküli alakot 301-gyel átirányítja, és egy POST
+          #    ilyenkor elakad — pontosan ezért lett a weblap végpontja
+          #    relatív. A böngésző is arról a gépről küld, ahonnan az oldalt
+          #    kapta, tehát ez a próba azt méri, amit a látogató tapasztal.
+          VEGSO=$(curl -sSL -o /dev/null --max-time 20 -w '%{url_effective}' "http://$HOSZT/" || echo "http://$HOSZT/")
+          KULDO=$(printf '%s' "$VEGSO" | sed 's#^https\?://##; s#/.*##')
+          echo "a küldés célgépe: $KULDO"
+          POSTV=$(curl -sS --max-time 25 -X POST -F '_gotcha=probe' "http://$KULDO/send.php" \
                   -o /tmp/sendpost.txt -w '%{http_code}' || echo 000)
           echo "POST /send.php -> $POSTV  válasz: $(head -c 60 /tmp/sendpost.txt 2>/dev/null)"
           if [ "$POSTV" = "200" ]; then
