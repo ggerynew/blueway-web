@@ -257,6 +257,23 @@ jobs:
             -e "$SETTINGS mirror -R --parallel=4 $DEL out/ '$WEB_ROOT/'; bye" \
             "$FTP_HOST"
 
+          # ——— A küldési napló lekérése ————————————————————————————
+          # A send.php a hibáit és a sikeres küldéseit is a webgyökérben lévő
+          # send-errors.log fájlba írja. Kívülről nem olvasható — a .htaccess a
+          # .log kiterjesztést nem szolgálja ki —, ezért itt, FTP-n át nézzük
+          # meg. Személyes adat nincs benne: csak időpont, státusz és méretek.
+          # Enélkül az „elküldve, de nem érkezett meg" eset nem elemezhető.
+          echo "— küldési napló (send-errors.log) —"
+          rm -f /tmp/send-errors.log
+          lftp -u "$FTP_USER" --env-password \
+            -e "$SETTINGS get '$WEB_ROOT/send-errors.log' -o /tmp/send-errors.log; bye" \
+            "$FTP_HOST" 2>/dev/null || true
+          if [ -s /tmp/send-errors.log ]; then
+            tail -n 20 /tmp/send-errors.log
+          else
+            echo "(a napló üres, vagy még nem jött létre — azóta nem futott küldés)"
+          fi
+
       - name: Ellenőrzés — betölt-e az oldal
         if: steps.gate.outputs.go == 'true'
         run: |
@@ -342,6 +359,28 @@ jobs:
             echo "  a levélküldés útvonala él — az űrlap közvetlenül küld, nem levelezőt nyit"
           else
             echo "::warning::A send.php nem 200-zal felelt a POST-ra ($POSTV). Az űrlap ilyenkor a mailto-tartalékra vált."
+          fi
+
+          # 3. Próba VALÓDI, 8 MB-os csatolmánnyal — mert a bejelentett hiba
+          #    pontosan ez: csatolmány nélkül megérkezik a levél, csatolmánnyal
+          #    nem. A `_probe` mezőtől a send.php mindent elvégez (a feltöltés
+          #    fogadását, a base64-kódolást, a levél összeállítását), csak a
+          #    küldés marad el — tehát ez a próba sem küld levelet senkinek.
+          #    A válaszból kiderül, hogy a nagy csatolmány eljut-e a szkriptig,
+          #    mekkora levél lesz belőle, és mennyi memóriát kíván. Ha ez a
+          #    lépés rendben van, akkor a hiba a levélküldő rendszerben van,
+          #    nem a weblapon.
+          head -c 8000000 /dev/urandom > /tmp/probe.png
+          PROBAV=$(curl -sS --max-time 120 -X POST "http://$KULDO/send.php" \
+                   -F '_probe=1' -F 'email=probe@blueway.hu' \
+                   -F 'attachment=@/tmp/probe.png;type=image/png' \
+                   -o /tmp/sendprobe.txt -w '%{http_code}' || echo 000)
+          echo "POST /send.php 8 MB csatolmánnyal -> $PROBAV"
+          echo "  válasz: $(head -c 300 /tmp/sendprobe.txt 2>/dev/null)"
+          if [ "$PROBAV" = "200" ]; then
+            echo "  a nagy csatolmány eljut a szkriptig, és a levél összeáll belőle"
+          else
+            echo "::warning::A 8 MB-os csatolmány próbája nem 200-zal zárult ($PROBAV) — a valódi küldés eddig a pontig sem jut el."
           fi
 
           echo "— a .htaccess érvényesülése —"

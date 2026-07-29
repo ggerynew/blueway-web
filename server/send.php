@@ -46,10 +46,11 @@ const ALLOWED_EXT    = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'ai',
 function naploz(string $mit): void
 {
     $sor = sprintf(
-        "%s\t%s\tcsatolmany=%s\tcsucsmemoria=%s\tmemory_limit=%s\n",
+        "%s\t%s\tcsatolmany=%s\tlevel=%s\tcsucsmemoria=%s\tmemory_limit=%s\n",
         date('c'),
         $mit,
         number_format((float) ($GLOBALS['bw_meret'] ?? 0) / 1048576, 1) . 'MB',
+        number_format((float) ($GLOBALS['bw_levelmeret'] ?? 0) / 1048576, 1) . 'MB',
         number_format(memory_get_peak_usage(true) / 1048576, 1) . 'MB',
         ini_get('memory_limit')
     );
@@ -174,7 +175,7 @@ $subject = headerSafe((string) ($_POST['_subject'] ?? 'Üzenet a weboldalról'))
 
 $lines = [];
 foreach ($_POST as $key => $value) {
-    if ($key === '_subject' || $key === '_gotcha' || !is_string($value) || trim($value) === '') {
+    if ($key === '_subject' || $key === '_gotcha' || $key === '_probe' || !is_string($value) || trim($value) === '') {
         continue;
     }
     $lines[] = $key . ': ' . trim($value);
@@ -256,11 +257,42 @@ if ($attachments === []) {
     $message  = implode("\r\n", $parts);
 }
 
+$GLOBALS['bw_levelmeret'] = strlen($message);
+
+// ——— Próbamód ——————————————————————————————————————————————————
+// A `_probe` mezővel minden lefut — fájlbeolvasás, base64, a levél
+// összeállítása —, csak a küldés marad el. Így megmérhető, hogy egy nagy
+// csatolmány egyáltalán eljut-e a szkriptig és mekkora levél lesz belőle,
+// anélkül hogy próbalevelek mennének a céges postafiókba. A rejtett
+// csapdamezőhöz hasonlóan egy valódi látogató sosem küldi el.
+if (!empty($_POST['_probe'])) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'ok'    => true,
+        'probe' => [
+            'csatolmany_db'   => count($attachments),
+            'csatolmany_bajt' => $totalSize,
+            'level_bajt'      => strlen($message),
+            'csucsmemoria'    => memory_get_peak_usage(true),
+            'post_max_size'   => ini_get('post_max_size'),
+            'memory_limit'    => ini_get('memory_limit'),
+        ],
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $sent = mail(RECIPIENT, encodeHeader($subject), $message, implode("\r\n", $headers), '-f' . FROM);
 
 if (!$sent) {
     fail(500, 'The message could not be sent.');
 }
+
+// A sikeres küldést is naplózzuk. Enélkül az „elküldve, de nem érkezett meg”
+// eset megkülönböztethetetlen attól, hogy a szkript el sem indult: üres napló
+// mindkettőnél. Így viszont látszik, hogy a mail() átvette-e a levelet, és
+// mekkorát — ez dönti el, hogy a szkriptben vagy a levelezőrendszerben van a
+// hiba. Személyes adat továbbra sem kerül bele.
+naploz('OK csatolmanyok=' . count($attachments));
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode(['ok' => true], JSON_UNESCAPED_UNICODE);
