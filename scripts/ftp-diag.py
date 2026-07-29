@@ -132,6 +132,16 @@ def attempt(label, secure):
         try:
             ftp.cwd(WEB_ROOT)
             line('%s -> rendben, ez a webgyökér' % WEB_ROOT)
+            # Mi van már bent? Ebből derül ki, kell-e a régi weblapot
+            # archiválni, mielőtt az újat föléje töltjük.
+            try:
+                bent = sorted(n for n in ftp.nlst() if n not in ('.', '..'))
+                line('   a webgyökér tartalma (%d bejegyzés): %s'
+                     % (len(bent), ', '.join(bent[:40]) or '(üres)'))
+                if len(bent) > 40:
+                    line('   ... és még %d' % (len(bent) - 40))
+            except (ftplib.Error, OSError) as exc:
+                line('   a webgyökér nem listázható: %s' % exc)
         except (ftplib.Error, OSError) as exc:
             line('%s -> nem elérhető: %s' % (WEB_ROOT, exc))
             # Ha a fiókban egyáltalán nincs weboldal, akkor nem a webgyökér
