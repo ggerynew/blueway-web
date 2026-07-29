@@ -172,6 +172,33 @@ A weblap linkjei kiterjesztés nélküliek (`/hu/rolunk`), a fájlok viszont
 átírási szabálya ezt oldja meg, és beállítja a 404-es oldalt, a gyorsítótárazást
 és a tömörítést is.
 
+### A régi weblap maradéka a webgyökérben
+
+A `/www`-ben a régi weblap fájljai is ott vannak. A kód nagyobb része szerencsére
+a webgyökér **fölött** lakik (`app`, `data`, `src`, `vendor`), tehát az sosem volt
+publikus, de a `/www`-ben maradt néhány dolog, ami a DNS-átállás pillanatában
+bárki számára elérhetővé válna:
+
+| bejegyzés | miért baj |
+|---|---|
+| `_blueway_old.rar` (95 MB) | a régi weblap teljes mentése, letölthető lenne. Egy ilyen mentés jellemzően konfigurációs fájlt is tartalmaz adatbázis-jelszóval |
+| `pma` | phpMyAdmin — adatbázis-kezelő felület |
+| `admin`, `protected`, `uploads`, `softaculous` | a régi alkalmazás mappái |
+| `index.php`, `index2.php` | a régi nyitóoldal |
+| `css`, `fonts`, `js`, `less`, régi `favicon.*`, `.gitignore` | maradék |
+
+Ezeket **át kell helyezni** a webgyökérből — a legegyszerűbb a `www` mellé, egy
+`ARCHIVE` mappába. Így megmaradnak, de nem kiszolgálhatók.
+
+**A `.well-known` mappa maradjon a helyén** — az ingyenes DV SSL kiállításakor a
+tanúsítvány-ellenőrzés ide teszi az ideiglenes fájlját. Ha elmozdítod, a
+tanúsítvány igénylése elbukhat.
+
+A `.htaccess` biztonsági hálót ad ehhez: a tömörített mentéseket és az
+adatbázis-kiíratásokat kiterjesztés alapján is tiltja, és a nyitóoldal nélküli
+mappák (`pma`, `admin`) 404-et adnak. Ez viszont csak háló — a fájlok
+elmozdítását nem váltja ki.
+
 ### Miért kell a `.user.ini`
 
 A PHP alapértelmezett feltöltési korlátja gyakran 2 MB, a weblap viszont 10 MB-ig

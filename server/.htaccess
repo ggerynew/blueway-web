@@ -23,6 +23,23 @@ RewriteEngine On
 # RewriteCond %{HTTPS} !=on
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+# ——— Ami nem való a nyilvánosság elé ——————————————————————————————
+# A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy
+# 95 MB-os _blueway_old.rar. A domainre átállás pillanatában ezek bárki
+# számára letölthetők lennének, és egy régi weblap mentése jellemzően
+# konfigurációs fájlt is tartalmaz adatbázis-jelszóval.
+#
+# A helyes megoldás az, hogy ezek kikerülnek a webgyökérből; ez csak
+# biztonsági háló arra az esetre, ha egy ilyen fájl ottmarad vagy később
+# visszakerül. A weblapnak egyetlen ilyen kiterjesztésű fájlja sincs.
+#
+# Miért mod_rewrite és nem <FilesMatch> + Require: a Require új
+# AllowOverride jogosultságot igényelne, és ha a tárhely nem adja meg, az
+# egész weblap 500-at adna. A mod_rewrite viszont biztosan engedélyezett,
+# hiszen a lenti átírások is arra épülnek.
+RewriteRule \.(rar|zip|7z|tar|gz|bz2|sql|bak|old|swp|log|inc)$ - [F,L]
+RewriteRule (^|/)(\.git|\.env|\.htpasswd)  - [F,L]
+
 # FONTOS: a Next.js egyszerre készít mappát és azonos nevű .html fájlt.
 # A /hu útvonalon például MINDKETTŐ létezik: a hu/ mappa (benne az aloldalak)
 # és a hu.html (maga a nyitóoldal). 84 ilyen útvonal van, köztük mind a hét
