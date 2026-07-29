@@ -54,6 +54,9 @@ def attempt(label, secure):
     line()
     line('— kísérlet: %s —' % label)
     ftp = ftplib.FTP_TLS() if secure else ftplib.FTP()
+    # Passzív mód: a kiszolgáló az aktív átvitelt (PORT) elutasítja, asztali
+    # kliensből "PORT failed. Try PASV mode!" a válasza.
+    ftp.set_pasv(True)
     try:
         ftp.connect(HOST, PORT, timeout=TIMEOUT)
     except OSError as exc:

@@ -239,6 +239,12 @@ felhasználónév `www.blueway.hu` vagy `bXXXXXXX.multi` alakú szokott lenni; e
 fiók a régebbi séma szerint készült. A panel FTP fülén látható érték a mérvadó,
 nem az általános leírás.)
 
+**Passzív módot kell használni.** A kiszolgáló az aktív átvitelt elutasítja —
+a TotalCommanderben ez `PORT failed. Try PASV mode!` üzenetként jelenik meg,
+jellemzően tíz másodperc várakozás után. A megoldás a kapcsolat beállításainál a
+*Passzív mód használata az átvitelhez* bepipálása. Ez a bejelentkezés után
+jelentkezik, tehát nem a belépéssel van baj, ha ezt látod.
+
 **A jelszóban csak angol betű és szám legyen.** Ékezetes karakter a különböző
 kliensekből más bájtsorozatként megy el, és a kiszolgáló ilyenkor `530 Login
 authentication failed`-del válaszol akkor is, ha „ugyanazt" írtad be.

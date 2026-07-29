@@ -188,13 +188,18 @@ jobs:
           python3 scripts/ftp-diag.py || true
           echo "— a tényleges feltöltés következik —"
 
+          # Passzív mód. A kiszolgáló az aktív átvitelt (PORT) elutasítja —
+          # asztali kliensből "PORT failed. Try PASV mode!" a válasza. Az lftp
+          # alapból passzív, de mivel tudjuk, hogy másképp nem megy, kimondjuk.
+          COMMON="set ftp:passive-mode true; set net:max-retries 2; set net:timeout 20;"
+
           # Titkosított kapcsolat az alapértelmezés. Ha a kiszolgáló nem tudja,
           # a FORPSI_FTP_PLAIN secret bármilyen értékre állításával kikapcsolható.
           if [ -n "$FTP_PLAIN" ]; then
             echo "Figyelem: titkosítás nélküli FTP (FORPSI_FTP_PLAIN be van állítva)."
-            SETTINGS="set ftp:ssl-allow false; set net:max-retries 2; set net:timeout 20;"
+            SETTINGS="$COMMON set ftp:ssl-allow false;"
           else
-            SETTINGS="set ssl:verify-certificate yes; set ftp:ssl-force true; set ftp:ssl-protect-data true; set net:max-retries 2; set net:timeout 20;"
+            SETTINGS="$COMMON set ssl:verify-certificate yes; set ftp:ssl-force true; set ftp:ssl-protect-data true;"
           fi
 
           echo "Bejelentkezés ellenőrzése: $FTP_USER @ $FTP_HOST"
