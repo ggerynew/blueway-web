@@ -159,11 +159,24 @@ jobs:
             [[:space:]]*|*[[:space:]]) echo "::warning::A kiszolgáló neve elején vagy végén szóköz vagy sortörés van!";;
           esac
 
-          if [ "$WEB_ROOT" = "/www" ]; then
-            echo "webgyoker:             /www (helyes)"
-          else
-            echo "::warning::A webgyökér nem /www. Az FTP fiókkal belépve a www, subdoms és backups-forpsi mappák látszanak; a weblap a www mappába való."
-          fi
+          # A webgyökér attól függ, melyik FTP fiókkal lépünk be:
+          #   egy weboldal fiókja -> a gyökérben mindjárt a www van
+          #   a fő (.multi) fiók  -> a gyökérben weboldalanként egy mappa
+          case "$FTP_USER" in
+            *.multi)
+              case "$WEB_ROOT" in
+                /*/www) echo "webgyoker:             a fő fiókhoz illő alak (<weboldal>/www)" ;;
+                *) echo "::warning::A fő (.multi) fiókkal belépve a gyökérben weboldalanként egy mappa van, tehát a webgyökér <weboldal>/www alakú — például /blueway.hu/www. A mostani érték nem ilyen." ;;
+              esac
+              ;;
+            *)
+              if [ "$WEB_ROOT" = "/www" ]; then
+                echo "webgyoker:             /www (helyes)"
+              else
+                echo "::warning::Egy weboldal FTP fiókjával belépve a www, subdoms és backups-forpsi mappák látszanak, tehát a webgyökér /www. A mostani érték nem ez."
+              fi
+              ;;
+          esac
 
           # Erről a címről érkezik a bejelentkezés. Ha a tárhelyen IP-korlátozás
           # van az FTP fiókon, ezt kell engedélyezni — ez a leggyakoribb oka
