@@ -104,6 +104,31 @@ export default async function ManufacturerPage({
         </p>
       </Reveal>
 
+      {/* Alkalmazási területek — iparáganként, mert a gép kiválasztását nem a
+          műszaki adatok döntik el, hanem az, milyen szennyezőt termel a
+          folyamat. A termékek listája ez alatt jön. */}
+      {manufacturer.industries && manufacturer.industries.length > 0 && (
+        <Reveal delay={0.08}>
+          <section className="mt-14 border-t border-line pt-10">
+            <h2 className="text-xl font-semibold tracking-tight">
+              {dict.manufacturers.industriesTitle}
+            </h2>
+            <p className="mt-2 max-w-2xl text-ink-muted">{dict.manufacturers.industriesLead}</p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {manufacturer.industries.map((ind) => (
+                <div
+                  key={ind.name[lang]}
+                  className="h-full rounded-2xl border border-line bg-white p-6"
+                >
+                  <h3 className="font-semibold tracking-tight">{ind.name[lang]}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{ind.text[lang]}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      )}
+
       <div className="mt-12 space-y-14">
         {categoryGroups.map((group) => (
           <section key={group.category.slug}>
