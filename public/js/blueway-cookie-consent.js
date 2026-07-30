@@ -1,8 +1,14 @@
 /*!
  * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN + DE + IT + ES + KO + ZH)
- * Verzió: 1.3 (2026-07-26) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
+ * Verzió: 1.4 (2026-07-30) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
  * 1.2: német, koreai és kínai felirat-fordítások; a szöveg tartalma változatlan.
  * 1.3: olasz és spanyol felirat-fordítások.
+ * 1.4: a nyelvi süti használatba került. A setLangCookie eddig is készen volt,
+ *      de senki nem hívta, és senki nem olvasta — a hozzájárulási szöveg
+ *      tehát olyan sütit ígért, ami a gyakorlatban nem létezett. Mostantól a
+ *      nyelvválasztó zászlóra kattintva íródik ki (hozzájárulás esetén), és a
+ *      gyökércím (blueway.hu) ez alapján dönti el, melyik nyelv fogadja a
+ *      visszatérő látogatót. A szkript maga nem változott.
  *
  * BEILLESZTÉS / INTEGRATION
  * -------------------------
@@ -19,6 +25,9 @@
  *
  * 3. Nyelvi süti beállítása kizárólag ezen keresztül (hozzájárulást ellenőrzi):
  *      BluewayConsent.setLangCookie('hu');  // vagy 'en'
+ *    A weblapon ezt a nyelvválasztó hívja (src/lib/consent.ts), és a gyökércím
+ *    (src/app/page.tsx) olvassa vissza, hogy a visszatérő látogató a saját
+ *    nyelvén érkezzen meg. A visszaadott érték false, ha nincs hozzájárulás.
  *
  * 4. Lábléc-link a beállítások újranyitásához:
  *      <a href="#" onclick="BluewayConsent.open();return false">Süti-beállítások</a>
