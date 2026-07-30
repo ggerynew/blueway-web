@@ -52,6 +52,10 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # A ([a-z]{2}) a nyelvi előtag: egyetlen szabály kezeli mind a hét nyelvet.
 RewriteRule ^([a-z]{2})/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6014/?$ /$1/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6114 [R=301,L]
 
+# A CAB AF5 elszívó átkerült a lézer gravírozók közül a füst- és
+# porelszívókhoz, mert oda tartozik. Az addig kiadott cím ne fusson 404-re.
+RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-es-porelszivok/cab-af5 [R=301,L]
+
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy
 # 95 MB-os _blueway_old.rar. A domainre átállás pillanatában ezek bárki

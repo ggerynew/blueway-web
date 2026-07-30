@@ -211,6 +211,54 @@ export default async function ProductPage({
         </Reveal>
       )}
 
+      {/* Változatok — ugyanaz a gép, más szűréssel vagy kivitelben. Táblázat,
+          mert öt változat különbsége prózában nem áttekinthető. A vízszintes
+          görgetés a táblázat saját kerete: szűk kijelzőn se lógjon ki az oldal. */}
+      {product.variants && product.variants.length > 0 && (
+        <Reveal delay={0.05}>
+          <section className="mt-20 border-t border-line pt-10">
+            <h2 className="text-xl font-semibold tracking-tight">
+              {dict.products.variantsTitle}
+            </h2>
+            <p className="mt-2 max-w-2xl text-ink-muted">{dict.products.variantsLead}</p>
+
+            <div className="mt-8 flex flex-col gap-4">
+              {product.variants.map((v) => (
+                <div key={v.name} className="rounded-2xl border border-line bg-white p-6">
+                  <div className="flex flex-wrap items-baseline justify-between gap-3">
+                    <h3 className="font-semibold tracking-tight">{v.name}</h3>
+                    {v.datasheet && (
+                      <a
+                        href={asset(v.datasheet)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+                      >
+                        {dict.products.datasheet} →
+                      </a>
+                    )}
+                  </div>
+                  <p className="mt-2 text-ink-muted">{v.purpose[lang]}</p>
+                  {v.params && v.params.length > 0 && (
+                    <dl className="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+                      {v.params.map((p) => (
+                        <div
+                          key={p.label[lang]}
+                          className="flex justify-between gap-4 border-b border-line py-1.5"
+                        >
+                          <dt className="text-ink-muted">{p.label[lang]}</dt>
+                          <dd className="text-right font-medium text-ink">{p.value[lang]}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      )}
+
       {product.applicators && product.applicators.length > 0 && (
         <Reveal delay={0.05}>
           <section className="mt-20 border-t border-line pt-10">

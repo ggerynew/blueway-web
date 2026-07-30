@@ -75,6 +75,15 @@ export interface Product {
   model3dIsDemo?: boolean;
   /** Kapcsolódó applikátorok (pl. HERMES Q print & apply) */
   applicators?: Applicator[];
+  /**
+   * Ugyanannak a gépnek a változatai (pl. Purex 400 / 400i / 400i PVC).
+   *
+   * Nem külön termék: a gép ugyanaz, csak a szűrés, a szekrénymagasság vagy a
+   * bevonat más az adott feladathoz. Ezért nem kap saját aloldalt, hanem a
+   * terméklapon egy táblázatban látszik — öt változat különbségét prózában
+   * nem lehet olvashatóan leírni.
+   */
+  variants?: ProductVariant[];
   /** Orientáció / kivitel bemutató blokk (pl. HERMES Q jobbos-balos) */
   orientation?: {
     image: string;
@@ -86,6 +95,18 @@ export interface Product {
 export interface ApplicatorParam {
   label: LocalizedText;
   value: LocalizedText;
+}
+
+/** Egy termékváltozat: mire való, miben tér el, és hol az adatlapja. */
+export interface ProductVariant {
+  /** Típusjelzés, ahogy a gyártó írja (pl. „400i PVC”). */
+  name: string;
+  /** Mire való ez a változat — a gyártó saját megfogalmazása alapján. */
+  purpose: LocalizedText;
+  /** A változatot megkülönböztető adatok (magasság, tömeg, szűrők). */
+  params?: ApplicatorParam[];
+  /** A változat gyári adatlapja a public mappán belül. */
+  datasheet?: string;
 }
 
 export interface Applicator {
@@ -173,6 +194,16 @@ const manufacturersSource: Sourced<Manufacturer[]> = [
       en: 'Electric, automatic label and tape dispensers for industrial use — US-made, with robust metal construction.', it: 'Spellicolatori automatici elettrici di etichette e dispenser per nastro adesivo per uso industriale — produzione USA, con robusta struttura metallica.', es: 'Dispensadores eléctricos y automáticos de etiquetas y de cinta adhesiva para uso industrial — fabricados en EE. UU., con una robusta construcción metálica.', de: 'Elektrische, automatische Etiketten- und Klebebandspender für den Industrieeinsatz — hergestellt in den USA, mit robuster Metallkonstruktion.', ko: '산업용 전동 자동 라벨 및 테이프 디스펜서 — 견고한 금속 구조의 미국산 제품.', zh: '工业用电动自动标签剥离机与胶带切割机——美国制造，坚固的金属结构。',
     },
   },
+  {
+    slug: 'purex',
+    brand: 'Purex',
+    name: 'Purex International',
+    logo: '/images/brand/purex-logo.webp',
+    description: {
+      hu: 'Angol gyártó füst- és porelszívó berendezésekre, 1985 óta. HEPA- és aktívszén-szűrés, automatikus légmennyiség-szabályozás, gáz- és részecskeérzékelők — a lézeres jelöléstől a forrasztáson át a gyógyszeriparig.',
+      en: 'British manufacturer of fume and dust extraction systems since 1985. HEPA and activated carbon filtration, automatic airflow control, gas and particle sensors — from laser marking through soldering to pharmaceuticals.', it: 'Produttore britannico di sistemi di aspirazione di fumi e polveri dal 1985. Filtrazione HEPA e a carbone attivo, controllo automatico della portata d’aria, sensori di gas e particelle — dalla marcatura laser alla saldatura fino al settore farmaceutico.', es: 'Fabricante británico de sistemas de extracción de humos y polvo desde 1985. Filtración HEPA y de carbón activo, control automático del caudal de aire, sensores de gas y partículas — desde el marcaje láser y la soldadura hasta la industria farmacéutica.', de: 'Britischer Hersteller von Rauch- und Staubabsauganlagen seit 1985. HEPA- und Aktivkohlefiltration, automatische Luftmengenregelung, Gas- und Partikelsensoren — von der Laserbeschriftung über das Löten bis zur Pharmaindustrie.', ko: '1985년부터 흄 및 분진 집진 장비를 생산하는 영국 제조사입니다. HEPA·활성탄 여과, 자동 풍량 제어, 가스 및 입자 센서를 갖추었으며, 레이저 마킹부터 납땜, 제약 분야까지 폭넓게 사용됩니다.', zh: '英国烟尘净化设备制造商，创立于 1985 年。采用 HEPA 与活性炭过滤、自动风量控制、气体与颗粒物传感器，应用范围涵盖激光打标、焊接乃至制药行业。',
+    },
+  },
 ];
 export const manufacturers: Manufacturer[] = localize<Manufacturer[]>(manufacturersSource);
 
@@ -231,6 +262,14 @@ const categoriesSource: Sourced<Category[]> = [
     description: {
       hu: 'Szalagadagoló berendezések ipari felhasználásra.',
       en: 'Tape dispensing equipment for industrial use.', it: 'Apparecchiature per l’erogazione di nastro adesivo per uso industriale.', es: 'Equipos de dispensado de cinta adhesiva para uso industrial.', de: 'Klebeband-Spendegeräte für den Industrieeinsatz.', ko: '산업용 테이프 디스펜싱 장비.', zh: '工业用胶带切割设备。',
+    },
+  },
+  {
+    slug: 'fust-es-porelszivok',
+    name: { hu: 'Füst- és porelszívó berendezések', en: 'Fume and dust extraction', it: 'Aspirazione di fumi e polveri', es: 'Extracción de humos y polvo', de: 'Rauch- und Staubabsaugung', ko: '흄 및 분진 집진 장비', zh: '烟尘净化设备' },
+    description: {
+      hu: 'Szűrt elszívás lézeres jelöléshez, forrasztáshoz és más füstöt vagy port termelő folyamatokhoz — HEPA- és aktívszén-szűréssel.',
+      en: 'Filtered extraction for laser marking, soldering and other fume- or dust-producing processes — with HEPA and activated carbon filtration.', it: 'Aspirazione filtrata per marcatura laser, saldatura e altri processi che generano fumi o polveri — con filtrazione HEPA e a carbone attivo.', es: 'Extracción filtrada para marcaje láser, soldadura y otros procesos que generan humos o polvo, con filtración HEPA y de carbón activo.', de: 'Gefilterte Absaugung für Laserbeschriftung, Löten und andere rauch- oder staubbildende Prozesse — mit HEPA- und Aktivkohlefiltration.', ko: '레이저 마킹, 납땜 등 흄이나 분진이 발생하는 공정을 위한 여과식 집진 — HEPA 및 활성탄 필터 적용.', zh: '用于激光打标、焊接及其他产生烟雾或粉尘的工艺的过滤式净化——采用 HEPA 与活性炭过滤。',
     },
   },
 ];
@@ -1079,7 +1118,7 @@ const productsSource: Sourced<Product[]> = [
   },
   {
     slug: 'cab-af5',
-    category: 'lezer-gravirozok',
+    category: 'fust-es-porelszivok',
     name: 'CAB AF5',
     brand: 'CAB',
     short: {
@@ -1697,6 +1736,207 @@ const productsSource: Sourced<Product[]> = [
       { hu: 'Vágáshossz 40–9999 mm, ±1 mm pontosság', en: 'Cut length 40–9999 mm, ±1 mm accuracy', it: 'Lunghezza di taglio 40–9999 mm, precisione ±1 mm', es: 'Longitud de corte 40–9999 mm, precisión de ±1 mm', de: 'Schnittlänge 40–9999 mm, ±1 mm Genauigkeit', ko: '커팅 길이 40–9999 mm, ±1 mm 정밀도', zh: '切割长度 40–9999 mm，精度 ±1 mm' },
       { hu: 'Biztonsági vágóvédelem', en: 'Safety cutter guard', it: 'Protezione di sicurezza della lama', es: 'Protección de seguridad de la cuchilla', de: 'Sicherheits-Messerschutz', ko: '안전 커터 가드', zh: '切刀安全防护' },
       { hu: 'Minden fém fogaskerék és görgő', en: 'All-metal gears and rollers', it: 'Ingranaggi e rulli interamente in metallo', es: 'Engranajes y rodillos totalmente metálicos', de: 'Zahnräder und Rollen komplett aus Metall', ko: '전체 금속 기어 및 롤러', zh: '全金属齿轮与辊轮' },
+    ],
+  },
+  {
+    slug: 'purex-400',
+    category: 'fust-es-porelszivok',
+    name: 'Purex 400',
+    brand: 'Purex',
+    image: '/images/products/purex-400.webp',
+    datasheet: '/datasheets/purex-400i.pdf',
+    short: {
+      hu: 'A legismertebb Purex sor: 400 m³/h elszívás lézeres jelöléshez, kódoláshoz, elektronikához.',
+      en: 'The best-known Purex range: 400 m³/h extraction for laser marking, coding and electronics.', it: 'La gamma Purex più conosciuta: 400 m³/h di aspirazione per marcatura laser, codifica ed elettronica.', es: 'La gama Purex más conocida: 400 m³/h de extracción para marcaje láser, codificación y electrónica.', de: 'Die bekannteste Purex-Reihe: 400 m³/h Absaugung für Laserbeschriftung, Codierung und Elektronik.', ko: '가장 널리 알려진 Purex 제품군: 레이저 마킹, 코딩, 전자 산업을 위한 400 m³/h 집진.', zh: '最知名的 Purex 系列：400 m³/h 抽风量，适用于激光打标、喷码与电子行业。',
+    },
+    description: {
+      hu: 'A 400-as sor a Purex legismertebb elszívó családja: 400 m³/h légmennyiség, kompakt szekrény, és olyan biztonsági megoldások, amelyek a kezelőt és a környezetet is védik. HEPA- és aktívszén-szűrés fogja meg a részecskéket és a gázokat, az automatikus elektronikus szabályozás pedig akkor is tartja az elszívási teljesítményt, amikor a szűrő már telítődik — így nem lassan, észrevétlenül romlik a védelem. Gáz- és részecskeérzékelő figyelmeztet, a gép pedig a csatlakoztatott berendezéssel együtt indítható. Öt változatban készül: az alap 400 és 400i mellett PVC-, ózon- és festékszublimációs kivitelben. Jellemző területek: lézeres gravírozás és kódolás, elektronika, 3D-nyomtatás, gyógyszer- és orvostechnika, laborok.',
+      en: 'The 400 range is Purex’s best-known extraction family: 400 m³/h airflow, a compact cabinet, and fail-safes that protect both the operator and the environment. HEPA and activated carbon filtration capture particles and gases, while automatic electronic flow control keeps the extraction rate up even as the filter loads — so protection does not degrade slowly and unnoticed. Gas and particle sensors warn the operator, and the unit can be started together with the connected machine. It comes in five versions: the basic 400 and 400i plus PVC, ozone and dye-sublimation variants. Typical fields: laser engraving and coding, electronics, 3D printing, pharmaceutical and medical, laboratories.', it: 'La gamma 400 è la famiglia di aspiratori più conosciuta di Purex: 400 m³/h di portata d’aria, mobile compatto e sistemi di sicurezza che proteggono sia l’operatore sia l’ambiente. La filtrazione HEPA e a carbone attivo trattiene particelle e gas, mentre il controllo elettronico automatico mantiene la portata di aspirazione anche quando il filtro si carica: la protezione non si degrada lentamente e senza segnali. I sensori di gas e particelle avvisano l’operatore e l’unità può essere avviata insieme alla macchina collegata. È disponibile in cinque versioni: le 400 e 400i di base più le varianti PVC, ozono e sublimazione. Settori tipici: incisione e codifica laser, elettronica, stampa 3D, farmaceutico e medico, laboratori.', es: 'La gama 400 es la familia de extractores más conocida de Purex: 400 m³/h de caudal, armario compacto y sistemas de seguridad que protegen tanto al operario como al entorno. La filtración HEPA y de carbón activo retiene partículas y gases, mientras que el control electrónico automático mantiene la capacidad de extracción incluso cuando el filtro se va colmatando, de modo que la protección no se degrada de forma lenta e inadvertida. Los sensores de gas y partículas avisan al operario y la unidad puede arrancar junto con la máquina conectada. Se fabrica en cinco versiones: las 400 y 400i básicas más las variantes de PVC, ozono y sublimación. Campos habituales: grabado y codificación láser, electrónica, impresión 3D, farmacia y sanidad, laboratorios.', de: 'Die 400er-Reihe ist die bekannteste Absaugfamilie von Purex: 400 m³/h Luftmenge, kompaktes Gehäuse und Sicherheitsfunktionen, die Bediener und Umgebung schützen. HEPA- und Aktivkohlefilter halten Partikel und Gase zurück, und die automatische elektronische Regelung hält die Absaugleistung auch dann, wenn der Filter zusetzt — der Schutz lässt also nicht langsam und unbemerkt nach. Gas- und Partikelsensoren warnen den Bediener, und das Gerät lässt sich gemeinsam mit der angeschlossenen Maschine starten. Es gibt fünf Ausführungen: die Basisgeräte 400 und 400i sowie PVC-, Ozon- und Sublimationsvarianten. Typische Bereiche: Lasergravur und Codierung, Elektronik, 3D-Druck, Pharma und Medizintechnik, Labore.', ko: '400 제품군은 Purex의 가장 널리 알려진 집진 계열입니다. 풍량 400 m³/h, 컴팩트한 캐비닛, 그리고 작업자와 환경을 함께 보호하는 안전 장치를 갖추었습니다. HEPA와 활성탄 필터가 입자와 가스를 포집하고, 자동 전자식 풍량 제어가 필터가 막혀가도 집진 성능을 유지하므로 보호 성능이 서서히 눈에 띄지 않게 떨어지지 않습니다. 가스·입자 센서가 작업자에게 경고하며, 연결된 장비와 함께 시동할 수 있습니다. 기본형 400과 400i에 PVC, 오존, 승화 전사 전용 버전을 더해 총 다섯 가지로 제공됩니다. 주요 적용 분야는 레이저 각인 및 코딩, 전자, 3D 프린팅, 제약·의료, 실험실입니다.', zh: '400 系列是 Purex 最知名的净化机型：风量 400 m³/h、机箱紧凑，并配备保护操作人员与环境的安全机制。HEPA 与活性炭滤芯捕集颗粒物和气体，自动电子风量控制在滤芯逐渐堵塞时仍维持抽风量，因此防护性能不会缓慢而不被察觉地下降。气体与颗粒物传感器会提醒操作人员，设备也可随所连机器一同启动。共五种版本：基础型 400 与 400i，以及 PVC、臭氧和热升华专用版本。典型应用领域包括激光雕刻与喷码、电子、3D 打印、制药与医疗、实验室。',
+    },
+    features: [
+      { hu: 'Légmennyiség 400 m³/h, hangszint <60 dBA', en: 'Airflow 400 m³/h, sound level <60 dBA', it: 'Portata d’aria 400 m³/h, livello sonoro <60 dBA', es: 'Caudal de aire 400 m³/h, nivel sonoro <60 dBA', de: 'Luftmenge 400 m³/h, Schallpegel <60 dBA', ko: '풍량 400 m³/h, 소음 <60 dBA', zh: '风量 400 m³/h，噪声 <60 dBA' },
+      { hu: 'Automatikus légmennyiség-szabályozás: a szűrő telítődésével sem csökken az elszívás', en: 'Automatic flow control: extraction rate stays constant as the filter blocks', it: 'Controllo automatico della portata: l’aspirazione resta costante anche quando il filtro si intasa', es: 'Control automático del caudal: la extracción se mantiene constante aunque el filtro se colmate', de: 'Automatische Luftmengenregelung: Die Absaugleistung bleibt konstant, auch wenn der Filter zusetzt', ko: '자동 풍량 제어: 필터가 막혀도 집진량이 일정하게 유지됩니다', zh: '自动风量控制：即使滤芯逐渐堵塞，抽风量仍保持恒定' },
+      { hu: 'HEPA- és aktívszén-szűrés, gyorsan cserélhető labirint előszűrő', en: 'HEPA and activated carbon filtration, quick-change labyrinth pre-filter', it: 'Filtrazione HEPA e a carbone attivo, prefiltro a labirinto a sostituzione rapida', es: 'Filtración HEPA y de carbón activo, prefiltro de laberinto de cambio rápido', de: 'HEPA- und Aktivkohlefiltration, schnell wechselbarer Labyrinth-Vorfilter', ko: 'HEPA·활성탄 여과, 빠르게 교체 가능한 래버린스 프리필터', zh: 'HEPA 与活性炭过滤，可快速更换的迷宫式前置滤芯' },
+      { hu: 'Gáz- és részecskeérzékelő figyelmezteti a kezelőt', en: 'Gas and particle sensors warn the operator', it: 'Sensori di gas e particelle avvisano l’operatore', es: 'Sensores de gas y partículas que avisan al operario', de: 'Gas- und Partikelsensoren warnen den Bediener', ko: '가스 및 입자 센서가 작업자에게 경고합니다', zh: '气体与颗粒物传感器提醒操作人员' },
+      { hu: 'Távindítás a csatlakoztatott géppel (interfészkészlet)', en: 'Remote start from the connected machine (interfacing kit)', it: 'Avvio remoto dalla macchina collegata (kit di interfacciamento)', es: 'Arranque remoto desde la máquina conectada (kit de interfaz)', de: 'Fernstart durch die angeschlossene Maschine (Interface-Kit)', ko: '연결된 장비에서 원격 시동(인터페이스 키트)', zh: '可由所连设备远程启动（接口套件）' },
+      { hu: 'Öt változat: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', en: 'Five versions: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', it: 'Cinque versioni: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', es: 'Cinco versiones: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', de: 'Fünf Ausführungen: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', ko: '다섯 가지 버전: 400, 400i, 400i PVC, 400i Ozone, 400i Dye Sub', zh: '五种版本：400、400i、400i PVC、400i Ozone、400i Dye Sub' },
+    ],
+    variants: [
+      {
+        name: '400',
+        purpose: {
+          hu: 'A legkisebb helyet igénylő változat: alacsony szekrény, mégis a teljes 400 m³/h. Jellemzően az elektronikai iparban, ahol a hely szűkös.',
+          en: 'The version with the smallest footprint: a low cabinet, yet the full 400 m³/h. Typically used in electronics, where space is tight.', it: 'La versione con l’ingombro minore: mobile basso, ma tutta la portata di 400 m³/h. Tipicamente usata nell’elettronica, dove lo spazio è limitato.', es: 'La versión que ocupa menos espacio: armario bajo, pero con los 400 m³/h completos. Se usa habitualmente en electrónica, donde el espacio es escaso.', de: 'Die Ausführung mit dem geringsten Platzbedarf: niedriges Gehäuse, dennoch die vollen 400 m³/h. Typisch in der Elektronik, wo der Platz knapp ist.', ko: '설치 공간이 가장 작은 버전으로, 캐비닛이 낮지만 400 m³/h 풍량을 그대로 냅니다. 공간이 좁은 전자 산업에서 주로 사용됩니다.', zh: '占地面积最小的版本：机箱较低，但仍具备完整的 400 m³/h 风量。常用于空间紧张的电子行业。',
+        },
+        datasheet: '/datasheets/purex-400.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '710 mm', en: '710 mm', it: '710 mm', es: '710 mm', de: '710 mm', ko: '710 mm', zh: '710 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '60 kg', en: '60 kg', it: '60 kg', es: '60 kg', de: '60 kg', ko: '60 kg', zh: '60 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: 'HEPA + aktívszén', en: 'HEPA + activated carbon', it: 'HEPA + carbone attivo', es: 'HEPA + carbón activo', de: 'HEPA + Aktivkohle', ko: 'HEPA + 활성탄', zh: 'HEPA + 活性炭' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F5 lap', en: 'F5 pad', it: 'Pad F5', es: 'Almohadilla F5', de: 'F5-Matte', ko: 'F5 패드', zh: 'F5 滤棉' } },
+        ],
+      },
+      {
+        name: '400i',
+        purpose: {
+          hu: 'A sor legelterjedtebb tagja, a lézeres gravírozás és kódolás jellemző választása: nagy elszívási teljesítmény kompakt méretben, labirint előszűrővel, ami hosszabb szűrőélettartamot ad.',
+          en: 'The most widely used member of the range and the usual choice for laser engraving and coding: a high extraction rate in a compact size, with a labyrinth pre-filter for longer filter life.', it: 'Il modello più diffuso della gamma e la scelta abituale per incisione e codifica laser: elevata capacità di aspirazione in dimensioni compatte, con prefiltro a labirinto per una maggiore durata dei filtri.', es: 'El modelo más extendido de la gama y la elección habitual para grabado y codificación láser: gran capacidad de extracción en un tamaño compacto, con prefiltro de laberinto para una mayor vida útil de los filtros.', de: 'Das verbreitetste Modell der Reihe und die üblliche Wahl für Lasergravur und Codierung: hohe Absaugleistung bei kompakter Größe, mit Labyrinth-Vorfilter für längere Filterlebensdauer.', ko: '제품군에서 가장 널리 쓰이는 모델로, 레이저 각인과 코딩에 흔히 선택됩니다. 컴팩트한 크기에 높은 집진 성능을 담았고, 래버린스 프리필터로 필터 수명이 더 깁니다.', zh: '该系列中应用最广的机型，也是激光雕刻与喷码的常规选择：体积紧凑而抽风能力强，配迷宫式前置滤芯以延长滤芯寿命。',
+        },
+        datasheet: '/datasheets/purex-400i.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1070 mm', en: '1070 mm', it: '1070 mm', es: '1070 mm', de: '1070 mm', ko: '1070 mm', zh: '1070 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '50 kg', en: '50 kg', it: '50 kg', es: '50 kg', de: '50 kg', ko: '50 kg', zh: '50 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: 'HEPA + aktívszén', en: 'HEPA + activated carbon', it: 'HEPA + carbone attivo', es: 'HEPA + carbón activo', de: 'HEPA + Aktivkohle', ko: 'HEPA + 활성탄', zh: 'HEPA + 活性炭' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F6 labirint', en: 'F6 labyrinth', it: 'Labirinto F6', es: 'Laberinto F6', de: 'F6-Labyrinth', ko: 'F6 래버린스', zh: 'F6 迷宫式' } },
+        ],
+      },
+      {
+        name: '400i PVC',
+        purpose: {
+          hu: 'PVC lézeres jelöléséhez. A PVC-ből felszabaduló gőz korrozív, ezért ennek a változatnak a belső felületei külön bevonatot kapnak, a szűrés pedig erősebb (F8/F9 előszűrő, kémiai felszívó lap).',
+          en: 'For laser marking PVC. The fumes released from PVC are corrosive, so the internal surfaces of this version are specially coated and the filtration is heavier (F8/F9 pre-filter, chemical absorbent pad).', it: 'Per la marcatura laser del PVC. I fumi liberati dal PVC sono corrosivi, quindi le superfici interne di questa versione hanno un rivestimento speciale e la filtrazione è più spinta (prefiltro F8/F9, pad assorbente chimico).', es: 'Para el marcaje láser de PVC. Los humos que libera el PVC son corrosivos, por lo que las superficies internas de esta versión llevan un recubrimiento especial y la filtración es más exigente (prefiltro F8/F9, almohadilla absorbente química).', de: 'Für die Laserbeschriftung von PVC. Die aus PVC freigesetzten Dämpfe sind korrosiv, daher sind die Innenflächen dieser Ausführung speziell beschichtet und die Filterung ist stärker (F8/F9-Vorfilter, chemische Absorptionsmatte).', ko: 'PVC 레이저 마킹용입니다. PVC에서 발생하는 흄은 부식성이 있어 이 버전은 내부 표면에 특수 코팅을 적용하고 여과 단계를 강화했습니다(F8/F9 프리필터, 화학 흡수 패드).', zh: '用于 PVC 激光打标。PVC 释放的烟气具腐蚀性，因此该版本内表面经过特殊涂层处理，过滤等级也更高（F8/F9 前置滤芯、化学吸附棉）。',
+        },
+        datasheet: '/datasheets/purex-400i-pvc.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1195 mm', en: '1195 mm', it: '1195 mm', es: '1195 mm', de: '1195 mm', ko: '1195 mm', zh: '1195 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '70 kg', en: '70 kg', it: '70 kg', es: '70 kg', de: '70 kg', ko: '70 kg', zh: '70 kg' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F8/F9 labirint + kémiai felszívó lap', en: 'F8/F9 labyrinth + chemical absorbent pad', it: 'Labirinto F8/F9 + pad assorbente chimico', es: 'Laberinto F8/F9 + almohadilla absorbente química', de: 'F8/F9-Labyrinth + chemische Absorptionsmatte', ko: 'F8/F9 래버린스 + 화학 흡수 패드', zh: 'F8/F9 迷宫式 + 化学吸附棉' } },
+          { label: { hu: 'Korrózióvédelem', en: 'Corrosion protection', it: 'Protezione dalla corrosione', es: 'Protección contra la corrosión', de: 'Korrosionsschutz', ko: '부식 방지', zh: '防腐蚀' }, value: { hu: 'belső bevonat', en: 'internal coating', it: 'rivestimento interno', es: 'recubrimiento interno', de: 'Innenbeschichtung', ko: '내부 코팅', zh: '内部涂层' } },
+        ],
+      },
+      {
+        name: '400i Ozone',
+        purpose: {
+          hu: 'Ózonnal járó folyamatokhoz — jellemzően az orvostechnikában. Kettős HEPA és kémiai szűrés, valamint önálló ózonérzékelő, ami közvetlenül erre a gázra figyel.',
+          en: 'For processes involving ozone — typically in medical applications. Twin HEPA and chemical filtration plus a dedicated ozone sensor that watches for that gas specifically.', it: 'Per processi che comportano ozono, tipicamente nel settore medico. Doppia filtrazione HEPA e chimica più un sensore dedicato all’ozono che sorveglia specificamente questo gas.', es: 'Para procesos que implican ozono, habitualmente en el sector médico. Filtración HEPA doble y química, más un sensor de ozono específico que vigila ese gas en concreto.', de: 'Für Prozesse mit Ozon — typischerweise in der Medizintechnik. Doppelte HEPA- und Chemiefiltration sowie ein eigener Ozonsensor, der speziell auf dieses Gas achtet.', ko: '오존이 발생하는 공정용으로, 주로 의료 분야에서 사용됩니다. 트윈 HEPA와 화학 여과에 더해 이 가스를 전용으로 감시하는 오존 센서를 갖추었습니다.', zh: '适用于涉及臭氧的工艺，多见于医疗领域。采用双 HEPA 与化学过滤，并配备专门监测臭氧的独立传感器。',
+        },
+        datasheet: '/datasheets/purex-400i-ozone.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1195 mm', en: '1195 mm', it: '1195 mm', es: '1195 mm', de: '1195 mm', ko: '1195 mm', zh: '1195 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '70 kg', en: '70 kg', it: '70 kg', es: '70 kg', de: '70 kg', ko: '70 kg', zh: '70 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: 'kettős HEPA + kémiai', en: 'twin HEPA + chemical', it: 'doppio HEPA + chimico', es: 'HEPA doble + químico', de: 'Doppel-HEPA + chemisch', ko: '트윈 HEPA + 화학', zh: '双 HEPA + 化学' } },
+          { label: { hu: 'Külön érzékelő', en: 'Dedicated sensor', it: 'Sensore dedicato', es: 'Sensor específico', de: 'Eigener Sensor', ko: '전용 센서', zh: '专用传感器' }, value: { hu: 'ózon', en: 'ozone', it: 'ozono', es: 'ozono', de: 'Ozon', ko: '오존', zh: '臭氧' } },
+        ],
+      },
+      {
+        name: '400i Dye Sub',
+        purpose: {
+          hu: 'Festékszublimációs nyomtatáshoz. A folyamat során folyadék is keletkezik, ezért ez a változat koaleszcens szűrőt kap: összegyűjti a felesleget, amit utána egyszerűen le lehet csapolni.',
+          en: 'For dye-sublimation printing. The process also produces liquid, so this version has a coalescing filter that collects the excess, which can then simply be drained off.', it: 'Per la stampa a sublimazione. Il processo genera anche liquido, quindi questa versione è dotata di un filtro coalescente che raccoglie l’eccesso, poi facilmente scaricabile.', es: 'Para la impresión por sublimación. El proceso también genera líquido, por lo que esta versión incorpora un filtro coalescente que recoge el exceso, que después puede vaciarse fácilmente.', de: 'Für den Sublimationsdruck. Beim Prozess entsteht auch Flüssigkeit, daher hat diese Ausführung einen Koaleszenzfilter, der den Überschuss sammelt und anschließend einfach abgelassen werden kann.', ko: '승화 전사 인쇄용입니다. 이 공정에서는 액체도 발생하므로, 이 버전은 여분의 액체를 모아 손쉽게 배출할 수 있는 응집 필터를 갖추었습니다.', zh: '用于热升华印刷。该工艺还会产生液体，因此此版本配备聚结滤芯，可收集多余液体并方便排放。',
+        },
+        datasheet: '/datasheets/purex-400i-dye-sub.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1070 mm', en: '1070 mm', it: '1070 mm', es: '1070 mm', de: '1070 mm', ko: '1070 mm', zh: '1070 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '60 kg', en: '60 kg', it: '60 kg', es: '60 kg', de: '60 kg', ko: '60 kg', zh: '60 kg' } },
+          { label: { hu: 'Külön szűrő', en: 'Additional filter', it: 'Filtro aggiuntivo', es: 'Filtro adicional', de: 'Zusätzlicher Filter', ko: '추가 필터', zh: '附加滤芯' }, value: { hu: 'koaleszcens, lecsapolható', en: 'coalescing, drainable', it: 'coalescente, scaricabile', es: 'coalescente, drenable', de: 'Koaleszenz, ablassbar', ko: '응집식, 배출 가능', zh: '聚结式，可排液' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F6 labirint', en: 'F6 labyrinth', it: 'Labirinto F6', es: 'Laberinto F6', de: 'F6-Labyrinth', ko: 'F6 래버린스', zh: 'F6 迷宫式' } },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'purex-800',
+    category: 'fust-es-porelszivok',
+    name: 'Purex 800',
+    brand: 'Purex',
+    image: '/images/products/purex-800.webp',
+    datasheet: '/datasheets/purex-800i-2-tier.pdf',
+    short: {
+      hu: 'Kétszeres légmennyiség: 800 m³/h nagyobb terhelésre vagy több elszívási pontra.',
+      en: 'Double the airflow: 800 m³/h for heavier loads or several extraction points.', it: 'Portata d’aria doppia: 800 m³/h per carichi maggiori o più punti di aspirazione.', es: 'El doble de caudal: 800 m³/h para cargas mayores o varios puntos de extracción.', de: 'Doppelte Luftmenge: 800 m³/h für höhere Lasten oder mehrere Absaugpunkte.', ko: '풍량 두 배: 부하가 크거나 집진 지점이 여러 곳일 때를 위한 800 m³/h.', zh: '风量翻倍：800 m³/h，适用于更大负荷或多个抽风点。',
+    },
+    description: {
+      hu: 'A 800-as sor ugyanazt a felépítést és biztonsági megoldásokat adja, mint a 400-as, de kétszeres légmennyiséggel: 800 m³/h és 2,4 kW. Akkor ez a helyes választás, ha egy folyamat sok füstöt vagy port termel, vagy ha egyetlen gépről több elszívási pontot kell ellátni. HEPA- és aktívszén-szűrés, automatikus légmennyiség-szabályozás, gáz- és részecskeérzékelő itt is alapfelszereltség. Négy változatban készül: a kompakt 800, a kétszintes 800i, a háromszintes 800i (két főszűrővel, tehát nagyobb szűrőkapacitással és hosszabb csereidővel), valamint a PVC-kivitel korrózióvédő bevonattal.',
+      en: 'The 800 range offers the same construction and fail-safes as the 400, but with double the airflow: 800 m³/h and 2.4 kW. This is the right choice when a process produces a lot of fume or dust, or when several extraction points have to be served from one machine. HEPA and activated carbon filtration, automatic flow control and gas and particle sensors are standard here too. It comes in four versions: the compact 800, the 2-tier 800i, the 3-tier 800i (with two main filters, hence more filter capacity and longer intervals between changes), and the PVC version with a corrosion-resistant coating.', it: 'La gamma 800 offre la stessa costruzione e gli stessi sistemi di sicurezza della 400, ma con portata d’aria doppia: 800 m³/h e 2,4 kW. È la scelta giusta quando un processo genera molti fumi o polveri, oppure quando da una sola macchina occorre servire più punti di aspirazione. Anche qui filtrazione HEPA e a carbone attivo, controllo automatico della portata e sensori di gas e particelle sono di serie. È disponibile in quattro versioni: la compatta 800, la 800i a 2 livelli, la 800i a 3 livelli (con due filtri principali, quindi maggiore capacità filtrante e intervalli di sostituzione più lunghi) e la versione PVC con rivestimento anticorrosione.', es: 'La gama 800 ofrece la misma construcción y los mismos sistemas de seguridad que la 400, pero con el doble de caudal: 800 m³/h y 2,4 kW. Es la elección correcta cuando un proceso genera mucho humo o polvo, o cuando hay que atender varios puntos de extracción desde una sola máquina. La filtración HEPA y de carbón activo, el control automático del caudal y los sensores de gas y partículas también son de serie. Se fabrica en cuatro versiones: la compacta 800, la 800i de 2 niveles, la 800i de 3 niveles (con dos filtros principales, es decir, mayor capacidad de filtración e intervalos de cambio más largos) y la versión de PVC con recubrimiento anticorrosión.', de: 'Die 800er-Reihe bietet denselben Aufbau und dieselben Sicherheitsfunktionen wie die 400er, jedoch mit doppelter Luftmenge: 800 m³/h und 2,4 kW. Das ist die richtige Wahl, wenn ein Prozess viel Rauch oder Staub erzeugt oder wenn mehrere Absaugpunkte von einer Maschine versorgt werden müssen. HEPA- und Aktivkohlefiltration, automatische Luftmengenregelung sowie Gas- und Partikelsensoren gehören auch hier zur Serienausstattung. Es gibt vier Ausführungen: die kompakte 800, die zweistufige 800i, die dreistufige 800i (mit zwei Hauptfiltern, also mehr Filterkapazität und längeren Wechselintervallen) und die PVC-Ausführung mit Korrosionsschutzbeschichtung.', ko: '800 제품군은 400 제품군과 동일한 구조와 안전 장치를 갖추면서 풍량은 두 배입니다(800 m³/h, 2.4 kW). 공정에서 흄이나 분진이 많이 발생하거나, 한 대로 여러 집진 지점을 담당해야 할 때 적합합니다. HEPA·활성탄 여과, 자동 풍량 제어, 가스·입자 센서는 여기서도 기본입니다. 네 가지 버전으로 제공됩니다: 컴팩트한 800, 2단 800i, 3단 800i(메인 필터 2개로 여과 용량이 크고 교체 주기가 깁니다), 그리고 방식 코팅을 적용한 PVC 버전입니다.', zh: '800 系列与 400 系列结构和安全机制相同，但风量翻倍：800 m³/h、2.4 kW。当工艺产生大量烟雾或粉尘，或需由一台设备服务多个抽风点时，它是正确选择。HEPA 与活性炭过滤、自动风量控制、气体与颗粒物传感器同样为标准配置。共四种版本：紧凑型 800、双层 800i、三层 800i（配两个主滤芯，过滤容量更大、更换周期更长）以及带防腐涂层的 PVC 版本。',
+    },
+    features: [
+      { hu: 'Légmennyiség 800 m³/h, 2,4 kW, hangszint <60 dBA', en: 'Airflow 800 m³/h, 2.4 kW, sound level <60 dBA', it: 'Portata d’aria 800 m³/h, 2,4 kW, livello sonoro <60 dBA', es: 'Caudal de aire 800 m³/h, 2,4 kW, nivel sonoro <60 dBA', de: 'Luftmenge 800 m³/h, 2,4 kW, Schallpegel <60 dBA', ko: '풍량 800 m³/h, 2.4 kW, 소음 <60 dBA', zh: '风量 800 m³/h，2.4 kW，噪声 <60 dBA' },
+      { hu: 'Egy gépről több elszívási pont is ellátható', en: 'Several extraction points can be served from one machine', it: 'Da una sola macchina si possono servire più punti di aspirazione', es: 'Desde una sola máquina se pueden atender varios puntos de extracción', de: 'Mehrere Absaugpunkte lassen sich von einer Maschine versorgen', ko: '한 대로 여러 집진 지점을 담당할 수 있습니다', zh: '一台设备可服务多个抽风点' },
+      { hu: 'Automatikus légmennyiség-szabályozás: a szűrő telítődésével sem csökken az elszívás', en: 'Automatic flow control: extraction rate stays constant as the filter blocks', it: 'Controllo automatico della portata: l’aspirazione resta costante anche quando il filtro si intasa', es: 'Control automático del caudal: la extracción se mantiene constante aunque el filtro se colmate', de: 'Automatische Luftmengenregelung: Die Absaugleistung bleibt konstant, auch wenn der Filter zusetzt', ko: '자동 풍량 제어: 필터가 막혀도 집진량이 일정하게 유지됩니다', zh: '自动风量控制：即使滤芯逐渐堵塞，抽风量仍保持恒定' },
+      { hu: 'HEPA- és aktívszén-szűrés, gáz- és részecskeérzékelő', en: 'HEPA and activated carbon filtration, gas and particle sensors', it: 'Filtrazione HEPA e a carbone attivo, sensori di gas e particelle', es: 'Filtración HEPA y de carbón activo, sensores de gas y partículas', de: 'HEPA- und Aktivkohlefiltration, Gas- und Partikelsensoren', ko: 'HEPA·활성탄 여과, 가스 및 입자 센서', zh: 'HEPA 与活性炭过滤，气体与颗粒物传感器' },
+      { hu: 'Négy változat: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', en: 'Four versions: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', it: 'Quattro versioni: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', es: 'Cuatro versiones: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', de: 'Vier Ausführungen: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', ko: '네 가지 버전: 800, 800i 2-Tier, 800i 3-Tier, 800i PVC', zh: '四种版本：800、800i 2-Tier、800i 3-Tier、800i PVC' },
+    ],
+    variants: [
+      {
+        name: '800',
+        purpose: {
+          hu: 'A kompakt kivitel: alacsony szekrény a teljes 800 m³/h-val, ha a hely szűkös. Egyszerű lapos előszűrővel.',
+          en: 'The compact version: a low cabinet with the full 800 m³/h, for when space is tight. With a simple flat pre-filter.', it: 'La versione compatta: mobile basso con tutta la portata di 800 m³/h, quando lo spazio è limitato. Con un semplice prefiltro piatto.', es: 'La versión compacta: armario bajo con los 800 m³/h completos, cuando el espacio es escaso. Con un prefiltro plano sencillo.', de: 'Die kompakte Ausführung: niedriges Gehäuse mit den vollen 800 m³/h, wenn der Platz knapp ist. Mit einfachem Flach-Vorfilter.', ko: '컴팩트 버전: 공간이 좁을 때를 위한 낮은 캐비닛에 800 m³/h 풍량을 그대로 담았습니다. 단순한 평판형 프리필터를 사용합니다.', zh: '紧凑版本：机箱较低但具备完整 800 m³/h 风量，适合空间紧张的场合。配简易平板式前置滤芯。',
+        },
+        datasheet: '/datasheets/purex-800.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '740 mm', en: '740 mm', it: '740 mm', es: '740 mm', de: '740 mm', ko: '740 mm', zh: '740 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '78 kg', en: '78 kg', it: '78 kg', es: '78 kg', de: '78 kg', ko: '78 kg', zh: '78 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: 'HEPA + aktívszén', en: 'HEPA + activated carbon', it: 'HEPA + carbone attivo', es: 'HEPA + carbón activo', de: 'HEPA + Aktivkohle', ko: 'HEPA + 활성탄', zh: 'HEPA + 活性炭' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F5 lap', en: 'F5 pad', it: 'Pad F5', es: 'Almohadilla F5', de: 'F5-Matte', ko: 'F5 패드', zh: 'F5 滤棉' } },
+        ],
+      },
+      {
+        name: '800i 2-Tier',
+        purpose: {
+          hu: 'Kétszintes szekrény egy főszűrővel és labirint előszűrővel: hosszabb szűrőélettartam, mint a kompakt kivitelben. A sor általános célú tagja.',
+          en: 'A 2-tier cabinet with one main filter and a labyrinth pre-filter: longer filter life than the compact version. The general-purpose member of the range.', it: 'Mobile a 2 livelli con un filtro principale e prefiltro a labirinto: durata dei filtri maggiore rispetto alla versione compatta. È il modello generalista della gamma.', es: 'Armario de 2 niveles con un filtro principal y prefiltro de laberinto: mayor vida útil de los filtros que en la versión compacta. Es el modelo de uso general de la gama.', de: 'Zweistufiges Gehäuse mit einem Hauptfilter und Labyrinth-Vorfilter: längere Filterlebensdauer als bei der kompakten Ausführung. Das Allrounder-Modell der Reihe.', ko: '메인 필터 1개와 래버린스 프리필터를 갖춘 2단 캐비닛으로, 컴팩트 버전보다 필터 수명이 깁니다. 제품군의 범용 모델입니다.', zh: '双层机箱，配一个主滤芯与迷宫式前置滤芯：滤芯寿命长于紧凑版本。是该系列的通用机型。',
+        },
+        datasheet: '/datasheets/purex-800i-2-tier.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1155 mm', en: '1155 mm', it: '1155 mm', es: '1155 mm', de: '1155 mm', ko: '1155 mm', zh: '1155 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '83 kg', en: '83 kg', it: '83 kg', es: '83 kg', de: '83 kg', ko: '83 kg', zh: '83 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: '1 × HEPA + aktívszén', en: '1 × HEPA + activated carbon', it: '1 × HEPA + carbone attivo', es: '1 × HEPA + carbón activo', de: '1 × HEPA + Aktivkohle', ko: '1 × HEPA + 활성탄', zh: '1 × HEPA + 活性炭' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F6 labirint', en: 'F6 labyrinth', it: 'Labirinto F6', es: 'Laberinto F6', de: 'F6-Labyrinth', ko: 'F6 래버린스', zh: 'F6 迷宫式' } },
+        ],
+      },
+      {
+        name: '800i 3-Tier',
+        purpose: {
+          hu: 'Háromszintes szekrény KÉT főszűrővel — külön HEPA és külön kémiai szűrő —, F8/F9 labirint előszűrővel. Nagyobb szűrőkapacitás, tehát ritkább csere és jobb gázmegkötés, ha a folyamat sok oldószergőzt termel.',
+          en: 'A 3-tier cabinet with TWO main filters — a separate HEPA and a separate chemical filter — and an F8/F9 labyrinth pre-filter. More filter capacity, hence less frequent changes and better gas retention when a process produces a lot of solvent vapour.', it: 'Mobile a 3 livelli con DUE filtri principali — uno HEPA e uno chimico separati — e prefiltro a labirinto F8/F9. Maggiore capacità filtrante, quindi sostituzioni meno frequenti e migliore ritenzione dei gas quando il processo genera molti vapori di solvente.', es: 'Armario de 3 niveles con DOS filtros principales — uno HEPA y otro químico por separado — y prefiltro de laberinto F8/F9. Mayor capacidad de filtración, por tanto cambios menos frecuentes y mejor retención de gases cuando el proceso genera muchos vapores de disolvente.', de: 'Dreistufiges Gehäuse mit ZWEI Hauptfiltern — je ein separater HEPA- und Chemiefilter — sowie F8/F9-Labyrinth-Vorfilter. Mehr Filterkapazität, also seltenere Wechsel und bessere Gasbindung, wenn ein Prozess viel Lösemitteldampf erzeugt.', ko: '메인 필터 2개(HEPA와 화학 필터를 각각)와 F8/F9 래버린스 프리필터를 갖춘 3단 캐비닛입니다. 여과 용량이 커서 교체 주기가 길고, 용제 증기가 많이 발생하는 공정에서 가스 포집 성능이 더 좋습니다.', zh: '三层机箱，配两个主滤芯——HEPA 与化学滤芯各一——以及 F8/F9 迷宫式前置滤芯。过滤容量更大，因此更换更少，且在产生大量溶剂蒸气的工艺中气体吸附效果更好。',
+        },
+        datasheet: '/datasheets/purex-800i-3-tier.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1155 mm', en: '1155 mm', it: '1155 mm', es: '1155 mm', de: '1155 mm', ko: '1155 mm', zh: '1155 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '95 kg', en: '95 kg', it: '95 kg', es: '95 kg', de: '95 kg', ko: '95 kg', zh: '95 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: '2 × (HEPA és kémiai külön)', en: '2 × (separate HEPA and chemical)', it: '2 × (HEPA e chimico separati)', es: '2 × (HEPA y químico por separado)', de: '2 × (HEPA und chemisch getrennt)', ko: '2 × (HEPA와 화학 별도)', zh: '2 ×（HEPA 与化学分开）' } },
+          { label: { hu: 'Előszűrő', en: 'Pre-filter', it: 'Prefiltro', es: 'Prefiltro', de: 'Vorfilter', ko: '프리필터', zh: '前置滤芯' }, value: { hu: 'F8/F9 labirint', en: 'F8/F9 labyrinth', it: 'Labirinto F8/F9', es: 'Laberinto F8/F9', de: 'F8/F9-Labyrinth', ko: 'F8/F9 래버린스', zh: 'F8/F9 迷宫式' } },
+        ],
+      },
+      {
+        name: '800i PVC',
+        purpose: {
+          hu: 'A háromszintes felépítés PVC-hez: két PVC-specifikus főszűrő, szemcsés és kémiai felszívó lap, valamint korrózióvédő bevonat a belső felületeken. A sor legnagyobb szűrőkapacitása.',
+          en: 'The 3-tier build for PVC: two PVC-specific main filters, granular and chemical absorbent pads, and a corrosion-resistant coating on the internal surfaces. The largest filter capacity in the range.', it: 'La struttura a 3 livelli per il PVC: due filtri principali specifici per PVC, pad assorbenti granulari e chimici e un rivestimento anticorrosione sulle superfici interne. La massima capacità filtrante della gamma.', es: 'La estructura de 3 niveles para PVC: dos filtros principales específicos para PVC, almohadillas absorbentes granulares y químicas, y un recubrimiento anticorrosión en las superficies internas. La mayor capacidad de filtración de la gama.', de: 'Der dreistufige Aufbau für PVC: zwei PVC-spezifische Hauptfilter, granulare und chemische Absorptionsmatten sowie eine Korrosionsschutzbeschichtung auf den Innenflächen. Die größte Filterkapazität der Reihe.', ko: 'PVC용 3단 구성입니다. PVC 전용 메인 필터 2개, 과립형 및 화학 흡수 패드, 내부 표면 방식 코팅을 갖추었습니다. 제품군 중 여과 용량이 가장 큽니다.', zh: '面向 PVC 的三层结构：两个 PVC 专用主滤芯、颗粒与化学吸附棉，以及内表面防腐涂层。为该系列中过滤容量最大的机型。',
+        },
+        datasheet: '/datasheets/purex-800i-pvc.pdf',
+        params: [
+          { label: { hu: 'Szekrénymagasság', en: 'Cabinet height', it: 'Altezza mobile', es: 'Altura del armario', de: 'Gehäusehöhe', ko: '캐비닛 높이', zh: '机箱高度' }, value: { hu: '1155 mm', en: '1155 mm', it: '1155 mm', es: '1155 mm', de: '1155 mm', ko: '1155 mm', zh: '1155 mm' } },
+          { label: { hu: 'Tömeg', en: 'Weight', it: 'Peso', es: 'Peso', de: 'Gewicht', ko: '중량', zh: '重量' }, value: { hu: '100 kg', en: '100 kg', it: '100 kg', es: '100 kg', de: '100 kg', ko: '100 kg', zh: '100 kg' } },
+          { label: { hu: 'Főszűrő', en: 'Main filter', it: 'Filtro principale', es: 'Filtro principal', de: 'Hauptfilter', ko: '메인 필터', zh: '主滤芯' }, value: { hu: '2 × PVC-specifikus', en: '2 × PVC-specific', it: '2 × specifici per PVC', es: '2 × específicos para PVC', de: '2 × PVC-spezifisch', ko: '2 × PVC 전용', zh: '2 × PVC 专用' } },
+          { label: { hu: 'Korrózióvédelem', en: 'Corrosion protection', it: 'Protezione dalla corrosione', es: 'Protección contra la corrosión', de: 'Korrosionsschutz', ko: '부식 방지', zh: '防腐蚀' }, value: { hu: 'belső bevonat', en: 'internal coating', it: 'rivestimento interno', es: 'recubrimiento interno', de: 'Innenbeschichtung', ko: '내부 코팅', zh: '内部涂层' } },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'purex-ifume',
+    category: 'fust-es-porelszivok',
+    name: 'Purex iFume 400i',
+    brand: 'Purex',
+    image: '/images/products/purex-ifume.webp',
+    datasheet: '/datasheets/purex-ifume-400i.pdf',
+    short: {
+      hu: 'Lézeres kódoláshoz és jelöléshez: 400 m³/h, színes érintőkijelző, 100–230 V bárhol a világon.',
+      en: 'For laser coding and marking: 400 m³/h, colour touch screen, 100–230 V anywhere in the world.', it: 'Per codifica e marcatura laser: 400 m³/h, touch screen a colori, 100–230 V in tutto il mondo.', es: 'Para codificación y marcaje láser: 400 m³/h, pantalla táctil en color, 100–230 V en cualquier parte del mundo.', de: 'Für Lasercodierung und -beschriftung: 400 m³/h, Farb-Touchscreen, 100–230 V weltweit.', ko: '레이저 코딩 및 마킹용: 400 m³/h, 컬러 터치스크린, 전 세계 100–230 V 대응.', zh: '用于激光喷码与打标：400 m³/h，彩色触摸屏，全球 100–230 V 通用。',
+    },
+    description: {
+      hu: 'Az iFume 400i kifejezetten a lézeres kódolás és jelölés mellé készült. Ugyanaz a 400 m³/h légmennyiség és ugyanaz a HEPA + aktívszén szűrés, mint a 400i-ben, két lényeges különbséggel: teljes színes érintőkijelzőt kapott a menüszerű kezelőfelület helyett, és 100–230 V között bárhol a világon ugyanazt a teljesítményt adja — nem kell feszültségváltozat szerint rendelni. Az automatikus légmennyiség-szabályozás itt is tartja az elszívást a szűrő telítődésével, a gáz- és részecskeérzékelő pedig figyelmeztet, ha a szűrő cserére szorul.',
+      en: 'The iFume 400i was built specifically to accompany laser coding and marking. It has the same 400 m³/h airflow and the same HEPA + activated carbon filtration as the 400i, with two meaningful differences: a full-colour touch screen instead of the menu-style interface, and the same performance anywhere in the world between 100 and 230 V — no need to order a voltage-specific variant. Automatic flow control keeps the extraction rate up as the filter loads here too, and gas and particle sensors warn when a filter needs changing.', it: 'L’iFume 400i è stato progettato specificamente per accompagnare la codifica e la marcatura laser. Ha la stessa portata di 400 m³/h e la stessa filtrazione HEPA + carbone attivo della 400i, con due differenze sostanziali: un touch screen a colori invece dell’interfaccia a menu e le stesse prestazioni in tutto il mondo tra 100 e 230 V, senza dover ordinare una variante specifica per la tensione. Anche qui il controllo automatico della portata mantiene l’aspirazione mentre il filtro si carica, e i sensori di gas e particelle avvisano quando un filtro va sostituito.', es: 'El iFume 400i se diseñó específicamente para acompañar la codificación y el marcaje láser. Tiene el mismo caudal de 400 m³/h y la misma filtración HEPA + carbón activo que el 400i, con dos diferencias importantes: una pantalla táctil en color en lugar de la interfaz de menús, y el mismo rendimiento en cualquier parte del mundo entre 100 y 230 V, sin necesidad de pedir una variante según la tensión. Aquí también el control automático del caudal mantiene la extracción a medida que el filtro se colmata, y los sensores de gas y partículas avisan cuando hay que cambiar un filtro.', de: 'Der iFume 400i wurde speziell als Begleiter für Lasercodierung und -beschriftung entwickelt. Er hat die gleiche Luftmenge von 400 m³/h und die gleiche HEPA-+-Aktivkohle-Filtration wie der 400i, mit zwei wesentlichen Unterschieden: einen Farb-Touchscreen anstelle der menügeführten Bedienung und weltweit gleiche Leistung zwischen 100 und 230 V — eine spannungsspezifische Variante muss nicht bestellt werden. Auch hier hält die automatische Luftmengenregelung die Absaugleistung, während der Filter zusetzt, und Gas- und Partikelsensoren warnen, wenn ein Filter gewechselt werden muss.', ko: 'iFume 400i는 레이저 코딩·마킹 공정에 맞춰 개발된 모델입니다. 400i와 동일한 400 m³/h 풍량과 HEPA + 활성탄 여과를 갖추었으나 두 가지가 다릅니다. 메뉴식 조작부 대신 풀컬러 터치스크린을 사용하고, 100~230 V 범위에서 전 세계 어디서나 동일한 성능을 내므로 전압별 사양을 따로 주문할 필요가 없습니다. 자동 풍량 제어가 필터가 막혀가도 집진량을 유지하며, 가스·입자 센서가 필터 교체 시점을 알려 줍니다.', zh: 'iFume 400i 专为配合激光喷码与打标而设计。它与 400i 具有相同的 400 m³/h 风量和 HEPA + 活性炭过滤，但有两点重要差异：采用全彩触摸屏而非菜单式操作界面；在 100 至 230 V 范围内于全球各地性能一致，无需按电压选订不同版本。此处的自动风量控制同样能在滤芯逐渐堵塞时维持抽风量，气体与颗粒物传感器则会在需要更换滤芯时提醒。',
+    },
+    features: [
+      { hu: 'Teljes színes érintőkijelző', en: 'Full-colour touch screen display', it: 'Display touch screen a colori', es: 'Pantalla táctil a todo color', de: 'Farb-Touchscreen-Display', ko: '풀컬러 터치스크린 디스플레이', zh: '全彩触摸屏显示' },
+      { hu: '100–230 V, teljesítményveszteség nélkül bárhol a világon', en: '100–230 V, no loss of performance anywhere in the world', it: '100–230 V, senza perdita di prestazioni in tutto il mondo', es: '100–230 V, sin pérdida de rendimiento en cualquier parte del mundo', de: '100–230 V, weltweit ohne Leistungsverlust', ko: '100–230 V, 전 세계에서 성능 저하 없이 사용', zh: '100–230 V，全球通用且性能不减' },
+      { hu: 'Légmennyiség 400 m³/h, 1,2 kW, hangszint <60 dBA', en: 'Airflow 400 m³/h, 1.2 kW, sound level <60 dBA', it: 'Portata d’aria 400 m³/h, 1,2 kW, livello sonoro <60 dBA', es: 'Caudal de aire 400 m³/h, 1,2 kW, nivel sonoro <60 dBA', de: 'Luftmenge 400 m³/h, 1,2 kW, Schallpegel <60 dBA', ko: '풍량 400 m³/h, 1.2 kW, 소음 <60 dBA', zh: '风量 400 m³/h，1.2 kW，噪声 <60 dBA' },
+      { hu: 'HEPA + aktívszén főszűrő, F6 labirint előszűrő', en: 'HEPA + activated carbon main filter, F6 labyrinth pre-filter', it: 'Filtro principale HEPA + carbone attivo, prefiltro a labirinto F6', es: 'Filtro principal HEPA + carbón activo, prefiltro de laberinto F6', de: 'Hauptfilter HEPA + Aktivkohle, F6-Labyrinth-Vorfilter', ko: 'HEPA + 활성탄 메인 필터, F6 래버린스 프리필터', zh: 'HEPA + 活性炭主滤芯，F6 迷宫式前置滤芯' },
+      { hu: 'Automatikus légmennyiség-szabályozás, gáz- és részecskeérzékelő', en: 'Automatic flow control, gas and particle sensors', it: 'Controllo automatico della portata, sensori di gas e particelle', es: 'Control automático del caudal, sensores de gas y partículas', de: 'Automatische Luftmengenregelung, Gas- und Partikelsensoren', ko: '자동 풍량 제어, 가스 및 입자 센서', zh: '自动风量控制，气体与颗粒物传感器' },
+      { hu: 'Szekrény 1070 × 528 × 465 mm, 60 kg', en: 'Cabinet 1070 × 528 × 465 mm, 60 kg', it: 'Mobile 1070 × 528 × 465 mm, 60 kg', es: 'Armario 1070 × 528 × 465 mm, 60 kg', de: 'Gehäuse 1070 × 528 × 465 mm, 60 kg', ko: '캐비닛 1070 × 528 × 465 mm, 60 kg', zh: '机箱 1070 × 528 × 465 mm，60 kg' },
     ],
   },
 ];
