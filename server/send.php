@@ -14,7 +14,7 @@
  *      írd át. A FROM mindig a saját domainen lévő cím legyen (SPF/DKIM miatt);
  *      a látogató címe Reply-To-ba kerül, így a Válasz gomb neki válaszol.
  *   3. Másold mellé a `.user.ini`-t is: a PHP alapértelmezett feltöltési
- *      korlátja gyakran 2 MB, a weblap viszont 10 MB-ig enged csatolni.
+ *      korlátja gyakran 2 MB, a weblap viszont 7 MB-ig enged csatolni.
  *   4. A build: NEXT_PUBLIC_FORM_ENDPOINT=https://<domain>/send.php
  *
  * Nem igényel Composer-t és külső könyvtárat: sima mail() hívás.
@@ -26,7 +26,10 @@ declare(strict_types=1);
 const RECIPIENT      = 'info@blueway.hu';
 const FROM           = 'info@blueway.hu';          // saját domain, SPF/DKIM alá
 const FROM_NAME      = 'Blueway Trade weboldal';
-const MAX_TOTAL_SIZE = 10 * 1024 * 1024;           // csatolmányok együtt, mint a kliensen
+// Csatolmányok együtt, mint a kliensen. 7 MB, mert a tárhely levelezője a
+// ~10 MB-nál nagyobb levelet némán eldobja, a base64 pedig ~37%-ot hizlal:
+// 7 MB → ~9,6 MB levél (mérve: az 5 MB-os próba megérkezett, a 8 MB-os nem).
+const MAX_TOTAL_SIZE = 7 * 1024 * 1024;
 const RATE_LIMIT     = 5;                          // küldés / IP / óra
 const ALLOWED_EXT    = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'ai', 'eps', 'zip'];
 
@@ -206,7 +209,7 @@ foreach ($_FILES as $file) {
         $totalSize += (int) filesize($tmps[$i]);
         $GLOBALS['bw_meret'] = $totalSize;
         if ($totalSize > MAX_TOTAL_SIZE) {
-            fail(413, 'The attachments exceed 10 MB in total.');
+            fail(413, 'The attachments exceed 7 MB in total.');
         }
         // Rögtön kódolt alakban tároljuk, és a nyers tartalmat elengedjük.
         // Enélkül a csúcsmemória a fájl méretének öt-hatszorosa lenne (nyers
