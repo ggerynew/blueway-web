@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { AnalyticsRouteTracker } from '@/components/analytics';
+import { PartsFinder } from '@/components/parts-finder';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { SITE_URL, absUrl } from '@/lib/site';
@@ -73,6 +74,10 @@ export default async function LangLayout({
         {children}
       </main>
       <Footer lang={lang} dict={dict} />
+      {/* Alkatrészkereső — jobbról nyíló fül. Minden oldalról elérhető, mert
+          az alkatrész gyakran nem a termékoldalról indulva jut eszébe a
+          vevőnek: a szervizhívás közben nyitja ki. */}
+      <PartsFinder lang={lang} />
       <Toaster position="bottom-right" richColors />
       {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
       <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
