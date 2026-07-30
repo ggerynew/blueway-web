@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { LinkedText } from '@/components/linked-text';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { getCategory } from '@/lib/products';
 import { pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -31,7 +32,8 @@ export default async function FaqPage({
 }: Readonly<{ params: Promise<{ lang: string }> }>) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  const dict = getDictionary(lang);
+  const nyelv = lang; // isLocale után már Locale — a beágyazott függvény ezt látja
+  const dict = getDictionary(nyelv);
   const { faq } = dict;
 
   // FAQPage strukturált adat — a Google ebből építhet gazdag találatot
@@ -44,6 +46,27 @@ export default async function FaqPage({
       acceptedAnswer: { '@type': 'Answer', text: item.a },
     })),
   };
+
+  /**
+   * A válasz alatti hivatkozás felirata azt mondja meg, HOVA visz.
+   *
+   * Korábban minden nem tudástári hivatkozás „Címke ajánlatkérés" feliratot
+   * kapott, függetlenül a céljától — az elszívós kérdéseknél például a
+   * kategórialapra vitt, de ajánlatkérést ígért. A felirat mostantól a
+   * célpontból következik, tehát nem tud eltérni tőle.
+   */
+  function hivatkozasFelirata(href: string): string {
+    if (href.startsWith('/tudastar')) return dict.knowledge.readMore;
+    const kategoria = href.match(/^\/termekek\/([a-z0-9-]+)$/);
+    if (kategoria) {
+      const cat = getCategory(kategoria[1]);
+      if (cat) return cat.name[nyelv];
+    }
+    if (href === '/termekek') return dict.products.title;
+    if (href === '/gyartok') return dict.manufacturers.title;
+    if (href === '/szolgaltatasok') return dict.nav.services;
+    return dict.nav.labelQuote;
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
@@ -80,10 +103,7 @@ export default async function FaqPage({
                     href={`/${lang}${item.href}`}
                     className="mt-3 inline-block text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
                   >
-                    {item.href.startsWith('/tudastar')
-                      ? dict.knowledge.readMore
-                      : dict.nav.labelQuote}{' '}
-                    →
+                    {hivatkozasFelirata(item.href)} →
                   </Link>
                 )}
               </div>
