@@ -243,10 +243,18 @@ def tomorit(gepek: list[dict], alkatreszek: list[dict]) -> dict:
     való — 7894 sor, de csak 2730 EGYEDI cikkszám. A keresőnek a cikkszám az
     egység („ez az alkatrész ezekbe a gépekbe való"), ezért itt cikkszámonként
     egy sor áll, a gépek és a szerelési egységek pedig sorszámmal hivatkoznak
-    egy-egy névtáblára. Így lesz a 1,27 MB-ból 142 kB (tömörítve 26 kB), ami
+    egy-egy névtáblára. Így lesz a 1,27 MB-ból ~150 kB (tömörítve ~27 kB), ami
     már nyugodtan letölthető a keresőfül első megnyitásakor.
 
     A sor: [cikkszám, megnevezés, gép-sorszámok, egység-sorszámok, SPR]
+
+    A GÉP ÉS AZ EGYSÉG SORSZÁMA EGYMÁSHOZ TARTOZIK: a c[i] az a szerelési
+    egység, amelyben az alkatrész a g[i] gép listájában szerepel (−1, ha ott
+    nincs megnevezve). Ez nem szépészeti kérdés. Egy szabványcsavar 28 gépben
+    fordul elő, összesen tizenöt különböző szerelési egység alatt — ha ezt egy
+    közös halmazba olvasztjuk, a csavar minden keresésre illeszkedni fog, mert
+    a tizenöt név közt ott lesz a „Printhead Assembly" is. Élesben pontosan ez
+    történt: az „A4+ fej"-re szabvány rögzítőelemek jöttek elő.
     """
     gep_ix = {g['id']: i for i, g in enumerate(gepek)}
     csoportok = sorted({x['csoport'] for x in alkatreszek if x['csoport']})
@@ -254,10 +262,13 @@ def tomorit(gepek: list[dict], alkatreszek: list[dict]) -> dict:
 
     szerint: dict[str, dict] = {}
     for x in alkatreszek:
-        e = szerint.setdefault(x['cikkszam'], {'nev': '', 'g': set(), 'c': set(), 'spr': ''})
-        e['g'].add(gep_ix[x['gep']])
-        if x['csoport']:
-            e['c'].add(cs_ix[x['csoport']])
+        e = szerint.setdefault(x['cikkszam'], {'nev': '', 'gc': {}, 'spr': ''})
+        gi = gep_ix[x['gep']]
+        ci = cs_ix[x['csoport']] if x['csoport'] else -1
+        # Egy gépnek több dokumentuma is lehet; az elsőként talált, megnevezett
+        # egységet tartjuk meg.
+        if e['gc'].get(gi, -1) < 0:
+            e['gc'][gi] = ci
         if x['megnevezes'] and not e['nev']:
             e['nev'] = x['megnevezes']
         # Ugyanaz az alkatrész két listában eltérő osztályt kaphat; a szigorúbb
@@ -265,14 +276,16 @@ def tomorit(gepek: list[dict], alkatreszek: list[dict]) -> dict:
         if x['spr'] and (not e['spr'] or x['spr'] < e['spr']):
             e['spr'] = x['spr']
 
+    sorok = []
+    for cikk, e in sorted(szerint.items()):
+        g = sorted(e['gc'])
+        sorok.append([cikk, e['nev'], g, [e['gc'][i] for i in g], e['spr']])
+
     return {
         'forras': 'cab Produkttechnik — gyári alkatrészlisták',
         'gepek': [{'id': g['id'], 'nev': g['nev'], 'k': g['kulcsok']} for g in gepek],
         'csoportok': csoportok,
-        't': [
-            [cikk, e['nev'], sorted(e['g']), sorted(e['c']), e['spr']]
-            for cikk, e in sorted(szerint.items())
-        ],
+        't': sorok,
     }
 
 

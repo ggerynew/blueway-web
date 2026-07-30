@@ -29,7 +29,13 @@ export interface AlkatreszIndex {
   forras: string;
   gepek: { id: string; nev: string; k: string[] }[];
   csoportok: string[];
-  /** [cikkszám, megnevezés, gép-sorszámok, egység-sorszámok, SPR-osztály] */
+  /**
+   * [cikkszám, megnevezés, gép-sorszámok, egység-sorszámok, SPR-osztály]
+   *
+   * A gép és az egység sorszáma EGYMÁSHOZ TARTOZIK: a c[i] az a szerelési
+   * egység, amelyben az alkatrész a g[i] gép gyári listájában szerepel
+   * (−1, ha ott nincs megnevezve).
+   */
   t: [string, string, number[], number[], string][];
 }
 
@@ -43,6 +49,8 @@ export interface Talalat {
   /** A cab raktározási ajánlása: A a leginkább ajánlott, D a legkevésbé. */
   spr: string;
   pont: number;
+  /** Illeszkedett-e maga a MEGNEVEZÉS (nem csak a szerelési egység neve). */
+  nevre: boolean;
 }
 
 /** Cikkszám alakja a cab listáiban: 7 számjegy, pont, 3 számjegy. */
@@ -68,6 +76,8 @@ export function normal(s: string): string {
 const SZOTAR: Record<string, string[]> = {
   // ——— nyomtatófej, nyomtatás ———
   nyomtatofej: ['printhead'], nyomofej: ['printhead'], termofej: ['printhead'],
+  // A vevő ritkán írja ki: „A4+ fej" a tipikus kérdés.
+  fej: ['printhead'], kopf: ['printhead'],
   druckkopf: ['printhead'], thermokopf: ['printhead'],
   'testina di stampa': ['printhead'], testina: ['printhead'],
   'cabezal de impresion': ['printhead'], cabezal: ['printhead'],
@@ -93,7 +103,9 @@ const SZOTAR: Record<string, string[]> = {
   电机: ['motor'], 马达: ['motor'],
   szij: ['belt'], fogasszij: ['belt'], riemen: ['belt'], zahnriemen: ['belt'],
   cinghia: ['belt'], correa: ['belt'], belt: ['belt'], 벨트: ['belt'], 皮带: ['belt'],
-  fogaskerek: ['gear'], kerek: ['gear'], zahnrad: ['gear'], getriebe: ['gear'],
+  // A „kerék" nem fogaskerék: a gyári listákban a Wheel és a Gear külön tétel.
+  fogaskerek: ['gear'], kerek: ['wheel', 'gear'], rad: ['wheel'],
+  szijtarcsa: ['pulley'], zahnrad: ['gear'], getriebe: ['gear'],
   ingranaggio: ['gear'], engranaje: ['gear'], gear: ['gear'], 기어: ['gear'], 齿轮: ['gear'],
   tengely: ['shaft', 'axle'], welle: ['shaft'], achse: ['axle'],
   albero: ['shaft'], eje: ['shaft'], 축: ['shaft'], 轴: ['shaft'],
@@ -143,7 +155,7 @@ const SZOTAR: Record<string, string[]> = {
   pneumatika: ['pneumatic'], pneumatik: ['pneumatic'],
   munkahenger: ['cylinder'], zylinder: ['cylinder'], cilindro: ['cylinder'],
   cylinder: ['cylinder'],
-  tapadokorong: ['pad'], parna: ['pad'], talp: ['pad', 'plate'],
+  tapadokorong: ['pad'], parna: ['pad'], talp: ['pad', 'plate', 'foot'],
   saugplatte: ['pad'], stempel: ['pad'],
   applikator: ['applicator'], applicator: ['applicator'],
 
@@ -175,13 +187,41 @@ const SZOTAR: Record<string, string[]> = {
   ventilator: ['fan'], lufter: ['fan'], ventola: ['fan'], fan: ['fan'],
   szuro: ['filter'], filter: ['filter'], filtro: ['filter'],
   sin: ['rail'], schiene: ['rail'],
+
+  // ——— további hétköznapi szavak, amiket a gyári listák is ismernek ———
+  // Csak olyan angol kulcs kerül ide, ami tényleg előfordul a jegyzékben;
+  // egy nem létező szóra mutató bejegyzés csak halott súly lenne.
+  keret: ['frame'], vaz: ['frame'], rahmen: ['frame'],
+  gomb: ['knob', 'button'], forgatogomb: ['knob'],
+  kefe: ['brush'], burste: ['brush'],
+  lampa: ['lamp'], vilagitas: ['lamp'], lampe: ['lamp'],
+  csap: ['pin'], csapszeg: ['pin', 'bolt'], stift: ['pin'], bolzen: ['bolt'],
+  zar: ['lock'], retesz: ['lock'], zarszerkezet: ['locking', 'lock'],
+  verriegelung: ['locking', 'lock'],
+  magnes: ['magnet'], magnet: ['magnet'],
+  penge: ['blade'], klinge: ['blade'],
+  cimke: ['label'], etikett: ['label'],
+  fuss: ['foot'],
+  bilincs: ['clamp', 'clip'], kapocs: ['clip'], schelle: ['clamp'],
+  hazszerkezet: ['shell'], burkolatelem: ['shell'],
+  csillapito: ['damper'], dampfer: ['damper'],
 };
 
 const SZOTAR_KULCSOK = Object.keys(SZOTAR);
 /** Latin betűs kulcs: a beírt szó ELEJÉT hasonlítjuk (ragozás miatt). */
 const LATIN = /^[a-z0-9 '-]+$/;
-/** Három betűnél rövidebb tő túl sok szóba beleillik („kar" a „kártyá"-ba). */
-const ROVID = 3;
+
+/**
+ * Mennyi ragadhat a szótő végére.
+ *
+ * A magyar toldalékol: „nyomtatófejet", „csavarokat". Puszta előtag-illesztés
+ * viszont túl bőkezű: a „tapadókorong" a „táp" tővel kezdődik, a „kártya" a
+ * „kar"-ral. Ezért a megengedett végződés a tő hosszához igazodik — rövid
+ * tőnél legfeljebb két betű, hosszabbnál négy.
+ */
+function ragHatar(to: string): number {
+  return Math.min(4, Math.max(2, to.length - 1));
+}
 
 /**
  * A beírt kérdésből angol kulcsszavak. Ha a beírt szó nincs a szótárban,
@@ -195,10 +235,11 @@ export function angolra(kerdes: string): string[] {
 
   for (const kulcs of SZOTAR_KULCSOK) {
     const talalt = LATIN.test(kulcs)
-      ? szavak.some((sz) =>
-          kulcs.length <= ROVID
-            ? sz === kulcs
-            : sz.startsWith(kulcs) || (sz.length >= 4 && kulcs.startsWith(sz)),
+      ? szavak.some(
+          (sz) =>
+            (sz.startsWith(kulcs) && sz.length - kulcs.length <= ragHatar(kulcs)) ||
+            // Rövidebbre írta, mint a szótő: „nyomtató" a „nyomtatófej"-hez.
+            (sz.length >= 4 && kulcs.startsWith(sz)),
         )
       : n.includes(kulcs);
     if (talalt) SZOTAR[kulcs].forEach((x) => ki.add(x));
@@ -207,6 +248,25 @@ export function angolra(kerdes: string): string[] {
     if (sz.length >= 3) ki.add(sz);
   }
   return [...ki];
+}
+
+/**
+ * A géptípus nevét kivesszük a keresőszavak közül.
+ *
+ * A típusnév a SZŰRÉS dolga, nem a rangsorolásé. Enélkül a „SQUIX 4
+ * nyomtatófej" kérdésre a „Printhead 4.3/200 SQUIX RFID" került előre a sima
+ * nyomtatófej elé — pusztán azért, mert a nevében is szerepel a SQUIX szó.
+ * A gép már úgyis szűkíti a kört; a szónak nem szabad még pontot is adnia.
+ */
+function gepNelkul(index: AlkatreszIndex, kerdes: string): string {
+  let n = normal(kerdes);
+  for (const g of index.gepek) {
+    for (const kulcs of g.k) {
+      const k = normal(kulcs);
+      if (k.length >= 2 && n.includes(k)) n = n.split(k).join(' ');
+    }
+  }
+  return n.trim();
 }
 
 /** A kérdésben szereplő géptípusok (azonosítók). */
@@ -228,8 +288,22 @@ export function gepFelismeres(index: AlkatreszIndex, kerdes: string): string[] {
   return ki.sort((a, b) => b.hossz - a.hossz).map((x) => x.id);
 }
 
-/** A cab ajánlási osztálya rangsorolásra: A a legfontosabb raktári tétel. */
-const SPR_PONT: Record<string, number> = { A: 6, B: 4, C: 2, D: 1 };
+/**
+ * A cab ajánlási osztálya HOLTVERSENY-ELDÖNTŐ, nem fő szempont.
+ *
+ * Korábban A = 6 pont volt, ami többet ért, mint egy találat magában a
+ * megnevezésben (3 pont) — így egy „A" osztályú szabványcsavar megelőzte a
+ * valóban keresett alkatrészt. Az osztály azt mondja meg, mit érdemes
+ * raktáron tartani; azt nem, hogy a vevő most mit keres.
+ */
+const SPR_PONT: Record<string, number> = { A: 1.2, B: 0.8, C: 0.4, D: 0.2 };
+
+/** Találat a megnevezésben: ez a fő szempont. */
+const NEV_PONT = 4;
+/** A megnevezés ELEJÉN álló találat még jobb („Printhead 4/203"). */
+const NEV_ELEJEN = 2;
+/** A szerelési egység neve csak támpont: sok alkatrész osztozik rajta. */
+const CSOPORT_PONT = 1;
 
 export interface KeresesEredmeny {
   talalatok: Talalat[];
@@ -266,32 +340,48 @@ export function keres(
   }
 
   // 2. Szöveges keresés a megnevezésben és a szerelési egység nevében.
-  const kulcsok = angolra(kerdes);
+  const kulcsok = angolra(gepNelkul(index, kerdes));
   if (!kulcsok.length) return { talalatok: [], erintettGepek: [], cikkszamra: false };
 
   const pontozott: Talalat[] = [];
   for (const sor of index.t) {
-    if (gepIdx >= 0 && !sor[2].includes(gepIdx)) continue;
+    // Ha ismerjük a gépet, csak az ő listájában szereplő tételek jöhetnek —
+    // és a szerelési egység is CSAK az, ami annál a gépnél áll. Enélkül egy
+    // 28 gépben előforduló csavar tizenöt egységnév alatt illeszkedne.
+    const hely = gepIdx >= 0 ? sor[2].indexOf(gepIdx) : -1;
+    if (gepIdx >= 0 && hely < 0) continue;
+    const egyseg =
+      hely >= 0
+        ? normal(index.csoportok[sor[3][hely]] ?? '')
+        : sor[3].map((i) => (i >= 0 ? normal(index.csoportok[i]) : '')).join(' ');
+
     const nev = normal(sor[1]);
-    const egyseg = sor[3].map((i) => normal(index.csoportok[i])).join(' ');
-    let pont = 0;
+    let nevPont = 0;
+    let csoportPont = 0;
     for (const k of kulcsok) {
-      if (!k) continue;
-      if (nev.includes(k)) pont += nev.startsWith(k) ? 5 : 3;
-      if (egyseg.includes(k)) pont += 2;
+      if (k.length < 3) continue;
+      if (nev.includes(k)) nevPont += NEV_PONT + (nev.startsWith(k) ? NEV_ELEJEN : 0);
+      if (egyseg.includes(k)) csoportPont += CSOPORT_PONT;
     }
-    if (!pont) continue;
-    pont += SPR_PONT[sor[4]] ?? 0;
-    // Kevesebb gépbe való alkatrész jellemzően a jellegzetes, keresett tétel;
-    // a mindenhol előforduló szabványcsavar hátrébb való.
-    if (sor[2].length > 6) pont -= 2;
-    pontozott.push(sorra(sor, gepNev, index.csoportok, pont));
+    if (!nevPont && !csoportPont) continue;
+
+    let pont = nevPont + csoportPont + (SPR_PONT[sor[4]] ?? 0);
+    // Gép nélkül a mindenhol előforduló szabványelem hátrébb való: ilyenkor
+    // nincs mihez kötni, tehát a jellegzetes tétel a hasznosabb válasz.
+    if (gepIdx < 0 && sor[2].length > 8) pont -= 1;
+    pontozott.push({ ...sorra(sor, gepNev, index.csoportok, pont), nevre: nevPont > 0 });
   }
 
-  pontozott.sort((a, b) => b.pont - a.pont || a.cikkszam.localeCompare(b.cikkszam));
+  // Ha van olyan találat, amelynek a MEGNEVEZÉSE illeszkedik, akkor a pusztán
+  // szerelési egység alapján bekerülteket eldobjuk. „Nyomtatófej"-re a
+  // nyomtatófej a válasz, nem a nyomtatófej-egység összes rögzítőcsavarja.
+  const nevesek = pontozott.filter((t) => t.nevre);
+  const vegleges = nevesek.length ? nevesek : pontozott;
+
+  vegleges.sort((a, b) => b.pont - a.pont || a.cikkszam.localeCompare(b.cikkszam));
   return {
-    talalatok: pontozott.slice(0, hatar),
-    erintettGepek: [...new Set(pontozott.flatMap((t) => t.gepek))],
+    talalatok: vegleges.slice(0, hatar),
+    erintettGepek: [...new Set(vegleges.flatMap((t) => t.gepek))],
     cikkszamra: false,
   };
 }
@@ -306,9 +396,10 @@ function sorra(
     cikkszam: sor[0],
     megnevezes: sor[1],
     gepek: sor[2].map((i) => gepNev[i]),
-    egysegek: sor[3].map((i) => csoportok[i]),
+    egysegek: [...new Set(sor[3].filter((i) => i >= 0).map((i) => csoportok[i]))],
     spr: sor[4],
     pont,
+    nevre: true,
   };
 }
 
