@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { DnbCertificate } from '@/components/dnb-certificate';
 import { Reveal } from '@/components/reveal';
-import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { SITE_URL, absUrl, pageMetadata } from '@/lib/site';
 
@@ -106,16 +106,14 @@ export default async function AboutPage({
         </Reveal>
       </div>
 
-      {/* Dun & Bradstreet (Bisnode) AAA tanúsítvány — kiemelt sáv */}
+      {/* Dun & Bradstreet tanúsítvány — kiemelt sáv, élő képként */}
       <Reveal delay={0.08}>
         <div className="mt-14 flex flex-col items-center gap-8 rounded-2xl border border-amber-300/70 bg-amber-50/60 p-8 md:flex-row md:p-10">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={asset('/images/brand/dnb-aaa-certificate.webp')}
-            alt={about.certificateTitle}
-            width={350}
-            height={95}
-            className="h-auto w-full max-w-[350px] shrink-0 rounded-xl bg-white p-3 shadow-sm"
+          <DnbCertificate
+            lang={lang}
+            dict={dict}
+            className="block w-full max-w-[350px] shrink-0 rounded-xl bg-white p-3 shadow-sm"
+            imgClassName="h-auto w-full border border-[#CCCCCC]"
           />
           <div>
             <h2 className="text-xl font-semibold tracking-tight md:text-2xl">

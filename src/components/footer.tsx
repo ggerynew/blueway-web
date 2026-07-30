@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CookieSettingsLink } from '@/components/cookie-settings-link';
+import { DnbCertificate } from '@/components/dnb-certificate';
 import { asset } from '@/lib/asset';
 import type { Dictionary, Locale } from '@/lib/i18n';
 
@@ -25,16 +26,12 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <p className="mt-2">{dict.footer.taxNumber}</p>
           <p>{dict.footer.regNumber}</p>
 
-          {/* Dun & Bradstreet (Bisnode) AAA tanúsítvány — minden oldal alján */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={asset('/images/brand/dnb-aaa-certificate.webp')}
-            alt={dict.ui.certificateAlt}
-            width={350}
-            height={95}
-            loading="lazy"
-            decoding="async"
-            className="mt-5 h-auto w-full max-w-[300px] rounded-lg bg-white p-2"
+          {/* Dun & Bradstreet tanúsítvány — minden oldal alján, élő képként */}
+          <DnbCertificate
+            lang={lang}
+            dict={dict}
+            className="mt-5 block w-fit rounded-lg bg-white p-2"
+            imgClassName="h-auto w-full max-w-[300px] border border-[#CCCCCC]"
           />
         </div>
 
