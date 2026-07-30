@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import { rememberLang } from '@/lib/consent';
 import { locales, type Locale } from '@/lib/i18n';
 
 /** A nyelv neve a saját nyelvén — hoverre (title) és felolvasóknak. */
@@ -110,6 +111,11 @@ export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
 
   function switchTo(next: Locale) {
     if (next === lang) return;
+    // A választást megjegyezzük, hogy a látogató legközelebb a gyökércímen
+    // (blueway.hu) is a saját nyelvén érkezzen meg. Csak akkor kerül süti a
+    // gépére, ha a kényelmi sütiket engedélyezte — az ellenőrzés a
+    // hozzájárulás-kezelőben van, nem itt.
+    rememberLang(next);
     const parts = pathname.split('/');
     if (parts.length > 1) parts[1] = next;
     router.push(parts.join('/') || `/${next}`);
