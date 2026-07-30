@@ -417,3 +417,39 @@ jobs:
           else
             echo "::warning::A .htaccess gyorsítótár-fejléce nem jelenik meg (kapott: '${FEJLEC:-semmi}'). Elképzelhető, hogy a tárhely nem olvassa a .htaccess-t."
           fi
+
+          # ——— A www-átirányítás iránya ——————————————————————————
+          # A kanonikus cím a www nélküli alak. A tárhely saját kapcsolója
+          # pont fordítva terelt, ezért azt letiltottuk, és az irányt a
+          # .htaccess adja. Itt azt mérjük, hova jut, aki a www-s címet üti be.
+          echo "— a www-átirányítás iránya —"
+          WWWHOVA=$(curl -sSL -o /dev/null --max-time 20 -w '%{url_effective}' "http://www.$HOSZT/" || echo "?")
+          echo "http://www.$HOSZT/ végállomása: $WWWHOVA"
+          case "$WWWHOVA" in
+            *"://www."*) echo "::warning::A www-s cím nem irányít át a www nélküli kanonikus alakra." ;;
+            *"$HOSZT"*)  echo "  rendben: a www a kanonikus, www nélküli címre irányít" ;;
+            *)           echo "::warning::A www-s cím váratlan helyre jut: $WWWHOVA" ;;
+          esac
+
+          # ——— HTTPS és tanúsítvány ————————————————————————————————
+          # A panel a saját ingyenes DV tanúsítványáról azt mondja, a
+          # szolgáltatás nem jogosult rá — itt az látszik, mit ad a kiszolgáló
+          # VALÓJÁBAN a 443-as porton: kinek szól, ki állította ki, meddig
+          # érvényes, és érvényes-e a böngészők szemével. Nem állítja meg a
+          # deployt: mérés, nem követelmény.
+          echo "— HTTPS és tanúsítvány —"
+          for GEP in "$HOSZT" "www.$HOSZT"; do
+            echo "$GEP:"
+            if TANU=$(echo | timeout 20 openssl s_client -connect "$GEP:443" -servername "$GEP" 2>/dev/null |
+                      openssl x509 -noout -subject -issuer -enddate -ext subjectAltName 2>/dev/null); then
+              printf '%s\n' "$TANU" | sed 's/^/  /'
+            else
+              echo "  nem adott tanúsítványt (a 443-as port nem válaszol, vagy nincs kiállítva)"
+            fi
+            HV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$GEP/" 2>/tmp/https-hiba.txt || true)
+            if [ "$HV" = "200" ] || [ "$HV" = "301" ]; then
+              echo "  https://$GEP/ -> $HV (a tanúsítványt a curl elfogadta)"
+            else
+              echo "  https://$GEP/ -> ${HV:-hiba}: $(head -c 200 /tmp/https-hiba.txt 2>/dev/null)"
+            fi
+          done
