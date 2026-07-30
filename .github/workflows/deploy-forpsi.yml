@@ -356,10 +356,14 @@ jobs:
           #    ilyenkor elakad — pontosan ezért lett a weblap végpontja
           #    relatív. A böngésző is arról a gépről küld, ahonnan az oldalt
           #    kapta, tehát ez a próba azt méri, amit a látogató tapasztal.
+          #    A SÉMÁT is a végállomásból vesszük, nem csak a gépnevet. A
+          #    tárhelyen be van kapcsolva a HTTPS-terelés, tehát egy http-s
+          #    POST ugyanígy 301-et kapna és elveszne — a próba pedig hamisan
+          #    azt jelentené, hogy a küldés nem működik.
           VEGSO=$(curl -sSL -o /dev/null --max-time 20 -w '%{url_effective}' "http://$HOSZT/" || echo "http://$HOSZT/")
-          KULDO=$(printf '%s' "$VEGSO" | sed 's#^https\?://##; s#/.*##')
-          echo "a küldés célgépe: $KULDO"
-          POSTV=$(curl -sS --max-time 25 -X POST -F '_gotcha=probe' "http://$KULDO/send.php" \
+          KULDO=$(printf '%s' "$VEGSO" | sed 's#/*$##')
+          echo "a küldés célja: $KULDO"
+          POSTV=$(curl -sS --max-time 25 -X POST -F '_gotcha=probe' "$KULDO/send.php" \
                   -o /tmp/sendpost.txt -w '%{http_code}' || echo 000)
           echo "POST /send.php -> $POSTV  válasz: $(head -c 60 /tmp/sendpost.txt 2>/dev/null)"
           if [ "$POSTV" = "200" ]; then
@@ -375,7 +379,7 @@ jobs:
           #    A válaszból kiderül, hogy a határméretű csatolmány eljut-e a
           #    szkriptig, mekkora levél lesz belőle, és mennyi memóriát kíván.
           head -c 7000000 /dev/urandom > /tmp/probe.png
-          PROBAV=$(curl -sS --max-time 120 -X POST "http://$KULDO/send.php" \
+          PROBAV=$(curl -sS --max-time 120 -X POST "$KULDO/send.php" \
                    -F '_probe=1' -F 'email=probe@blueway.hu' \
                    -F 'attachment=@/tmp/probe.png;type=image/png' \
                    -o /tmp/sendprobe.txt -w '%{http_code}' || echo 000)
@@ -398,7 +402,7 @@ jobs:
             echo "— valódi próbalevelek csatolmánnyal —"
             for MB in 7 8; do
               head -c $((MB * 1000000)) /dev/urandom > "/tmp/proba-$MB.png"
-              LV=$(curl -sS --max-time 180 -X POST "http://$KULDO/send.php" \
+              LV=$(curl -sS --max-time 180 -X POST "$KULDO/send.php" \
                    -F "_subject=Levélküldési próba — $MB MB csatolmány" \
                    -F 'email=info@blueway.hu' \
                    -F "uzenet=Automatikus próba a deployból: $MB MB-os csatolmány. Ha ez a levél megérkezett, ekkora csatolmánnyal működik a küldés." \
@@ -418,18 +422,30 @@ jobs:
             echo "::warning::A .htaccess gyorsítótár-fejléce nem jelenik meg (kapott: '${FEJLEC:-semmi}'). Elképzelhető, hogy a tárhely nem olvassa a .htaccess-t."
           fi
 
-          # ——— A www-átirányítás iránya ——————————————————————————
-          # A kanonikus cím a www nélküli alak. A tárhely saját kapcsolója
-          # pont fordítva terelt, ezért azt letiltottuk, és az irányt a
-          # .htaccess adja. Itt azt mérjük, hova jut, aki a www-s címet üti be.
-          echo "— a www-átirányítás iránya —"
-          WWWHOVA=$(curl -sSL -o /dev/null --max-time 20 -w '%{url_effective}' "http://www.$HOSZT/" || echo "?")
-          echo "http://www.$HOSZT/ végállomása: $WWWHOVA"
-          case "$WWWHOVA" in
-            *"://www."*) echo "::warning::A www-s cím nem irányít át a www nélküli kanonikus alakra." ;;
-            *"$HOSZT"*)  echo "  rendben: a www a kanonikus, www nélküli címre irányít" ;;
-            *)           echo "::warning::A www-s cím váratlan helyre jut: $WWWHOVA" ;;
-          esac
+          # ——— Az átirányítások iránya ————————————————————————————
+          # A kanonikus cím a www NÉLKÜLI, HTTPS-es alak. Két beállítás terel
+          # ide: a www-t a .htaccess szabálya (a tárhely saját, fordított
+          # irányú kapcsolója letiltva), a HTTPS-re pedig a panel "SSL
+          # redirect" kapcsolója. Mind a négy belépési pontot végigmérjük —
+          # ebből az is kiderül, ha a kettő egymásnak dobálná a látogatót.
+          # A -w '%{num_redirects}' azért kell, mert egy kör itt nem hibaként,
+          # hanem sok ugrásként látszik.
+          echo "— az átirányítások iránya —"
+          KANONIKUS="https://$HOSZT/"
+          for BE in "http://$HOSZT/" "http://www.$HOSZT/" "https://www.$HOSZT/"; do
+            EREDMENY=$(curl -sSL -o /dev/null --max-time 25 \
+                       -w '%{url_effective} ugras=%{num_redirects} allapot=%{http_code}' \
+                       "$BE" || echo "? ugras=? allapot=000")
+            echo "  $BE -> $EREDMENY"
+            case "$EREDMENY" in
+              "$KANONIKUS"*) ;;
+              *) echo "::warning::A $BE nem a kanonikus $KANONIKUS címen áll meg." ;;
+            esac
+            UGRAS=$(printf '%s' "$EREDMENY" | sed -n 's/.*ugras=\([0-9]*\).*/\1/p')
+            if [ -n "$UGRAS" ] && [ "$UGRAS" -gt 3 ]; then
+              echo "::warning::A $BE $UGRAS átirányításon megy át. Kettőnél több már körre utal — a panel SSL/WWW kapcsolója és a .htaccess szabálya dobálja egymásnak a kérést."
+            fi
+          done
 
           # ——— HTTPS és tanúsítvány ————————————————————————————————
           # A panel a saját ingyenes DV tanúsítványáról azt mondja, a
