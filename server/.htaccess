@@ -14,6 +14,27 @@ DirectoryIndex index.html index.htm
 # hivatkozás 404 lenne.
 RewriteEngine On
 
+# ——— WWW nélküli kanonikus cím ————————————————————————————————————
+# A weblap minden oldala önmagára a www nélküli alakkal hivatkozik (canonical,
+# sitemap, hreflang) — a kiszolgálásnak is ide kell terelnie. A tárhely saját
+# "WWW redirect" kapcsolója pont fordítva működött (blueway.hu → www), ezért
+# azt a panelen LETILTOTTUK; ez a szabály csak azóta élhet, különben a kettő
+# egymásnak dobálná a látogatót végtelen körben.
+#
+# A séma megmarad: a http-s kérés http-re, a https-es https-re irányít. A
+# HTTPS-re terelés külön lépés (lent), a tanúsítvány tisztázása után — a kettő
+# összevonása itt azt jelentené, hogy tanúsítványhiba esetén a www-s látogató
+# hibaoldalt kapna a weblap helyett. Két szabály, mert a séma megtartását
+# egyetlen szabályban csak a %{REQUEST_SCHEME} tudná, az viszont nem minden
+# Apache-on létezik — és ezen a kiszolgálón nem tudjuk előre kipróbálni.
+# Minden más szabály ELŐTT kell állnia: az [L] jelzős átírások után már nem
+# futna le, és a .html-re átírt belső alak menne ki átirányításként.
+RewriteCond %{HTTPS} =on
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
 # ——— HTTPS ————————————————————————————————————————————————————————
 # Kapcsold be (vedd le a # jeleket), MIUTÁN a tanúsítvány kiállt és a
 # https://blueway.hu betölt. Előbb bekapcsolva minden látogató hibaoldalt
