@@ -732,9 +732,9 @@ const productsSource: Sourced<Product[]> = [
         videoId: 'SV0G6Z2yb-4',
       },
       {
-        slug: 'hq-6014',
-        image: '/images/applicators/hq-6014.webp',
-        name: { hu: '6014 Ráfújó címkéző', en: '6014 Blow-on applicator', it: 'Applicatore blow-on 6014', es: 'Aplicador de soplado 6014', de: '6014 Blasapplikator', ko: '6014 블로우온 어플리케이터', zh: '6014 吹贴式贴标模块' },
+        slug: 'hq-6114',
+        image: '/images/applicators/hq-6114.webp',
+        name: { hu: '6114 Ráfújó címkéző', en: '6114 Blow-on applicator', it: 'Applicatore blow-on 6114', es: 'Aplicador de soplado 6114', de: '6114 Blasapplikator', ko: '6114 블로우온 어플리케이터', zh: '6114 吹贴式贴标模块' },
         description: {
           hu: 'Törékeny vagy egyenetlen felületek címkézése, nagy sebességgel.',
           en: 'Labeling fragile or uneven surfaces at high speed.', it: 'Etichettatura di superfici fragili o irregolari ad alta velocità.', es: 'Etiquetado de superficies frágiles o irregulares a alta velocidad.', de: 'Etikettierung empfindlicher oder unebener Oberflächen mit hoher Geschwindigkeit.', ko: '깨지기 쉽거나 고르지 않은 표면의 고속 라벨링.', zh: '高速贴标易碎或不平整的表面。',

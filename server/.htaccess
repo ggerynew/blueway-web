@@ -44,6 +44,14 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # RewriteCond %{HTTPS} !=on
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+# ——— Átnevezett oldalak ——————————————————————————————————————————
+# A 6014-es applikátorból új változat jött ki 6114 néven, ezért az oldal címe
+# is megváltozott. A régi cím már indexelve lehet a keresőkben, és hivatkozás
+# is mutathat rá — 301-gyel átvisszük az újra, hogy ne 404-re fusson, és hogy
+# az oldal eddig összegyűlt megítélése ne veszjen el.
+# A ([a-z]{2}) a nyelvi előtag: egyetlen szabály kezeli mind a hét nyelvet.
+RewriteRule ^([a-z]{2})/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6014/?$ /$1/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6114 [R=301,L]
+
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy
 # 95 MB-os _blueway_old.rar. A domainre átállás pillanatában ezek bárki
