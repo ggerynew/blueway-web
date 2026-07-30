@@ -217,7 +217,7 @@ elmozdítását nem váltja ki.
 
 ### Miért kell a `.user.ini`
 
-A PHP alapértelmezett feltöltési korlátja gyakran 2 MB, a weblap viszont 10 MB-ig
+A PHP alapértelmezett feltöltési korlátja gyakran 2 MB, a weblap viszont 7 MB-ig
 enged csatolmányt. A `.user.ini` 12 MB-ra emeli; enélkül a nagyobb csatolmánnyal
 küldött ajánlatkérés néma hibára futna.
 

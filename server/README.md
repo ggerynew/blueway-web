@@ -36,7 +36,7 @@ címét kell átállítani.
 - kötelező és érvényes e-mail cím, különben `422`;
 - rejtett csapdamező (`_gotcha`): ha ki van töltve, csendben eldobja a küldést;
 - IP-nként óránként 5 küldés, felette `429`;
-- csatolmányok: csak a megengedett kiterjesztések, összesen legfeljebb 10 MB
+- csatolmányok: csak a megengedett kiterjesztések, összesen legfeljebb 7 MB
   (ugyanaz a korlát, mint a böngészőben), MIME multipart levélbe csomagolva;
 - minden fejlécbe kerülő értékből kiszedi a sortöréseket (header injection),
   az ékezetes tárgyat/nevet base64-gyel kódolja.

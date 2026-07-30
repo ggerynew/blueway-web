@@ -3,8 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/lib/i18n';
 
-/** A szerveroldali korlát: a csatolmányok együttes mérete legfeljebb ennyi. */
-const MAX_OSSZ = 10 * 1024 * 1024;
+/**
+ * A csatolmányok együttes mérete legfeljebb ennyi — a szerveroldali korláttal
+ * (send.php MAX_TOTAL_SIZE) együtt mozog. Mérve, nem becsülve: a tárhely
+ * levelezője a ~10 MB-nál nagyobb levelet némán eldobja, és a base64-kódolás
+ * a csatolmányt ~37%-kal hizlalja — 7 MB csatolmányból ~9,6 MB levél lesz,
+ * ez még átfér; 8 MB-ból már 10,9 MB, az nem érkezett meg.
+ */
+const MAX_OSSZ = 7 * 1024 * 1024;
 
 /** „1,4 MB” — a nyelv szerinti tizedesjellel. */
 function meret(bajt: number, lang: string): string {
