@@ -75,6 +75,9 @@ export const dictionaries = {
         text: 'Egyedi méretű címkék papír és műanyag alapanyagból — kérjen ajánlatot pár lépésben.',
       },
       applicatorsTitle: 'Applikátorok',
+      variantsTitle: 'Változatok',
+      variantsLead:
+        'Ugyanez a gép több kivitelben készül — a szűrés, a szekrénymagasság és a bevonat különbözik a feladat szerint.',
       applicatorsLead:
         'A megfelelő applikátor a felülettől és a feladattól függ — kattintson a részletes adatokért.',
       watchVideo: 'Videó megtekintése',
@@ -464,6 +467,9 @@ export const dictionaries = {
         text: 'Custom-size labels in paper and plastic materials — request a quote in a few steps.',
       },
       applicatorsTitle: 'Applicators',
+      variantsTitle: 'Versions',
+      variantsLead:
+        'The same machine comes in several versions — filtration, cabinet height and coating differ by application.',
       applicatorsLead:
         'The right applicator depends on the surface and the task — click for detailed specifications.',
       watchVideo: 'Watch video',
@@ -853,6 +859,9 @@ export const dictionaries = {
         text: 'Etiketten in individuellen Größen aus Papier oder Kunststoff — Angebot in wenigen Schritten.',
       },
       applicatorsTitle: 'Applikatoren',
+      variantsTitle: 'Ausführungen',
+      variantsLead:
+        'Dieselbe Maschine gibt es in mehreren Ausführungen — Filterung, Gehäusehöhe und Beschichtung unterscheiden sich je nach Anwendung.',
       applicatorsLead: 'Der passende Applikator hängt von Oberfläche und Aufgabe ab — klicken Sie für Details.',
       watchVideo: 'Video ansehen',
       applicatorDetails: 'Details und Parameter',
@@ -1241,6 +1250,9 @@ export const dictionaries = {
         text: 'Etichette su misura in materiali cartacei e plastici — richieda un preventivo in pochi passaggi.',
       },
       applicatorsTitle: 'Applicatori',
+      variantsTitle: 'Versioni',
+      variantsLead:
+        'La stessa macchina è disponibile in più versioni: filtrazione, altezza del mobile e rivestimento variano in base all’applicazione.',
       applicatorsLead:
         'L’applicatore giusto dipende dalla superficie e dall’applicazione — clicchi per le specifiche dettagliate.',
       watchVideo: 'Guarda il video',
@@ -1630,6 +1642,9 @@ export const dictionaries = {
         text: 'Etiquetas a medida en materiales de papel y plástico — solicite un presupuesto en unos pocos pasos.',
       },
       applicatorsTitle: 'Aplicadores',
+      variantsTitle: 'Versiones',
+      variantsLead:
+        'La misma máquina está disponible en varias versiones: la filtración, la altura del armario y el recubrimiento varían según la aplicación.',
       applicatorsLead:
         'El aplicador adecuado depende de la superficie y de la tarea — haga clic para ver las especificaciones detalladas.',
       watchVideo: 'Ver vídeo',
@@ -2019,6 +2034,9 @@ export const dictionaries = {
         text: '종이 및 플라스틱 소재의 맞춤형 크기 라벨 — 몇 단계만으로 견적을 요청하세요.',
       },
       applicatorsTitle: '어플리케이터',
+      variantsTitle: '버전',
+      variantsLead:
+        '같은 장비가 여러 버전으로 제공됩니다 — 용도에 따라 여과 방식, 캐비닛 높이, 코팅이 달라집니다.',
       applicatorsLead: '적합한 어플리케이터는 표면과 작업에 따라 다릅니다 — 자세한 내용을 보려면 클릭하세요.',
       watchVideo: '동영상 보기',
       applicatorDetails: '상세 정보 및 사양',
@@ -2407,6 +2425,9 @@ export const dictionaries = {
         text: '纸质和塑料材质的定制尺寸标签 — 几步即可询价。',
       },
       applicatorsTitle: '贴标模块',
+      variantsTitle: '型号版本',
+      variantsLead:
+        '同一机型提供多种版本——过滤方式、机箱高度与涂层根据应用场景不同。',
       applicatorsLead: '合适的贴标模块取决于表面和任务 — 点击查看详细参数。',
       watchVideo: '观看视频',
       applicatorDetails: '详情与参数',
