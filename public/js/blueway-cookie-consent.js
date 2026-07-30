@@ -1,6 +1,6 @@
 /*!
  * Blueway Trade Kft. – süti-hozzájárulás kezelő / cookie consent banner (HU + EN + DE + IT + ES + KO + ZH)
- * Verzió: 1.4 (2026-07-30) – az Adatkezelési Tájékoztató 2.0 verziójával összhangban.
+ * Verzió: 1.5 (2026-07-30) – az Adatkezelési Tájékoztató 2.1 verziójával összhangban.
  * 1.2: német, koreai és kínai felirat-fordítások; a szöveg tartalma változatlan.
  * 1.3: olasz és spanyol felirat-fordítások.
  * 1.4: a nyelvi süti használatba került. A setLangCookie eddig is készen volt,
@@ -9,6 +9,11 @@
  *      nyelvválasztó zászlóra kattintva íródik ki (hozzájárulás esetén), és a
  *      gyökércím (blueway.hu) ez alapján dönti el, melyik nyelv fogadja a
  *      visszatérő látogatót. A szkript maga nem változott.
+ * 1.5: az alkatrészkereső a kényelmi kategóriába tartozó munkamenet-tárolót
+ *      használ (blueway_alkatresz), hogy a beszélgetés ne vesszen el
+ *      oldalváltáskor. A kategória leírása ezért kiegészült; a szkript
+ *      logikája nem változott — az `allowed('preferences')` eddig is
+ *      megvolt, most a kereső is ezt kérdezi meg.
  *
  * BEILLESZTÉS / INTEGRATION
  * -------------------------
@@ -67,7 +72,7 @@
       catNecessary: 'Feltétlenül szükséges sütik',
       catNecessaryDesc: 'A weboldal működéséhez és az Ön választásának tárolásához szükségesek (blueway_consent). Nem igényelnek hozzájárulást.',
       catPref: 'Kényelmi sütik',
-      catPrefDesc: 'A választott nyelv megjegyzése (blueway_lang, 6 hónap).',
+      catPrefDesc: 'A választott nyelv megjegyzése (blueway_lang süti, 6 hónap), valamint az alkatrészkeresőben folytatott beszélgetés megőrzése oldalváltáskor (blueway_alkatresz, a böngészőlap bezárásáig).',
       catThird: 'Harmadik féltől származó sütik',
       catThirdDesc: 'Google Maps térkép megjelenítése (a google.com sütijei, pl. NID). Az adatok az USA-ba továbbítódhatnak az EU–USA adatvédelmi keretrendszer (DPF) garanciái mellett.',
       save: 'Beállítások mentése',
@@ -87,7 +92,7 @@
       catNecessary: 'Strictly necessary cookies',
       catNecessaryDesc: 'Required for the operation of the website and for storing your choice (blueway_consent). No consent is required.',
       catPref: 'Preference cookies',
-      catPrefDesc: 'Remembering your language choice (blueway_lang, 6 months).',
+      catPrefDesc: 'Remembering your language choice (blueway_lang cookie, 6 months) and keeping the spare part finder conversation when moving between pages (blueway_alkatresz, until the browser tab is closed).',
       catThird: 'Third-party cookies',
       catThirdDesc: 'Displaying the Google Maps map (cookies set by google.com, e.g. NID). Data may be transferred to the USA under the safeguards of the EU–US Data Privacy Framework (DPF).',
       save: 'Save settings',
@@ -107,7 +112,7 @@
       catNecessary: 'Unbedingt erforderliche Cookies',
       catNecessaryDesc: 'Erforderlich für den Betrieb der Website und die Speicherung Ihrer Auswahl (blueway_consent). Keine Einwilligung erforderlich.',
       catPref: 'Präferenz-Cookies',
-      catPrefDesc: 'Speicherung Ihrer Sprachwahl (blueway_lang, 6 Monate).',
+      catPrefDesc: 'Speicherung Ihrer Sprachwahl (Cookie blueway_lang, 6 Monate) sowie Erhalt des Gesprächs in der Ersatzteilsuche beim Seitenwechsel (blueway_alkatresz, bis zum Schließen des Browser-Tabs).',
       catThird: 'Cookies von Drittanbietern',
       catThirdDesc: 'Anzeige der Google-Maps-Karte (Cookies von google.com, z. B. NID). Daten können unter den Garantien des EU-US Data Privacy Framework (DPF) in die USA übermittelt werden.',
       save: 'Einstellungen speichern',
@@ -127,7 +132,7 @@
       catNecessary: 'Cookie strettamente necessari',
       catNecessaryDesc: 'Necessari per il funzionamento del sito e per memorizzare la Sua scelta (blueway_consent). Non richiedono consenso.',
       catPref: 'Cookie di preferenza',
-      catPrefDesc: 'Memorizzazione della lingua scelta (blueway_lang, 6 mesi).',
+      catPrefDesc: 'Memorizzazione della lingua scelta (cookie blueway_lang, 6 mesi) e conservazione della conversazione nella ricerca ricambi al cambio di pagina (blueway_alkatresz, fino alla chiusura della scheda del browser).',
       catThird: 'Cookie di terze parti',
       catThirdDesc: 'Visualizzazione della mappa Google Maps (cookie impostati da google.com, ad es. NID). I dati possono essere trasferiti negli USA con le garanzie del quadro UE-USA sulla privacy dei dati (DPF).',
       save: 'Salva le impostazioni',
@@ -147,7 +152,7 @@
       catNecessary: 'Cookies estrictamente necesarias',
       catNecessaryDesc: 'Necesarias para el funcionamiento del sitio y para guardar su elecci\u00f3n (blueway_consent). No requieren consentimiento.',
       catPref: 'Cookies de preferencia',
-      catPrefDesc: 'Memorizaci\u00f3n del idioma elegido (blueway_lang, 6 meses).',
+      catPrefDesc: 'Memorizaci\u00f3n del idioma elegido (cookie blueway_lang, 6 meses) y conservaci\u00f3n de la conversaci\u00f3n del buscador de repuestos al cambiar de p\u00e1gina (blueway_alkatresz, hasta cerrar la pesta\u00f1a del navegador).',
       catThird: 'Cookies de terceros',
       catThirdDesc: 'Visualizaci\u00f3n del mapa de Google Maps (cookies establecidas por google.com, p. ej. NID). Los datos pueden transferirse a EE. UU. con las garant\u00edas del Marco de Privacidad de Datos UE-EE. UU. (DPF).',
       save: 'Guardar configuraci\u00f3n',
@@ -167,7 +172,7 @@
       catNecessary: '반드시 필요한 쿠키',
       catNecessaryDesc: '웹사이트 운영과 귀하의 선택 저장(blueway_consent)에 필요합니다. 동의가 필요하지 않습니다.',
       catPref: '환경설정 쿠키',
-      catPrefDesc: '선택한 언어를 기억합니다 (blueway_lang, 6개월).',
+      catPrefDesc: '선택한 언어를 기억합니다 (blueway_lang 쿠키, 6개월). 또한 페이지를 이동해도 부품 검색의 대화 내용을 유지합니다 (blueway_alkatresz, 브라우저 탭을 닫을 때까지).',
       catThird: '제3자 쿠키',
       catThirdDesc: 'Google Maps 지도 표시 (google.com이 설정하는 쿠키, 예: NID). 데이터는 EU-미국 데이터 프라이버시 프레임워크(DPF)의 보호 조치에 따라 미국으로 이전될 수 있습니다.',
       save: '설정 저장',
@@ -187,7 +192,7 @@
       catNecessary: '严格必要的 Cookie',
       catNecessaryDesc: '网站运行和保存您的选择（blueway_consent）所必需。无需征得同意。',
       catPref: '偏好 Cookie',
-      catPrefDesc: '记住您选择的语言（blueway_lang，6 个月）。',
+      catPrefDesc: '记住您选择的语言（blueway_lang cookie，6 个月），并在切换页面时保留备件查询中的对话（blueway_alkatresz，直至关闭浏览器标签页）。',
       catThird: '第三方 Cookie',
       catThirdDesc: '显示 Google Maps 地图（由 google.com 设置的 Cookie，例如 NID）。数据可能在欧盟-美国数据隐私框架（DPF）的保障下传输至美国。',
       save: '保存设置',

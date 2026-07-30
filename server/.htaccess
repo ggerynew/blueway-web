@@ -73,6 +73,12 @@ RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-e
 RewriteRule \.(rar|zip|7z|tar|gz|bz2|sql|bak|old|swp|log|inc)$ - [F,L]
 RewriteRule (^|/)(\.git|\.env|\.htpasswd)  - [F,L]
 
+# A deploy lenyomatlistája: minden feltöltött fájl neve és sha256 lenyomata.
+# Ebből dől el, mit kell újra felküldeni — a weblap működéséhez nem kell, a
+# látogatónak semmi köze hozzá. Nincs benne titok, de a szerver teljes
+# fájllistáját sem kell közreadni.
+RewriteRule ^deploy-manifest\.json$ - [F,L]
+
 # FONTOS: a Next.js egyszerre készít mappát és azonos nevű .html fájlt.
 # A /hu útvonalon például MINDKETTŐ létezik: a hu/ mappa (benne az aloldalak)
 # és a hu.html (maga a nyitóoldal). 84 ilyen útvonal van, köztük mind a hét
@@ -157,6 +163,13 @@ ErrorDocument 404 /404.html
 <IfModule mod_headers.c>
   <FilesMatch "\.(js|css|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # A két útvonal-jegyzék KIVÉTEL. A nevükben nincs lenyomat, és a build-
+  # azonosító is rögzített (lásd next.config.mjs), tehát a címük soha nem
+  # változik — a tartalmuk viszont igen, valahányszor új oldal kerül a
+  # weblapra. „immutable" alatt a böngésző egy évig a régit használná.
+  <FilesMatch "^_(build|ssg)Manifest\.js$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "public, max-age=0, must-revalidate"

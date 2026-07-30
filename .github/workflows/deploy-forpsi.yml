@@ -244,22 +244,63 @@ jobs:
             bash scripts/ftp-archive.sh "$ARCHIVALAS"
           fi
 
-          DEL=""
-          if [ "$DELETE_EXTRA" = "true" ]; then DEL="--delete"; fi
-
-          # Az --only-newer itt nem spórol semmit, ezért elhagyjuk. A fájlokat
-          # minden futásban újra legyártja a build, tehát a helyi módosítási
-          # idejük mindig frissebb a szerveren lévőnél — akkor is, ha a
-          # tartalmuk egy bájtot sem változott. A méret-alapú összehasonlítás
-          # (--ignore-time) gyorsabb lenne, de egy azonos hosszú javítás
-          # csendben kimaradna a feltöltésből; ezt nem kockáztatjuk.
-          # A gyors, mégis pontos megoldás az SSH ág: az rsync --checksum
-          # tartalom szerint dönt, nem időbélyeg szerint.
+          # ——— Csak a megváltozott fájlok mennek fel ————————————————
+          # A build kimenete 158 MB, ebből 77 MB adatlap-PDF és 3 MB kép-videó.
+          # Ezek hónapokig nem változnak, korábban mégis minden futásban
+          # újra felmentek — ez volt a tíz percből a java.
           #
-          # A --verbose fájlonként naplóz; 600+ fájlnál ez több ezer sor, és
+          # Az lftp `--only-newer` itt nem segítene: a futtató minden
+          # alkalommal üres gépen, frissen állítja elő a fájlokat, tehát a
+          # helyi módosítási idő MINDIG frissebb a szerveren lévőnél, akkor
+          # is, ha a tartalom azonos. A méret szerinti összehasonlítás
+          # (`--ignore-time`) viszont csendben kihagyna egy azonos hosszúságú
+          # javítást. Ezért TARTALOM szerint döntünk: sha256 lenyomat minden
+          # fájlról, összevetve a szerveren tárolt előző listával.
+          #
+          # A lista a webgyökérben lakik (deploy-manifest.json), mert a
+          # kérdés nem az, mi változott az előző buildhez képest, hanem az,
+          # hogy mi tér el attól, ami MOST a szerveren van. Kívülről nem
+          # olvasható: a .htaccess külön szabállyal tiltja.
+          #
+          # A --verbose fájlonként naplóz; 1400+ fájlnál ez több ezer sor, és
           # elnyomja a fenti diagnosztikát. A mirror a végén összegzést ír.
+          if [ "$DELETE_EXTRA" = "true" ]; then
+            # Takarításkor a teljes fát tükrözzük, mert a --delete csak akkor
+            # dönthet helyesen, ha a forrás a teljes weblap — egy részhalmazzal
+            # letörölné a többit.
+            echo "— teljes tükrözés (a nem szereplő fájlok törlésével) —"
+            lftp -u "$FTP_USER" --env-password \
+              -e "$SETTINGS mirror -R --parallel=4 --delete out/ '$WEB_ROOT/'; bye" \
+              "$FTP_HOST"
+            python3 scripts/deploy-valtozas.py --mappa out \
+              --stage /tmp/feltoltendo --uj /tmp/deploy-manifest.json > /dev/null
+          else
+            echo "— mi változott a szerverhez képest? —"
+            rm -f /tmp/elozo-manifest.json
+            lftp -u "$FTP_USER" --env-password \
+              -e "$SETTINGS get '$WEB_ROOT/deploy-manifest.json' -o /tmp/elozo-manifest.json; bye" \
+              "$FTP_HOST" 2>/dev/null || true
+
+            python3 scripts/deploy-valtozas.py \
+              --mappa out --elozo /tmp/elozo-manifest.json \
+              --stage /tmp/feltoltendo --uj /tmp/deploy-manifest.json | tee /tmp/valtozas.txt
+            VALTOZOTT=$(sed -n 's/^VALTOZOTT=//p' /tmp/valtozas.txt | tail -1)
+
+            if [ "${VALTOZOTT:-0}" -gt 0 ]; then
+              lftp -u "$FTP_USER" --env-password \
+                -e "$SETTINGS mirror -R --parallel=4 /tmp/feltoltendo/ '$WEB_ROOT/'; bye" \
+                "$FTP_HOST"
+            else
+              echo "Egyetlen fájl sem változott — nincs mit feltölteni."
+            fi
+          fi
+
+          # A lenyomatlista CSAK a sikeres tükrözés után kerül ki. Ha a
+          # feltöltés félbeszakad, a szerveren a régi lista marad, tehát a
+          # következő deploy újra megpróbálja az elmaradt fájlokat — nem
+          # állítja tévesen magáról, hogy naprakész.
           lftp -u "$FTP_USER" --env-password \
-            -e "$SETTINGS mirror -R --parallel=4 $DEL out/ '$WEB_ROOT/'; bye" \
+            -e "$SETTINGS put /tmp/deploy-manifest.json -o '$WEB_ROOT/deploy-manifest.json'; bye" \
             "$FTP_HOST"
 
           # ——— A küldési napló lekérése ————————————————————————————
