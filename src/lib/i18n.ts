@@ -300,12 +300,12 @@ export const dictionaries = {
         {
           q: 'Milyen gyártók termékeit forgalmazzák?',
           a: 'A CAB, a POSTEK és a TYKMA Electrox gépeit, a START International adagolóberendezéseit, a Purex füst- és porelszívóit, DNP és ARMOR-IIMAK festékszalagokat, valamint a Loftware / NiceLabel címkéző szoftvereket forgalmazzuk. A gépekhez kellékanyagot és alkatrészt is biztosítunk.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: 'Vállalnak szervizt és alkatrész-ellátást?',
           a: 'Igen — az általunk forgalmazott eszközökhöz teljes körű szerviz- és alkatrész-támogatást nyújtunk, szükség esetén helyszíni hibaelhárítással. Más forrásból vásárolt gépeknél egyedi egyeztetés alapján tudunk segíteni.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Mennyi idő alatt kapok árajánlatot?',
@@ -315,22 +315,22 @@ export const dictionaries = {
         {
           q: 'Vállalnak telepítést és betanítást?',
           a: 'Igen, kérésre a gépek helyszíni telepítését, beüzemelését és a kezelők betanítását is elvégezzük.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Milyen garancia vonatkozik a gépekre?',
           a: 'A gépekre gyártói garancia vonatkozik, amelynek időtartama típusonként eltérő — a pontos feltételeket minden esetben az árajánlatban rögzítjük.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Gyártanak egyedi címkét?',
           a: 'Igen, egyedi méretben, anyagból és kivitelben gyártunk öntapadós címkét. A címke-ajánlatkérő űrlapon ábra segíti a méretek megadását.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Kaphatok mintát címkéből vagy festékszalagból?',
           a: 'Igen, tesztelési célra mintát biztosítunk, hogy éles körülmények között győződhessen meg arról, hogy az anyag megfelel a feladatnak.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Melyik festékszalagot válasszam?',
@@ -340,7 +340,7 @@ export const dictionaries = {
         {
           q: 'A címkéző szoftverekhez adnak támogatást?',
           a: 'Igen — a cab cablabel S3 és a Loftware / NiceLabel szoftverek kiválasztásában, bevezetésében és használatában is segítünk.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: 'Miért nem olvassa a szkenner az elforgatott vonalkódot?',
@@ -720,12 +720,12 @@ export const dictionaries = {
         {
           q: 'Which manufacturers do you represent?',
           a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, Purex fume and dust extraction systems, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: 'Do you provide service and spare parts?',
           a: 'Yes — we provide full service and spare part support for the equipment we distribute, including on-site troubleshooting when needed. For machines purchased elsewhere we can help based on individual agreement.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'How quickly will I get a quote?',
@@ -735,22 +735,22 @@ export const dictionaries = {
         {
           q: 'Do you install machines and train operators?',
           a: 'Yes, on request we install and commission the machines on site and train the operators.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'What warranty applies to the machines?',
           a: 'The machines carry a manufacturer warranty whose duration varies by model — the exact terms are always stated in the quotation.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Do you produce custom labels?',
           a: 'Yes, we produce self-adhesive labels in custom sizes, materials and constructions. On the label quote form a diagram helps with the dimensions.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Can I get samples of labels or ribbons?',
           a: 'Yes, we provide samples for testing so you can verify under real conditions that the material suits the task.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Which thermal transfer ribbon should I choose?',
@@ -760,7 +760,7 @@ export const dictionaries = {
         {
           q: 'Do you support the labeling software?',
           a: 'Yes — we help with selecting, implementing and using cab cablabel S3 and Loftware / NiceLabel software.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: 'Why does the scanner fail to read a rotated barcode?',
@@ -1139,12 +1139,12 @@ export const dictionaries = {
         {
           q: 'Welche Hersteller vertreiben Sie?',
           a: 'Wir vertreiben die Maschinen von CAB, POSTEK und TYKMA Electrox, die Dosier- und Spendegeräte von START International, die Rauch- und Staubabsauganlagen von Purex, Thermotransfer-Farbbänder von DNP und ARMOR-IIMAK sowie die Etikettensoftware von Loftware / NiceLabel. Zu den Maschinen liefern wir auch Verbrauchsmaterial und Ersatzteile.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: 'Bieten Sie Service und Ersatzteilversorgung?',
           a: 'Ja — für die von uns vertriebenen Geräte bieten wir umfassenden Service- und Ersatzteil-Support, bei Bedarf mit Fehlerbehebung vor Ort. Bei anderweitig gekauften Maschinen helfen wir nach individueller Absprache.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Wie schnell erhalte ich ein Angebot?',
@@ -1154,22 +1154,22 @@ export const dictionaries = {
         {
           q: 'Übernehmen Sie Installation und Schulung?',
           a: 'Ja, auf Wunsch installieren wir die Maschinen vor Ort, nehmen sie in Betrieb und schulen die Bediener.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Welche Garantie gilt für die Maschinen?',
           a: 'Für die Maschinen gilt die Herstellergarantie, deren Dauer je nach Modell unterschiedlich ist — die genauen Bedingungen halten wir immer im Angebot fest.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Produzieren Sie individuelle Etiketten?',
           a: 'Ja, wir produzieren Selbstklebeetiketten in individuellen Größen, Materialien und Ausführungen. Im Angebotsformular hilft eine Maßzeichnung bei den Abmessungen.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Kann ich Muster von Etiketten oder Farbbändern erhalten?',
           a: 'Ja, wir stellen Muster zu Testzwecken bereit, damit Sie unter realen Bedingungen prüfen können, ob das Material zur Aufgabe passt.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Welches Farbband soll ich wählen?',
@@ -1179,7 +1179,7 @@ export const dictionaries = {
         {
           q: 'Unterstützen Sie die Etikettensoftware?',
           a: 'Ja — wir helfen bei Auswahl, Einführung und Nutzung der Software cab cablabel S3 und Loftware / NiceLabel.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: 'Warum kann der Scanner einen gedrehten Barcode nicht lesen?',
@@ -1559,12 +1559,12 @@ export const dictionaries = {
         {
           q: 'Quali produttori rappresentate?',
           a: 'Distribuiamo le macchine di CAB, POSTEK e TYKMA Electrox, i dispositivi di dispensazione di START International, gli aspiratori di fumi e polveri Purex, i ribbon a trasferimento termico DNP e ARMOR-IIMAK e il software di etichettatura Loftware / NiceLabel. Forniamo inoltre materiali di consumo e ricambi per le macchine.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: 'Offrite assistenza e ricambi?',
           a: 'Sì — offriamo assistenza completa e supporto ricambi per le apparecchiature che distribuiamo, inclusa la diagnosi in loco quando necessario. Per le macchine acquistate altrove possiamo intervenire in base ad accordi individuali.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'In quanto tempo riceverò un preventivo?',
@@ -1574,22 +1574,22 @@ export const dictionaries = {
         {
           q: 'Installate le macchine e formate gli operatori?',
           a: 'Sì, su richiesta installiamo e mettiamo in servizio le macchine in loco e formiamo gli operatori.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Quale garanzia si applica alle macchine?',
           a: 'Le macchine sono coperte dalla garanzia del produttore, la cui durata varia in base al modello — le condizioni esatte sono sempre indicate nel preventivo.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: 'Producete etichette su misura?',
           a: 'Sì, produciamo etichette autoadesive in dimensioni, materiali e costruzioni personalizzati. Nel modulo di richiesta di preventivo per le etichette uno schema aiuta a indicare le dimensioni.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'È possibile ricevere campioni di etichette o ribbon?',
           a: 'Sì, forniamo campioni per i test, così può verificare in condizioni reali che il materiale sia adatto all’applicazione.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: 'Quale ribbon a trasferimento termico devo scegliere?',
@@ -1599,7 +1599,7 @@ export const dictionaries = {
         {
           q: 'Offrite supporto per il software di etichettatura?',
           a: 'Sì — aiutiamo nella scelta, nell’implementazione e nell’utilizzo dei software cab cablabel S3 e Loftware / NiceLabel.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: 'Perché lo scanner non riesce a leggere un codice a barre ruotato?',
@@ -1979,12 +1979,12 @@ export const dictionaries = {
         {
           q: '¿Qué fabricantes representan?',
           a: 'Distribuimos las máquinas de CAB, POSTEK y TYKMA Electrox, los equipos dispensadores de START International, los extractores de humos y polvo Purex, los ribbons de transferencia térmica de DNP y ARMOR-IIMAK, y el software de etiquetado Loftware / NiceLabel. También suministramos consumibles y repuestos para las máquinas.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: '¿Ofrecen servicio técnico y repuestos?',
           a: 'Sí — ofrecemos servicio técnico y suministro de repuestos completos para los equipos que distribuimos, incluida la resolución de incidencias in situ cuando es necesario. Para máquinas adquiridas en otro proveedor podemos ayudarle según acuerdo particular.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '¿En cuánto tiempo recibiré el presupuesto?',
@@ -1994,22 +1994,22 @@ export const dictionaries = {
         {
           q: '¿Instalan las máquinas y forman a los operarios?',
           a: 'Sí, si lo solicita instalamos y ponemos en marcha las máquinas in situ y formamos a los operarios.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '¿Qué garantía tienen las máquinas?',
           a: 'Las máquinas cuentan con garantía del fabricante, cuya duración varía según el modelo — las condiciones exactas se indican siempre en el presupuesto.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '¿Fabrican etiquetas a medida?',
           a: 'Sí, fabricamos etiquetas autoadhesivas en tamaños, materiales y construcciones a medida. En el formulario de presupuesto de etiquetas, un diagrama le ayuda con las dimensiones.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '¿Puedo obtener muestras de etiquetas o de ribbon?',
           a: 'Sí, facilitamos muestras para pruebas, de modo que pueda comprobar en condiciones reales que el material se adapta a la tarea.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '¿Qué ribbon de transferencia térmica debo elegir?',
@@ -2019,7 +2019,7 @@ export const dictionaries = {
         {
           q: '¿Dan soporte al software de etiquetado?',
           a: 'Sí — le ayudamos con la selección, la implantación y el uso del software cab cablabel S3 y Loftware / NiceLabel.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: '¿Por qué el escáner no lee un código de barras girado?',
@@ -2398,12 +2398,12 @@ export const dictionaries = {
         {
           q: '어떤 제조사의 제품을 취급하나요?',
           a: 'CAB, POSTEK, TYKMA Electrox의 장비, START International의 디스펜서, Purex의 흄·분진 집진 장비, DNP 및 ARMOR-IIMAK 열전사 리본, Loftware / NiceLabel 라벨링 소프트웨어를 공급합니다. 장비에 필요한 소모품과 부품도 함께 공급합니다.',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: '서비스와 부품 공급이 가능한가요?',
           a: '네 — 당사가 공급하는 장비에 대해 완전한 서비스 및 부품 지원을 제공하며, 필요시 현장 출장 수리도 가능합니다. 타사에서 구매한 장비는 개별 협의를 통해 지원해 드립니다.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '견적은 얼마나 빨리 받을 수 있나요?',
@@ -2413,22 +2413,22 @@ export const dictionaries = {
         {
           q: '설치와 교육도 해주시나요?',
           a: '네, 요청 시 장비의 현장 설치, 시운전 및 운영자 교육을 수행합니다.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '장비 보증은 어떻게 되나요?',
           a: '장비에는 제조사 보증이 적용되며, 보증 기간은 모델에 따라 다릅니다 — 정확한 조건은 항상 견적서에 명시합니다.',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '맞춤형 라벨도 제작하나요?',
           a: '네, 맞춤형 크기, 소재, 구조의 접착 라벨을 제작합니다. 라벨 견적 양식에서 도면이 치수 입력을 도와줍니다.',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '라벨이나 리본 샘플을 받을 수 있나요?',
           a: '네, 실제 조건에서 소재가 작업에 적합한지 확인하실 수 있도록 테스트용 샘플을 제공합니다.',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '어떤 열전사 리본을 선택해야 하나요?',
@@ -2438,7 +2438,7 @@ export const dictionaries = {
         {
           q: '라벨링 소프트웨어 지원도 제공하나요?',
           a: '네 — cab cablabel S3 및 Loftware / NiceLabel 소프트웨어의 선택, 도입, 사용을 지원합니다.',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: '회전된 바코드를 스캐너가 읽지 못하는 이유는 무엇입니까?',
@@ -2817,12 +2817,12 @@ export const dictionaries = {
         {
           q: '你们代理哪些制造商的产品？',
           a: '我们代理 CAB、POSTEK 和 TYKMA Electrox 的设备、START International 的点胶与分配设备、Purex 的烟尘净化设备、DNP 和 ARMOR-IIMAK 热转印碳带，以及 Loftware / NiceLabel 标签软件。同时为设备提供耗材和备件。',
-          href: '',
+          href: '/gyartok',
         },
         {
           q: '你们提供维修和备件供应吗？',
           a: '是的 — 我们为所售设备提供全面的维修和备件支持，必要时可上门排除故障。对于从其他渠道购买的设备，可根据具体情况协商提供帮助。',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '多久能收到报价？',
@@ -2832,22 +2832,22 @@ export const dictionaries = {
         {
           q: '你们提供安装和培训吗？',
           a: '是的，应要求我们可在现场完成设备的安装、调试，并对操作人员进行培训。',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '设备的保修政策是怎样的？',
           a: '设备享受制造商保修，保修期因型号而异 — 具体条款始终在报价单中注明。',
-          href: '',
+          href: '/szolgaltatasok',
         },
         {
           q: '你们生产定制标签吗？',
           a: '是的，我们生产定制尺寸、材质和结构的不干胶标签。标签询价表单中的示意图可帮助您填写尺寸。',
-          href: '/cimke-ajanlatkero',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '可以获得标签或碳带样品吗？',
           a: '可以，我们提供测试样品，让您在实际条件下确认材料是否符合要求。',
-          href: '',
+          href: '/termekek/cimkek-es-festekszalagok',
         },
         {
           q: '应该选择哪种碳带？',
@@ -2857,7 +2857,7 @@ export const dictionaries = {
         {
           q: '你们提供标签软件支持吗？',
           a: '是的 — 我们协助选择、部署和使用 cab cablabel S3 和 Loftware / NiceLabel 软件。',
-          href: '',
+          href: '/termekek/szoftverek',
         },
         {
           q: '扫描器为什么读不出旋转后的条码？',

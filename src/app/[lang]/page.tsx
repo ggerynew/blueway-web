@@ -33,17 +33,16 @@ export default async function HomePage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
-  // Termékfotók a forgó hero-falhoz — a teljes katalógusból egyenletesen válogatva.
-  const withImage = products.filter((p) => p.image);
-  const TILE_COUNT = Math.min(17, withImage.length);
-  const heroTiles = Array.from({ length: TILE_COUNT }, (_, i) => {
-    const p = withImage[Math.round((i * (withImage.length - 1)) / (TILE_COUNT - 1))];
-    return {
+  // Termékfotók a forgó hero-gömbhöz — a TELJES kínálat, nem válogatás.
+  // A gömb felülete elbírja: a hengeres elrendezésnél a kerület korlátozta a
+  // csempék számát, itt viszont minden termék elfér olvasható méretben.
+  const heroTiles = products
+    .filter((p) => p.image)
+    .map((p) => ({
       src: asset(p.image as string),
       alt: productName(p, lang),
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
-    };
-  });
+    }));
   // Címkék csempe a falra — a letisztított tekercses képpel.
   heroTiles.splice(1, 0, {
     src: asset('/images/products/cimkek.webp'),
