@@ -121,6 +121,9 @@ export const dictionaries = {
       title: 'Gyártók',
       lead: 'Piacvezető gyártók termékjelölési megoldásait forgalmazzuk — böngésszen gyártó szerint.',
       viewProducts: 'Termékek megtekintése',
+      industriesTitle: 'Alkalmazási területek',
+      industriesLead:
+        'Hol és mire használják ezeket a gépeket — és hogy melyik folyamat milyen szennyezőt termel.',
       backToManufacturers: 'Gyártók',
       productsFrom: (name: string) => `${name} termékek`,
     },
@@ -296,7 +299,7 @@ export const dictionaries = {
       items: [
         {
           q: 'Milyen gyártók termékeit forgalmazzák?',
-          a: 'A CAB, a POSTEK és a TYKMA Electrox gépeit, a START International adagolóberendezéseit, DNP és ARMOR-IIMAK festékszalagokat, valamint a Loftware / NiceLabel címkéző szoftvereket forgalmazzuk. A gépekhez kellékanyagot és alkatrészt is biztosítunk.',
+          a: 'A CAB, a POSTEK és a TYKMA Electrox gépeit, a START International adagolóberendezéseit, a Purex füst- és porelszívóit, DNP és ARMOR-IIMAK festékszalagokat, valamint a Loftware / NiceLabel címkéző szoftvereket forgalmazzuk. A gépekhez kellékanyagot és alkatrészt is biztosítunk.',
           href: '',
         },
         {
@@ -378,6 +381,31 @@ export const dictionaries = {
           q: 'Milyen adatok kellenek egy automata címkéző rendszer ajánlatához?',
           a: 'A címke méretei és a tekercs adatai, a termék anyaga és mérete, a folyamat (indítás, sebesség, ciklusidő), a címke helye a terméken a tűréssel, valamint a beépítési helyzet. Ezt a cab hivatalos címkézési adatlapja végigkérdezi — a Tudástárból letölthető.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Mekkora elszívóra van szükségem?',
+          a: 'Két dolog dönti el: mennyi szennyezőt termel a folyamat, és hány helyről kell elszívni. Egy lézeres jelölő vagy néhány forrasztóhely mellé a 400 m³/h-s gép elég; ha a folyamat sok füstöt ad, vagy egy gépről több elszívási pontot kell ellátni, a 800 m³/h-s a helyes választás. A pontos mérethez ismerni kell az anyagot, a folyamatot és az elszívási pontok számát — ezt ajánlatkéréskor végigkérdezzük.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Mikor kell szűrőt cserélni?',
+          a: 'Nem naptár szerint: a gép maga jelzi. A gáz- és részecskeérzékelő figyelmeztet, ha a szűrő telítődik, az automatikus légmennyiség-szabályozás pedig addig tartja az elszívási teljesítményt, amíg lehet — így a védelem nem romlik észrevétlenül. A tényleges élettartam az anyagtól és a terheléstől függ; a labirint előszűrő hosszabb ciklust ad, mint a lapos előszűrő.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Mi a különbség a HEPA és az aktívszén szűrő között?',
+          a: 'A HEPA a szilárd részecskéket fogja meg — port, füstöt, ultrafinom szemcséket. Az aktívszén a gázokat és a szagokat köti meg, például az oldószergőzt. A kettő nem helyettesíti egymást, ezért a gépekben egymás után van beépítve mindkettő.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'PVC-t jelölünk lézerrel — elég egy általános elszívó?',
+          a: 'Nem. A PVC lézeres megmunkálásakor sósav is keletkezik, ami az acélt marja: egy általános gép belülről korrodálódna. A PVC-változatok belső felülete ezért külön bevonatot kap, és erősebb, kifejezetten erre való szűrést használnak.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Elindul-e az elszívó magától, a géppel együtt?',
+          a: 'Igen. Interfészkészlettel a csatlakoztatott gép indításakor az elszívó is elindul, és fordítva: az elszívó vissza tudja jelezni a gépnek, ha riasztási állapotba kerül. Így nem fordulhat elő, hogy valaki elfelejti bekapcsolni.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -513,6 +541,9 @@ export const dictionaries = {
       title: 'Manufacturers',
       lead: 'We distribute the product marking solutions of market-leading manufacturers — browse by manufacturer.',
       viewProducts: 'View products',
+      industriesTitle: 'Applications',
+      industriesLead:
+        'Where and for what these machines are used — and what contaminant each process produces.',
       backToManufacturers: 'Manufacturers',
       productsFrom: (name: string) => `${name} products`,
     },
@@ -688,7 +719,7 @@ export const dictionaries = {
       items: [
         {
           q: 'Which manufacturers do you represent?',
-          a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
+          a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, Purex fume and dust extraction systems, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
           href: '',
         },
         {
@@ -770,6 +801,31 @@ export const dictionaries = {
           q: 'What data is needed to quote an automatic labeling system?',
           a: 'The label dimensions and roll data, the material and size of the product, the process (triggering, speed, cycle time), the label position on the product with its tolerance, and the installation situation. cab’s official labeling checklist walks through all of this — it is downloadable from the Knowledge base.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'What size extractor do I need?',
+          a: 'Two things decide it: how much contaminant the process produces, and how many points you need to extract from. For one laser marker or a few soldering positions the 400 m³/h machine is enough; if the process produces a lot of fume, or several extraction points have to be served from one machine, the 800 m³/h version is the right choice. Exact sizing needs the material, the process and the number of extraction points — we go through these when preparing a quote.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'When does the filter need changing?',
+          a: 'Not on a calendar: the machine tells you. Gas and particle sensors warn when the filter is loading up, and automatic flow control keeps the extraction rate up for as long as it can — so protection does not degrade unnoticed. Actual filter life depends on the material and the load; a labyrinth pre-filter gives a longer cycle than a flat pad.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'What is the difference between the HEPA and the carbon filter?',
+          a: 'The HEPA captures solid particles — dust, fume, ultrafine particles. Activated carbon binds gases and odours, such as solvent vapour. One does not replace the other, which is why both are fitted in series in these machines.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'We laser-mark PVC — is a general-purpose extractor enough?',
+          a: 'No. Laser processing of PVC also releases hydrochloric acid, which attacks steel: a general-purpose machine would corrode from the inside. That is why the internal surfaces of the PVC versions are specially coated and they use heavier, purpose-made filtration.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Does the extractor start automatically with the machine?',
+          a: 'Yes. With an interfacing kit the extractor starts when the connected machine starts, and the other way round: the extractor can signal the machine when it goes into alarm. That way nobody can forget to switch it on.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -904,6 +960,9 @@ export const dictionaries = {
       title: 'Hersteller',
       lead: 'Wir vertreiben die Kennzeichnungslösungen marktführender Hersteller — stöbern Sie nach Hersteller.',
       viewProducts: 'Produkte ansehen',
+      industriesTitle: 'Anwendungsbereiche',
+      industriesLead:
+        'Wo und wofür diese Maschinen eingesetzt werden — und welche Schadstoffe der jeweilige Prozess erzeugt.',
       backToManufacturers: 'Hersteller',
       productsFrom: (name: string) => `Produkte von ${name}`,
     },
@@ -1079,7 +1138,7 @@ export const dictionaries = {
       items: [
         {
           q: 'Welche Hersteller vertreiben Sie?',
-          a: 'Wir vertreiben die Maschinen von CAB, POSTEK und TYKMA Electrox, die Dosier- und Spendegeräte von START International, Thermotransfer-Farbbänder von DNP und ARMOR-IIMAK sowie die Etikettensoftware von Loftware / NiceLabel. Zu den Maschinen liefern wir auch Verbrauchsmaterial und Ersatzteile.',
+          a: 'Wir vertreiben die Maschinen von CAB, POSTEK und TYKMA Electrox, die Dosier- und Spendegeräte von START International, die Rauch- und Staubabsauganlagen von Purex, Thermotransfer-Farbbänder von DNP und ARMOR-IIMAK sowie die Etikettensoftware von Loftware / NiceLabel. Zu den Maschinen liefern wir auch Verbrauchsmaterial und Ersatzteile.',
           href: '',
         },
         {
@@ -1161,6 +1220,31 @@ export const dictionaries = {
           q: 'Welche Daten werden für das Angebot eines automatischen Etikettiersystems benötigt?',
           a: 'Die Etikettenmaße und Rollendaten, Material und Größe des Produkts, der Prozess (Auslösung, Geschwindigkeit, Taktzeit), die Etikettenposition auf dem Produkt samt Toleranz sowie die Einbausituation. Die offizielle Checkliste Etikettierung von cab führt Sie durch all diese Punkte — sie steht in der Wissensdatenbank zum Download bereit.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Welche Absauggröße brauche ich?',
+          a: 'Zwei Dinge entscheiden: wie viel Schadstoff der Prozess erzeugt und von wie vielen Stellen abgesaugt werden muss. Für einen Laserbeschrifter oder einige Lötplätze reicht das Gerät mit 400 m³/h; erzeugt der Prozess viel Rauch oder müssen mehrere Absaugpunkte von einer Maschine versorgt werden, ist die Ausführung mit 800 m³/h richtig. Für die genaue Auslegung brauchen wir das Material, den Prozess und die Zahl der Absaugpunkte — das klären wir beim Angebot.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Wann muss der Filter gewechselt werden?',
+          a: 'Nicht nach Kalender: Das Gerät meldet es. Gas- und Partikelsensoren warnen, wenn der Filter zusetzt, und die automatische Luftmengenregelung hält die Absaugleistung so lange wie möglich — der Schutz lässt also nicht unbemerkt nach. Die tatsächliche Standzeit hängt von Material und Belastung ab; ein Labyrinth-Vorfilter hält länger als eine flache Matte.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Was ist der Unterschied zwischen HEPA- und Aktivkohlefilter?',
+          a: 'Der HEPA-Filter hält feste Partikel zurück — Staub, Rauch, ultrafeine Teilchen. Aktivkohle bindet Gase und Gerüche, etwa Lösemitteldämpfe. Das eine ersetzt das andere nicht, deshalb sind in diesen Geräten beide hintereinander eingebaut.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Wir beschriften PVC mit dem Laser — genügt eine allgemeine Absaugung?',
+          a: 'Nein. Bei der Laserbearbeitung von PVC entsteht auch Salzsäure, die Stahl angreift: Ein allgemeines Gerät würde von innen korrodieren. Deshalb sind die Innenflächen der PVC-Ausführungen speziell beschichtet und sie verwenden eine stärkere, eigens dafür ausgelegte Filterung.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Startet die Absaugung automatisch mit der Maschine?',
+          a: 'Ja. Mit einem Interface-Kit startet die Absaugung, sobald die angeschlossene Maschine startet — und umgekehrt kann die Absaugung der Maschine melden, wenn sie in den Alarmzustand geht. So kann niemand vergessen, sie einzuschalten.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -1296,6 +1380,9 @@ export const dictionaries = {
       title: 'Produttori',
       lead: 'Distribuiamo le soluzioni di marcatura dei prodotti dei produttori leader di mercato — sfogli per produttore.',
       viewProducts: 'Vedi i prodotti',
+      industriesTitle: 'Ambiti di applicazione',
+      industriesLead:
+        'Dove e per cosa si usano queste macchine — e quale contaminante genera ciascun processo.',
       backToManufacturers: 'Produttori',
       productsFrom: (name: string) => `${name} products`,
     },
@@ -1471,7 +1558,7 @@ export const dictionaries = {
       items: [
         {
           q: 'Quali produttori rappresentate?',
-          a: 'Distribuiamo le macchine di CAB, POSTEK e TYKMA Electrox, i dispositivi di dispensazione di START International, i ribbon a trasferimento termico DNP e ARMOR-IIMAK e il software di etichettatura Loftware / NiceLabel. Forniamo inoltre materiali di consumo e ricambi per le macchine.',
+          a: 'Distribuiamo le macchine di CAB, POSTEK e TYKMA Electrox, i dispositivi di dispensazione di START International, gli aspiratori di fumi e polveri Purex, i ribbon a trasferimento termico DNP e ARMOR-IIMAK e il software di etichettatura Loftware / NiceLabel. Forniamo inoltre materiali di consumo e ricambi per le macchine.',
           href: '',
         },
         {
@@ -1553,6 +1640,31 @@ export const dictionaries = {
           q: 'Quali dati servono per preventivare un sistema di etichettatura automatica?',
           a: 'Le dimensioni dell’etichetta e i dati del rotolo, il materiale e le dimensioni del prodotto, il processo (attivazione, velocità, tempo ciclo), la posizione dell’etichetta sul prodotto con la relativa tolleranza e la situazione di installazione. La checklist ufficiale di etichettatura di cab passa in rassegna tutti questi aspetti — è scaricabile dal Centro conoscenze.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: 'Di che dimensione deve essere l’aspiratore?',
+          a: 'Lo decidono due cose: quanto contaminante genera il processo e da quanti punti occorre aspirare. Per un marcatore laser o alcune postazioni di saldatura basta la macchina da 400 m³/h; se il processo produce molti fumi o se da una sola macchina vanno serviti più punti di aspirazione, la versione da 800 m³/h è la scelta giusta. Per il dimensionamento esatto servono il materiale, il processo e il numero di punti di aspirazione: li verifichiamo insieme in fase di offerta.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Quando va sostituito il filtro?',
+          a: 'Non secondo il calendario: è la macchina a segnalarlo. I sensori di gas e particelle avvisano quando il filtro si carica e il controllo automatico della portata mantiene l’aspirazione il più a lungo possibile, così la protezione non cala senza che ce ne si accorga. La durata effettiva dipende dal materiale e dal carico; un prefiltro a labirinto dura più di un pad piatto.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Qual è la differenza tra filtro HEPA e a carbone attivo?',
+          a: 'Il HEPA trattiene le particelle solide: polveri, fumi, particelle ultrafini. Il carbone attivo lega gas e odori, per esempio i vapori di solvente. Uno non sostituisce l’altro: per questo nelle macchine sono montati entrambi, in serie.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Marchiamo il PVC con il laser: basta un aspiratore generico?',
+          a: 'No. La lavorazione laser del PVC libera anche acido cloridrico, che aggredisce l’acciaio: una macchina generica si corroderebbe dall’interno. Per questo le superfici interne delle versioni PVC hanno un rivestimento speciale e utilizzano una filtrazione più spinta, studiata appositamente.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'L’aspiratore si avvia automaticamente insieme alla macchina?',
+          a: 'Sì. Con un kit di interfacciamento l’aspiratore si avvia quando parte la macchina collegata e, viceversa, può segnalare alla macchina il proprio stato di allarme. Così nessuno può dimenticare di accenderlo.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -1688,6 +1800,9 @@ export const dictionaries = {
       title: 'Fabricantes',
       lead: 'Distribuimos las soluciones de marcaje de productos de fabricantes líderes del mercado — explore por fabricante.',
       viewProducts: 'Ver productos',
+      industriesTitle: 'Ámbitos de aplicación',
+      industriesLead:
+        'Dónde y para qué se utilizan estas máquinas, y qué contaminante genera cada proceso.',
       backToManufacturers: 'Fabricantes',
       productsFrom: (name: string) => `${name} products`,
     },
@@ -1863,7 +1978,7 @@ export const dictionaries = {
       items: [
         {
           q: '¿Qué fabricantes representan?',
-          a: 'Distribuimos las máquinas de CAB, POSTEK y TYKMA Electrox, los equipos dispensadores de START International, los ribbons de transferencia térmica de DNP y ARMOR-IIMAK, y el software de etiquetado Loftware / NiceLabel. También suministramos consumibles y repuestos para las máquinas.',
+          a: 'Distribuimos las máquinas de CAB, POSTEK y TYKMA Electrox, los equipos dispensadores de START International, los extractores de humos y polvo Purex, los ribbons de transferencia térmica de DNP y ARMOR-IIMAK, y el software de etiquetado Loftware / NiceLabel. También suministramos consumibles y repuestos para las máquinas.',
           href: '',
         },
         {
@@ -1945,6 +2060,31 @@ export const dictionaries = {
           q: '¿Qué datos se necesitan para presupuestar un sistema de etiquetado automático?',
           a: 'Las dimensiones de la etiqueta y los datos del rollo, el material y el tamaño del producto, el proceso (activación, velocidad, tiempo de ciclo), la posición de la etiqueta sobre el producto con su tolerancia y la situación de instalación. La lista de comprobación de etiquetado oficial de cab recoge todos estos puntos — puede descargarse en el Centro de conocimiento.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: '¿Qué tamaño de extractor necesito?',
+          a: 'Lo deciden dos cosas: cuánto contaminante genera el proceso y desde cuántos puntos hay que extraer. Para un marcador láser o unos pocos puestos de soldadura basta la máquina de 400 m³/h; si el proceso genera mucho humo o hay que atender varios puntos de extracción desde una sola máquina, la versión de 800 m³/h es la elección correcta. Para el dimensionado exacto hacen falta el material, el proceso y el número de puntos de extracción: lo repasamos al preparar la oferta.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '¿Cuándo hay que cambiar el filtro?',
+          a: 'No por calendario: la máquina lo indica. Los sensores de gas y partículas avisan cuando el filtro se va colmatando, y el control automático del caudal mantiene la extracción todo lo posible, de modo que la protección no se degrada de forma inadvertida. La vida útil real depende del material y de la carga; un prefiltro de laberinto dura más que una almohadilla plana.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '¿Cuál es la diferencia entre el filtro HEPA y el de carbón activo?',
+          a: 'El HEPA retiene las partículas sólidas: polvo, humo, partículas ultrafinas. El carbón activo fija gases y olores, como los vapores de disolvente. Uno no sustituye al otro, por eso en estas máquinas van montados ambos, en serie.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'Marcamos PVC con láser, ¿basta un extractor genérico?',
+          a: 'No. El procesado láser del PVC libera también ácido clorhídrico, que ataca el acero: una máquina genérica se corroería por dentro. Por eso las superficies internas de las versiones de PVC llevan un recubrimiento especial y utilizan una filtración más exigente, diseñada para ello.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '¿El extractor arranca automáticamente con la máquina?',
+          a: 'Sí. Con un kit de interfaz el extractor arranca cuando lo hace la máquina conectada y, a la inversa, el extractor puede avisar a la máquina cuando entra en alarma. Así nadie puede olvidarse de encenderlo.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -2079,6 +2219,9 @@ export const dictionaries = {
       title: '제조사',
       lead: '시장을 선도하는 제조사들의 제품 마킹 솔루션을 공급합니다 — 제조사별로 살펴보세요.',
       viewProducts: '제품 보기',
+      industriesTitle: '적용 분야',
+      industriesLead:
+        '이 장비들이 어디에 어떤 용도로 쓰이는지, 그리고 각 공정이 어떤 오염물질을 만들어 내는지 정리했습니다.',
       backToManufacturers: '제조사',
       productsFrom: (name: string) => `${name} 제품`,
     },
@@ -2254,7 +2397,7 @@ export const dictionaries = {
       items: [
         {
           q: '어떤 제조사의 제품을 취급하나요?',
-          a: 'CAB, POSTEK, TYKMA Electrox의 장비, START International의 디스펜서, DNP 및 ARMOR-IIMAK 열전사 리본, Loftware / NiceLabel 라벨링 소프트웨어를 공급합니다. 장비에 필요한 소모품과 부품도 함께 공급합니다.',
+          a: 'CAB, POSTEK, TYKMA Electrox의 장비, START International의 디스펜서, Purex의 흄·분진 집진 장비, DNP 및 ARMOR-IIMAK 열전사 리본, Loftware / NiceLabel 라벨링 소프트웨어를 공급합니다. 장비에 필요한 소모품과 부품도 함께 공급합니다.',
           href: '',
         },
         {
@@ -2336,6 +2479,31 @@ export const dictionaries = {
           q: '자동 라벨링 시스템을 견적하려면 어떤 자료가 필요합니까?',
           a: '라벨 치수와 롤 사양, 제품의 재질과 크기, 공정 조건(트리거 방식, 속도, 사이클 타임), 제품상의 라벨 부착 위치와 공차, 그리고 설치 환경입니다. cab의 공식 라벨링 체크리스트가 이 모든 항목을 안내하며, 지식 센터에서 내려받으실 수 있습니다.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: '어느 정도 용량의 집진기가 필요한가요?',
+          a: '두 가지가 결정합니다. 공정에서 오염물질이 얼마나 발생하는지, 그리고 몇 곳에서 흡입해야 하는지입니다. 레이저 마킹기 한 대나 솔더링 지점 몇 곳이라면 400 m³/h 기종으로 충분하고, 흄이 많이 발생하거나 한 대로 여러 집진 지점을 담당해야 한다면 800 m³/h 기종이 적합합니다. 정확한 용량 산정에는 소재, 공정, 집진 지점 수가 필요하며 견적 단계에서 함께 확인합니다.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '필터는 언제 교체해야 하나요?',
+          a: '달력이 아니라 장비가 알려 줍니다. 가스·입자 센서가 필터 포화를 경고하고, 자동 풍량 제어가 가능한 한 오래 집진 성능을 유지하므로 보호 성능이 모르는 사이에 떨어지지 않습니다. 실제 수명은 소재와 부하에 따라 다르며, 래버린스 프리필터가 평판형보다 교체 주기가 깁니다.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'HEPA 필터와 활성탄 필터는 어떻게 다른가요?',
+          a: 'HEPA는 분진, 흄, 초미세 입자 같은 고체 입자를 포집합니다. 활성탄은 용제 증기 같은 가스와 냄새를 흡착합니다. 서로를 대체할 수 없기 때문에 이 장비들에는 두 가지가 직렬로 함께 장착되어 있습니다.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'PVC를 레이저로 마킹합니다 — 일반 집진기로 충분한가요?',
+          a: '아닙니다. PVC를 레이저로 가공하면 염산도 발생해 강재를 부식시키므로 일반 장비는 내부부터 부식됩니다. 그래서 PVC 버전은 내부 표면에 특수 코팅을 적용하고, 이를 위해 설계된 더 강한 여과 방식을 사용합니다.',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '집진기가 장비와 함께 자동으로 켜지나요?',
+          a: '네. 인터페이스 키트를 사용하면 연결된 장비가 시동될 때 집진기도 함께 시동되며, 반대로 집진기가 경보 상태가 되면 장비에 이를 알릴 수 있습니다. 따라서 켜는 것을 잊을 일이 없습니다.',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
@@ -2470,6 +2638,9 @@ export const dictionaries = {
       title: '制造商',
       lead: '我们代理市场领先制造商的产品标识解决方案 — 按制造商浏览。',
       viewProducts: '查看产品',
+      industriesTitle: '应用领域',
+      industriesLead:
+        '这些设备用于何处、用来做什么，以及各道工艺分别产生哪些污染物。',
       backToManufacturers: '制造商',
       productsFrom: (name: string) => `${name} 产品`,
     },
@@ -2645,7 +2816,7 @@ export const dictionaries = {
       items: [
         {
           q: '你们代理哪些制造商的产品？',
-          a: '我们代理 CAB、POSTEK 和 TYKMA Electrox 的设备、START International 的点胶与分配设备、DNP 和 ARMOR-IIMAK 热转印碳带，以及 Loftware / NiceLabel 标签软件。同时为设备提供耗材和备件。',
+          a: '我们代理 CAB、POSTEK 和 TYKMA Electrox 的设备、START International 的点胶与分配设备、Purex 的烟尘净化设备、DNP 和 ARMOR-IIMAK 热转印碳带，以及 Loftware / NiceLabel 标签软件。同时为设备提供耗材和备件。',
           href: '',
         },
         {
@@ -2727,6 +2898,31 @@ export const dictionaries = {
           q: '为自动贴标系统报价需要哪些资料？',
           a: '标签尺寸与卷料参数、产品的材质与尺寸、工艺条件（触发方式、速度、节拍时间）、标签在产品上的位置及其公差，以及安装现场情况。cab 官方的贴标项目清单涵盖了上述全部内容，可从知识库下载。',
           href: '/tudastar/cimkezo-rendszer-tervezese',
+        },
+        {
+          q: '我需要多大风量的净化设备？',
+          a: '由两点决定：工艺产生多少污染物，以及需要从几个点位抽风。一台激光打标机或少量焊接工位，400 m³/h 的机型即可；若工艺烟雾量大，或需由一台设备服务多个抽风点，则应选 800 m³/h 的版本。精确选型需要材料、工艺和抽风点数量等信息——我们会在报价时逐项确认。',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '滤芯什么时候需要更换？',
+          a: '不按日历，而是由设备提示。气体与颗粒物传感器会在滤芯趋于饱和时报警，自动风量控制则尽可能长时间维持抽风量，因此防护性能不会在无察觉中下降。实际寿命取决于材料与负荷；迷宫式前置滤芯的更换周期长于平板式滤棉。',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: 'HEPA 滤芯与活性炭滤芯有什么区别？',
+          a: 'HEPA 捕集固体颗粒——粉尘、烟雾、超细颗粒物。活性炭吸附气体与气味，例如溶剂蒸气。两者不能互相替代，因此这些设备中二者是串联安装的。',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '我们用激光打标 PVC——普通净化设备够用吗？',
+          a: '不够。激光加工 PVC 还会产生盐酸，会侵蚀钢材，普通设备会从内部开始腐蚀。因此 PVC 版本的内表面经过特殊涂层处理，并采用为此专门设计的更强过滤方式。',
+          href: '/termekek/fust-es-porelszivok',
+        },
+        {
+          q: '净化设备会随机器自动启动吗？',
+          a: '会。配备接口套件后，所连机器启动时净化设备也会一同启动；反之，净化设备进入报警状态时也能向机器发出信号。这样就不会有人忘记开机。',
+          href: '/termekek/fust-es-porelszivok',
         },
       ],
     },
