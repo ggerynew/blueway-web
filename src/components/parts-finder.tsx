@@ -76,6 +76,12 @@ export function PartsFinder({ lang }: { lang: Locale }) {
   const also = useRef<HTMLDivElement>(null);
   const mezo = useRef<HTMLInputElement>(null);
 
+  // Mobilon a nyitógomb a jobb alsó sarokban ül, a süti-sáv viszont ugyanoda
+  // kerül, és telefonon 250 pixel magas — mérve: 390×844-es kijelzőn teljesen
+  // eltakarta a gombot, tehát a kereső addig LÁTHATATLAN volt, amíg a látogató
+  // nem válaszolt a sávnak. Ezért a gombot a sáv fölé emeljük, amíg az kint van.
+  const [alsoTavolsag, setAlsoTavolsag] = useState(16);
+
   const gepNev = useMemo(
     () => index?.gepek.find((g) => g.id === gepId)?.nev ?? null,
     [index, gepId],
@@ -133,6 +139,36 @@ export function PartsFinder({ lang }: { lang: Locale }) {
     if (nyitva && !uzenetek.length) hozzafuz({ ki: 'gep', szoveg: t.greeting });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nyitva]);
+
+  // A süti-sáv magasságát követjük: a szkript a válasz után kiveszi a DOM-ból,
+  // ilyenkor a gomb visszaül a sarokba. Két figyelő kell hozzá: a sáv
+  // megjelenését/eltűnését a body gyermeklistája mutatja, a magasságát pedig
+  // csak méret-figyelő adja meg (a szöveg hét nyelven más-más sort tör).
+  useEffect(() => {
+    const PEREM = 16;
+    let meret: ResizeObserver | null = null;
+    const merd = () => {
+      const sav = document.querySelector<HTMLElement>('.bwc-banner');
+      if (!sav) {
+        meret?.disconnect();
+        meret = null;
+        setAlsoTavolsag(PEREM);
+        return;
+      }
+      if (!meret) {
+        meret = new ResizeObserver(() => setAlsoTavolsag(sav.offsetHeight + 12));
+        meret.observe(sav);
+      }
+      setAlsoTavolsag(sav.offsetHeight + 12);
+    };
+    merd();
+    const jelenlet = new MutationObserver(merd);
+    jelenlet.observe(document.body, { childList: true });
+    return () => {
+      jelenlet.disconnect();
+      meret?.disconnect();
+    };
+  }, []);
 
   // Escape-re zár, mint minden réteg a weblapon.
   useEffect(() => {
@@ -327,19 +363,21 @@ export function PartsFinder({ lang }: { lang: Locale }) {
         {t.tabLabel}
       </button>
 
-      {/* Mobilon körgomb: a függőleges fül ott elfedné a tartalmat. */}
+      {/* Mobilon feliratos gomb: a függőleges fül ott elfedné a tartalmat, a
+          puszta nagyító-ikon viszont nem árulja el, mi rejlik mögötte. */}
       <button
         type="button"
         onClick={() => setNyitva(true)}
-        aria-label={t.open}
-        className={`fixed right-4 bottom-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-brand-700 text-white shadow-lg transition-colors hover:bg-brand-800 md:hidden ${
+        className={`fixed right-4 z-40 flex items-center gap-2 rounded-full bg-brand-700 py-3 pr-4 pl-3.5 text-sm font-medium text-white shadow-lg transition-[background-color,bottom] hover:bg-brand-800 md:hidden ${
           nyitva ? 'pointer-events-none opacity-0' : ''
         }`}
+        style={{ bottom: alsoTavolsag }}
       >
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.6-3.6" strokeLinecap="round" />
         </svg>
+        {t.tabLabel}
       </button>
 
       {nyitva && (
