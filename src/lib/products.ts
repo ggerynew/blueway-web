@@ -579,7 +579,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-3014',
         image: '/images/applicators/hq-3014.webp',
-        name: { hu: '3014 / 3016 Karos felrakó', en: '3014 / 3016 Arm applicator', it: 'Applicatore a braccio 3014 / 3016', es: 'Aplicador de brazo 3014 / 3016', de: '3014 / 3016 Schwenkarm-Applikator', ko: '3014 / 3016 암 어플리케이터', zh: '3014 / 3016 摆臂式贴标模块' },
+        name: { hu: 'HQ 3014 / 3016 Karos felrakó', en: 'HQ 3014 / 3016 Arm applicator', it: 'Applicatore a braccio HQ 3014 / 3016', es: 'Aplicador de brazo HQ 3014 / 3016', de: 'HQ 3014 / 3016 Schwenkarm-Applikator', ko: 'HQ 3014 / 3016 암 어플리케이터', zh: 'HQ 3014 / 3016 摆臂式贴标模块' },
         description: {
           hu: 'Nagyobb címkékhez, termék elejének, oldalának vagy hátának címkézése. Két változat: 4" és 6" szélességhez.',
           en: 'For larger labels — labeling the front, side or back of the product. Two versions: for 4" and 6" width.', it: 'Per etichette di formato maggiore — etichettatura del fronte, del lato o del retro del prodotto. Due versioni: per larghezza 4" e 6".', es: 'Para etiquetas de mayor tamaño — etiquetado de la parte frontal, lateral o trasera del producto. Dos versiones: para anchura de 4" y 6".', de: 'Für größere Etiketten — Etikettierung vorn, seitlich oder hinten am Produkt. Zwei Ausführungen: für 4" und 6" Breite.', ko: '대형 라벨용 — 제품의 전면, 측면 또는 후면 라벨링. 4"와 6" 폭용 두 가지 버전.', zh: '适用于较大标签——在产品正面、侧面或背面贴标。 两种版本：适用于 4" 和 6" 宽度。',
@@ -605,7 +605,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4014',
         image: '/images/applicators/hq-4014.webp',
-        name: { hu: '4014 / 4016 Stroke applikátor', en: '4014 / 4016 Stroke applicator', it: 'Applicatore a corsa 4014 / 4016', es: 'Aplicador de carrera 4014 / 4016', de: '4014 / 4016 Hub-Applikator', ko: '4014 / 4016 스트로크 어플리케이터', zh: '4014 / 4016 行程式贴标模块' },
+        name: { hu: 'HQ 4014 / 4016 Stroke applikátor', en: 'HQ 4014 / 4016 Stroke applicator', it: 'Applicatore a corsa HQ 4014 / 4016', es: 'Aplicador de carrera HQ 4014 / 4016', de: 'HQ 4014 / 4016 Hub-Applikator', ko: 'HQ 4014 / 4016 스트로크 어플리케이터', zh: 'HQ 4014 / 4016 行程式贴标模块' },
         description: {
           hu: 'Egyszerű címkézéshez. Két változat: 4" és 6" szélességhez.',
           en: 'For simple labeling. Two versions: for 4" and 6" width.', it: 'Per un’etichettatura semplice. Due versioni: per larghezza 4" e 6".', es: 'Para un etiquetado sencillo. Dos versiones: para anchura de 4" y 6".', de: 'Für einfache Etikettierung. Zwei Ausführungen: für 4" und 6" Breite.', ko: '간단한 라벨링용. 4"와 6" 폭용 두 가지 버전.', zh: '适用于简单贴标任务。 两种版本：适用于 4" 和 6" 宽度。',
@@ -630,7 +630,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4114',
         image: '/images/applicators/hq-4114.webp',
-        name: { hu: '4114 / 4116 Stroke applikátor', en: '4114 / 4116 Stroke applicator', it: 'Applicatore a corsa 4114 / 4116', es: 'Aplicador de carrera 4114 / 4116', de: '4114 / 4116 Hub-Applikator', ko: '4114 / 4116 스트로크 어플리케이터', zh: '4114 / 4116 行程式贴标模块' },
+        name: { hu: 'HQ 4114 / 4116 Stroke applikátor', en: 'HQ 4114 / 4116 Stroke applicator', it: 'Applicatore a corsa HQ 4114 / 4116', es: 'Aplicador de carrera HQ 4114 / 4116', de: 'HQ 4114 / 4116 Hub-Applikator', ko: 'HQ 4114 / 4116 스트로크 어플리케이터', zh: 'HQ 4114 / 4116 行程式贴标模块' },
         description: {
           hu: 'Nagy pontosságú címkézés kis címkékhez (min. 4x4mm). Két változat: 2"/4" és 6" szélességhez.',
           en: 'High-precision labeling for small labels (min. 4x4 mm). Two versions: for 2"/4" and 6" width.', it: 'Etichettatura ad alta precisione per etichette piccole (min. 4x4 mm). Due versioni: per larghezza 2"/4" e 6".', es: 'Etiquetado de alta precisión para etiquetas pequeñas (mín. 4x4 mm). Dos versiones: para anchura de 2"/4" y 6".', de: 'Hochpräzise Etikettierung für kleine Etiketten (min. 4x4 mm). Zwei Ausführungen: für 2"/4" und 6" Breite.', ko: '소형 라벨(최소 4x4 mm)을 위한 고정밀 라벨링. 2"/4" 및 6" 폭용 두 가지 버전.', zh: '针对小标签（最小 4x4 mm）的高精度贴标。 两种版本：适用于 2"/4" 和 6" 宽度。',
@@ -656,7 +656,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4214',
         image: '/images/applicators/hq-4214.webp',
-        name: { hu: '4214 Stroke turn applikátor', en: '4214 Stroke turn applicator', it: 'Applicatore a corsa e rotazione 4214', es: 'Aplicador de carrera y giro 4214', de: '4214 Dreh-Hub-Applikator', ko: '4214 스트로크 턴 어플리케이터', zh: '4214 行程回转式贴标模块' },
+        name: { hu: 'HQ 4214 Stroke turn applikátor', en: 'HQ 4214 Stroke turn applicator', it: 'Applicatore a corsa e rotazione HQ 4214', es: 'Aplicador de carrera y giro HQ 4214', de: 'HQ 4214 Dreh-Hub-Applikator', ko: 'HQ 4214 스트로크 턴 어플리케이터', zh: 'HQ 4214 行程回转式贴标模块' },
         description: {
           hu: 'Kis címkék minden oldalról, nehezen beépíthető helyeken is.',
           en: 'Small labels from all sides, also in hard-to-install positions.', it: 'Etichette piccole da tutti i lati, anche in posizioni di installazione difficili.', es: 'Etiquetas pequeñas desde todos los lados, también en posiciones de montaje difíciles.', de: 'Kleine Etiketten von allen Seiten, auch in schwer zugänglichen Einbaulagen.', ko: '설치가 어려운 위치에서도 모든 면에 소형 라벨을 부착합니다.', zh: '从各个方向贴附小标签，亦适用于难以安装设备的位置。',
@@ -682,7 +682,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4414',
         image: '/images/applicators/hq-4414.webp',
-        name: { hu: '4414 Stroke applikátor', en: '4414 Stroke applicator', it: 'Applicatore a corsa 4414', es: 'Aplicador de carrera 4414', de: '4414 Hub-Applikator', ko: '4414 스트로크 어플리케이터', zh: '4414 行程式贴标模块' },
+        name: { hu: 'HQ 4414 Stroke applikátor', en: 'HQ 4414 Stroke applicator', it: 'Applicatore a corsa HQ 4414', es: 'Aplicador de carrera HQ 4414', de: 'HQ 4414 Hub-Applikator', ko: 'HQ 4414 스트로크 어플리케이터', zh: 'HQ 4414 行程式贴标模块' },
         description: {
           hu: 'Kis és közepes címkék minden oldalról, x-y irányban állítható pozícióval.',
           en: 'Small and midsized labels from all sides, with an x-y adjustable position.', it: 'Etichette piccole e di medio formato da tutti i lati, con posizione regolabile x-y.', es: 'Etiquetas pequeñas y medianas desde todos los lados, con posición ajustable en x-y.', de: 'Kleine und mittelgroße Etiketten von allen Seiten, mit in x- und y-Richtung justierbarer Position.', ko: '소형 및 중형 라벨을 모든 면에 부착, x-y 방향 위치 조정 가능.', zh: '从各个方向贴附小型及中型标签，贴标位置可在 x-y 方向调节。',
@@ -708,7 +708,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4714',
         image: '/images/applicators/hq-4714.webp',
-        name: { hu: '4714 Zászló címkéző', en: '4714 Flag applicator', it: 'Applicatore a bandierina 4714', es: 'Aplicador de bandera 4714', de: '4714 Fahnen-Applikator', ko: '4714 플래그 어플리케이터', zh: '4714 旗形贴标模块' },
+        name: { hu: 'HQ 4714 Zászló címkéző', en: 'HQ 4714 Flag applicator', it: 'Applicatore a bandierina HQ 4714', es: 'Aplicador de bandera HQ 4714', de: 'HQ 4714 Fahnen-Applikator', ko: 'HQ 4714 플래그 어플리케이터', zh: 'HQ 4714 旗形贴标模块' },
         description: {
           hu: 'Kábelek címkézése nagy pontossággal.',
           en: 'High-precision labeling of cables.', it: 'Etichettatura ad alta precisione di cavi.', es: 'Etiquetado de alta precisión de cables.', de: 'Hochpräzise Etikettierung von Kabeln.', ko: '케이블의 고정밀 라벨링.', zh: '线缆的高精度贴标。',
@@ -734,7 +734,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-6114',
         image: '/images/applicators/hq-6114.webp',
-        name: { hu: '6114 Ráfújó címkéző', en: '6114 Blow-on applicator', it: 'Applicatore blow-on 6114', es: 'Aplicador de soplado 6114', de: '6114 Blasapplikator', ko: '6114 블로우온 어플리케이터', zh: '6114 吹贴式贴标模块' },
+        name: { hu: 'HQ 6114 Ráfújó címkéző', en: 'HQ 6114 Blow-on applicator', it: 'Applicatore blow-on HQ 6114', es: 'Aplicador de soplado HQ 6114', de: 'HQ 6114 Blasapplikator', ko: 'HQ 6114 블로우온 어플리케이터', zh: 'HQ 6114 吹贴式贴标模块' },
         description: {
           hu: 'Törékeny vagy egyenetlen felületek címkézése, nagy sebességgel.',
           en: 'Labeling fragile or uneven surfaces at high speed.', it: 'Etichettatura di superfici fragili o irregolari ad alta velocità.', es: 'Etiquetado de superficies frágiles o irregulares a alta velocidad.', de: 'Etikettierung empfindlicher oder unebener Oberflächen mit hoher Geschwindigkeit.', ko: '깨지기 쉽거나 고르지 않은 표면의 고속 라벨링.', zh: '高速贴标易碎或不平整的表面。',
@@ -759,7 +759,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-5314',
         image: '/images/applicators/hq-5314.webp',
-        name: { hu: '5314 / 5316 Vákuumszalagos applikátor', en: '5314 / 5316 Vacuum-belt applicator', it: 'Applicatore a nastro aspirante 5314 / 5316', es: 'Aplicador de cinta de vacío 5314 / 5316', de: '5314 / 5316 Vakuumband-Applikator', ko: '5314 / 5316 진공 벨트 어플리케이터', zh: '5314 / 5316 真空带式贴标模块' },
+        name: { hu: 'HQ 5314 / 5316 Vákuumszalagos applikátor', en: 'HQ 5314 / 5316 Vacuum-belt applicator', it: 'Applicatore a nastro aspirante HQ 5314 / 5316', es: 'Aplicador de cinta de vacío HQ 5314 / 5316', de: 'HQ 5314 / 5316 Vakuumband-Applikator', ko: 'HQ 5314 / 5316 진공 벨트 어플리케이터', zh: 'HQ 5314 / 5316 真空带式贴标模块' },
         description: {
           hu: 'Címkézés nagy sebességgel, mozgásban lévő termékeknél. Két változat: 4" és 6" szélességhez.',
           en: 'High-speed labeling of products in motion. Two versions: for 4" and 6" width.', it: 'Etichettatura ad alta velocità di prodotti in movimento. Due versioni: per larghezza 4" e 6".', es: 'Etiquetado a alta velocidad de productos en movimiento. Dos versiones: para anchura de 4" y 6".', de: 'Hochgeschwindigkeits-Etikettierung bewegter Produkte. Zwei Ausführungen: für 4" und 6" Breite.', ko: '이동 중인 제품의 고속 라벨링. 4"와 6" 폭용 두 가지 버전.', zh: '对运动中的产品进行高速贴标。两种版本：适用于 4" 和 6" 宽度。',
@@ -786,7 +786,7 @@ const productsSource: Sourced<Product[]> = [
       {
         slug: 'hq-4514',
         image: '/images/applicators/hq-4514.webp',
-        name: { hu: '4514 Swing Stroke applikátor', en: '4514 Swing stroke applicator', it: 'Applicatore a rotazione e corsa 4514', es: 'Aplicador de carrera oscilante 4514', de: '4514 Schwenk-Hub-Applikator', ko: '4514 스윙 스트로크 어플리케이터', zh: '4514 摆动行程式贴标模块' },
+        name: { hu: 'HQ 4514 Swing Stroke applikátor', en: 'HQ 4514 Swing stroke applicator', it: 'Applicatore a rotazione e corsa HQ 4514', es: 'Aplicador de carrera oscilante HQ 4514', de: 'HQ 4514 Schwenk-Hub-Applikator', ko: 'HQ 4514 스윙 스트로크 어플리케이터', zh: 'HQ 4514 摆动行程式贴标模块' },
         description: {
           hu: 'Belső címkézés.',
           en: 'Inside labeling.', it: 'Etichettatura interna.', es: 'Etiquetado interior.', de: 'Innenetikettierung.', ko: '내부 라벨링.', zh: '内表面贴标。',
