@@ -38,6 +38,11 @@ on:
         type: choice
         default: kihagy
         options: [kihagy, probafutas, vegrehajt]
+      levelproba:
+        description: 'Valódi próbalevelek küldése 2, 5 és 8 MB csatolmánnyal az info@ címre'
+        type: choice
+        default: kihagy
+        options: [kihagy, vegrehajt]
 
 concurrency:
   group: forpsi
@@ -276,6 +281,8 @@ jobs:
 
       - name: Ellenőrzés — betölt-e az oldal
         if: steps.gate.outputs.go == 'true'
+        env:
+          LEVELPROBA: ${{ inputs.levelproba }}
         run: |
           # Az ellenőrzés HTTP-n megy, nem HTTPS-en: a tanúsítvány csak a
           # DNS-átállás után igényelhető, addig a https:// eleve nem jöhet
@@ -381,6 +388,29 @@ jobs:
             echo "  a nagy csatolmány eljut a szkriptig, és a levél összeáll belőle"
           else
             echo "::warning::A 8 MB-os csatolmány próbája nem 200-zal zárult ($PROBAV) — a valódi küldés eddig a pontig sem jut el."
+          fi
+
+          # 4. VALÓDI próbalevelek — csak kézi indításra, a levelproba
+          #    beállítással. A _probe mód bebizonyította, hogy a levél a
+          #    mail() hívásig hibátlanul összeáll; ami ezután történik, azt
+          #    csak úgy lehet megmérni, ha tényleg elküldjük. Három levél megy
+          #    az info@ címre, 2, 5 és 8 MB-os csatolmánnyal — base64-ben ez
+          #    2,7 / 6,8 / 10,9 MB-os levél. Abból, hogy melyik érkezik meg,
+          #    kiderül, hol a levelezőrendszer mérethatára: a bejelentett hiba
+          #    szerint a csatolmány nélküli átmegy, a 8 MB-os nem.
+          if [ "$LEVELPROBA" = "vegrehajt" ]; then
+            echo "— valódi próbalevelek csatolmánnyal —"
+            for MB in 2 5 8; do
+              head -c $((MB * 1000000)) /dev/urandom > "/tmp/proba-$MB.png"
+              LV=$(curl -sS --max-time 180 -X POST "http://$KULDO/send.php" \
+                   -F "_subject=Levélküldési próba — $MB MB csatolmány" \
+                   -F 'email=info@blueway.hu' \
+                   -F "uzenet=Automatikus próba a deployból: $MB MB-os csatolmány. Ha ez a levél megérkezett, ekkora csatolmánnyal működik a küldés." \
+                   -F "attachment=@/tmp/proba-$MB.png;type=image/png" \
+                   -o /tmp/probalevel.txt -w '%{http_code}' || echo 000)
+              echo "próbalevél $MB MB -> $LV  válasz: $(head -c 120 /tmp/probalevel.txt 2>/dev/null)"
+            done
+            echo "Az info@blueway.hu postafiókban látszik majd, melyik érkezett meg — abból adódik a mérethatár."
           fi
 
           echo "— a .htaccess érvényesülése —"
