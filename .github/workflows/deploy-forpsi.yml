@@ -502,6 +502,18 @@ jobs:
             echo "::warning::A .htaccess gyorsítótár-fejléce nem jelenik meg (kapott: '${FEJLEC:-semmi}'). Elképzelhető, hogy a tárhely nem olvassa a .htaccess-t."
           fi
 
+          # A lapozás adatcsomagjai noindex fejlécet kapnak, a robots.txt
+          # viszont NEM — a kettő együtt bizonyítja, hogy a szabálypár jó
+          # irányban fog: egy elrontott minta itt pont fordítva sülne el, és
+          # vagy az egész oldalt tiltaná le, vagy semmit.
+          ROBOTS_FEJ=$(curl -sSI --max-time 20 "https://$HOSZT/robots.txt" 2>/dev/null | grep -i '^x-robots-tag:' || true)
+          ADAT_FEJ=$(curl -sSI --max-time 20 "https://$HOSZT/hu.txt" 2>/dev/null | grep -i '^x-robots-tag:' || true)
+          if [ -z "$ROBOTS_FEJ" ] && printf '%s' "$ADAT_FEJ" | grep -qi noindex; then
+            echo "az X-Robots-Tag helyesen áll: a robots.txt-n nincs, az adatcsomagon noindex"
+          else
+            echo "::warning::Az X-Robots-Tag nem a várt módon áll. robots.txt: '${ROBOTS_FEJ:-nincs}', hu.txt: '${ADAT_FEJ:-nincs}'. Várt: robots.txt-n semmi, hu.txt-n noindex."
+          fi
+
           # ——— Az átirányítások iránya ————————————————————————————
           # A kanonikus cím a www NÉLKÜLI, HTTPS-es alak. Két beállítás terel
           # ide: a www-t a .htaccess szabálya (a tárhely saját, fordított

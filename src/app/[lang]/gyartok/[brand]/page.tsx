@@ -31,7 +31,10 @@ export async function generateMetadata({
     // A gyártótól forgalmazott géptípusok — tényszerű, gyártónként más, és
     // épp ezekre a típusnevekre keresnek rá.
     extra: [
-      getProductsByBrand(m.name)
+      // A kapcsolókulcs az m.brand, NEM az m.name — a kettő három gyártónál
+      // eltér („cab"/„CAB", „Purex International"/„Purex"), és a rossz kulccsal
+      // a lista üres marad. Az oldal törzse is m.brand-del keres (lent).
+      getProductsByBrand(m.brand)
         .map((p) => productName(p, lang))
         .join(', '),
     ],
