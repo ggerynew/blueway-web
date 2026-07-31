@@ -82,6 +82,11 @@ export default async function ServicePage({
       szoveg: t.sendInBody,
       extra: (
         <div className="mt-4 rounded-xl bg-surface p-4">
+          {/* A cím ELŐTT áll, mert utána már senki nem olvas tovább: aki a
+              címet keresi, azt kimásolja és becsomagolja a gépet. */}
+          <p className="mb-4 border-l-2 border-brand-500 pl-3 text-sm font-medium text-ink">
+            {t.sendInNote}
+          </p>
           <p className="text-xs font-medium tracking-wide text-ink-muted uppercase">
             {t.addressLabel}
           </p>
