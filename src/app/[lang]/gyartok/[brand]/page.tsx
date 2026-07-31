@@ -28,6 +28,13 @@ export async function generateMetadata({
     path: `gyartok/${m.slug}`,
     title: `${m.name} — ${getDictionary(lang).ui.searchManufacturer}`,
     description: m.description[lang],
+    // A gyártótól forgalmazott géptípusok — tényszerű, gyártónként más, és
+    // épp ezekre a típusnevekre keresnek rá.
+    extra: [
+      getProductsByBrand(m.name)
+        .map((p) => productName(p, lang))
+        .join(', '),
+    ],
   });
 }
 

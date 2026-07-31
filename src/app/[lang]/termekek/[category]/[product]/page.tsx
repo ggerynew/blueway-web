@@ -33,6 +33,10 @@ export async function generateMetadata({
     title: cat ? `${productName(product, lang)} — ${cat.name[lang]}` : productName(product, lang),
     description: product.short[lang],
     image: product.image ? absUrl(product.image.replace(/^\//, '')) : undefined,
+    // A rövid ajánló sok terméknél 50-60 karakter, ami a találati listában
+    // félig üres sor. A főbb jellemzők tényszerűek és termékenként eltérnek,
+    // tehát épp azt mondják el, amitől ez az oldal más, mint a többi.
+    extra: product.features.map((f) => f[lang]),
   });
 }
 

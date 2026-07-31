@@ -33,12 +33,98 @@ const OG_LOCALE: Record<Locale, string> = {
   zh: 'zh_CN',
 };
 
+/**
+ * A találati listában a cím kb. 60-62 karakternél elvágódik. A cégnév-utótagot
+ * a gyökér-elrendezés fűzi hozzá (`%s | Blueway Trade Kft.`), tehát az oldalnak
+ * ennyivel kevesebb marad.
+ */
+const CIM_HATAR = 62;
+const CIM_TARTALEK = CIM_HATAR - ' | Blueway Trade Kft.'.length;
+
+/**
+ * Hosszú cím megrövidítése — de csak ott, ahol értelmes vágáspont van.
+ *
+ * A címeink kétrészesek: „HQ 5314 / 5316 Vákuumszalagos applikátor — CAB
+ * HERMES Q", „Vonalkódok nyomtatása: irány, inverz kódok, 2D és validálás".
+ * A második rész a morzsamenüből és a H1-ből úgyis kiderül, a találati
+ * listában viszont épp az szorítja ki a lényeget. Ha nincs jó vágáspont,
+ * inkább hosszú marad: a csonka cím rosszabb, mint a hosszú.
+ */
+function rovidCim(cim: string): string {
+  if (cim.length <= CIM_TARTALEK) return cim;
+  for (const jel of [': ', ' — ', ' – ', ' - ']) {
+    const i = cim.indexOf(jel);
+    // A vágás akkor is megéri, ha a maradék még mindig hosszabb a keretnél:
+    // a keresők a cím VÉGÉT vágják le, tehát minden lespórolt karakter azt
+    // segíti, hogy a lényeg és a cégnév kiférjen. Csak azt kötjük ki, hogy a
+    // megmaradó rész önmagában is értelmes legyen.
+    if (i >= 12) return cim.slice(0, i);
+  }
+  return cim;
+}
+
+/** A leírás a keresőben kb. 155-160 karakterig látszik. */
+const LEIRAS_MAX = 158;
+/** Ennél rövidebb leírás kihasználatlanul hagyja a helyet. */
+const LEIRAS_CEL = 95;
+
+/**
+ * A leírás összeállítása: a rövidet a termék SAJÁT adataival egészítjük ki
+ * (jellemzők, paraméterek), a hosszút szóhatáron vágjuk.
+ *
+ * Szándékosan nem általános reklámszöveggel töltjük fel: az minden oldalon
+ * ugyanaz lenne, tehát semmit nem mondana a keresőnek arról, miben más ez az
+ * oldal. A jellemzők viszont termékenként eltérnek, és tényszerűek.
+ */
+/** Érdemi szavak a mondatból — az egyezés vizsgálatához. */
+function szavak(s: string): string[] {
+  return s
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((x) => x.length >= 4);
+}
+
+/**
+ * Mond-e újat ez a mondat, vagy csak ismétli, ami már benne van?
+ *
+ * Kell, mert a rövid ajánló és az első jellemző gyakran ugyanaz más szavakkal:
+ * a CAB HERMES Q ajánlója „Print & apply rendszer gyártósorra", az első
+ * jellemzője „Valós idejű print & apply" — egymás után kiírva ez üresjárat.
+ */
+function ujatMond(meglevo: string, uj: string): boolean {
+  const van = new Set(szavak(meglevo));
+  const jott = szavak(uj);
+  if (!jott.length) return false;
+  const ismert = jott.filter((w) => van.has(w)).length;
+  return ismert / jott.length < 0.6;
+}
+
+function leirasOsszeall(alap: string, tovabbi: readonly string[] = []): string {
+  let d = alap.trim();
+  for (const x of tovabbi) {
+    if (d.length >= LEIRAS_CEL) break;
+    const t = (x ?? '').trim();
+    if (!t || d.includes(t) || !ujatMond(d, t)) continue;
+    d = `${d} ${/[.!?]$/.test(t) ? t : `${t}.`}`;
+  }
+  if (d.length <= LEIRAS_MAX) return d;
+  const vagott = d.slice(0, LEIRAS_MAX);
+  const szohatar = vagott.lastIndexOf(' ');
+  // A vágás után maradó kötőszó vagy névelő („— a…") csúnyán néz ki a
+  // találati listában, ezért a végéről a rövid töredékszavakat is levesszük.
+  const tiszta = (szohatar > 60 ? vagott.slice(0, szohatar) : vagott)
+    .replace(/(\s+\p{L}{1,3})?[\s,;:—–-]*$/u, '')
+    .replace(/[\s,;:—–-]+$/, '');
+  return `${tiszta}…`;
+}
+
 export function pageMetadata({
   lang,
   path,
   title,
   description,
   image,
+  extra,
 }: {
   lang: Locale;
   path: string;
@@ -46,13 +132,21 @@ export function pageMetadata({
   description: string;
   /** Abszolút vagy site-relatív OG-kép; alapértelmezés a brand OG-kép. */
   image?: string;
+  /**
+   * További tényszerű mondatok, amikből a rövid leírás kiegészülhet — például
+   * a termék főbb jellemzői. Csak addig épülnek be, amíg a leírás el nem éri
+   * a hasznos hosszt.
+   */
+  extra?: readonly string[];
 }): Metadata {
   const suffix = path ? `/${path.replace(/^\/+/, '')}` : '';
   const canonical = absUrl(`${lang}${suffix}`);
   const ogImage = image ?? absUrl('images/og.png');
+  const cim = rovidCim(title);
+  const leiras = leirasOsszeall(description, extra);
   return {
-    title,
-    description,
+    title: cim,
+    description: leiras,
     alternates: {
       canonical,
       languages: {
@@ -61,8 +155,8 @@ export function pageMetadata({
       },
     },
     openGraph: {
-      title,
-      description,
+      title: cim,
+      description: leiras,
       url: canonical,
       siteName: SITE_NAME,
       locale: OG_LOCALE[lang],
@@ -71,8 +165,8 @@ export function pageMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: cim,
+      description: leiras,
       images: [ogImage],
     },
   };

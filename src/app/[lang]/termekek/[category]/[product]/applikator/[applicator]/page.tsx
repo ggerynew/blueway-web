@@ -35,6 +35,9 @@ export async function generateMetadata({
     title: `${applicator.name[lang]} — ${productName(product, lang)}`,
     description: applicator.description[lang],
     image: applicator.image ? absUrl(applicator.image.replace(/^\//, '')) : undefined,
+    // A műszaki paraméterek (címkeszélesség, löket, ciklusidő) pontosan azok,
+    // amikre az applikátort keresik — a leírás ezekkel egészül ki, ha rövid.
+    extra: (applicator.params ?? []).map((x) => `${x.label[lang]}: ${x.value[lang]}`),
   });
 }
 

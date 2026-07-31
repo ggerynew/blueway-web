@@ -53,6 +53,17 @@ export default async function LangLayout({
     // A cég egyéb hivatalos jelenlétei — ettől a keresők ugyanahhoz a
     // szervezethez kötik a Facebook-oldalt is.
     sameAs: ['https://www.facebook.com/share/1Bb1i3eHqk/'],
+    // Kapcsolatfelvételi pont: a keresők ebből tudják, milyen nyelveken és
+    // milyen ügyben lehet minket elérni — a márkanévre keresve ez jelenhet
+    // meg a találat mellett.
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      telephone: '+36302796679',
+      email: 'info@blueway.hu',
+      availableLanguage: ['hu', 'en', 'de'],
+      areaServed: 'HU',
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Déri Miksa u. 10/A.',
