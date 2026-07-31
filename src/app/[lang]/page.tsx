@@ -65,7 +65,10 @@ export default async function HomePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <section className="mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-36 md:pb-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Egyenlő oszlopok: a gömbnek a nagyobb sugárral több hely kell,
+            különben a csempék a szétválás árán zsugorodnának. A szövegoldal
+            így is bőven elfér — a címsor és a bevezető saját maximumig ér. */}
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="min-w-0">
             <Reveal>
               <p className="text-sm font-medium tracking-wide text-brand-700 uppercase">
