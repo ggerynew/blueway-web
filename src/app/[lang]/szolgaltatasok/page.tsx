@@ -34,7 +34,6 @@ export default async function ServicesPage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
   const { services } = dict;
-  const mailto = `mailto:${services.email}?subject=${encodeURIComponent(services.mailtoSubject)}`;
   const software = getProduct('szoftverek', 'egyedi-szoftverfejlesztes');
 
   return (
@@ -49,10 +48,13 @@ export default async function ServicesPage({
       </Reveal>
 
       <div className="mt-12 grid items-stretch gap-4 md:grid-cols-2">
-        {/* Szerviz csempe */}
+        {/* Szerviz csempe — az egész csempe hivatkozás a szerviz oldalra. */}
         <Reveal delay={0.12}>
-          <div className="product-tile flex h-full flex-col p-8">
-            <h2 className="text-2xl font-semibold tracking-tight">
+          <Link
+            href={`/${lang}/szolgaltatasok/szerviz`}
+            className="group product-tile flex h-full flex-col p-8"
+          >
+            <h2 className="text-2xl font-semibold tracking-tight group-hover:text-brand-700">
               {services.service.title}
             </h2>
             <p className="mt-3 text-ink-muted">{services.service.body}</p>
@@ -69,17 +71,14 @@ export default async function ServicesPage({
             </p>
 
             <div className="mt-auto border-t border-line pt-6">
-              <p className="text-xs font-medium tracking-wide text-ink-muted uppercase">
-                {services.contactLabel}
-              </p>
-              <a
-                href={mailto}
-                className="mt-1 inline-block text-lg font-medium text-brand-700 transition-colors hover:text-brand-800"
-              >
-                {services.email}
-              </a>
+              <span className="text-sm font-medium text-brand-700">
+                {services.moreLabel}
+                <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </span>
             </div>
-          </div>
+          </Link>
         </Reveal>
 
         {/* Egyedi szoftverfejlesztés csempe */}
@@ -122,12 +121,15 @@ export default async function ServicesPage({
             <h2 className="text-xl font-semibold tracking-tight">{services.ctaTitle}</h2>
             <p className="mt-2 max-w-xl text-ink-muted">{services.ctaBody}</p>
           </div>
-          <a
-            href={mailto}
+          {/* A gomb a szerviz oldal űrlapjához visz, nem levelezőt nyit: ott a
+              géptípus és a hiba is bekérhető, ami nélkül a megkeresés
+              feldolgozása amúgy is egy körrel tovább tartana. */}
+          <Link
+            href={`/${lang}/szolgaltatasok/szerviz#szerviz-megkereses`}
             className="shrink-0 rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
           >
             {services.ctaButton}
-          </a>
+          </Link>
         </div>
       </Reveal>
     </div>

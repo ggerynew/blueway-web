@@ -11,6 +11,21 @@ export const SITE_URL =
 
 export const SITE_NAME = 'Blueway Trade Kft.';
 
+/**
+ * A szerviz telefonszámai, hívási sorrendben — az első az elsődleges.
+ *
+ * Nem a nyelvi szótárban élnek, mert nem fordítandó szövegek, hanem adatok:
+ * hét helyen kellene ugyanazt a számot javítani, ha változik. A lábléc és a
+ * kapcsolatoldal továbbra is a szótárbeli központi számot mutatja — ez a kettő
+ * szándékosan külön, mert a szerviz külön hívószámot kapott.
+ */
+export const SZERVIZ_TELEFONOK = ['+36 70 341 5535', '+36 30 279 6679'] as const;
+
+/** Hívható alak a telefonszámból: a `tel:` séma a szóközöket nem szereti. */
+export function telLink(szam: string) {
+  return `tel:${szam.replace(/[^\d+]/g, '')}`;
+}
+
 /** Abszolút URL egy (nyelv nélküli) útvonalból, pl. absUrl('hu/termekek'). */
 export function absUrl(path: string) {
   return `${SITE_URL}/${path.replace(/^\/+/, '')}`;
