@@ -27,9 +27,24 @@ type Tile = { src: string; alt: string; href: string };
  * óta elmozdult (tehát forgatás történt), a kattintást elnyeljük.
  */
 
-/** Tervezési méret: ekkora négyzetre van kitalálva a gömb, erre skálázunk. */
-const TERV = 500;
-const SUGAR = 176;
+/**
+ * Tervezési méret: ekkora négyzetre van kitalálva a gömb, erre skálázunk.
+ *
+ * A SUGÁR és a CSEMPE_SZ aránya dönti el, összeérnek-e a képek. 55 csempénél
+ * egyszerre 22 látszik, és R = 176 mellett ezek közül 24 pár átfedte egymást,
+ * a legrosszabb 23 pixellel — 74 pixeles csempéken ez a szélek összeérése.
+ *
+ * A Fibonacci-gömbön a legközelebbi két pont távolsága ≈ 3,09·R/√n, tehát 55
+ * csempénél 0,417·R. Ahhoz, hogy a 82 pixel széles csempék közt maradjon is
+ * hézag, ennek jóval 82 fölött kell lennie: R = 265 → 110 pixel, tehát 28
+ * pixel hézag.
+ *
+ * A TERV ezzel együtt nő, különben a gömb kilógna: a szélső csempék az
+ * egyenlítő peremén vannak, R + fél csempe = 306 pixelre a középponttól.
+ * 640-es tervmérettel marad ~5% ráhagyás.
+ */
+const TERV = 640;
+const SUGAR = 265;
 const CSEMPE_SZ = 82;
 const CSEMPE_MA = 62;
 
@@ -177,7 +192,10 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
     <div
       ref={kulsoRef}
       className="relative aspect-square w-full cursor-grab overflow-hidden rounded-[2rem] select-none active:cursor-grabbing"
-      style={{ perspective: '1100px', touchAction: 'none' }}
+      // Lágyabb perspektíva. 1100 pixelnél az elülső csempék jóval nagyobbnak
+      // látszottak a hátsóknál, és az utolsó néhány átfedést épp ez okozta: a
+      // méretük miatt értek össze, nem a távolságuk miatt.
+      style={{ perspective: '1500px', touchAction: 'none' }}
       onPointerDown={lenyomas}
       onPointerEnter={() => (felette.current = true)}
       onPointerLeave={() => {

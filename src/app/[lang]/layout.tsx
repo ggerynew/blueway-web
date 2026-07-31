@@ -13,6 +13,20 @@ export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
 
+/**
+ * Az alkatrészkereső fül megjelenjen-e.
+ *
+ * Egyelőre ki van kapcsolva. A kereső maga megvan és működik
+ * (src/components/parts-finder.tsx, src/lib/alkatresz.ts, a jegyzék pedig a
+ * public/alkatreszek.json) — csak nem mutatjuk a látogatóknak, amíg nincs
+ * végigpróbálva valódi vevői kérdésekkel. A visszakapcsolás ez az egy sor.
+ *
+ * Az adatkezelési tájékoztató vonatkozó pontja szándékosan bent marad: olyat
+ * ír le, ami ilyenkor nem történik, ami legfeljebb fölösleges — a fordítottja
+ * viszont hiba lenne, és a visszakapcsoláskor újra kellene verziózni.
+ */
+const ALKATRESZKERESO = false;
+
 export default async function LangLayout({
   children,
   params,
@@ -77,7 +91,7 @@ export default async function LangLayout({
       {/* Alkatrészkereső — jobbról nyíló fül. Minden oldalról elérhető, mert
           az alkatrész gyakran nem a termékoldalról indulva jut eszébe a
           vevőnek: a szervizhívás közben nyitja ki. */}
-      <PartsFinder lang={lang} />
+      {ALKATRESZKERESO && <PartsFinder lang={lang} />}
       <Toaster position="bottom-right" richColors />
       {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
       <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
