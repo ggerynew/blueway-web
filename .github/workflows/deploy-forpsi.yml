@@ -377,8 +377,12 @@ jobs:
           # -L: az átirányításokat követjük. A tárhelyen be van kapcsolva a
           # WWW redirect, tehát a blueway.hu a www.blueway.hu-ra megy — a
           # végállomás státusza az érdekes, nem az első lépésé.
+          # A szerviz oldal a listán az egyetlen HÁROM szintű útvonal. A
+          # .htaccess kiterjesztés-nélküli átírása szintenként külön lépés,
+          # tehát egy kétszintű oldal működése még nem bizonyítja, hogy a
+          # mélyebb is működik.
           BAJ=0
-          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat; do
+          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz; do
             V=$(curl -sSL -o /dev/null --max-time 25 \
                  -w '%{http_code} vegallomas=%{url_effective} meret=%{size_download}' \
                  "http://$HOSZT$ut" || echo "000 -")
