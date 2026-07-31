@@ -107,7 +107,7 @@ export function ServiceRequestForm({
       '',
       '—',
       `${labels.name}: ${g('name')}`,
-      g('company') ? `${labels.company}: ${g('company')}` : '',
+      `${labels.company}: ${g('company')}`,
       `${labels.email}: ${g('email')}`,
       g('phone') ? `${labels.phone}: ${g('phone')}` : '',
     ].filter(Boolean);
@@ -149,7 +149,12 @@ export function ServiceRequestForm({
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Mezo id="name" label={labels.name} required placeholder={labels.namePlaceholder} />
-          <Mezo id="company" label={labels.company} placeholder={labels.companyPlaceholder} />
+          <Mezo
+            id="company"
+            label={labels.company}
+            required
+            placeholder={labels.companyPlaceholder}
+          />
           <Mezo
             id="email"
             label={labels.email}

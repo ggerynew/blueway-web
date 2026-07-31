@@ -36,7 +36,7 @@ export function ContactForm({
       '—',
       `${labels.name}: ${name}`,
       `${labels.email}: ${email}`,
-      company ? `${labels.company}: ${company}` : '',
+      `${labels.company}: ${company}`,
     ].filter(Boolean);
 
     try {
@@ -93,12 +93,16 @@ export function ContactForm({
 
       <div>
         <label htmlFor="company" className={labelClass}>
-          {labels.company}
+          {labels.company}{' '}
+          <span className="text-brand-600" aria-hidden="true">
+            *
+          </span>
         </label>
         <input
           id="company"
           name="company"
           type="text"
+          required
           placeholder={labels.companyPlaceholder}
           className={fieldClass}
         />
