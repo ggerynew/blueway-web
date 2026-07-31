@@ -37,6 +37,8 @@ export const dictionaries = {
       certificateTooltip:
         'A Dun & Bradstreet tanúsítvánnyal rendelkező cégekkel az üzletkötés kockázata alacsony. A minősítés a 100 éves nemzetközi tapasztalattal rendelkező, több száz változót figyelembe vevő Dun & Bradstreet minősítési rendszeren alapul. A tanúsítvány az aktuális állapotot jelzi, és naponta frissül.',
       fileCount: (n: number) => `${n} fájl kiválasztva`,
+      imageZoom: 'Kép nagyítása',
+      imageClose: 'Bezárás',
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
@@ -516,6 +518,8 @@ export const dictionaries = {
       certificateTooltip:
         'The risk of business transactions with companies that possess a Dun & Bradstreet Certificate is low. The rating is based on the Dun & Bradstreet rating system which combines one hundred years of international experience and considers hundreds of variables. The Dun & Bradstreet Certificate indicates the current status of the company which is updated daily.',
       fileCount: (n: number) => (n === 1 ? '1 file selected' : `${n} files selected`),
+      imageZoom: 'enlarge image',
+      imageClose: 'Close',
     },
     hero: {
       eyebrow: 'Blueway Trade Ltd.',
@@ -994,6 +998,8 @@ export const dictionaries = {
       certificateTooltip:
         'Das Risiko von Geschäften mit Unternehmen, die ein Dun & Bradstreet Zertifikat besitzen, ist gering. Die Bewertung basiert auf dem Dun & Bradstreet Bewertungssystem, das hundert Jahre internationale Erfahrung vereint und hunderte Variablen berücksichtigt. Das Zertifikat zeigt den aktuellen Status des Unternehmens und wird täglich aktualisiert.',
       fileCount: (n: number) => (n === 1 ? '1 Datei ausgewählt' : `${n} Dateien ausgewählt`),
+      imageZoom: 'Bild vergrößern',
+      imageClose: 'Schließen',
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
@@ -1471,6 +1477,8 @@ export const dictionaries = {
       certificateTooltip:
         'Il rischio delle transazioni commerciali con le aziende che possiedono un certificato Dun & Bradstreet è basso. La valutazione si basa sul sistema di rating Dun & Bradstreet, che unisce cento anni di esperienza internazionale e considera centinaia di variabili. Il certificato indica lo stato attuale dell’azienda e viene aggiornato quotidianamente.',
       fileCount: (n: number) => (n === 1 ? '1 file selezionato' : `${n} file selezionati`),
+      imageZoom: 'ingrandisci l’immagine',
+      imageClose: 'Chiudi',
     },
     hero: {
       eyebrow: 'Blueway Trade Ltd.',
@@ -1949,6 +1957,8 @@ export const dictionaries = {
       certificateTooltip:
         'El riesgo de las transacciones comerciales con empresas que poseen un certificado Dun & Bradstreet es bajo. La calificación se basa en el sistema de valoración de Dun & Bradstreet, que reúne cien años de experiencia internacional y tiene en cuenta cientos de variables. El certificado indica el estado actual de la empresa y se actualiza a diario.',
       fileCount: (n: number) => (n === 1 ? '1 archivo seleccionado' : `${n} archivos seleccionados`),
+      imageZoom: 'ampliar la imagen',
+      imageClose: 'Cerrar',
     },
     hero: {
       eyebrow: 'Blueway Trade Ltd.',
@@ -2427,6 +2437,8 @@ export const dictionaries = {
       certificateTooltip:
         'Dun & Bradstreet 인증서를 보유한 기업과의 거래 위험은 낮습니다. 이 평가는 100년의 국제적 경험을 축적하고 수백 개의 변수를 고려하는 Dun & Bradstreet 평가 시스템에 기반합니다. 인증서는 기업의 현재 상태를 나타내며 매일 갱신됩니다.',
       fileCount: (n: number) => `${n}개 파일 선택됨`,
+      imageZoom: '이미지 확대',
+      imageClose: '닫기',
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
@@ -2903,6 +2915,8 @@ export const dictionaries = {
       certificateTooltip:
         '与持有 Dun & Bradstreet 证书的企业进行交易的风险较低。该评级基于汇集了一百年国际经验、考量数百项变量的 Dun & Bradstreet 评级体系。证书反映企业的当前状态，并每日更新。',
       fileCount: (n: number) => `已选择 ${n} 个文件`,
+      imageZoom: '放大图片',
+      imageClose: '关闭',
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',

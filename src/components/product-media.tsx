@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { asset } from '@/lib/asset';
 import { ProductThumb } from '@/components/product-thumb';
+import { ZoomableImage } from '@/components/zoomable-image';
 
 export interface ProductMediaLabels {
   photo: string;
@@ -10,6 +11,9 @@ export interface ProductMediaLabels {
   view3d: string;
   demoNote: string;
   dragHint: string;
+  /** „Kép nagyítása" — a fotó gombként viselkedik, ez mondja meg, mit tesz. */
+  imageZoom: string;
+  imageClose: string;
 }
 
 type Tab = 'photo' | 'video' | '3d';
@@ -70,8 +74,23 @@ export function ProductMedia({
           className="media-fade-in absolute inset-0"
         >
           {tab === 'photo' && (
-            <div className="flex h-full items-center justify-center p-8">
-              <ProductThumb image={image} name={name} />
+            // A fotó ugyanolyan szürke csempén ül, mint a terméklista
+            // kártyáin — eddig fehér háttéren állt, és emiatt lógott ki az
+            // egységes képből. A behúzás összege (3+5) megegyezik a korábbi
+            // p-8-cal, tehát a kép mérete nem változott.
+            <div className="h-full p-3">
+              {image ? (
+                <ZoomableImage
+                  src={image}
+                  alt={name}
+                  nagyitasFelirat={labels.imageZoom}
+                  bezarasFelirat={labels.imageClose}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-xl bg-surface p-5">
+                  <ProductThumb image={undefined} name={name} />
+                </div>
+              )}
             </div>
           )}
 
