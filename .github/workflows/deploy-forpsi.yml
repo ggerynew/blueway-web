@@ -197,41 +197,54 @@ jobs:
               ;;
           esac
 
-          # Erről a címről és ebből az országból érkezik a bejelentkezés. A
-          # FORPSI FTP fiókján országlista szűr (Ügyfélközpont → FTP fül →
-          # "Engedélyezett országok"), és a futtató sosem Magyarországon van —
-          # ez az oka annak, hogy ugyanaz az adat asztali kliensből működik,
-          # innen nem. Az IP futásonként változik, az ország jellemzően nem.
-          futtato_ip=$(curl -s --max-time 10 https://api.ipify.org || echo ismeretlen)
-          futtato_orszag=$(curl -s --max-time 10 https://ipinfo.io/country || echo ismeretlen)
-          echo "a futtató publikus IP-cime: $futtato_ip"
-          echo "a futtató országa:          ${futtato_orszag:-ismeretlen}"
-
-          # Beszélgetés magával a kiszolgálóval, hogy lássuk a válaszait. Nem
-          # állítja meg a folyamatot: a tényleges feltöltési kísérlet utána jön.
-          python3 scripts/ftp-diag.py || true
-          echo "— a tényleges feltöltés következik —"
-
           # Passzív mód. A kiszolgáló az aktív átvitelt (PORT) elutasítja —
           # asztali kliensből "PORT failed. Try PASV mode!" a válasza. Az lftp
           # alapból passzív, de mivel tudjuk, hogy másképp nem megy, kimondjuk.
           # Az export azért kell, mert az archiváló szkript külön folyamat:
           # sima shell-változót nem örökölne meg.
           export SETTINGS COMMON
-          COMMON="set ftp:passive-mode true; set net:max-retries 2; set net:timeout 20;"
+          #
+          # ftp:sync-mode false — parancs-csővezeték.
+          #
+          # Ez a deploy legdrágább tétele elleni fő fegyver. Mérve két éles
+          # futáson: fájlonként 0,42 és 0,43 másodperc, miközben a bájtsebesség
+          # a kettő közt kétszeresen tért el (248 és 126 kB/s). Tehát nem az
+          # adatmennyiség a szűk keresztmetszet, hanem a fájlonkénti
+          # oda-vissza kommunikáció: TYPE, PASV, STOR, adatkapcsolat, TLS-
+          # kézfogás, 226 — nyolc-tíz kör. Az lftp alapból minden parancs után
+          # megvárja a választ; kikapcsolva egymás után küldheti őket.
+          COMMON="set ftp:passive-mode true; set ftp:sync-mode false;"
+          COMMON="$COMMON set net:max-retries 2; set net:timeout 20;"
 
           # Titkosított kapcsolat az alapértelmezés. Ha a kiszolgáló nem tudja,
           # a FORPSI_FTP_PLAIN secret bármilyen értékre állításával kikapcsolható.
+          #
+          # Az adatcsatorna titkosítása szándékosan marad bekapcsolva, pedig a
+          # feltöltött tartalom nyilvános weblap, tehát titkosságot nem véd.
+          # Amit véd, az a SÉRTETLENSÉG: enélkül az útvonalon bárki átírhatná
+          # a feltöltött oldalakat, például kódot fűzhetne hozzájuk. Az ezzel
+          # járó fájlonkénti TLS-kézfogás ára vállalható.
           if [ -n "$FTP_PLAIN" ]; then
             echo "Figyelem: titkosítás nélküli FTP (FORPSI_FTP_PLAIN be van állítva)."
             SETTINGS="$COMMON set ftp:ssl-allow false;"
           else
-            SETTINGS="$COMMON set ssl:verify-certificate yes; set ftp:ssl-force true; set ftp:ssl-protect-data true;"
+            SETTINGS="$COMMON set ssl:verify-certificate yes; set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:reuse-session yes;"
           fi
 
+          # A bejelentkezés próbája ELŐRE került, a bőbeszédű diagnosztika pedig
+          # mögé: ha belépünk, a diagnosztikára nincs szükség, és 9 másodpercet
+          # spórolunk minden futáson. Ha nem lépünk be, lefut, és megmondja, hol
+          # romlik el.
           echo "Bejelentkezés ellenőrzése: $FTP_USER @ $FTP_HOST"
           if ! lftp -u "$FTP_USER" --env-password \
                  -e "$SETTINGS cd '$WEB_ROOT'; pwd; bye" "$FTP_HOST"; then
+            echo "— a bejelentkezés nem sikerült, diagnosztika következik —"
+            # Erről a címről és ebből az országból érkezik a bejelentkezés. A
+            # FORPSI FTP fiókján országlista szűr (Ügyfélközpont → FTP fül →
+            # "Engedélyezett országok"), és a futtató sosem Magyarországon van.
+            echo "a futtató publikus IP-cime: $(curl -s --max-time 10 https://api.ipify.org || echo ismeretlen)"
+            echo "a futtató országa:          $(curl -s --max-time 10 https://ipinfo.io/country || echo ismeretlen)"
+            python3 scripts/ftp-diag.py || true
             echo "::error::Az FTP bejelentkezés nem sikerült. A fenti diagnosztika megmondja, hol romlik el: ha ott is 530-at ad a PASS, akkor a kiszolgáló utasítja el ezt a gépet (jellemzően IP-korlátozás az FTP fiókon — a futtató IP-címe fentebb ki van írva), nem az lftp hívása a hibás. Ha viszont a diagnosztika belépett, akkor az lftp beállításain kell igazítani."
             exit 1
           fi
@@ -264,14 +277,40 @@ jobs:
           #
           # A --verbose fájlonként naplóz; 1400+ fájlnál ez több ezer sor, és
           # elnyomja a fenti diagnosztikát. A mirror a végén összegzést ír.
+          # Egyszerre ennyi fájl megy fel. A korábbi 4 azért volt kevés, mert a
+          # költség fájlonként egy csomó hálózati oda-vissza — az pedig várakozás,
+          # nem sávszélesség, tehát jól párhuzamosítható. Ha a tárhely ennyi
+          # egyidejű kapcsolatot nem enged, a lenti tartalék ág visszavált.
+          PARHUZAM=8
+
+          # A tükrözés futtatása méréssel. A második paraméter a hibára lépő
+          # tartalék: kevesebb kapcsolat, csővezeték nélkül — ha a kiszolgáló
+          # nem bírja a gyors beállításokat, a deploy attól még végigmegy.
+          tukroz() {
+            local forras="$1" extra="$2" kezd veg
+            kezd=$(date +%s)
+            if lftp -u "$FTP_USER" --env-password \
+                 -e "$SETTINGS mirror -R --parallel=$PARHUZAM $extra '$forras' '$WEB_ROOT/'; bye" \
+                 "$FTP_HOST"; then
+              veg=$(date +%s)
+              echo "feltöltés: $((veg - kezd)) másodperc ($PARHUZAM párhuzamos kapcsolattal)"
+              return 0
+            fi
+            echo "::warning::A gyors feltöltés elakadt — újra, óvatos beállításokkal (2 kapcsolat, csővezeték nélkül)."
+            kezd=$(date +%s)
+            lftp -u "$FTP_USER" --env-password \
+              -e "$SETTINGS set ftp:sync-mode true; mirror -R --parallel=2 $extra '$forras' '$WEB_ROOT/'; bye" \
+              "$FTP_HOST"
+            veg=$(date +%s)
+            echo "feltöltés (tartalék ág): $((veg - kezd)) másodperc"
+          }
+
           if [ "$DELETE_EXTRA" = "true" ]; then
             # Takarításkor a teljes fát tükrözzük, mert a --delete csak akkor
             # dönthet helyesen, ha a forrás a teljes weblap — egy részhalmazzal
             # letörölné a többit.
             echo "— teljes tükrözés (a nem szereplő fájlok törlésével) —"
-            lftp -u "$FTP_USER" --env-password \
-              -e "$SETTINGS mirror -R --parallel=4 --delete out/ '$WEB_ROOT/'; bye" \
-              "$FTP_HOST"
+            tukroz out/ --delete
             python3 scripts/deploy-valtozas.py --mappa out \
               --stage /tmp/feltoltendo --uj /tmp/deploy-manifest.json > /dev/null
           else
@@ -287,9 +326,9 @@ jobs:
             VALTOZOTT=$(sed -n 's/^VALTOZOTT=//p' /tmp/valtozas.txt | tail -1)
 
             if [ "${VALTOZOTT:-0}" -gt 0 ]; then
-              lftp -u "$FTP_USER" --env-password \
-                -e "$SETTINGS mirror -R --parallel=4 /tmp/feltoltendo/ '$WEB_ROOT/'; bye" \
-                "$FTP_HOST"
+              tukroz /tmp/feltoltendo/ ''
+              # Fájlonkénti idő — ebből látszik, hozott-e valamit a beállítás.
+              # A korábbi mérés két futáson egyaránt 0,42-0,43 s/fájl volt.
             else
               echo "Egyetlen fájl sem változott — nincs mit feltölteni."
             fi
