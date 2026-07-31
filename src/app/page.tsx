@@ -9,7 +9,27 @@ import { absUrl } from '@/lib/site';
  * meg, különben a kereső két címen látná ugyanazt a főoldalt.
  */
 export const metadata: Metadata = {
-  alternates: { canonical: absUrl('hu') },
+  alternates: {
+    canonical: absUrl('hu'),
+    // A gyökér a belépési pont: a márkanévre keresve erre a címre mutatnak a
+    // hivatkozások. A nyelvi változatokat innen is felsoroljuk, hogy a kereső
+    // egy lépésből mind a hetet megtalálja.
+    languages: {
+      ...Object.fromEntries(locales.map((l) => [l, absUrl(l)])),
+      'x-default': absUrl('hu'),
+    },
+  },
+};
+
+/** A nyelvválasztóban a nyelv a SAJÁT nevén szerepel — azt ismeri fel a látogató. */
+const NYELV_NEVE: Record<(typeof locales)[number], string> = {
+  hu: 'Magyar',
+  en: 'English',
+  de: 'Deutsch',
+  it: 'Italiano',
+  es: 'Español',
+  ko: '한국어',
+  zh: '中文',
 };
 
 /**
@@ -47,10 +67,31 @@ export default function RootPage() {
       <noscript>
         <meta httpEquiv="refresh" content={`0;url=${asset('/hu')}`} />
       </noscript>
-      <div className="flex min-h-screen items-center justify-center">
-        <Link href="/hu" className="text-sm text-ink-muted">
-          → blueway.hu
-        </Link>
+      {/*
+        Ami a szkript nélkül marad: valódi nyelvválasztó, nem üres oldal.
+        A látogató ezt gyakorlatilag sosem látja — a fenti szkript még az első
+        kirajzolás előtt továbbviszi —, de a keresőrobotnak és a szkript nélküli
+        böngészőnek ez az egyetlen fogódzó. Mind a hét nyelvi változat innen
+        elérhető egy hivatkozással, és van rendes H1 is.
+      */}
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">Blueway Trade Kft.</h1>
+        <p className="text-ink-muted">Termékjelölési megoldások — válasszon nyelvet</p>
+        <nav aria-label="Nyelvválasztó">
+          <ul className="flex flex-wrap justify-center gap-3">
+            {locales.map((l) => (
+              <li key={l}>
+                <Link
+                  href={`/${l}`}
+                  hrefLang={l}
+                  className="rounded-full border border-line px-4 py-2 text-sm transition-colors hover:border-ink-muted"
+                >
+                  {NYELV_NEVE[l]}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </>
   );

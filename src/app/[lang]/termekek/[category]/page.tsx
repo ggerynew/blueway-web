@@ -26,6 +26,13 @@ export async function generateMetadata({
     path: `termekek/${cat.slug}`,
     title: cat.name[lang],
     description: cat.description[lang],
+    // A kategória leírása néhány szó; a találati listában marad hely. A benne
+    // lévő géptípusok neve viszont pont az, amire rákeresnek.
+    extra: [
+      getProductsByCategory(cat.slug)
+        .map((p) => productName(p, lang))
+        .join(', '),
+    ],
   });
 }
 
