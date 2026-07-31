@@ -71,7 +71,7 @@ RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-e
 # egész weblap 500-at adna. A mod_rewrite viszont biztosan engedélyezett,
 # hiszen a lenti átírások is arra épülnek.
 RewriteRule \.(rar|zip|7z|tar|gz|bz2|sql|bak|old|swp|log|inc)$ - [F,L]
-RewriteRule (^|/)(\.git|\.env|\.htpasswd)  - [F,L]
+RewriteRule (^|/)(\.git|\.env|\.htpasswd|\.user\.ini)  - [F,L]
 
 # A deploy lenyomatlistája: minden feltöltött fájl neve és sha256 lenyomata.
 # Ebből dől el, mit kell újra felküldeni — a weblap működéséhez nem kell, a
@@ -160,7 +160,57 @@ ErrorDocument 404 /404.html
   ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
 
+# ——— Biztonsági fejlécek ——————————————————————————————————————————
+# Mind a hat fejléc VALÓDI BÖNGÉSZŐBEN ki lett próbálva a legyártott kimeneten,
+# élesítés előtt: tíz jellemző oldalon, a térkép betöltésével, a képnagyítással
+# és a 3D nézettel együtt. Egyetlen szabálysértés sem volt.
 <IfModule mod_headers.c>
+  # A böngésző ne találgassa a fájltípust: egy képnek látszó, valójában
+  # szkriptet tartalmazó fájl így nem futhat le.
+  Header always set X-Content-Type-Options "nosniff"
+  # Külső oldalra csak a domain neve megy át, a teljes útvonal nem.
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # A weblap nem ágyazható idegen oldalba (kattintás-eltérítés ellen).
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # Amire a weblapnak nincs szüksége, azt meg se kérdezhesse.
+  Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
+  # A megnyitott ablakok ne férjenek hozzá egymáshoz.
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+
+  # Tartalombiztonsági szabályzat: ez mondja meg, MI TÖLTHET BE egyáltalán.
+  # Ha valaha bekerülne egy idegen szkript az oldalba, ez akadályozza meg,
+  # hogy lefusson vagy hazatelefonáljon.
+  #
+  # A 'unsafe-inline' a szkripteknél sajnos kell: a Next.js soron belüli
+  # indítószkriptet ír az oldalba, és a strukturált adat is így kerül bele.
+  # Enélkül a weblap nem indulna el. Cserébe minden KÜLSŐ forrás tételesen
+  # fel van sorolva, tehát idegen címről akkor sem tölthet be semmi.
+  #
+  # Kik szerepelnek és miért:
+  #   gc.zgo.at, *.goatcounter.com   látogatottságmérés (szkript és a számláló)
+  #   certificate.hungary.dnb.com    a naponta frissülő D&B tanúsítványkép
+  #   youtube-nocookie.com           termékvideók
+  #   maps.google.com, google.com    a kapcsolatoldal térképe
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://certificate.hungary.dnb.com https://*.goatcounter.com; font-src 'self'; connect-src 'self' https://gc.zgo.at https://*.goatcounter.com; frame-src https://www.youtube-nocookie.com https://maps.google.com https://www.google.com; media-src 'self'; upgrade-insecure-requests"
+
+  # ——— HSTS — SZÁNDÉKOSAN KIKAPCSOLVA, a te döntésed ————————————
+  # Ez a fejléc azt mondja a böngészőnek: ezt a domaint mostantól CSAK
+  # HTTPS-en nyisd meg, a beírt http:// címet se próbáld meg. Ettől a
+  # legelső látogatás utáni lehallgatás-kísérlet is kudarcba fullad.
+  #
+  # Amiért mégsem kapcsoltam be magamtól: ez ÍGÉRET, amit a böngésző
+  # megjegyez. Ha a tanúsítvány valaha lejár vagy elromlik, a látogató nem
+  # figyelmeztetést kap, hanem egyáltalán nem éri el a weblapot — és ezt
+  # visszavonni csak úgy lehet, ha a max-age lejár, vagy nullára állítva
+  # megvárod, míg minden böngésző újra jár nálunk.
+  #
+  # Ha bekapcsolod, kezdd rövid idővel (egy nap), és ha egy hónapig
+  # zavartalan, emeld egy évre:
+  #   Header always set Strict-Transport-Security "max-age=86400"
+  #   Header always set Strict-Transport-Security "max-age=31536000"
+  # Az "includeSubDomains" kapcsolót csak akkor tedd hozzá, ha MINDEN
+  # aldomain (subdoms) is biztosan HTTPS-en van.
+
   <FilesMatch "\.(js|css|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>

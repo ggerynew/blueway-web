@@ -506,6 +506,20 @@ jobs:
           # viszont NEM — a kettő együtt bizonyítja, hogy a szabálypár jó
           # irányban fog: egy elrontott minta itt pont fordítva sülne el, és
           # vagy az egész oldalt tiltaná le, vagy semmit.
+          # ——— Biztonsági fejlécek élesben ————————————————————————
+          # A .htaccess-t itt nem tudjuk „lefuttatni", csak megnézni, mit ad
+          # ténylegesen a kiszolgáló. Ha a tárhelyen nincs mod_headers, a
+          # fejlécek némán elmaradnának — ez a lépés kimondja.
+          echo "— biztonsági fejlécek —"
+          FEJEK=$(curl -sSI --max-time 20 "https://$HOSZT/hu" 2>/dev/null || true)
+          for F in content-security-policy x-content-type-options referrer-policy x-frame-options permissions-policy; do
+            if printf '%s' "$FEJEK" | grep -qi "^$F:"; then
+              echo "  ✓ $F"
+            else
+              echo "::warning::Hiányzik a(z) $F fejléc. Ha mind az öt hiányzik, a tárhelyen valószínűleg nincs bekapcsolva a mod_headers."
+            fi
+          done
+
           ROBOTS_FEJ=$(curl -sSI --max-time 20 "https://$HOSZT/robots.txt" 2>/dev/null | grep -i '^x-robots-tag:' || true)
           ADAT_FEJ=$(curl -sSI --max-time 20 "https://$HOSZT/hu.txt" 2>/dev/null | grep -i '^x-robots-tag:' || true)
           if [ -z "$ROBOTS_FEJ" ] && printf '%s' "$ADAT_FEJ" | grep -qi noindex; then

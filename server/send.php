@@ -91,6 +91,29 @@ function headerSafe(string $value): string
     return trim(str_replace(["\r", "\n", "\0"], ' ', $value));
 }
 
+/**
+ * Csatolmány fájlnevének megtisztítása a MIME-fejléchez.
+ *
+ * A név idézőjelek közé kerül: filename="…". A headerSafe csak a sortöréseket
+ * szedi ki, az IDÉZŐJELET nem — egy `szamla".pdf` nevű fájllal a küldő új
+ * paramétert csempészhetne a fejlécbe, és megtévesztheti a levelezőt arról,
+ * milyen néven mentse el a mellékletet. A kiterjesztés-ellenőrzésen az ilyen
+ * név átcsúszik, mert a pathinfo a végét nézi.
+ *
+ * Ezért itt az idézőjel, a visszaperjel és a pontosvessző is elhagyandó, és a
+ * hosszt is korlátozzuk. A pontot és a kötőjelet meghagyjuk: azok a valódi
+ * fájlnevek részei.
+ */
+function attachmentName(string $name): string
+{
+    $tiszta = str_replace(['"', '\\', ';', "\r", "\n", "\0"], '', basename($name));
+    $tiszta = trim(preg_replace('/\s+/u', ' ', $tiszta) ?? '');
+    if ($tiszta === '' || $tiszta === '.' || $tiszta === '..') {
+        $tiszta = 'csatolmany';
+    }
+    return mb_substr($tiszta, 0, 120);
+}
+
 /** UTF-8 fejléc kódolása, hogy az ékezetek ne törjenek el. */
 function encodeHeader(string $value): string
 {
@@ -218,8 +241,9 @@ foreach ($_FILES as $file) {
         // néma 500-as hibával végződhet.
         $nyers = (string) file_get_contents($tmps[$i]);
         $attachments[] = [
-            // A fájlnévből csak a nevet tartjuk meg, útvonalat sosem.
-            'name' => headerSafe(basename((string) $name)),
+            // A fájlnévből csak a nevet tartjuk meg, útvonalat sosem — és a
+            // MIME-fejlécet elrontó karaktereket sem (lásd attachmentName).
+            'name' => attachmentName((string) $name),
             'b64'  => chunk_split(base64_encode($nyers)),
         ];
         unset($nyers);
