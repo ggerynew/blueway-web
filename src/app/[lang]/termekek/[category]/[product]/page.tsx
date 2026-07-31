@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { LegalNotice } from '@/components/legal-notice';
 import { ProductMedia } from '@/components/product-media';
 import { ProductThumb } from '@/components/product-thumb';
+import { ZoomableImage } from '@/components/zoomable-image';
 import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
@@ -108,7 +109,9 @@ export default async function ProductPage({
             videoId={product.videoId}
             model3d={product.model3d}
             model3dIsDemo={product.model3dIsDemo}
-            labels={dict.products.media}
+            // A nagyítás feliratai az ui blokkban élnek, mert nem csak a
+            // termékfotóhoz tartoznak — az applikátoroldal is ezeket használja.
+            labels={{ ...dict.products.media, imageZoom: dict.ui.imageZoom, imageClose: dict.ui.imageClose }}
           />
         </Reveal>
 
@@ -196,14 +199,13 @@ export default async function ProductPage({
         <Reveal delay={0.05}>
           <section className="mt-20 border-t border-line pt-10">
             <div className="grid items-center gap-8 rounded-2xl border border-line bg-white p-6 md:grid-cols-2 md:p-8">
-              <div className="flex items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={asset(product.orientation.image)}
-                  alt={product.orientation.title[lang]}
-                  className="max-h-full max-w-full object-contain"
-                />
-              </div>
+              <ZoomableImage
+                src={product.orientation.image}
+                alt={product.orientation.title[lang]}
+                className="flex items-center justify-center overflow-hidden rounded-xl bg-surface p-4"
+                nagyitasFelirat={dict.ui.imageZoom}
+                bezarasFelirat={dict.ui.imageClose}
+              />
               <div>
                 <h2 className="text-xl font-semibold tracking-tight">
                   {product.orientation.title[lang]}

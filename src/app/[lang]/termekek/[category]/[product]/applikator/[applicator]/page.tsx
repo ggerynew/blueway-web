@@ -4,6 +4,7 @@ import { LegalNotice } from '@/components/legal-notice';
 import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
+import { ZoomableImage } from '@/components/zoomable-image';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getApplicator, getBrandLogo, getCategory, products , productName } from '@/lib/products';
 import type { Metadata } from 'next';
@@ -114,12 +115,12 @@ export default async function ApplicatorPage({
 
       <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
         <Reveal delay={0.05}>
-          <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-line bg-surface p-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={asset(applicator.image)}
+          <div className="aspect-square overflow-hidden rounded-2xl border border-line bg-white p-3">
+            <ZoomableImage
+              src={applicator.image}
               alt={applicator.name[lang]}
-              className="max-h-full max-w-full object-contain"
+              nagyitasFelirat={dict.ui.imageZoom}
+              bezarasFelirat={dict.ui.imageClose}
             />
           </div>
         </Reveal>
