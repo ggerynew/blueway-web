@@ -63,6 +63,12 @@ export interface Product {
   image?: string;
   /** Letölthető adatlap (PDF) a public mappán belül. */
   datasheet?: string;
+  /**
+   * A gyártó hivatalos letöltési linkje az ingyenes verzióhoz. Szándékosan
+   * külső URL, nem helyben tárolt fájl: így mindig a friss kiadás töltődik
+   * le, és a telepítő terjesztése a gyártó oldaláról történik.
+   */
+  download?: string;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
   /** Márkalogó felülbírálás, ha a márka nem szerepel a gyártók között (pl. Loftware) */
@@ -1215,6 +1221,7 @@ const productsSource: Sourced<Product[]> = [
       { hu: 'Több kiadásban', en: 'Available in multiple editions', it: 'Disponibile in più edizioni', es: 'Disponible en varias ediciones', de: 'In mehreren Editionen erhältlich', ko: '다양한 에디션으로 제공', zh: '提供多种版本' },
     ],
     datasheet: '/datasheets/cab-cablabel-s3.pdf',
+    download: 'https://www.cab.de/media/pushfile.cfm?file=2227',
   },
   {
     slug: 'nicelabel',
