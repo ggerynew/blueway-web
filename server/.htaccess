@@ -49,14 +49,30 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # fedi). Amíg nincs saját tartalma, minden kérése az /us/index.html-t kapja.
 #
 # Átírás és NEM átirányítás: a látogató a bluewaytrade.us címen marad, nem
-# dobjuk át a magyar oldalra. Az /us/ alatti fájlok kimaradnak a szabályból,
-# különben a logó is a HTML-t kapná vissza kép helyett.
+# dobjuk át a magyar oldalra.
 #
 # A www-s alak ide már nem jut el: azt a fenti szabály levágja.
 #
 # Megjegyzés: ha a .us a tárhelyen SAJÁT könyvtárat kapott, ez a szabály nem
 # érinti — akkor az /us/ mappa tartalmát oda kell feltölteni. A deploy ezt
 # megteszi, ha a FORPSI_US_WEB_ROOT secret meg van adva.
+
+# ELŐSZÖR a lap kellékei. A lap a saját mappájából hivatkozik rájuk relatívan
+# (src="blueway-logo-anim.webp"), a böngésző viszont a gyökérhez képest kéri
+# őket, mert a lapot a gyökéren kapta. E szabály nélkül a lenti mindent-átíró
+# szabály a KÉP kérésére is a HTML-t adná vissza, és a lap logó nélkül
+# jelenne meg.
+#
+# Azért nevesítve, és nem kiterjesztés szerint: a gyökérben a magyar weblap
+# képei is ott vannak, azokhoz nem szabad hozzányúlni.
+#
+# A relatív hivatkozás szándékos: ha a .us saját webgyökeret kap, ugyanezek a
+# fájlok ott a gyökérben állnak, és ez a szabály eleve nem is fut le.
+RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
+RewriteRule ^(blueway-logo-anim\.webp|blueway-logo-still\.png|favicon\.ico)$ /us/$1 [L]
+
+# Minden más kérés a lapot kapja. Az /us/ alattiak kimaradnak, különben a fenti
+# átírás után végtelen körbe futnánk.
 RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
 RewriteCond %{REQUEST_URI} !^/us/
 RewriteRule ^ /us/index.html [L]
