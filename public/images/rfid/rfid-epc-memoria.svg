@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img">
+<rect width="900" height="400" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">Mi van a chipben, és mit írunk bele?</text>
+<rect x="24" y="52" width="208" height="86" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="38" y="74" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">bank 00</text>
+<text x="38" y="98" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#0f172a" font-weight="700" text-anchor="start">Reserved</text>
+<text x="38" y="122" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">kill- és hozzáférési jelszó</text>
+<rect x="238" y="52" width="208" height="86" rx="8" fill="#dbeafe" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="252" y="74" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">bank 01</text>
+<text x="252" y="98" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#1d4ed8" font-weight="700" text-anchor="start">EPC</text>
+<text x="252" y="122" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">ide kerül az azonosító</text>
+<rect x="452" y="52" width="208" height="86" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="466" y="74" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">bank 10</text>
+<text x="466" y="98" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#0f172a" font-weight="700" text-anchor="start">TID</text>
+<text x="466" y="122" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">a chip gyári száma — nem írható</text>
+<rect x="666" y="52" width="208" height="86" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="680" y="74" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">bank 11</text>
+<text x="680" y="98" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#0f172a" font-weight="700" text-anchor="start">User</text>
+<text x="680" y="122" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">szabad terület, ha a chipben van</text>
+<text x="24" y="176" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">AZ EPC ÖSSZERAKÁSA — SGTIN-96, a GTIN-ből és egy sorozatszámból</text>
+<rect x="24" y="192" width="72" height="48" rx="6" fill="#475569"/>
+<text x="60.0" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">30</text>
+<text x="60.0" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">fejléc</text>
+<text x="60.0" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">8 bit</text>
+<rect x="104" y="192" width="72" height="48" rx="6" fill="#64748b"/>
+<text x="140.0" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">1</text>
+<text x="140.0" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">szűrő</text>
+<text x="140.0" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">3 bit</text>
+<rect x="184" y="192" width="72" height="48" rx="6" fill="#94a3b8"/>
+<text x="220.0" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">5</text>
+<text x="220.0" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">partíció</text>
+<text x="220.0" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">3 bit</text>
+<rect x="264" y="192" width="135" height="48" rx="6" fill="#1d4ed8"/>
+<text x="331.5" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">5990123</text>
+<text x="331.5" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">cégelőtag</text>
+<text x="331.5" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">24 bit</text>
+<rect x="407" y="192" width="120" height="48" rx="6" fill="#0284c7"/>
+<text x="467.0" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">045678</text>
+<text x="467.0" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">cikkszám</text>
+<text x="467.0" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">20 bit</text>
+<rect x="535" y="192" width="72" height="48" rx="6" fill="#b45309"/>
+<text x="571.0" y="222" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="600" text-anchor="middle">1</text>
+<text x="571.0" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">sorozatszám</text>
+<text x="571.0" y="274" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="10" fill="#cbd5e1" font-weight="normal" text-anchor="middle">38 bit</text>
+<path d="M 24 294 L 607 294" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="24" y="322" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">összesen 96 bit, a chipben ezt látja a leolvasó:</text>
+<rect x="24" y="336" width="500" height="40" rx="6" fill="#0f172a"/>
+<text x="274" y="363" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#ffffff" font-weight="600" text-anchor="middle">30356D9BAC2C9B8000000001</text>
+<text x="540" y="352" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">A sorozatszám tesz különbséget két</text>
+<text x="540" y="370" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">egyforma termék között — ezt a vonalkód nem tudja.</text>
+</svg>

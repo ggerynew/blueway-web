@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" role="img">
+<rect width="900" height="330" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">A három RFID-frekvenciasáv</text>
+<text x="24" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">SÁV</text>
+<text x="150" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">FREKVENCIA</text>
+<text x="300" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">OLVASÁSI TÁV</text>
+<text x="450" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">FÉM / FOLYADÉK</text>
+<text x="640" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">TIPIKUS HASZNÁLAT</text>
+<rect x="24" y="84" width="852" height="54" rx="8" fill="#f8fafc"/>
+<rect x="24" y="84" width="6" height="54" rx="3" fill="#94a3b8"/>
+<text x="44" y="117" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#94a3b8" font-weight="700" text-anchor="start">LF</text>
+<text x="150" y="117" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">125 / 134 kHz</text>
+<text x="300" y="117" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">néhány cm</text>
+<text x="450" y="117" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">alig zavarja</text>
+<text x="640" y="117" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">állatjelölés, beléptetés</text>
+<rect x="24" y="146" width="852" height="54" rx="8" fill="#f8fafc"/>
+<rect x="24" y="146" width="6" height="54" rx="3" fill="#0284c7"/>
+<text x="44" y="179" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0284c7" font-weight="700" text-anchor="start">HF / NFC</text>
+<text x="150" y="179" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">13,56 MHz</text>
+<text x="300" y="179" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">10 cm-ig</text>
+<text x="450" y="179" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">fém zavarja</text>
+<text x="640" y="179" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">okostelefon, jegy, könyvtár</text>
+<rect x="24" y="208" width="852" height="54" rx="8" fill="#eff6ff"/>
+<rect x="24" y="208" width="6" height="54" rx="3" fill="#1d4ed8"/>
+<text x="44" y="241" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#1d4ed8" font-weight="700" text-anchor="start">UHF</text>
+<text x="150" y="241" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">865–868 MHz (EU)</text>
+<text x="300" y="241" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">2–10 m</text>
+<text x="450" y="241" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">mindkettő erősen</text>
+<text x="640" y="241" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">logisztika, raktár, kiskereskedelem</text>
+<rect x="24" y="278" width="852" height="58" rx="8" fill="#fef3c7"/>
+<text x="44" y="302" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">A címkenyomtatóval írható okoscímke szinte mindig UHF, EPC Gen2 (ISO/IEC 18000-63).</text>
+<text x="44" y="322" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">Észak-Amerikában a sáv 902–928 MHz: a csak arra hangolt címke Európában rosszabbul szól.</text>
+</svg>
