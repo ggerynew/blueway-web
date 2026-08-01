@@ -69,6 +69,12 @@ export interface Product {
    * le, és a telepítő terjesztése a gyártó oldaláról történik.
    */
   download?: string;
+  /**
+   * A letöltés gomb felirata, ha nem az alapértelmezett „ingyenes verzió"
+   * illik rá — a NiceLabel például nem ingyenes kiadás, hanem 30 napos
+   * próbaverzió, és a gombnak ezt kell mondania.
+   */
+  downloadLabel?: LocalizedText;
   /** YouTube videó azonosító (beágyazáshoz) */
   videoId?: string;
   /** Márkalogó felülbírálás, ha a márka nem szerepel a gyártók között (pl. Loftware) */
@@ -1230,6 +1236,11 @@ const productsSource: Sourced<Product[]> = [
     brand: 'Loftware',
     image: '/images/brand/loftware-logo.png',
     brandLogo: '/images/brand/loftware-logo.png',
+    download: 'https://www.loftware.com/products/labeling/nicelabel-designer/trial-download',
+    downloadLabel: {
+      hu: 'Ingyenes 30 napos próbaverzió',
+      en: 'Free 30-day trial', de: 'Kostenlose 30-Tage-Testversion', it: 'Prova gratuita di 30 giorni', es: 'Prueba gratuita de 30 días', ko: '30일 무료 체험판', zh: '30 天免费试用',
+    },
     short: {
       hu: 'A világ egyik legelterjedtebb címketervező és -nyomtató szoftvere a Loftware-től.',
       en: 'One of the world’s most widely used label design and printing software, by Loftware.', it: 'Uno dei software di progettazione e stampa di etichette più diffusi al mondo, di Loftware.', es: 'Uno de los software de diseño e impresión de etiquetas más utilizados del mundo, de Loftware.', de: 'Eine der weltweit meistgenutzten Softwarelösungen für Etikettengestaltung und -druck, von Loftware.', ko: 'Loftware가 제공하는, 세계에서 가장 널리 사용되는 라벨 디자인 및 인쇄 소프트웨어 중 하나.', zh: '全球使用最广泛的标签设计与打印软件之一，由 Loftware 出品。',
