@@ -136,7 +136,14 @@ export default async function ProductPage({
             <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
               {productName(product, lang)}
             </h1>
-            <p className="mt-4 text-lg text-ink-muted">{product.description[lang]}</p>
+            {/* Az üres sor bekezdéshatár. A legtöbb leírás egyetlen bekezdés,
+                azoknál ez pontosan egy <p>-t ad — a hosszabbaknál viszont
+                (SQUIX RFID) enélkül ezer karakteres tömb lenne belőle. */}
+            {product.description[lang].split('\n\n').map((bekezdes, i) => (
+              <p key={i} className="mt-4 text-lg text-ink-muted">
+                {bekezdes}
+              </p>
+            ))}
 
             <h2 className="mt-8 text-sm font-medium tracking-wide text-ink uppercase">
               {dict.products.featuresTitle}
@@ -245,7 +252,9 @@ export default async function ProductPage({
             <h2 className="text-xl font-semibold tracking-tight">
               {dict.products.variantsTitle}
             </h2>
-            <p className="mt-2 max-w-2xl text-ink-muted">{dict.products.variantsLead}</p>
+            <p className="mt-2 max-w-2xl text-ink-muted">
+              {product.variantsLead?.[lang] ?? dict.products.variantsLead}
+            </p>
 
             <div className="mt-8 flex flex-col gap-4">
               {product.variants.map((v) => (
