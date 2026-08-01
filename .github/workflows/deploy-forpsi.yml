@@ -445,10 +445,16 @@ jobs:
             echo "  GET http://bluewaytrade.us/ -> $USV"
             if [ "$USV" = "200" ] && grep -qi 'under construction' /tmp/us.html; then
               echo "  az átmeneti lap kint van"
-              # A logó külön kérés: ha a kép 404-es, a lap üresen tátong.
-              LOGOV=$(curl -sSL -o /dev/null --max-time 20 -w '%{http_code}' "http://bluewaytrade.us/blueway-logo-anim.webp" || echo 000)
+              # A logó külön kérés. A státuszkód ÖNMAGÁBAN nem elég: a lapot
+              # kiszolgáló mindent-átíró szabály a képre is 200-zal felelne —
+              # csak éppen a HTML-lel. Ezért a tartalomtípust nézzük.
+              LOGOV=$(curl -sSL -o /dev/null --max-time 20 -w '%{http_code} %{content_type}' "http://bluewaytrade.us/blueway-logo-anim.webp" || echo "000 -")
               echo "  GET /blueway-logo-anim.webp -> $LOGOV"
-              [ "$LOGOV" = "200" ] || echo "::warning::A bluewaytrade.us logója nem érhető el ($LOGOV) — a lap logó nélkül jelenik meg."
+              case "$LOGOV" in
+                200\ image/*) echo "  a logó valóban képként érkezik" ;;
+                200\ *)       echo "::error::A bluewaytrade.us logója 200-zal jön, de NEM kép ($LOGOV) — az átíró szabály a HTML-t adja vissza a kép helyett, a lap logó nélkül jelenik meg." ;;
+                *)            echo "::warning::A bluewaytrade.us logója nem érhető el ($LOGOV) — a lap logó nélkül jelenik meg." ;;
+              esac
             elif [ "$USV" = "200" ]; then
               echo "::warning::A bluewaytrade.us válaszol, de nem az átmeneti lapot adja — vagy külön dokumentumgyökere van (ekkor a FORPSI_US_WEB_ROOT titkot kell beállítani), vagy máshová mutat a DNS."
             else
