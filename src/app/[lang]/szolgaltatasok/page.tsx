@@ -114,24 +114,6 @@ export default async function ServicesPage({
           </Reveal>
         )}
       </div>
-
-      <Reveal delay={0.2}>
-        <div className="mt-10 flex flex-col items-start gap-6 rounded-2xl border border-line bg-white p-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">{services.ctaTitle}</h2>
-            <p className="mt-2 max-w-xl text-ink-muted">{services.ctaBody}</p>
-          </div>
-          {/* A gomb a szerviz oldal űrlapjához visz, nem levelezőt nyit: ott a
-              géptípus és a hiba is bekérhető, ami nélkül a megkeresés
-              feldolgozása amúgy is egy körrel tovább tartana. */}
-          <Link
-            href={`/${lang}/szolgaltatasok/szerviz#szerviz-megkereses`}
-            className="shrink-0 rounded-full bg-brand-700 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-800"
-          >
-            {services.ctaButton}
-          </Link>
-        </div>
-      </Reveal>
     </div>
   );
 }
