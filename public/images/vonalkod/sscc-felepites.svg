@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 190" width="900" height="190" role="img">
+<rect width="900" height="190" fill="#ffffff"/>
+<text x="60" y="28" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#64748b" font-weight="600" text-anchor="start">SSCC — logisztikai egység (raklap) azonosítója, 18 számjegy</text>
+<rect x="60" y="46" width="33" height="50" rx="6" fill="#b45309"/>
+<text x="76.5" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" fill="#ffffff" font-weight="600" text-anchor="middle">3</text>
+<text x="76.5" y="115" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="middle">kiterjesztő</text>
+<text x="76.5" y="132" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#cbd5e1" font-weight="normal" text-anchor="middle">0–9</text>
+<rect x="101" y="46" width="135" height="50" rx="6" fill="#1d4ed8"/>
+<text x="168.5" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" fill="#ffffff" font-weight="600" text-anchor="middle">5990123</text>
+<text x="168.5" y="115" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="middle">GS1 cégelőtag</text>
+<text x="168.5" y="132" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#cbd5e1" font-weight="normal" text-anchor="middle">a GS1-től</text>
+<rect x="244" y="46" width="169" height="50" rx="6" fill="#0284c7"/>
+<text x="328.5" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" fill="#ffffff" font-weight="600" text-anchor="middle">000000123</text>
+<text x="328.5" y="115" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="middle">sorozatszám</text>
+<text x="328.5" y="132" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#cbd5e1" font-weight="normal" text-anchor="middle">raklaponként új</text>
+<rect x="421" y="46" width="33" height="50" rx="6" fill="#0f172a"/>
+<text x="437.5" y="81" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="26" fill="#ffffff" font-weight="600" text-anchor="middle">6</text>
+<text x="437.5" y="115" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="middle">ellenőrző</text>
+<text x="437.5" y="132" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#cbd5e1" font-weight="normal" text-anchor="middle">számított</text>
+<text x="60" y="168" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#64748b" font-weight="normal" text-anchor="start">A kiterjesztő és a cégelőtag együtt sem több 8 számjegynél, így a sorozatszámra mindig 9 marad — összesen 17 + 1 ellenőrző.</text>
+</svg>

@@ -119,6 +119,35 @@ export default async function GuidePage({
                   ))}
                 </ul>
               )}
+              {section.images && (
+                <div
+                  className={`mt-6 grid gap-5 ${
+                    section.images.length > 1 && !section.images.some((k) => k.wide)
+                      ? 'sm:grid-cols-2'
+                      : ''
+                  }`}
+                >
+                  {section.images.map((kep) => (
+                    <figure key={kep.src} className={kep.wide ? 'sm:col-span-2' : undefined}>
+                      {/* A fehér háttér nem díszítés: a vonalkód csak sötét-világos
+                          kontraszttal olvasható le, tehát a kép alatt akkor is
+                          fehérnek kell lennie, ha a lap háttere más. */}
+                      <div className="overflow-hidden rounded-xl border border-line bg-white p-4">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={asset(kep.src)}
+                          alt={kep.alt[lang]}
+                          loading="lazy"
+                          className="mx-auto h-auto w-full max-w-full"
+                        />
+                      </div>
+                      <figcaption className="mt-2 text-sm text-ink-muted">
+                        {kep.caption[lang]}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
               {section.files && (
                 <div className="mt-5 flex flex-wrap gap-3">
                   {section.files.map((f) => (
