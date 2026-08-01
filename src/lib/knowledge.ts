@@ -1,9 +1,28 @@
 import { localize, type LocalizedText, type Sourced } from '@/lib/products';
 
+/**
+ * Ábra a cikkben. Az `src` a public mappán belüli útvonal.
+ *
+ * A vonalkód-ábrák szándékosan SVG-k: a látogató le fogja olvasni őket a
+ * telefonjával, a raszteres kép pedig nagyításkor elmosódik, és a leolvasó nem
+ * találja meg a modulhatárt. Az SVG minden méretben éles marad.
+ */
+export interface GuideImage {
+  src: string;
+  /** Képaláírás — ez magyarázza meg, mit lát az olvasó. */
+  caption: LocalizedText;
+  /** Alternatív szöveg képernyőolvasónak. */
+  alt: LocalizedText;
+  /** Teljes szélességben álljon, ne a kétoszlopos rácsban. */
+  wide?: boolean;
+}
+
 export interface GuideSection {
   title: LocalizedText;
   paragraphs: LocalizedText[];
   bullets?: LocalizedText[];
+  /** Ábrák a szekció szövege után. */
+  images?: GuideImage[];
   /** Kiemelt link a szekció végén (nyelvi előtag nélküli útvonal). */
   link?: { href: string; label: LocalizedText };
   /** Letölthető fájlok (a public mappán belüli útvonallal). */
@@ -23,6 +42,616 @@ export interface Guide {
  * anyagai (Product Reference Guide, dnpribbons.com) alapján készült.
  */
 const guidesSource: Sourced<Guide[]> = [
+  {
+    slug: 'vonalkod-tipusok',
+    title: {
+      hu: 'Vonalkód-fajták: 1D, 2D, GTIN és SSCC a gyakorlatban',
+      en: 'Barcode types: 1D, 2D, GTIN and SSCC in practice', de: 'Barcodetypen: 1D, 2D, GTIN und SSCC in der Praxis', it: 'Tipi di codice a barre: 1D, 2D, GTIN e SSCC nella pratica', es: 'Tipos de código de barras: 1D, 2D, GTIN y SSCC en la práctica', ko: '바코드 종류: 1D, 2D, GTIN과 SSCC 실무', zh: '条码类型：1D、2D、GTIN 与 SSCC 实务',
+    },
+    short: {
+      hu: 'Melyik vonalkód mire való, hogyan épül fel a GTIN és az SSCC, és mi kerüljön a karton- meg a raklapcímkére — leolvasható ábrákkal.',
+      en: 'Which barcode is for what, how a GTIN and an SSCC are built, and what belongs on a carton and a pallet label — with scannable figures.', de: 'Welcher Barcode wofür, wie GTIN und SSCC aufgebaut sind und was auf Karton- und Palettenetikett gehört — mit scannbaren Abbildungen.', it: 'Quale codice a barre serve a cosa, come si costruiscono GTIN e SSCC e cosa va sull’etichetta di cartone e di pallet — con figure leggibili.', es: 'Qué código de barras sirve para qué, cómo se construyen el GTIN y el SSCC, y qué debe llevar la etiqueta de caja y de palé — con figuras escaneables.', ko: '어떤 바코드를 언제 쓰는지, GTIN과 SSCC는 어떻게 구성되는지, 박스와 팔레트 라벨에는 무엇이 들어가는지 — 실제로 읽히는 예시와 함께.', zh: '哪种条码用于什么场合、GTIN 与 SSCC 如何构成、纸箱与托盘标签上应放什么——附可实际扫描的图示。',
+    },
+    lead: {
+      hu: 'A vonalkód nem kép, hanem mérőeszköz: a leolvasó a sávok és a közök szélességét méri. Ezért ami emberi szemmel apró szépséghiba — egy hajszálnyival vastagabb sáv, egy elkent él, egy megvágott margó —, a leolvasónak mérési hiba. Ez az összefoglaló végigveszi, melyik kódfajta mire való, hogyan kell felépíteni a GTIN-t és az SSCC-t, és pontosan mi kerüljön a kartonra meg a raklapra. Az ábrákon szereplő kódok valódiak és leolvashatók: nyugodtan próbálja ki a telefonjával.',
+      en: 'A barcode is not a picture but a measuring device: the scanner measures the width of the bars and the spaces. So what looks like a cosmetic flaw to the eye — a bar a hair too thick, a smeared edge, a trimmed margin — is a measurement error to the scanner. This guide walks through which symbology is for what, how to build a GTIN and an SSCC, and exactly what belongs on a carton and on a pallet. The codes in the figures are real and scannable: feel free to try them with your phone.', de: 'Ein Barcode ist kein Bild, sondern ein Messobjekt: Der Scanner misst die Breite von Strichen und Lücken. Was dem Auge als Schönheitsfehler erscheint — ein Strich eine Haaresbreite zu dick, eine verschmierte Kante, ein beschnittener Rand —, ist für den Scanner ein Messfehler. Dieser Leitfaden zeigt, welche Symbologie wofür gedacht ist, wie GTIN und SSCC aufgebaut werden und was genau auf Karton und Palette gehört. Die Codes in den Abbildungen sind echt und scannbar: Probieren Sie sie ruhig mit dem Handy aus.', it: 'Un codice a barre non è un’immagine ma uno strumento di misura: il lettore misura la larghezza di barre e spazi. Ciò che all’occhio sembra un difetto estetico — una barra spessa un capello di troppo, un bordo sbavato, un margine tagliato — per il lettore è un errore di misura. Questa guida illustra a cosa serve ciascuna simbologia, come si costruiscono GTIN e SSCC e cosa va esattamente sul cartone e sul pallet. I codici nelle figure sono reali e leggibili: provi pure con il telefono.', es: 'Un código de barras no es una imagen, sino un instrumento de medida: el lector mide el ancho de las barras y los espacios. Lo que a la vista parece un defecto estético —una barra un pelo más gruesa, un borde emborronado, un margen recortado— para el lector es un error de medición. Esta guía repasa para qué sirve cada simbología, cómo se construyen el GTIN y el SSCC, y qué debe llevar exactamente la caja y el palé. Los códigos de las figuras son reales y escaneables: pruébelos con el móvil.', ko: '바코드는 그림이 아니라 측정 대상입니다. 스캐너는 바와 공백의 폭을 측정합니다. 그래서 사람 눈에는 사소한 흠으로 보이는 것 — 머리카락 한 올만큼 두꺼운 바, 번진 가장자리, 잘린 여백 — 이 스캐너에게는 측정 오류가 됩니다. 이 자료에서는 어떤 심볼로지가 어디에 쓰이는지, GTIN과 SSCC를 어떻게 구성하는지, 박스와 팔레트에 정확히 무엇이 들어가야 하는지 정리합니다. 그림에 실린 코드는 실제로 읽히는 코드이니 휴대폰으로 확인해 보셔도 됩니다.', zh: '条码不是图片，而是一种测量对象：扫描器测量的是条与空的宽度。因此在人眼看来只是外观瑕疵的东西——粗了一丝的条、糊掉的边缘、被裁掉的空白——对扫描器来说就是测量误差。本文梳理各类符号体系的用途、GTIN 与 SSCC 的构成方法，以及纸箱和托盘标签上究竟应该放什么。图中的条码都是真实可扫的，欢迎用手机试一试。',
+    },
+    sections: [
+      {
+        title: {
+          hu: '1. Mitől olvasható egy vonalkód?',
+          en: '1. What makes a barcode readable?', de: '1. Was macht einen Barcode lesbar?', it: '1. Cosa rende leggibile un codice a barre?', es: '1. ¿Qué hace legible un código de barras?', ko: '1. 무엇이 바코드를 읽히게 하는가', zh: '1. 条码为什么能被读出来',
+        },
+        paragraphs: [
+          {
+            hu: 'Négy adat dönti el, hogy egy kód működik-e: az X-méret, a csendzóna, a sávmagasság és a kontraszt. Ezek közül egyedül a kontraszt tűnik fel szemre — a másik hármat meg kell mérni.',
+            en: 'Four things decide whether a code works: the X-dimension, the quiet zone, the bar height and the contrast. Only contrast is visible to the naked eye — the other three have to be measured.', de: 'Vier Größen entscheiden, ob ein Code funktioniert: X-Maß, Ruhezone, Strichhöhe und Kontrast. Nur der Kontrast fällt mit bloßem Auge auf — die anderen drei müssen gemessen werden.', it: 'Quattro grandezze decidono se un codice funziona: la dimensione X, la zona tranquilla, l’altezza delle barre e il contrasto. Solo il contrasto si nota a occhio nudo: le altre tre vanno misurate.', es: 'Cuatro magnitudes deciden si un código funciona: la dimensión X, la zona de silencio, la altura de barra y el contraste. Solo el contraste se aprecia a simple vista; las otras tres hay que medirlas.', ko: '코드가 동작하는지는 네 가지가 결정합니다. X 치수, 여백(quiet zone), 바 높이, 명암비입니다. 이 중 눈으로 알 수 있는 것은 명암비뿐이고 나머지 셋은 측정해야 합니다.', zh: '决定条码能否使用的有四项：X 尺寸、空白区、条高和对比度。其中只有对比度肉眼可辨，其余三项必须实测。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'X-méret — a legkeskenyebb sáv szélessége. Ebből adódik a kód teljes szélessége, és ez szabja meg a szükséges nyomtatófelbontást: egy 203 dpi-s fej legkisebb pontja 0,125 mm, ennél finomabb sáv nem létezik rajta.',
+            en: 'X-dimension — the width of the narrowest bar. It determines the total width of the symbol and the printer resolution you need: the smallest dot of a 203 dpi head is 0.125 mm, and no finer bar exists on it.', de: 'X-Maß — die Breite des schmalsten Strichs. Daraus ergibt sich die Gesamtbreite des Symbols und die nötige Druckauflösung: Der kleinste Punkt eines 203-dpi-Kopfes misst 0,125 mm, feiner geht es nicht.', it: 'Dimensione X — la larghezza della barra più stretta. Determina la larghezza totale del simbolo e la risoluzione di stampa necessaria: il punto più piccolo di una testina da 203 dpi misura 0,125 mm, oltre non si scende.', es: 'Dimensión X — el ancho de la barra más estrecha. De ella depende el ancho total del símbolo y la resolución de impresión necesaria: el punto más pequeño de un cabezal de 203 dpi mide 0,125 mm, y no hay barra más fina.', ko: 'X 치수 — 가장 좁은 바의 폭입니다. 심볼 전체 폭과 필요한 인쇄 해상도가 여기서 정해집니다. 203 dpi 헤드의 최소 도트는 0.125 mm이며, 그보다 가는 바는 만들 수 없습니다.', zh: 'X 尺寸——最窄条的宽度。符号总宽和所需打印分辨率由它决定：203 dpi 打印头的最小点为 0.125 mm，比这更细的条并不存在。',
+          },
+          {
+            hu: 'Csendzóna — a kód két oldalán hagyott üres sáv, X-ben mérve. EAN-13-nál balra 11 X, jobbra 7 X; GS1-128-nál mindkét oldalon 10 X. Ha ide belelóg egy keret vagy egy szöveg, a kód nem olvas — ez a leggyakoribb hiba.',
+            en: 'Quiet zone — the blank margin on both sides, measured in X. For EAN-13 it is 11 X on the left and 7 X on the right; for GS1-128 it is 10 X on both sides. A frame or a line of text reaching into it stops the scan — the single most common fault.', de: 'Ruhezone — der freie Rand auf beiden Seiten, in X gemessen. Bei EAN-13 links 11 X, rechts 7 X; bei GS1-128 beidseitig 10 X. Ragt ein Rahmen oder eine Textzeile hinein, wird nicht gelesen — der häufigste Fehler überhaupt.', it: 'Zona tranquilla — il margine bianco su entrambi i lati, misurato in X. Per l’EAN-13 sono 11 X a sinistra e 7 X a destra; per il GS1-128 sono 10 X su entrambi i lati. Una cornice o una riga di testo che vi entra impedisce la lettura: è l’errore più frequente.', es: 'Zona de silencio — el margen en blanco a ambos lados, medido en X. En EAN-13 son 11 X a la izquierda y 7 X a la derecha; en GS1-128, 10 X a cada lado. Un marco o una línea de texto que invada esa zona impide la lectura: es el fallo más habitual.', ko: '여백(quiet zone) — 코드 양옆에 비워 두는 영역이며 X 단위로 잽니다. EAN-13은 왼쪽 11 X, 오른쪽 7 X이고 GS1-128은 양쪽 모두 10 X입니다. 여기에 테두리나 글자가 걸치면 읽히지 않습니다. 가장 흔한 실수입니다.', zh: '空白区——条码两侧留出的空白，以 X 为单位。EAN-13 左侧 11 X、右侧 7 X；GS1-128 两侧均为 10 X。边框或文字侵入这里就读不出来——这是最常见的错误。',
+          },
+          {
+            hu: 'Sávmagasság — a leolvasó „célzási” tartaléka. Logisztikai címkén a GS1 legalább 32 mm-t ír elő; ha a kód lapos, a targoncáról nehezebb eltalálni.',
+            en: 'Bar height — the scanner’s aiming margin. On a logistic label GS1 requires at least 32 mm; a flat symbol is harder to hit from a forklift.', de: 'Strichhöhe — der Zielspielraum des Scanners. Auf dem Logistiketikett verlangt GS1 mindestens 32 mm; ein flaches Symbol ist vom Stapler aus schwerer zu treffen.', it: 'Altezza delle barre — il margine di mira del lettore. Sull’etichetta logistica GS1 richiede almeno 32 mm; un simbolo basso è più difficile da centrare dal muletto.', es: 'Altura de barra — el margen de puntería del lector. En la etiqueta logística GS1 exige al menos 32 mm; un símbolo bajo es más difícil de acertar desde la carretilla.', ko: '바 높이 — 스캐너가 조준할 여유입니다. 물류 라벨에서는 GS1이 최소 32 mm를 요구합니다. 납작한 심볼은 지게차에서 맞히기 어렵습니다.', zh: '条高——扫描器的瞄准余量。物流标签上 GS1 要求至少 32 mm；条码太扁，从叉车上不好对准。',
+          },
+          {
+            hu: 'Kontraszt — sötét sáv világos alapon. A piros sáv fehéren klasszikus, piros fényű leolvasóval olvashatatlan: annak a piros ugyanolyan „világos”, mint a papír.',
+            en: 'Contrast — dark bars on a light background. Red bars on white cannot be read by a classic red-light scanner: to it, red is just as “light” as the paper.', de: 'Kontrast — dunkle Striche auf hellem Grund. Rote Striche auf Weiß kann ein klassischer Rotlicht-Scanner nicht lesen: Für ihn ist Rot genauso „hell“ wie das Papier.', it: 'Contrasto — barre scure su fondo chiaro. Barre rosse su bianco non sono leggibili da un classico lettore a luce rossa: per lui il rosso è chiaro quanto la carta.', es: 'Contraste — barras oscuras sobre fondo claro. Las barras rojas sobre blanco no las lee un lector clásico de luz roja: para él, el rojo es tan “claro” como el papel.', ko: '명암비 — 밝은 바탕에 어두운 바. 흰 바탕의 빨간 바는 전통적인 적색광 스캐너로 읽을 수 없습니다. 그 스캐너에게 빨강은 종이만큼 밝습니다.', zh: '对比度——浅底深条。白底红条无法被传统红光扫描器读出：对它而言，红色和纸一样“浅”。',
+          },
+          {
+            hu: 'Nyomtatási minőség — az ISO/IEC 15416 A-tól F-ig osztályoz (2D-nél az ISO/IEC 15415). A kereskedelmi láncok jellemzően C (1,5) fölötti osztályt várnak el.',
+            en: 'Print quality — ISO/IEC 15416 grades from A to F (ISO/IEC 15415 for 2D codes). Retail chains typically expect grade C (1.5) or better.', de: 'Druckqualität — ISO/IEC 15416 bewertet von A bis F (bei 2D-Codes ISO/IEC 15415). Handelsketten erwarten in der Regel mindestens Klasse C (1,5).', it: 'Qualità di stampa — la ISO/IEC 15416 assegna classi da A a F (ISO/IEC 15415 per i codici 2D). Le catene distributive richiedono di norma almeno la classe C (1,5).', es: 'Calidad de impresión — la norma ISO/IEC 15416 clasifica de A a F (ISO/IEC 15415 para códigos 2D). Las cadenas de distribución suelen exigir clase C (1,5) o superior.', ko: '인쇄 품질 — ISO/IEC 15416이 A부터 F까지 등급을 매깁니다(2D는 ISO/IEC 15415). 유통 체인은 보통 C(1.5) 이상을 요구합니다.', zh: '印刷质量——ISO/IEC 15416 按 A 到 F 分级（二维码为 ISO/IEC 15415）。零售连锁通常要求 C（1.5）以上。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/vonalkod-anatomia.svg',
+            alt: {
+              hu: 'EAN-13 vonalkód a csendzónákkal és az X-mérettel megjelölve',
+              en: 'An EAN-13 symbol with the quiet zones and the X-dimension marked', de: 'Ein EAN-13-Symbol mit markierten Ruhezonen und X-Maß', it: 'Un simbolo EAN-13 con zone tranquille e dimensione X evidenziate', es: 'Un símbolo EAN-13 con las zonas de silencio y la dimensión X señaladas', ko: '여백과 X 치수를 표시한 EAN-13 심볼', zh: '标出空白区与 X 尺寸的 EAN-13 符号',
+            },
+            caption: {
+              hu: 'A sárga sávok a csendzónák: balra 11 X, jobbra 7 X. A hosszabb vezérjelek fogják közre a számcsoportokat.',
+              en: 'The yellow bands are the quiet zones: 11 X on the left, 7 X on the right. The longer guard bars frame the digit groups.', de: 'Die gelben Flächen sind die Ruhezonen: links 11 X, rechts 7 X. Die längeren Randzeichen rahmen die Zifferngruppen ein.', it: 'Le fasce gialle sono le zone tranquille: 11 X a sinistra, 7 X a destra. Le barre di guardia più lunghe racchiudono i gruppi di cifre.', es: 'Las franjas amarillas son las zonas de silencio: 11 X a la izquierda y 7 X a la derecha. Las barras de guarda más largas enmarcan los grupos de dígitos.', ko: '노란 띠가 여백입니다. 왼쪽 11 X, 오른쪽 7 X입니다. 길게 내려온 가드 바가 숫자 그룹을 감쌉니다.', zh: '黄色区域是空白区：左 11 X，右 7 X。较长的起止条框住数字分组。',
+            },
+            wide: true,
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '2. Az 1D kódok: egy sorban, sávok szélességével',
+          en: '2. 1D codes: one line, data in bar widths', de: '2. 1D-Codes: eine Zeile, Daten in Strichbreiten', it: '2. I codici 1D: una riga, dati nella larghezza delle barre', es: '2. Los códigos 1D: una línea, datos en el ancho de las barras', ko: '2. 1D 코드: 한 줄, 바 폭에 담는 데이터', zh: '2. 一维码：一行，用条宽承载数据',
+        },
+        paragraphs: [
+          {
+            hu: 'A lineáris kódba jellemzően 8–30 karakter fér. Cserébe olcsó nyomtatni, és minden leolvasó ismeri — a harminc éves lézeres pisztolytól a mai telefonig. Kereskedelmi forgalomban a választás nem ízlés kérdése: a szabvány dönt.',
+            en: 'A linear symbol typically holds 8 to 30 characters. In exchange it is cheap to print and every scanner knows it — from a thirty-year-old laser gun to today’s phone. In retail the choice is not a matter of taste: the standard decides.', de: 'In ein lineares Symbol passen typischerweise 8 bis 30 Zeichen. Dafür ist es günstig zu drucken und jeder Scanner kennt es — von der dreißig Jahre alten Laserpistole bis zum heutigen Smartphone. Im Handel ist die Wahl keine Geschmacksfrage: Der Standard entscheidet.', it: 'In un simbolo lineare stanno tipicamente da 8 a 30 caratteri. In cambio è economico da stampare e ogni lettore lo conosce, dalla pistola laser di trent’anni fa al telefono di oggi. Nel commercio la scelta non è questione di gusto: decide lo standard.', es: 'En un símbolo lineal caben normalmente entre 8 y 30 caracteres. A cambio es barato de imprimir y todos los lectores lo conocen, desde la pistola láser de hace treinta años hasta el móvil actual. En el comercio la elección no es cuestión de gusto: decide la norma.', ko: '선형 심볼에는 보통 8~30자가 들어갑니다. 대신 인쇄가 저렴하고 30년 된 레이저 스캐너부터 요즘 휴대폰까지 모든 리더가 읽습니다. 유통에서는 취향이 아니라 표준이 선택을 결정합니다.', zh: '线性符号通常能容纳 8 到 30 个字符。作为交换，它印刷便宜，而且所有读取设备都认得——从三十年前的激光枪到今天的手机。在商贸流通中，选哪种不是口味问题，而是标准说了算。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/ean-13.svg',
+            alt: {
+              hu: 'EAN-13 vonalkód',
+              en: 'EAN-13 barcode', de: 'EAN-13-Barcode', it: 'Codice a barre EAN-13', es: 'Código de barras EAN-13', ko: 'EAN-13 바코드', zh: 'EAN-13 条码',
+            },
+            caption: {
+              hu: 'EAN-13 — amit a pénztárnál olvasnak. Pontosan 13 számjegy, semmi más: a GTIN-13-at hordozza.',
+              en: 'EAN-13 — the one scanned at the checkout. Exactly 13 digits and nothing else: it carries the GTIN-13.', de: 'EAN-13 — der Code an der Kasse. Genau 13 Ziffern und nichts sonst: Er trägt die GTIN-13.', it: 'EAN-13 — quello letto alla cassa. Esattamente 13 cifre e nulla più: trasporta il GTIN-13.', es: 'EAN-13 — el que se lee en la caja. Exactamente 13 dígitos y nada más: transporta el GTIN-13.', ko: 'EAN-13 — 계산대에서 읽는 코드입니다. 정확히 13자리 숫자만 담으며 GTIN-13을 실어 나릅니다.', zh: 'EAN-13——收银台扫的就是它。正好 13 位数字，别无其他：承载 GTIN-13。',
+            },
+          },
+          {
+            src: '/images/vonalkod/ean-8.svg',
+            alt: {
+              hu: 'EAN-8 vonalkód',
+              en: 'EAN-8 barcode', de: 'EAN-8-Barcode', it: 'Codice a barre EAN-8', es: 'Código de barras EAN-8', ko: 'EAN-8 바코드', zh: 'EAN-8 条码',
+            },
+            caption: {
+              hu: 'EAN-8 — a rövid változat kis csomagolásra, ahol a teljes EAN-13 nem fér el. Külön kell igényelni, nem az EAN-13 rövidítése.',
+              en: 'EAN-8 — the short version for small packs where a full EAN-13 does not fit. It must be requested separately; it is not an abbreviation of the EAN-13.', de: 'EAN-8 — die Kurzform für kleine Packungen, auf denen kein vollständiger EAN-13 Platz hat. Sie muss separat beantragt werden und ist keine Kurzfassung der EAN-13.', it: 'EAN-8 — la versione corta per confezioni piccole dove un EAN-13 completo non entra. Va richiesto a parte: non è un’abbreviazione dell’EAN-13.', es: 'EAN-8 — la versión corta para envases pequeños donde no cabe un EAN-13 completo. Se solicita aparte; no es una abreviatura del EAN-13.', ko: 'EAN-8 — 전체 EAN-13이 들어가지 않는 소형 포장용 단축형입니다. 별도로 신청해야 하며 EAN-13의 축약이 아닙니다.', zh: 'EAN-8——用于放不下完整 EAN-13 的小包装的短版本。需要单独申请，并非 EAN-13 的缩写。',
+            },
+          },
+          {
+            src: '/images/vonalkod/code-39.svg',
+            alt: {
+              hu: 'Code 39 vonalkód',
+              en: 'Code 39 barcode', de: 'Code-39-Barcode', it: 'Codice a barre Code 39', es: 'Código de barras Code 39', ko: 'Code 39 바코드', zh: 'Code 39 条码',
+            },
+            caption: {
+              hu: 'Code 39 — a legrégebbi ipari kód. Betűt is tud, de terjedelmes, és nincs kötelező ellenőrző karaktere. Új rendszerbe ma már ritkán érdemes.',
+              en: 'Code 39 — the oldest industrial symbology. It handles letters, but it is bulky and has no mandatory check character. Rarely worth choosing for a new system today.', de: 'Code 39 — die älteste industrielle Symbologie. Sie kann Buchstaben, ist aber breit und hat kein Pflicht-Prüfzeichen. Für neue Systeme heute selten sinnvoll.', it: 'Code 39 — la simbologia industriale più antica. Gestisce le lettere, ma è ingombrante e non ha un carattere di controllo obbligatorio. Oggi raramente conviene per un nuovo sistema.', es: 'Code 39 — la simbología industrial más antigua. Admite letras, pero es voluminosa y no tiene carácter de control obligatorio. Hoy rara vez compensa para un sistema nuevo.', ko: 'Code 39 — 가장 오래된 산업용 심볼로지입니다. 문자를 담을 수 있지만 폭이 크고 필수 체크 문자가 없습니다. 요즘 새 시스템에는 잘 쓰지 않습니다.', zh: 'Code 39——最老的工业符号体系。能编字母，但占位大且没有强制校验字符。今天新建系统很少值得选它。',
+            },
+          },
+          {
+            src: '/images/vonalkod/code-128.svg',
+            alt: {
+              hu: 'Code 128 vonalkód',
+              en: 'Code 128 barcode', de: 'Code-128-Barcode', it: 'Codice a barre Code 128', es: 'Código de barras Code 128', ko: 'Code 128 바코드', zh: 'Code 128 条码',
+            },
+            caption: {
+              hu: 'Code 128 — a mai ipari alapérték: teljes ASCII készlet, tömör kódolás (a számpárok fél helyen elférnek), kötelező ellenőrző karakter.',
+              en: 'Code 128 — today’s industrial default: the full ASCII set, dense encoding (digit pairs take half the space) and a mandatory check character.', de: 'Code 128 — der heutige industrielle Standard: vollständiger ASCII-Zeichensatz, dichte Codierung (Ziffernpaare brauchen halb so viel Platz) und ein Pflicht-Prüfzeichen.', it: 'Code 128 — lo standard industriale di oggi: set ASCII completo, codifica compatta (le coppie di cifre occupano metà spazio) e carattere di controllo obbligatorio.', es: 'Code 128 — el estándar industrial actual: juego ASCII completo, codificación compacta (los pares de dígitos ocupan la mitad) y carácter de control obligatorio.', ko: 'Code 128 — 오늘날 산업 표준입니다. 전체 ASCII를 지원하고, 숫자 두 자리를 한 문자로 담아 조밀하며, 체크 문자가 필수입니다.', zh: 'Code 128——当今工业默认选择：完整 ASCII 字符集、编码紧凑（成对数字只占一半位置）、校验字符为必需。',
+            },
+          },
+          {
+            src: '/images/vonalkod/itf-14.svg',
+            alt: {
+              hu: 'ITF-14 vonalkód tartókerettel',
+              en: 'ITF-14 barcode with bearer bars', de: 'ITF-14-Barcode mit Trägerbalken', it: 'Codice a barre ITF-14 con barre di supporto', es: 'Código de barras ITF-14 con barras de soporte', ko: '베어러 바가 있는 ITF-14 바코드', zh: '带保护框的 ITF-14 条码',
+            },
+            caption: {
+              hu: 'ITF-14 — kizárólag a GTIN-14-et viszi, gyűjtőcsomagoláson. A vastag keret nem dísz: megakadályozza, hogy a leolvasó ferde rálátásnál a kód egy darabját olvassa csak be.',
+              en: 'ITF-14 — carries the GTIN-14 and nothing else, on cartons. The heavy frame is not decoration: it prevents the scanner from reading only part of the symbol at an oblique angle.', de: 'ITF-14 — trägt ausschließlich die GTIN-14, auf Umverpackungen. Der starke Rahmen ist kein Schmuck: Er verhindert, dass der Scanner bei schrägem Blick nur einen Teil des Symbols liest.', it: 'ITF-14 — trasporta solo il GTIN-14, sugli imballi. La cornice spessa non è un ornamento: impedisce che il lettore, inquadrando di sbieco, legga solo una parte del simbolo.', es: 'ITF-14 — transporta solo el GTIN-14, en cajas de agrupación. El marco grueso no es adorno: impide que el lector, en ángulo oblicuo, lea solo una parte del símbolo.', ko: 'ITF-14 — 박스에 붙이며 GTIN-14만 담습니다. 굵은 테두리는 장식이 아니라, 비스듬히 볼 때 스캐너가 심볼의 일부만 읽는 것을 막아 줍니다.', zh: 'ITF-14——用于外箱，只承载 GTIN-14。粗框不是装饰：它防止扫描器在斜视角下只读到符号的一部分。',
+            },
+          },
+          {
+            src: '/images/vonalkod/gs1-128-karton.svg',
+            alt: {
+              hu: 'GS1-128 vonalkód alkalmazásazonosítókkal',
+              en: 'GS1-128 barcode with application identifiers', de: 'GS1-128-Barcode mit Anwendungsbezeichnern', it: 'Codice a barre GS1-128 con identificatori di applicazione', es: 'Código de barras GS1-128 con identificadores de aplicación', ko: '응용 식별자를 포함한 GS1-128 바코드', zh: '带应用标识符的 GS1-128 条码',
+            },
+            caption: {
+              hu: 'GS1-128 — ugyanaz a Code 128, de az adat alkalmazásazonosítókkal (AI) van megcímkézve, így a fogadó rendszer tudja, melyik szám micsoda. A logisztika alapköve.',
+              en: 'GS1-128 — the same Code 128, but the data is tagged with application identifiers (AIs), so the receiving system knows what each number means. The backbone of logistics.', de: 'GS1-128 — derselbe Code 128, aber die Daten sind mit Anwendungsbezeichnern (AI) etikettiert, sodass das empfangende System weiß, was jede Zahl bedeutet. Das Rückgrat der Logistik.', it: 'GS1-128 — lo stesso Code 128, ma i dati sono etichettati con identificatori di applicazione (AI), così il sistema ricevente sa cosa significa ogni numero. La spina dorsale della logistica.', es: 'GS1-128 — el mismo Code 128, pero con los datos etiquetados mediante identificadores de aplicación (AI), de modo que el sistema receptor sabe qué significa cada número. La columna vertebral de la logística.', ko: 'GS1-128 — 같은 Code 128이지만 데이터에 응용 식별자(AI)가 붙어 있어, 수신 시스템이 각 숫자의 의미를 압니다. 물류의 근간입니다.', zh: 'GS1-128——同样是 Code 128，但数据用应用标识符（AI）作了标注，接收系统因此知道每个数字代表什么。物流的基石。',
+            },
+            wide: true,
+          },
+          {
+            src: '/images/vonalkod/gs1-databar.svg',
+            alt: {
+              hu: 'GS1 DataBar vonalkód',
+              en: 'GS1 DataBar barcode', de: 'GS1-DataBar-Barcode', it: 'Codice a barre GS1 DataBar', es: 'Código de barras GS1 DataBar', ko: 'GS1 DataBar 바코드', zh: 'GS1 DataBar 条码',
+            },
+            caption: {
+              hu: 'GS1 DataBar — kis helyre szánt pénztári kód: elfér egy zöldségcímkén, és az EAN-13-cal ellentétben lejárati dátumot vagy sarzsot is vihet.',
+              en: 'GS1 DataBar — a point-of-sale symbol for tight spaces: it fits on a produce label and, unlike EAN-13, can also carry an expiry date or a batch number.', de: 'GS1 DataBar — ein Kassencode für enge Platzverhältnisse: Er passt auf ein Obstetikett und kann im Gegensatz zum EAN-13 auch Verfallsdatum oder Charge tragen.', it: 'GS1 DataBar — un simbolo da cassa per spazi ridotti: sta su un’etichetta di ortofrutta e, a differenza dell’EAN-13, può portare anche data di scadenza o lotto.', es: 'GS1 DataBar — un símbolo de caja para espacios reducidos: cabe en una etiqueta de fruta y, a diferencia del EAN-13, puede llevar además fecha de caducidad o lote.', ko: 'GS1 DataBar — 좁은 공간용 POS 코드입니다. 농산물 라벨에도 들어가며, EAN-13과 달리 유통기한이나 배치 번호도 담을 수 있습니다.', zh: 'GS1 DataBar——面向狭小空间的收银码：能印在果蔬标签上，而且与 EAN-13 不同，还可携带保质期或批号。',
+            },
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '3. A 2D kódok: több adat, kisebb helyen',
+          en: '3. 2D codes: more data in less space', de: '3. 2D-Codes: mehr Daten auf weniger Fläche', it: '3. I codici 2D: più dati in meno spazio', es: '3. Los códigos 2D: más datos en menos espacio', ko: '3. 2D 코드: 더 작은 자리에 더 많은 데이터', zh: '3. 二维码：更小的面积，更多的数据',
+        },
+        paragraphs: [
+          {
+            hu: 'A kétdimenziós kód nem sávokban, hanem mátrixban tárol. Két előnye van. Sokkal több fér bele — a QR-be több ezer karakter —, és hibajavító kódot tartalmaz, tehát sérülten is olvasható: egy DataMatrix a felülete mintegy harmadának elvesztését is túléli. Cserébe kamerás (imager) leolvasó kell hozzá; a régi, egy vonal mentén pásztázó lézeres olvasó nem látja.',
+            en: 'A two-dimensional code stores data in a matrix rather than in bars. It has two advantages. Far more fits in — thousands of characters in a QR — and it carries error correction, so it still reads when damaged: a DataMatrix survives losing roughly a third of its area. In exchange it needs a camera-based (imager) scanner; an old laser reader that sweeps a single line cannot see it.', de: 'Ein zweidimensionaler Code speichert in einer Matrix statt in Strichen. Er hat zwei Vorteile. Es passt weit mehr hinein — in einen QR-Code Tausende Zeichen — und er enthält Fehlerkorrektur, ist also auch beschädigt lesbar: Ein DataMatrix übersteht den Verlust von etwa einem Drittel seiner Fläche. Dafür braucht er einen kamerabasierten Scanner (Imager); ein alter Laserleser, der nur eine Linie abtastet, sieht ihn nicht.', it: 'Un codice bidimensionale memorizza in una matrice anziché in barre. Ha due vantaggi. Contiene molto di più — migliaia di caratteri in un QR — e include la correzione d’errore, quindi si legge anche danneggiato: un DataMatrix sopravvive alla perdita di circa un terzo della superficie. In cambio richiede un lettore a immagine (imager); il vecchio lettore laser che scandisce una sola linea non lo vede.', es: 'Un código bidimensional almacena en una matriz en lugar de en barras. Tiene dos ventajas. Cabe mucho más —miles de caracteres en un QR— e incluye corrección de errores, por lo que se lee incluso dañado: un DataMatrix sobrevive a la pérdida de aproximadamente un tercio de su superficie. A cambio necesita un lector de imagen (imager); el viejo lector láser que barre una sola línea no lo ve.', ko: '2차원 코드는 바가 아니라 행렬에 데이터를 담습니다. 장점은 둘입니다. 훨씬 많이 들어가고(QR은 수천 자), 오류 정정이 들어 있어 손상되어도 읽힙니다. 데이터매트릭스는 면적의 약 3분의 1을 잃어도 읽힙니다. 대신 카메라식(이미저) 리더가 필요합니다. 한 줄만 훑는 옛 레이저 리더로는 보이지 않습니다.', zh: '二维码把数据存在矩阵里而不是条里。它有两个优势：容量大得多（QR 可达数千字符），并且带纠错，破损后仍能读出——DataMatrix 丢失约三分之一面积仍可识别。代价是需要影像式（imager）读取器；只沿一条线扫描的老式激光枪看不见它。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/qr.svg',
+            alt: {
+              hu: 'QR-kód',
+              en: 'QR code', de: 'QR-Code', it: 'Codice QR', es: 'Código QR', ko: 'QR 코드', zh: 'QR 码',
+            },
+            caption: {
+              hu: 'QR — telefonnal is olvasható, ezért a fogyasztó felé fordul: weboldal, termékinformáció, GS1 Digital Link. Ez a kód a blueway.hu-ra visz.',
+              en: 'QR — readable with a phone, so it faces the consumer: a web page, product information, GS1 Digital Link. This one points to blueway.hu.', de: 'QR — mit dem Handy lesbar und deshalb zum Verbraucher gerichtet: Webseite, Produktinformation, GS1 Digital Link. Dieser hier führt zu blueway.hu.', it: 'QR — leggibile col telefono, quindi rivolto al consumatore: pagina web, informazioni di prodotto, GS1 Digital Link. Questo porta a blueway.hu.', es: 'QR — legible con el móvil, por eso mira al consumidor: página web, información de producto, GS1 Digital Link. Este lleva a blueway.hu.', ko: 'QR — 휴대폰으로 읽히기 때문에 소비자를 향합니다. 웹페이지, 제품 정보, GS1 Digital Link 등입니다. 이 코드는 blueway.hu로 연결됩니다.', zh: 'QR——手机就能读，因此面向消费者：网页、产品信息、GS1 Digital Link。这一枚指向 blueway.hu。',
+            },
+          },
+          {
+            src: '/images/vonalkod/datamatrix.svg',
+            alt: {
+              hu: 'DataMatrix kód',
+              en: 'DataMatrix code', de: 'DataMatrix-Code', it: 'Codice DataMatrix', es: 'Código DataMatrix', ko: 'DataMatrix 코드', zh: 'DataMatrix 码',
+            },
+            caption: {
+              hu: 'DataMatrix — apró alkatrészre lézerrel is jelölhető, és néhány négyzetmilliméteren is működik. Az ipar és az elektronika alapkódja.',
+              en: 'DataMatrix — can be laser-marked directly onto a small part and still works at a few square millimetres. The default code of industry and electronics.', de: 'DataMatrix — lässt sich per Laser direkt auf ein kleines Bauteil markieren und funktioniert auf wenigen Quadratmillimetern. Der Standardcode von Industrie und Elektronik.', it: 'DataMatrix — si può marcare a laser direttamente su un piccolo componente e funziona su pochi millimetri quadrati. Il codice di riferimento dell’industria e dell’elettronica.', es: 'DataMatrix — puede marcarse con láser directamente sobre una pieza pequeña y funciona en pocos milímetros cuadrados. El código de referencia de la industria y la electrónica.', ko: 'DataMatrix — 작은 부품에 레이저로 직접 마킹할 수 있고 수 제곱밀리미터에서도 동작합니다. 산업과 전자 분야의 표준 코드입니다.', zh: 'DataMatrix——可用激光直接打在小零件上，几平方毫米也能工作。工业与电子行业的基础码。',
+            },
+          },
+          {
+            src: '/images/vonalkod/gs1-datamatrix.svg',
+            alt: {
+              hu: 'GS1 DataMatrix kód',
+              en: 'GS1 DataMatrix code', de: 'GS1-DataMatrix-Code', it: 'Codice GS1 DataMatrix', es: 'Código GS1 DataMatrix', ko: 'GS1 DataMatrix 코드', zh: 'GS1 DataMatrix 码',
+            },
+            caption: {
+              hu: 'GS1 DataMatrix — ugyanaz, de AI-kkel: ez a kód GTIN-t, lejáratot és sarzsot is visz. A gyógyszeripar (FMD) és az egészségügy ezt írja elő.',
+              en: 'GS1 DataMatrix — the same symbol with AIs: this one carries a GTIN, an expiry date and a batch number. Required by pharma (FMD) and healthcare.', de: 'GS1 DataMatrix — dasselbe Symbol mit AIs: Dieser Code trägt GTIN, Verfallsdatum und Charge. Von Pharma (FMD) und Gesundheitswesen vorgeschrieben.', it: 'GS1 DataMatrix — lo stesso simbolo con gli AI: questo porta GTIN, data di scadenza e lotto. Richiesto dal farmaceutico (FMD) e dalla sanità.', es: 'GS1 DataMatrix — el mismo símbolo con AI: este lleva GTIN, fecha de caducidad y lote. Exigido por el sector farmacéutico (FMD) y sanitario.', ko: 'GS1 DataMatrix — 같은 심볼에 AI를 더한 것으로, 이 코드에는 GTIN, 유효기간, 배치 번호가 들어 있습니다. 제약(FMD)과 의료 분야의 필수 규격입니다.', zh: 'GS1 DataMatrix——同样的符号加上 AI：这一枚携带 GTIN、有效期和批号。医药（FMD）与医疗行业强制要求。',
+            },
+          },
+          {
+            src: '/images/vonalkod/pdf417.svg',
+            alt: {
+              hu: 'PDF417 kód',
+              en: 'PDF417 code', de: 'PDF417-Code', it: 'Codice PDF417', es: 'Código PDF417', ko: 'PDF417 코드', zh: 'PDF417 码',
+            },
+            caption: {
+              hu: 'PDF417 — sorokba rendezett, „egymásra rakott” lineáris kód. Okmányokon találkozni vele: jogosítvány, beszállókártya, fuvarlevél.',
+              en: 'PDF417 — a stacked linear code arranged in rows. You meet it on documents: driving licences, boarding passes, waybills.', de: 'PDF417 — ein gestapelter linearer Code in Zeilen. Man begegnet ihm auf Dokumenten: Führerschein, Bordkarte, Frachtbrief.', it: 'PDF417 — un codice lineare impilato su più righe. Si incontra sui documenti: patente, carta d’imbarco, lettera di vettura.', es: 'PDF417 — un código lineal apilado en filas. Se encuentra en documentos: carné de conducir, tarjeta de embarque, carta de porte.', ko: 'PDF417 — 여러 줄로 쌓아 올린 선형 코드입니다. 운전면허증, 탑승권, 운송장 같은 문서에서 볼 수 있습니다.', zh: 'PDF417——按行堆叠的线性码。常见于证件类：驾照、登机牌、运单。',
+            },
+          },
+          {
+            src: '/images/vonalkod/aztec.svg',
+            alt: {
+              hu: 'Aztec kód',
+              en: 'Aztec code', de: 'Aztec-Code', it: 'Codice Aztec', es: 'Código Aztec', ko: 'Aztec 코드', zh: 'Aztec 码',
+            },
+            caption: {
+              hu: 'Aztec — nem igényel csendzónát maga körül, ezért kis helyen és képernyőn is jól működik. Ez a vasúti és tömegközlekedési jegyek kódja.',
+              en: 'Aztec — needs no quiet zone around it, so it works well in tight spaces and on screens. This is the code on rail and transit tickets.', de: 'Aztec — braucht keine Ruhezone ringsum und funktioniert daher auf engem Raum und auf Bildschirmen gut. Der Code auf Bahn- und Nahverkehrstickets.', it: 'Aztec — non richiede zona tranquilla attorno, quindi funziona bene in spazi ridotti e sugli schermi. È il codice dei biglietti ferroviari e del trasporto pubblico.', es: 'Aztec — no necesita zona de silencio a su alrededor, por lo que funciona bien en espacios reducidos y en pantalla. Es el código de los billetes de tren y transporte público.', ko: 'Aztec — 주변에 여백이 필요 없어 좁은 공간과 화면에서도 잘 동작합니다. 철도·대중교통 승차권에 쓰이는 코드입니다.', zh: 'Aztec——四周不需要空白区，因此在狭小位置和屏幕上都好用。铁路和公共交通车票用的就是它。',
+            },
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '4. GS1: honnan jön a szám?',
+          en: '4. GS1: where does the number come from?', de: '4. GS1: Woher kommt die Nummer?', it: '4. GS1: da dove viene il numero?', es: '4. GS1: ¿de dónde sale el número?', ko: '4. GS1: 번호는 어디서 오는가', zh: '4. GS1：号码从哪里来',
+        },
+        paragraphs: [
+          {
+            hu: 'Ha a termék boltba, nagykereskedőhöz vagy vevő raktárába kerül, a rajta lévő számot nem lehet kitalálni. A cég a GS1 nemzeti szervezetétől (Magyarországon a GS1 Magyarország) kap egy cégelőtagot, és minden azonosítóját ebből képezi. A cégelőtag hossza a cégtől függ: minél rövidebb, annál több saját cikkszám fér mögé.',
+            en: 'If the product goes to a shop, a wholesaler or a customer’s warehouse, the number on it cannot be invented. The company receives a company prefix from its national GS1 organisation (in Hungary, GS1 Hungary) and derives every identifier from it. Prefix length varies by company: the shorter it is, the more item numbers fit behind it.', de: 'Wenn das Produkt in den Handel, zum Großhändler oder ins Lager des Kunden geht, lässt sich die Nummer darauf nicht erfinden. Das Unternehmen erhält von seiner nationalen GS1-Organisation (in Ungarn GS1 Magyarország) ein Unternehmenspräfix und leitet daraus alle Identifikatoren ab. Die Präfixlänge hängt vom Unternehmen ab: Je kürzer, desto mehr eigene Artikelnummern passen dahinter.', it: 'Se il prodotto va in negozio, da un grossista o nel magazzino di un cliente, il numero che porta non si può inventare. L’azienda riceve un prefisso aziendale dall’organizzazione GS1 nazionale (in Ungheria GS1 Magyarország) e da quello ricava tutti gli identificativi. La lunghezza del prefisso dipende dall’azienda: più è corto, più codici articolo ci stanno dietro.', es: 'Si el producto va a una tienda, a un mayorista o al almacén de un cliente, el número que lleva no se puede inventar. La empresa recibe un prefijo de empresa de su organización GS1 nacional (en Hungría, GS1 Magyarország) y de él deriva todos sus identificadores. La longitud del prefijo depende de la empresa: cuanto más corto, más códigos de artículo caben detrás.', ko: '제품이 매장, 도매상, 고객 창고로 간다면 그 위의 번호는 임의로 정할 수 없습니다. 회사는 각국 GS1 기관(헝가리는 GS1 Magyarország)에서 회사 접두어를 받고, 모든 식별자를 여기서 파생합니다. 접두어 길이는 회사마다 다르며, 짧을수록 뒤에 붙일 품목 번호가 많아집니다.', zh: '如果产品要进入商店、批发商或客户仓库，上面的号码就不能自己编。企业向所在国的 GS1 机构（匈牙利为 GS1 Magyarország）申领企业前缀，所有标识都由它派生。前缀长度因企业而异：越短，后面能放的自有商品号就越多。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'GTIN (Global Trade Item Number) — a KERESKEDELMI EGYSÉG azonosítója: mi ez a termék. Ugyanaz a termék mindig ugyanazt a GTIN-t kapja, akárhány darabot gyártunk belőle.',
+            en: 'GTIN (Global Trade Item Number) — identifies the TRADE ITEM: what this product is. The same product always gets the same GTIN, no matter how many are made.', de: 'GTIN (Global Trade Item Number) — identifiziert die HANDELSEINHEIT: was dieses Produkt ist. Dasselbe Produkt bekommt immer dieselbe GTIN, egal wie viele Stück gefertigt werden.', it: 'GTIN (Global Trade Item Number) — identifica l’UNITÀ COMMERCIALE: che cos’è questo prodotto. Lo stesso prodotto riceve sempre lo stesso GTIN, indipendentemente dai pezzi prodotti.', es: 'GTIN (Global Trade Item Number) — identifica la UNIDAD COMERCIAL: qué es este producto. El mismo producto recibe siempre el mismo GTIN, sin importar cuántas unidades se fabriquen.', ko: 'GTIN(Global Trade Item Number) — 거래 단품을 식별합니다. 즉 “이 제품이 무엇인가”입니다. 같은 제품은 몇 개를 만들든 항상 같은 GTIN을 가집니다.', zh: 'GTIN（全球贸易项目代码）——标识贸易项目：这是什么产品。同一产品无论生产多少件，GTIN 始终相同。',
+          },
+          {
+            hu: 'SSCC (Serial Shipping Container Code) — a LOGISZTIKAI EGYSÉG azonosítója: melyik konkrét raklap ez. Minden raklap más SSCC-t kap, akkor is, ha pontosan ugyanaz van rajta.',
+            en: 'SSCC (Serial Shipping Container Code) — identifies the LOGISTIC UNIT: which particular pallet this is. Every pallet gets a different SSCC even if the contents are identical.', de: 'SSCC (Serial Shipping Container Code) — identifiziert die LOGISTISCHE EINHEIT: welche konkrete Palette dies ist. Jede Palette erhält eine eigene SSCC, auch bei identischem Inhalt.', it: 'SSCC (Serial Shipping Container Code) — identifica l’UNITÀ LOGISTICA: quale pallet specifico è. Ogni pallet riceve un SSCC diverso anche se il contenuto è identico.', es: 'SSCC (Serial Shipping Container Code) — identifica la UNIDAD LOGÍSTICA: qué palé concreto es. Cada palé recibe un SSCC distinto aunque el contenido sea idéntico.', ko: 'SSCC(Serial Shipping Container Code) — 물류 단위를 식별합니다. 즉 “이것이 어느 팔레트인가”입니다. 내용물이 똑같아도 팔레트마다 다른 SSCC를 부여합니다.', zh: 'SSCC（系列货运包装箱代码）——标识物流单元：这是哪一个托盘。即使装的东西完全一样，每个托盘也要给不同的 SSCC。',
+          },
+          {
+            hu: 'Az 599-es magyar előtag nem származási jelölés: azt mutatja, melyik GS1-szervezet adta ki a számot. Egy 599-cel kezdődő GTIN-ű terméket bárhol a világon gyárthattak.',
+            en: 'The Hungarian 599 prefix is not a mark of origin: it shows which GS1 organisation issued the number. A product whose GTIN starts with 599 may have been made anywhere in the world.', de: 'Das ungarische Präfix 599 ist keine Herkunftsangabe: Es zeigt, welche GS1-Organisation die Nummer vergeben hat. Ein Produkt mit einer GTIN, die mit 599 beginnt, kann überall auf der Welt hergestellt worden sein.', it: 'Il prefisso ungherese 599 non indica l’origine: mostra quale organizzazione GS1 ha emesso il numero. Un prodotto con GTIN che inizia per 599 può essere stato fabbricato ovunque.', es: 'El prefijo húngaro 599 no indica origen: muestra qué organización GS1 emitió el número. Un producto cuyo GTIN empieza por 599 puede haberse fabricado en cualquier parte del mundo.', ko: '헝가리의 599 접두어는 원산지 표시가 아닙니다. 어느 GS1 기관이 번호를 발급했는지를 나타낼 뿐입니다. GTIN이 599로 시작하는 제품도 세계 어디서든 만들어졌을 수 있습니다.', zh: '匈牙利的 599 前缀不是产地标志：它表示号码由哪个 GS1 机构发放。GTIN 以 599 开头的产品，可能在世界任何地方生产。',
+          },
+          {
+            hu: 'A cikkben szereplő számok szemléltető példák. Éles használatra a saját cégelőtagjából képzett azonosítókat kell használni.',
+            en: 'The numbers in this article are illustrative examples. For live use, build identifiers from your own company prefix.', de: 'Die Zahlen in diesem Artikel sind Beispiele zur Veranschaulichung. Für den produktiven Einsatz bilden Sie Identifikatoren aus Ihrem eigenen Unternehmenspräfix.', it: 'I numeri di questo articolo sono esempi illustrativi. Per l’uso reale occorre ricavare gli identificativi dal proprio prefisso aziendale.', es: 'Los números de este artículo son ejemplos ilustrativos. Para uso real hay que construir los identificadores a partir del prefijo de empresa propio.', ko: '이 글의 번호는 설명을 위한 예시입니다. 실제 사용 시에는 자사 회사 접두어로 만든 식별자를 써야 합니다.', zh: '本文中的号码为示例。实际使用时必须用贵司自己的企业前缀来生成标识。',
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '5. A GTIN felépítése és az ellenőrző szám',
+          en: '5. How a GTIN is built, and the check digit', de: '5. Aufbau der GTIN und die Prüfziffer', it: '5. Come si costruisce un GTIN e la cifra di controllo', es: '5. Cómo se construye un GTIN y el dígito de control', ko: '5. GTIN의 구성과 체크 디지트', zh: '5. GTIN 的构成与校验位',
+        },
+        paragraphs: [
+          {
+            hu: 'A GTIN négy hosszban létezik: GTIN-8, GTIN-12 (Észak-Amerika), GTIN-13 és GTIN-14. A magyar gyakorlatban a GTIN-13 a fogyasztói egységé — ezt viszi az EAN-13 vonalkód —, a GTIN-14 pedig a gyűjtőcsomagolásé.',
+            en: 'The GTIN comes in four lengths: GTIN-8, GTIN-12 (North America), GTIN-13 and GTIN-14. In European practice GTIN-13 belongs to the consumer unit — carried by the EAN-13 symbol — and GTIN-14 to the carton.', de: 'Die GTIN gibt es in vier Längen: GTIN-8, GTIN-12 (Nordamerika), GTIN-13 und GTIN-14. In der europäischen Praxis gehört die GTIN-13 zur Verbrauchereinheit — sie steckt im EAN-13 — und die GTIN-14 zur Umverpackung.', it: 'Il GTIN esiste in quattro lunghezze: GTIN-8, GTIN-12 (Nord America), GTIN-13 e GTIN-14. Nella pratica europea il GTIN-13 appartiene all’unità consumatore — lo porta il simbolo EAN-13 — e il GTIN-14 all’imballo.', es: 'El GTIN existe en cuatro longitudes: GTIN-8, GTIN-12 (Norteamérica), GTIN-13 y GTIN-14. En la práctica europea el GTIN-13 corresponde a la unidad de consumo —lo lleva el símbolo EAN-13— y el GTIN-14 a la caja de agrupación.', ko: 'GTIN은 네 가지 길이가 있습니다. GTIN-8, GTIN-12(북미), GTIN-13, GTIN-14입니다. 유럽 실무에서는 GTIN-13이 소비자 단품용(EAN-13 심볼이 담습니다), GTIN-14가 박스용입니다.', zh: 'GTIN 有四种长度：GTIN-8、GTIN-12（北美）、GTIN-13 和 GTIN-14。在欧洲实务中，GTIN-13 属于消费单元（由 EAN-13 符号承载），GTIN-14 属于外箱。',
+          },
+          {
+            hu: 'A GTIN-14 nem új szám: ugyanaz a törzs, elé kerül egy szintjelző számjegy (1–8, mekkora csomagolás), és mögé ÚJ ellenőrző szám. Itt csúszik el a legtöbb rendszer: a GTIN-13 ellenőrző számát meghagyják a végén, és a vevő rendszere visszautasítja a szállítmányt.',
+            en: 'A GTIN-14 is not a new number: the same body, with an indicator digit in front (1–8, how big the pack is) and a NEW check digit at the end. This is where most systems slip: they leave the GTIN-13 check digit in place, and the customer’s system rejects the shipment.', de: 'Eine GTIN-14 ist keine neue Nummer: derselbe Stamm, davor eine Indikatorziffer (1–8, wie groß die Packung ist) und dahinter eine NEUE Prüfziffer. Genau hier verrutschen die meisten Systeme: Sie lassen die Prüfziffer der GTIN-13 stehen, und das System des Kunden weist die Lieferung zurück.', it: 'Il GTIN-14 non è un numero nuovo: stesso corpo, con davanti una cifra indicatore (1–8, quanto è grande l’imballo) e in fondo una NUOVA cifra di controllo. È qui che sbaglia la maggior parte dei sistemi: lasciano la cifra di controllo del GTIN-13 e il sistema del cliente rifiuta la spedizione.', es: 'El GTIN-14 no es un número nuevo: el mismo cuerpo, con un dígito indicador delante (1–8, el tamaño del envase) y un dígito de control NUEVO al final. Aquí es donde patina la mayoría de los sistemas: dejan el dígito de control del GTIN-13 y el sistema del cliente rechaza el envío.', ko: 'GTIN-14는 새 번호가 아닙니다. 같은 본체 앞에 지시자리(1~8, 포장 크기)를 붙이고, 뒤에 새로운 체크 디지트를 계산해 붙입니다. 대부분의 시스템이 여기서 실수합니다. GTIN-13의 체크 디지트를 그대로 두면 고객사 시스템이 납품을 거부합니다.', zh: 'GTIN-14 不是新号码：同一主体，前面加一位指示位（1–8，表示包装层级），末尾重新计算一个校验位。多数系统在这里出错：把 GTIN-13 的校验位留在末尾，结果客户系统拒收。',
+          },
+          {
+            hu: 'Az ellenőrző szám kiszámítása mindig ugyanaz, függetlenül a hossztól: jobbról balra haladva felváltva 3-mal és 1-gyel szorzunk, összeadunk, és megnézzük, mennyi hiányzik a következő tízesig.',
+            en: 'The check digit is calculated the same way regardless of length: going from right to left, multiply alternately by 3 and 1, add up, then see how much is missing to the next multiple of ten.', de: 'Die Prüfziffer wird unabhängig von der Länge immer gleich berechnet: von rechts nach links abwechselnd mit 3 und 1 multiplizieren, summieren und schauen, wie viel bis zum nächsten Zehner fehlt.', it: 'La cifra di controllo si calcola sempre allo stesso modo, qualunque sia la lunghezza: da destra a sinistra si moltiplica alternativamente per 3 e per 1, si somma e si guarda quanto manca alla decina successiva.', es: 'El dígito de control se calcula siempre igual, sea cual sea la longitud: de derecha a izquierda se multiplica alternativamente por 3 y por 1, se suma y se mira cuánto falta hasta la siguiente decena.', ko: '체크 디지트 계산법은 길이와 무관하게 동일합니다. 오른쪽에서 왼쪽으로 3과 1을 번갈아 곱해 모두 더한 뒤, 다음 10의 배수까지 얼마가 모자라는지 봅니다.', zh: '校验位的算法与长度无关，始终相同：从右往左交替乘 3 和 1，求和，再看距离下一个十的倍数还差多少。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'GTIN-13 példa — a törzs 599012345678. A súlyozott összeg: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.',
+            en: 'GTIN-13 example — the body is 599012345678. The weighted sum: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.', de: 'GTIN-13-Beispiel — der Stamm lautet 599012345678. Die gewichtete Summe: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.', it: 'Esempio GTIN-13 — il corpo è 599012345678. La somma pesata: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.', es: 'Ejemplo GTIN-13 — el cuerpo es 599012345678. La suma ponderada: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.', ko: 'GTIN-13 예 — 본체는 599012345678입니다. 가중합: 5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117.', zh: 'GTIN-13 示例——主体为 599012345678。加权和：5×1 + 9×3 + 9×1 + 0×3 + 1×1 + 2×3 + 3×1 + 4×3 + 5×1 + 6×3 + 7×1 + 8×3 = 117。',
+          },
+          {
+            hu: '117 után a következő tízes a 120, a különbség 3 — ez az ellenőrző szám. A teljes GTIN-13: 5990123456783.',
+            en: 'The next multiple of ten after 117 is 120, and the difference is 3 — that is the check digit. The full GTIN-13: 5990123456783.', de: 'Der nächste Zehner nach 117 ist 120, die Differenz beträgt 3 — das ist die Prüfziffer. Die vollständige GTIN-13: 5990123456783.', it: 'La decina successiva a 117 è 120 e la differenza è 3: ecco la cifra di controllo. Il GTIN-13 completo: 5990123456783.', es: 'La siguiente decena tras 117 es 120 y la diferencia es 3: ese es el dígito de control. El GTIN-13 completo: 5990123456783.', ko: '117 다음 10의 배수는 120이고 차이는 3입니다. 이것이 체크 디지트입니다. 완성된 GTIN-13: 5990123456783.', zh: '117 之后的十的倍数是 120，差为 3——这就是校验位。完整的 GTIN-13：5990123456783。',
+          },
+          {
+            hu: 'Ugyanez GTIN-14-ként, 1-es szintjelzővel: a súlyozás egy jeggyel eltolódik, az összeg 120, a következő tízes szintén 120, tehát az ellenőrző szám 0. A GTIN-14: 15990123456780 — a végén 0, nem 3.',
+            en: 'The same as a GTIN-14 with indicator 1: the weighting shifts by one digit, the sum is 120, the next multiple of ten is also 120, so the check digit is 0. The GTIN-14: 15990123456780 — ending in 0, not 3.', de: 'Dasselbe als GTIN-14 mit Indikator 1: Die Gewichtung verschiebt sich um eine Stelle, die Summe ist 120, der nächste Zehner ebenfalls 120, die Prüfziffer also 0. Die GTIN-14: 15990123456780 — am Ende 0, nicht 3.', it: 'Lo stesso come GTIN-14 con indicatore 1: la ponderazione si sposta di una cifra, la somma è 120, la decina successiva è ancora 120, quindi la cifra di controllo è 0. Il GTIN-14: 15990123456780 — termina con 0, non con 3.', es: 'Lo mismo como GTIN-14 con indicador 1: la ponderación se desplaza un dígito, la suma es 120, la siguiente decena también es 120, así que el dígito de control es 0. El GTIN-14: 15990123456780 — termina en 0, no en 3.', ko: '같은 번호를 지시자리 1의 GTIN-14로 만들면 가중치가 한 자리 밀려 합이 120이 되고, 다음 10의 배수도 120이므로 체크 디지트는 0입니다. GTIN-14: 15990123456780 — 끝자리가 3이 아니라 0입니다.', zh: '把同一号码做成指示位为 1 的 GTIN-14：加权错开一位，和为 120，下一个十的倍数也是 120，所以校验位是 0。GTIN-14：15990123456780——末位是 0，不是 3。',
+          },
+          {
+            hu: 'A szintjelző 1–8 a csomagolási szinteket különbözteti meg (pl. 1 = 12-es karton, 2 = 24-es karton). A 9 külön jelentésű: változó mértékű (méterre, kilóra mért) árut jelöl.',
+            en: 'Indicator digits 1–8 distinguish packaging levels (e.g. 1 = 12-pack carton, 2 = 24-pack carton). The digit 9 is reserved: it marks variable measure trade items (sold by length or weight).', de: 'Die Indikatorziffern 1–8 unterscheiden Verpackungsstufen (z. B. 1 = 12er-Karton, 2 = 24er-Karton). Die 9 ist reserviert: Sie kennzeichnet Handelseinheiten mit variablem Maß (nach Länge oder Gewicht verkauft).', it: 'Le cifre indicatore 1–8 distinguono i livelli di imballo (es. 1 = cartone da 12, 2 = cartone da 24). Il 9 è riservato: contrassegna le unità commerciali a misura variabile (vendute a lunghezza o a peso).', es: 'Los dígitos indicadores 1–8 distinguen niveles de embalaje (p. ej. 1 = caja de 12, 2 = caja de 24). El 9 está reservado: marca unidades comerciales de medida variable (vendidas por longitud o peso).', ko: '지시자리 1~8은 포장 단계를 구분합니다(예: 1 = 12입 박스, 2 = 24입 박스). 9는 예약되어 있으며, 길이나 무게로 파는 변량 거래 단품을 나타냅니다.', zh: '指示位 1–8 用来区分包装层级（例如 1 = 12 支装箱，2 = 24 支装箱）。9 是保留位：表示按长度或重量计价的变量计量贸易项目。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/gtin-felepites.svg',
+            alt: {
+              hu: 'A GTIN-13 és a GTIN-14 felépítése egymás alatt, színnel jelölt mezőkkel',
+              en: 'The structure of GTIN-13 and GTIN-14 one below the other, with colour-coded fields', de: 'Aufbau von GTIN-13 und GTIN-14 untereinander, mit farbig markierten Feldern', it: 'La struttura di GTIN-13 e GTIN-14 una sotto l’altra, con campi evidenziati a colori', es: 'La estructura del GTIN-13 y del GTIN-14 una debajo de la otra, con campos codificados por color', ko: 'GTIN-13과 GTIN-14의 구조를 색으로 구분해 위아래로 나타낸 그림', zh: '上下并列的 GTIN-13 与 GTIN-14 结构，字段以颜色区分',
+            },
+            caption: {
+              hu: 'A cégelőtag és a cikkszám ugyanaz marad; a szintjelző elöl jön hozzá, az ellenőrző számot pedig újra kell számolni.',
+              en: 'The company prefix and the item reference stay the same; the indicator digit is added in front and the check digit has to be recalculated.', de: 'Unternehmenspräfix und Artikelnummer bleiben gleich; die Indikatorziffer kommt vorne hinzu, und die Prüfziffer muss neu berechnet werden.', it: 'Il prefisso aziendale e il codice articolo restano invariati; la cifra indicatore si aggiunge davanti e la cifra di controllo va ricalcolata.', es: 'El prefijo de empresa y la referencia de artículo se mantienen; el dígito indicador se añade delante y el de control hay que recalcularlo.', ko: '회사 접두어와 품목 번호는 그대로이고, 앞에 지시자리가 붙으며 체크 디지트는 다시 계산해야 합니다.', zh: '企业前缀和商品项目号保持不变；前面加上指示位，校验位必须重新计算。',
+            },
+            wide: true,
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '6. Az SSCC: minden raklapnak saját sorszám',
+          en: '6. The SSCC: a serial number for every pallet', de: '6. Die SSCC: für jede Palette eine eigene Nummer', it: '6. L’SSCC: un numero di serie per ogni pallet', es: '6. El SSCC: un número de serie para cada palé', ko: '6. SSCC: 팔레트마다 고유한 일련번호', zh: '6. SSCC：每个托盘一个序列号',
+        },
+        paragraphs: [
+          {
+            hu: 'Az SSCC 18 számjegy, és nem a terméket írja le, hanem a küldeményt. Ha ugyanabból a termékből három raklapot adunk fel, három különböző SSCC-t kell képezni. Ez teszi lehetővé, hogy a vevő raktárában egyetlen leolvasással azonosítsák a teljes raklapot, és hozzá tudják kapcsolni az elektronikus szállítólevelet.',
+            en: 'The SSCC is 18 digits, and it describes the consignment, not the product. If you ship three pallets of the same product, you need three different SSCCs. This is what lets the customer’s warehouse identify a whole pallet with a single scan and match it to the electronic despatch advice.', de: 'Die SSCC hat 18 Ziffern und beschreibt nicht das Produkt, sondern die Sendung. Wenn Sie drei Paletten desselben Produkts versenden, brauchen Sie drei verschiedene SSCC. Genau das erlaubt es dem Lager des Kunden, eine ganze Palette mit einem einzigen Scan zu identifizieren und dem elektronischen Lieferavis zuzuordnen.', it: 'L’SSCC è composto da 18 cifre e descrive la spedizione, non il prodotto. Se si spediscono tre pallet dello stesso prodotto, servono tre SSCC diversi. È questo che permette al magazzino del cliente di identificare un intero pallet con una sola lettura e di collegarlo all’avviso di spedizione elettronico.', es: 'El SSCC tiene 18 dígitos y describe el envío, no el producto. Si se expiden tres palés del mismo producto, hacen falta tres SSCC distintos. Eso es lo que permite al almacén del cliente identificar un palé completo con una sola lectura y vincularlo al aviso de expedición electrónico.', ko: 'SSCC는 18자리이며 제품이 아니라 화물을 설명합니다. 같은 제품을 세 팔레트 보낸다면 서로 다른 SSCC 세 개가 필요합니다. 덕분에 고객사 창고에서는 한 번의 스캔으로 팔레트 전체를 식별하고 전자 출하통지와 연결할 수 있습니다.', zh: 'SSCC 为 18 位，描述的是这批货，而不是产品。同一产品发三个托盘，就要生成三个不同的 SSCC。正因如此，客户仓库才能一次扫描识别整托，并与电子发货通知对上。',
+          },
+          {
+            hu: 'Felépítése: kiterjesztő számjegy (a cég adja, 0–9, kizárólag a számkészlet bővítésére) + GS1 cégelőtag + sorozatszám + ellenőrző szám. A kiterjesztő és a cégelőtag együtt legfeljebb 8 jegy, a sorozatszám pedig mindig kitölti a maradékot 17-ig.',
+            en: 'Structure: extension digit (assigned by the company, 0–9, purely to enlarge the number pool) + GS1 company prefix + serial reference + check digit. The extension digit and the prefix together are at most 8 digits, and the serial reference always fills the rest up to 17.', de: 'Aufbau: Erweiterungsziffer (vom Unternehmen vergeben, 0–9, allein zur Vergrößerung des Nummernvorrats) + GS1-Unternehmenspräfix + Seriennummer + Prüfziffer. Erweiterungsziffer und Präfix zusammen umfassen höchstens 8 Stellen, die Seriennummer füllt den Rest bis 17 auf.', it: 'Struttura: cifra di estensione (assegnata dall’azienda, 0–9, solo per ampliare la disponibilità di numeri) + prefisso aziendale GS1 + numero seriale + cifra di controllo. Cifra di estensione e prefisso insieme non superano 8 cifre, e il seriale riempie sempre il resto fino a 17.', es: 'Estructura: dígito de extensión (lo asigna la empresa, 0–9, solo para ampliar el conjunto de números) + prefijo de empresa GS1 + número de serie + dígito de control. El dígito de extensión y el prefijo suman como máximo 8 cifras, y el número de serie rellena siempre el resto hasta 17.', ko: '구성: 확장 자리(회사가 0~9로 부여, 번호 용량 확대 목적) + GS1 회사 접두어 + 일련번호 + 체크 디지트. 확장 자리와 접두어를 합쳐 최대 8자리이며, 일련번호가 나머지를 채워 17자리를 완성합니다.', zh: '结构：扩展位（由企业指定，0–9，仅用于扩大号码容量）+ GS1 企业前缀 + 序列号 + 校验位。扩展位与前缀合计最多 8 位，序列号总是补足到 17 位。',
+          },
+          {
+            hu: 'Az SSCC-t nem szabad hamar újrahasználni: a GS1 a feladástól számítva legalább 12 hónapot ír elő, és azt ajánlja, hogy a gyakorlatban tekintsük véglegesen egyedinek. Egy megismételt SSCC két különböző szállítmányt mos össze a nyomonkövetésben.',
+            en: 'An SSCC must not be reused quickly: GS1 requires at least 12 months from the date of despatch and recommends treating it as permanently unique in practice. A repeated SSCC merges two different consignments in the traceability record.', de: 'Eine SSCC darf nicht schnell wiederverwendet werden: GS1 verlangt mindestens 12 Monate ab Versanddatum und empfiehlt, sie in der Praxis als dauerhaft eindeutig zu behandeln. Eine wiederholte SSCC vermischt zwei verschiedene Sendungen in der Rückverfolgung.', it: 'Un SSCC non va riutilizzato in fretta: GS1 richiede almeno 12 mesi dalla data di spedizione e raccomanda di trattarlo come permanentemente univoco. Un SSCC ripetuto confonde due spedizioni diverse nella tracciabilità.', es: 'Un SSCC no debe reutilizarse pronto: GS1 exige al menos 12 meses desde la fecha de expedición y recomienda tratarlo como permanentemente único. Un SSCC repetido mezcla dos envíos distintos en la trazabilidad.', ko: 'SSCC는 빨리 재사용하면 안 됩니다. GS1은 출하일로부터 최소 12개월을 요구하며, 실무에서는 영구적으로 고유하게 다루기를 권장합니다. 같은 SSCC가 반복되면 추적 기록에서 서로 다른 두 화물이 뒤섞입니다.', zh: 'SSCC 不能很快重复使用：GS1 要求自发货日起至少 12 个月，并建议实务中当作永久唯一。重复的 SSCC 会让追溯记录把两批不同的货混在一起。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'Példa: kiterjesztő 3, cégelőtag 5990123, sorozatszám 000000123 → a törzs 35990123000000123 (17 jegy).',
+            en: 'Example: extension digit 3, company prefix 5990123, serial reference 000000123 → body 35990123000000123 (17 digits).', de: 'Beispiel: Erweiterungsziffer 3, Unternehmenspräfix 5990123, Seriennummer 000000123 → Stamm 35990123000000123 (17 Stellen).', it: 'Esempio: cifra di estensione 3, prefisso aziendale 5990123, seriale 000000123 → corpo 35990123000000123 (17 cifre).', es: 'Ejemplo: dígito de extensión 3, prefijo de empresa 5990123, número de serie 000000123 → cuerpo 35990123000000123 (17 dígitos).', ko: '예: 확장 자리 3, 회사 접두어 5990123, 일련번호 000000123 → 본체 35990123000000123(17자리).', zh: '示例：扩展位 3，企业前缀 5990123，序列号 000000123 → 主体 35990123000000123（17 位）。',
+          },
+          {
+            hu: 'Ugyanazzal a 3-1-es szabállyal: a súlyozott összeg 74, a következő tízes 80, a különbség 6 — ez az ellenőrző szám.',
+            en: 'With the same 3-1 rule: the weighted sum is 74, the next multiple of ten is 80, the difference is 6 — that is the check digit.', de: 'Mit derselben 3-1-Regel: Die gewichtete Summe beträgt 74, der nächste Zehner 80, die Differenz 6 — das ist die Prüfziffer.', it: 'Con la stessa regola 3-1: la somma pesata è 74, la decina successiva è 80, la differenza è 6: ecco la cifra di controllo.', es: 'Con la misma regla 3-1: la suma ponderada es 74, la siguiente decena es 80, la diferencia es 6: ese es el dígito de control.', ko: '같은 3-1 규칙을 적용하면 가중합은 74, 다음 10의 배수는 80, 차이는 6입니다. 이것이 체크 디지트입니다.', zh: '用同样的 3-1 规则：加权和为 74，下一个十的倍数是 80，差为 6——这就是校验位。',
+          },
+          {
+            hu: 'A teljes SSCC: 359901230000001236. A vonalkódban a (00) alkalmazásazonosító előzi meg, és mindig önálló kódba kerül.',
+            en: 'The full SSCC: 359901230000001236. In the barcode it is preceded by application identifier (00) and always sits in its own symbol.', de: 'Die vollständige SSCC: 359901230000001236. Im Barcode steht der Anwendungsbezeichner (00) davor, und sie steht immer in einem eigenen Symbol.', it: 'L’SSCC completo: 359901230000001236. Nel codice a barre è preceduto dall’identificatore di applicazione (00) e sta sempre in un simbolo dedicato.', es: 'El SSCC completo: 359901230000001236. En el código de barras lo precede el identificador de aplicación (00) y siempre va en un símbolo propio.', ko: '완성된 SSCC: 359901230000001236. 바코드에서는 응용 식별자 (00)이 앞에 붙으며, 항상 별도의 심볼에 담깁니다.', zh: '完整的 SSCC：359901230000001236。在条码中前置应用标识符 (00)，并且始终单独成一个符号。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/sscc-felepites.svg',
+            alt: {
+              hu: 'Az SSCC négy mezője: kiterjesztő számjegy, cégelőtag, sorozatszám, ellenőrző szám',
+              en: 'The four fields of an SSCC: extension digit, company prefix, serial reference, check digit', de: 'Die vier Felder der SSCC: Erweiterungsziffer, Unternehmenspräfix, Seriennummer, Prüfziffer', it: 'I quattro campi dell’SSCC: cifra di estensione, prefisso aziendale, seriale, cifra di controllo', es: 'Los cuatro campos del SSCC: dígito de extensión, prefijo de empresa, número de serie y dígito de control', ko: 'SSCC의 네 필드: 확장 자리, 회사 접두어, 일련번호, 체크 디지트', zh: 'SSCC 的四个字段：扩展位、企业前缀、序列号、校验位',
+            },
+            caption: {
+              hu: 'A sorozatszám hossza a cégelőtagtól függ: rövidebb előtag mellett hosszabb sorozatszám fér el, tehát több raklapot tudunk megszámozni.',
+              en: 'The length of the serial reference depends on the prefix: a shorter prefix leaves room for a longer serial, so more pallets can be numbered.', de: 'Die Länge der Seriennummer hängt vom Präfix ab: Ein kürzeres Präfix lässt eine längere Seriennummer zu, sodass mehr Paletten nummeriert werden können.', it: 'La lunghezza del seriale dipende dal prefisso: un prefisso più corto lascia spazio a un seriale più lungo, quindi si possono numerare più pallet.', es: 'La longitud del número de serie depende del prefijo: un prefijo más corto deja sitio para un serie más largo, de modo que se pueden numerar más palés.', ko: '일련번호의 길이는 접두어에 따라 달라집니다. 접두어가 짧을수록 일련번호가 길어져 더 많은 팔레트에 번호를 붙일 수 있습니다.', zh: '序列号的长度取决于前缀：前缀越短，序列号越长，能编号的托盘也就越多。',
+            },
+            wide: true,
+          },
+          {
+            src: '/images/vonalkod/gs1-128-sscc.svg',
+            alt: {
+              hu: 'A példa SSCC GS1-128 vonalkódként, (00) alkalmazásazonosítóval',
+              en: 'The example SSCC as a GS1-128 barcode with application identifier (00)', de: 'Die Beispiel-SSCC als GS1-128-Barcode mit Anwendungsbezeichner (00)', it: 'L’SSCC di esempio come codice a barre GS1-128 con identificatore di applicazione (00)', es: 'El SSCC de ejemplo como código de barras GS1-128 con identificador de aplicación (00)', ko: '응용 식별자 (00)을 붙인 GS1-128 바코드 형태의 예시 SSCC', zh: '示例 SSCC 以 GS1-128 条码呈现，带应用标识符 (00)',
+            },
+            caption: {
+              hu: 'Ugyanez a szám vonalkódban. Ez kerül a raklapcímke legaljára, önálló kódként — próbálja ki: a telefon a (00) azonosítóval együtt olvassa vissza.',
+              en: 'The same number as a barcode. This is what goes at the very bottom of the pallet label, on its own — try it: your phone reads it back together with the (00).', de: 'Dieselbe Nummer als Barcode. Genau dieser Code steht ganz unten auf dem Palettenetikett, allein — probieren Sie es: Das Handy liest ihn samt (00) zurück.', it: 'Lo stesso numero in forma di codice a barre. È questo che sta in fondo all’etichetta pallet, da solo — provi: il telefono lo rilegge insieme al (00).', es: 'El mismo número en forma de código de barras. Es el que va al pie de la etiqueta de palé, solo — pruébelo: el móvil lo devuelve junto con el (00).', ko: '같은 번호를 바코드로 나타낸 것입니다. 팔레트 라벨 맨 아래에 단독으로 들어가며, 휴대폰으로 읽으면 (00)까지 함께 나옵니다.', zh: '同一个号码的条码形式。它就贴在托盘标签最下方、单独成码——试试看，手机会连同 (00) 一起读出来。',
+            },
+            wide: true,
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '7. Alkalmazásazonosítók: mitől „tudja” a rendszer, mit olvasott?',
+          en: '7. Application identifiers: how does the system know what it read?', de: '7. Anwendungsbezeichner: Woher weiß das System, was es gelesen hat?', it: '7. Identificatori di applicazione: come fa il sistema a sapere cosa ha letto?', es: '7. Identificadores de aplicación: ¿cómo sabe el sistema qué ha leído?', ko: '7. 응용 식별자: 시스템은 무엇을 읽었는지 어떻게 아는가', zh: '7. 应用标识符：系统怎么知道自己读到了什么',
+        },
+        paragraphs: [
+          {
+            hu: 'Egy sima Code 128 kódból a fogadó rendszer csak egy karakterláncot kap: „15990123456780L2608A270131”. Hogy ebből melyik szám a GTIN és melyik a dátum, csak külön megállapodásból derülne ki. Az alkalmazásazonosító (AI) az a 2–4 jegyű előtag, ami ezt megmondja — ettől lesz a Code 128-ból GS1-128.',
+            en: 'From a plain Code 128 the receiving system gets only a string: “15990123456780L2608A270131”. Which part is the GTIN and which is the date would have to come from a separate agreement. The application identifier (AI) is the 2–4 digit prefix that says so — this is what turns Code 128 into GS1-128.', de: 'Aus einem einfachen Code 128 erhält das empfangende System nur eine Zeichenkette: „15990123456780L2608A270131“. Welcher Teil die GTIN und welcher das Datum ist, ginge nur aus einer separaten Absprache hervor. Der Anwendungsbezeichner (AI) ist das 2- bis 4-stellige Präfix, das genau das sagt — dadurch wird aus Code 128 ein GS1-128.', it: 'Da un Code 128 semplice il sistema ricevente ottiene solo una stringa: «15990123456780L2608A270131». Quale parte sia il GTIN e quale la data si saprebbe solo da un accordo separato. L’identificatore di applicazione (AI) è il prefisso di 2–4 cifre che lo dichiara: è ciò che trasforma il Code 128 in GS1-128.', es: 'De un Code 128 simple el sistema receptor solo obtiene una cadena: «15990123456780L2608A270131». Qué parte es el GTIN y cuál la fecha solo se sabría por un acuerdo aparte. El identificador de aplicación (AI) es el prefijo de 2–4 cifras que lo indica: eso convierte el Code 128 en GS1-128.', ko: '일반 Code 128에서 수신 시스템이 얻는 것은 문자열 하나뿐입니다. “15990123456780L2608A270131”에서 어디까지가 GTIN이고 어디가 날짜인지는 별도 합의가 없으면 알 수 없습니다. 응용 식별자(AI)는 그것을 알려 주는 2~4자리 접두어이며, 이것이 Code 128을 GS1-128로 만듭니다.', zh: '从普通 Code 128 中，接收系统只能拿到一串字符：“15990123456780L2608A270131”。哪一段是 GTIN、哪一段是日期，只能靠另行约定。应用标识符（AI）就是说明这一点的 2–4 位前缀——它把 Code 128 变成 GS1-128。',
+          },
+          {
+            hu: 'Az AI-k egy része FIX hosszúságú: utánuk rögtön jöhet a következő mező. A többi VÁLTOZÓ hosszúságú, ezeket egy elválasztó karakter (FNC1) zárja le, ha nem ők állnak utolsóként. Ebből jön a leghasznosabb gyakorlati fogás: ha a fix hosszúságú mezőket tesszük előre és a változót utolsónak, egyetlen elválasztó sem kell — rövidebb és megbízhatóbb lesz a kód.',
+            en: 'Some AIs are FIXED length: the next field can follow immediately. The rest are VARIABLE length and must be closed by a separator character (FNC1) unless they come last. Hence the most useful practical trick: put the fixed-length fields first and the variable one last, and you need no separator at all — a shorter and more robust symbol.', de: 'Ein Teil der AIs hat FESTE Länge: Danach kann sofort das nächste Feld folgen. Die übrigen haben VARIABLE Länge und müssen mit einem Trennzeichen (FNC1) abgeschlossen werden, sofern sie nicht zuletzt stehen. Daraus folgt der nützlichste Praxiskniff: Stellt man die Felder fester Länge nach vorn und das variable ans Ende, braucht man gar kein Trennzeichen — der Code wird kürzer und robuster.', it: 'Alcuni AI hanno lunghezza FISSA: il campo successivo può seguire subito. Gli altri hanno lunghezza VARIABILE e vanno chiusi con un carattere separatore (FNC1) se non sono l’ultimo. Da qui il trucco pratico più utile: mettendo prima i campi a lunghezza fissa e per ultimo quello variabile, non serve alcun separatore — il codice risulta più corto e più affidabile.', es: 'Algunos AI son de longitud FIJA: el siguiente campo puede ir justo detrás. Los demás son de longitud VARIABLE y hay que cerrarlos con un carácter separador (FNC1) si no van al final. De ahí el truco práctico más útil: si se ponen delante los campos de longitud fija y al final el variable, no hace falta ningún separador; el símbolo queda más corto y más fiable.', ko: '일부 AI는 고정 길이입니다. 그 뒤에는 다음 필드가 바로 이어질 수 있습니다. 나머지는 가변 길이이며, 마지막에 오지 않는 한 구분 문자(FNC1)로 닫아야 합니다. 여기서 가장 유용한 실무 요령이 나옵니다. 고정 길이 필드를 앞에, 가변 길이 필드를 마지막에 두면 구분자가 전혀 필요 없어 코드가 짧고 안정적이 됩니다.', zh: '部分 AI 是定长的：后面可以直接接下一个字段。其余是变长的，若不是最后一个就必须用分隔符（FNC1）收尾。由此得出最实用的技巧：把定长字段放在前面、变长字段放最后，就完全不需要分隔符——符号更短也更可靠。',
+          },
+        ],
+        bullets: [
+          {
+            hu: '(00) SSCC — 18 számjegy, fix hosszúságú.',
+            en: '(00) SSCC — 18 digits, fixed length.', de: '(00) SSCC — 18 Ziffern, feste Länge.', it: '(00) SSCC — 18 cifre, lunghezza fissa.', es: '(00) SSCC — 18 dígitos, longitud fija.', ko: '(00) SSCC — 18자리, 고정 길이.', zh: '(00) SSCC——18 位，定长。',
+          },
+          {
+            hu: '(01) GTIN — 14 számjegy, fix. Akkor használjuk, ha maga a csomag a kereskedelmi egység, tehát megrendelhető és számlázható.',
+            en: '(01) GTIN — 14 digits, fixed. Use it when the package itself is the trade item, i.e. it can be ordered and invoiced.', de: '(01) GTIN — 14 Ziffern, fest. Zu verwenden, wenn die Verpackung selbst die Handelseinheit ist, also bestellt und fakturiert werden kann.', it: '(01) GTIN — 14 cifre, fisso. Si usa quando l’imballo stesso è l’unità commerciale, cioè è ordinabile e fatturabile.', es: '(01) GTIN — 14 dígitos, fijo. Se usa cuando el propio embalaje es la unidad comercial, es decir, se puede pedir y facturar.', ko: '(01) GTIN — 14자리, 고정. 포장 자체가 주문·청구 가능한 거래 단품일 때 사용합니다.', zh: '(01) GTIN——14 位，定长。当这个包装本身就是可订购、可开票的贸易项目时使用。',
+          },
+          {
+            hu: '(02) a TARTALOM GTIN-je — 14 számjegy, fix. Csak a (37)-tel együtt érvényes, és akkor használjuk, ha a logisztikai egység maga NEM kereskedelmi egység — például egy vegyes raklap, amit nem lehet így megrendelni.',
+            en: '(02) GTIN of the CONTENTS — 14 digits, fixed. Valid only together with (37), and used when the logistic unit itself is NOT a trade item — for example a pallet that cannot be ordered as such.', de: '(02) GTIN des INHALTS — 14 Ziffern, fest. Nur zusammen mit (37) gültig und dann zu verwenden, wenn die logistische Einheit selbst KEINE Handelseinheit ist — etwa eine Palette, die so nicht bestellbar ist.', it: '(02) GTIN del CONTENUTO — 14 cifre, fisso. Valido solo insieme al (37) e usato quando l’unità logistica stessa NON è un’unità commerciale — per esempio un pallet non ordinabile come tale.', es: '(02) GTIN del CONTENIDO — 14 dígitos, fijo. Solo es válido junto con (37) y se usa cuando la unidad logística en sí NO es unidad comercial; por ejemplo un palé que no se puede pedir como tal.', ko: '(02) 내용물의 GTIN — 14자리, 고정. 반드시 (37)과 함께 써야 하며, 물류 단위 자체가 거래 단품이 아닐 때 사용합니다. 예를 들어 그 상태로는 주문할 수 없는 팔레트입니다.', zh: '(02) 内容物的 GTIN——14 位，定长。必须与 (37) 同时使用，适用于物流单元本身并非贸易项目的情况——例如无法按整托订购的托盘。',
+          },
+          {
+            hu: '(10) sarzs / gyártási tétel — legfeljebb 20 karakter, változó hosszúságú.',
+            en: '(10) batch / lot number — up to 20 characters, variable length.', de: '(10) Charge / Losnummer — bis zu 20 Zeichen, variable Länge.', it: '(10) lotto — fino a 20 caratteri, lunghezza variabile.', es: '(10) lote — hasta 20 caracteres, longitud variable.', ko: '(10) 배치/로트 번호 — 최대 20자, 가변 길이.', zh: '(10) 批号——最多 20 个字符，变长。',
+          },
+          {
+            hu: '(11) gyártás dátuma, (13) csomagolás dátuma, (15) minőségét megőrzi, (17) lejárat — mind ÉÉHHNN alakban, 6 számjegy, fix hosszúságú.',
+            en: '(11) production date, (13) packaging date, (15) best before date, (17) expiry date — all in YYMMDD form, 6 digits, fixed length.', de: '(11) Herstellungsdatum, (13) Verpackungsdatum, (15) Mindesthaltbarkeitsdatum, (17) Verfallsdatum — alle im Format JJMMTT, 6 Ziffern, feste Länge.', it: '(11) data di produzione, (13) data di confezionamento, (15) da consumarsi preferibilmente entro, (17) data di scadenza — tutte in formato AAMMGG, 6 cifre, lunghezza fissa.', es: '(11) fecha de producción, (13) fecha de envasado, (15) consumo preferente, (17) fecha de caducidad — todas en formato AAMMDD, 6 dígitos, longitud fija.', ko: '(11) 생산일, (13) 포장일, (15) 품질유지기한, (17) 유효기간 — 모두 YYMMDD 형식의 6자리 고정 길이.', zh: '(11) 生产日期、(13) 包装日期、(15) 最佳食用期、(17) 有效期——均为 YYMMDD 格式，6 位，定长。',
+          },
+          {
+            hu: '(21) sorozatszám — legfeljebb 20 karakter, változó. Egyedi darab azonosítására, jellemzően a (01) mellett.',
+            en: '(21) serial number — up to 20 characters, variable. Identifies an individual item, typically alongside (01).', de: '(21) Seriennummer — bis zu 20 Zeichen, variabel. Kennzeichnet ein einzelnes Exemplar, typischerweise neben (01).', it: '(21) numero di serie — fino a 20 caratteri, variabile. Identifica il singolo pezzo, tipicamente accanto al (01).', es: '(21) número de serie — hasta 20 caracteres, variable. Identifica una pieza concreta, normalmente junto al (01).', ko: '(21) 일련번호 — 최대 20자, 가변. 개별 제품을 식별하며 보통 (01)과 함께 씁니다.', zh: '(21) 序列号——最多 20 个字符，变长。用于标识单个产品，通常与 (01) 搭配。',
+          },
+          {
+            hu: '(37) darabszám a logisztikai egységben — legfeljebb 8 számjegy, változó. A (02) kötelező párja.',
+            en: '(37) count of items in the logistic unit — up to 8 digits, variable. The mandatory partner of (02).', de: '(37) Anzahl der Einheiten in der logistischen Einheit — bis zu 8 Ziffern, variabel. Der Pflichtpartner von (02).', it: '(37) numero di unità nell’unità logistica — fino a 8 cifre, variabile. Il compagno obbligatorio del (02).', es: '(37) número de unidades en la unidad logística — hasta 8 dígitos, variable. La pareja obligatoria del (02).', ko: '(37) 물류 단위 내 수량 — 최대 8자리, 가변. (02)의 필수 짝입니다.', zh: '(37) 物流单元内的数量——最多 8 位，变长。(02) 的必配项。',
+          },
+          {
+            hu: '(310n) nettó tömeg kilogrammban — 6 számjegy, ahol az n a tizedesjegyek száma. (3103)001250 tehát 1,250 kg.',
+            en: '(310n) net weight in kilograms — 6 digits, where n is the number of decimal places. So (3103)001250 means 1.250 kg.', de: '(310n) Nettogewicht in Kilogramm — 6 Ziffern, wobei n die Zahl der Dezimalstellen angibt. (3103)001250 bedeutet also 1,250 kg.', it: '(310n) peso netto in chilogrammi — 6 cifre, dove n è il numero di decimali. Quindi (3103)001250 significa 1,250 kg.', es: '(310n) peso neto en kilogramos — 6 dígitos, donde n es el número de decimales. Así, (3103)001250 significa 1,250 kg.', ko: '(310n) 킬로그램 단위 순중량 — 6자리이며 n은 소수 자릿수입니다. 따라서 (3103)001250은 1.250 kg입니다.', zh: '(310n) 以千克计的净重——6 位，其中 n 为小数位数。因此 (3103)001250 表示 1.250 kg。',
+          },
+          {
+            hu: '(400) vevői rendelésszám, (410) a szállítási cím GLN-je, (420) irányítószám — logisztikai és szállítmányozási adatok.',
+            en: '(400) customer purchase order number, (410) ship-to GLN, (420) ship-to postal code — logistics and shipping data.', de: '(400) Kundenbestellnummer, (410) GLN der Lieferadresse, (420) Postleitzahl der Lieferadresse — Logistik- und Versanddaten.', it: '(400) numero d’ordine del cliente, (410) GLN del destinatario, (420) CAP del destinatario — dati logistici e di spedizione.', es: '(400) número de pedido del cliente, (410) GLN del destinatario, (420) código postal del destinatario — datos logísticos y de envío.', ko: '(400) 고객 발주번호, (410) 배송지 GLN, (420) 배송지 우편번호 — 물류·배송 관련 데이터.', zh: '(400) 客户订单号、(410) 收货方 GLN、(420) 收货方邮编——物流与运输数据。',
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '8. A kartoncímke: mi kerüljön rá?',
+          en: '8. The carton label: what goes on it?', de: '8. Das Kartonetikett: Was gehört darauf?', it: '8. L’etichetta del cartone: cosa ci va?', es: '8. La etiqueta de caja: ¿qué lleva?', ko: '8. 박스 라벨에는 무엇을 넣는가', zh: '8. 纸箱标签上放什么',
+        },
+        paragraphs: [
+          {
+            hu: 'A gyűjtőcsomagolás kereskedelmi egység: van saját GTIN-14-e, mert megrendelhető és számlázható. A címke minimuma tehát a GTIN — de a gyakorlatban ez ritkán elég.',
+            en: 'A carton is a trade item: it has its own GTIN-14 because it can be ordered and invoiced. The minimum on the label is therefore the GTIN — but in practice that is rarely enough.', de: 'Die Umverpackung ist eine Handelseinheit: Sie hat eine eigene GTIN-14, weil sie bestellt und fakturiert werden kann. Das Minimum auf dem Etikett ist also die GTIN — in der Praxis reicht das aber selten.', it: 'Il cartone è un’unità commerciale: ha un proprio GTIN-14 perché è ordinabile e fatturabile. Il minimo sull’etichetta è quindi il GTIN, ma nella pratica raramente basta.', es: 'La caja de agrupación es una unidad comercial: tiene su propio GTIN-14 porque se puede pedir y facturar. El mínimo en la etiqueta es, por tanto, el GTIN, pero en la práctica pocas veces basta.', ko: '박스는 거래 단품입니다. 주문·청구가 가능하므로 자체 GTIN-14를 가집니다. 따라서 라벨의 최소 요건은 GTIN이지만, 실무에서 그것만으로 충분한 경우는 드뭅니다.', zh: '外箱是贸易项目：它可订购、可开票，因此拥有自己的 GTIN-14。标签上的最低要求就是 GTIN——但实务中很少够用。',
+          },
+          {
+            hu: 'Két út van, és nem zárják ki egymást. Az ITF-14 csak a GTIN-t viszi, viszont közvetlenül a hullámkartonra is nyomtatható. A GS1-128 mellé sarzsot és dátumot is tehetünk — visszahívásnál pontosan ez dönti el, hogy egy tételt kell-e visszavenni, vagy az egész gyártást.',
+            en: 'There are two routes, and they do not exclude each other. ITF-14 carries only the GTIN but can be printed straight onto corrugated board. With GS1-128 you can add the batch and the date — in a recall, that is exactly what decides whether one lot has to come back or the whole production run.', de: 'Es gibt zwei Wege, die sich nicht ausschließen. ITF-14 trägt nur die GTIN, lässt sich aber direkt auf Wellpappe drucken. Beim GS1-128 kann man Charge und Datum ergänzen — im Rückrufsfall entscheidet genau das, ob eine Charge zurückgeholt werden muss oder die gesamte Produktion.', it: 'Le strade sono due e non si escludono. L’ITF-14 porta solo il GTIN, ma si stampa direttamente sul cartone ondulato. Con il GS1-128 si possono aggiungere lotto e data: in caso di ritiro è proprio questo a stabilire se richiamare una partita o l’intera produzione.', es: 'Hay dos vías y no se excluyen. El ITF-14 solo lleva el GTIN, pero puede imprimirse directamente sobre el cartón ondulado. Con el GS1-128 se pueden añadir el lote y la fecha: en una retirada, eso es justo lo que decide si hay que recuperar un lote o toda la producción.', ko: '두 가지 길이 있고 서로 배타적이지 않습니다. ITF-14는 GTIN만 담지만 골판지에 직접 인쇄할 수 있습니다. GS1-128에는 배치와 날짜를 함께 넣을 수 있는데, 리콜 상황에서 한 로트만 회수할지 전체 생산분을 회수할지를 바로 이것이 가릅니다.', zh: '有两条路，而且并不互斥。ITF-14 只承载 GTIN，但可以直接印在瓦楞纸板上。GS1-128 还能加上批号和日期——发生召回时，正是这一点决定要收回一个批次还是整批生产。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'GTIN-14 az (01) azonosítóval — kötelező elem, ez mondja meg, mi van a dobozban.',
+            en: 'GTIN-14 under AI (01) — the mandatory element; it says what is in the box.', de: 'GTIN-14 unter AI (01) — Pflichtelement; sie sagt, was in der Schachtel ist.', it: 'GTIN-14 con l’AI (01) — elemento obbligatorio: dice cosa c’è nella scatola.', es: 'GTIN-14 con el AI (01) — elemento obligatorio; indica qué hay en la caja.', ko: 'AI (01)의 GTIN-14 — 필수 항목으로, 상자 안에 무엇이 들었는지 알려 줍니다.', zh: 'AI (01) 下的 GTIN-14——必备项，说明箱内是什么。',
+          },
+          {
+            hu: 'Sarzs vagy tételszám a (10) azonosítóval — nyomonkövetéshez. Élelmiszernél és gyógyszernél gyakorlatilag kötelező.',
+            en: 'Batch or lot number under (10) — for traceability. Effectively mandatory for food and pharmaceuticals.', de: 'Chargen- oder Losnummer unter (10) — für die Rückverfolgbarkeit. Bei Lebensmitteln und Arzneimitteln faktisch Pflicht.', it: 'Lotto con l’AI (10) — per la tracciabilità. Di fatto obbligatorio per alimenti e farmaci.', es: 'Lote con el AI (10) — para la trazabilidad. En alimentación y farmacia es obligatorio en la práctica.', ko: 'AI (10)의 배치/로트 번호 — 추적용입니다. 식품과 의약품에서는 사실상 필수입니다.', zh: 'AI (10) 下的批号——用于追溯。食品和药品实际上是必须的。',
+          },
+          {
+            hu: 'Minőségmegőrzési (15) vagy lejárati (17) dátum ÉÉHHNN alakban — a kettő nem ugyanaz, és a vevő rendszere meg tudja különböztetni.',
+            en: 'Best-before (15) or expiry (17) date in YYMMDD form — the two are not the same, and the customer’s system can tell them apart.', de: 'Mindesthaltbarkeits- (15) oder Verfallsdatum (17) im Format JJMMTT — beides ist nicht dasselbe, und das System des Kunden kann es unterscheiden.', it: 'Data di consumo preferibile (15) o di scadenza (17) in formato AAMMGG: le due cose non coincidono e il sistema del cliente sa distinguerle.', es: 'Fecha de consumo preferente (15) o de caducidad (17) en formato AAMMDD: no son lo mismo, y el sistema del cliente sabe distinguirlas.', ko: '(15) 품질유지기한 또는 (17) 유효기간을 YYMMDD로 — 둘은 서로 다르며, 고객사 시스템은 이를 구분합니다.', zh: '(15) 最佳食用期或 (17) 有效期，格式为 YYMMDD——两者并不相同，客户系统能够区分。',
+          },
+          {
+            hu: 'Darabszám és a termék megnevezése emberi szemnek is — a raktáros nem mindig ér rá leolvasót keresni.',
+            en: 'Piece count and product name in plain text as well — the warehouse operator does not always have a scanner to hand.', de: 'Stückzahl und Produktbezeichnung auch im Klartext — der Lagerist hat nicht immer einen Scanner zur Hand.', it: 'Numero di pezzi e denominazione del prodotto anche in chiaro: il magazziniere non ha sempre un lettore a portata di mano.', es: 'Número de piezas y denominación del producto también en texto claro: el operario de almacén no siempre tiene un lector a mano.', ko: '수량과 제품명은 사람이 읽을 수 있게도 적어야 합니다. 창고 담당자가 늘 스캐너를 들고 있는 것은 아닙니다.', zh: '件数和品名也要用人可读的文字写出——仓管未必随时都有扫描枪。',
+          },
+          {
+            hu: 'Ha a karton egyben a legkisebb szállítási egység (nem raklapon megy), kaphat saját SSCC-t is a (00) azonosítóval.',
+            en: 'If the carton is also the smallest shipping unit (it does not travel on a pallet), it may carry its own SSCC under (00).', de: 'Ist der Karton zugleich die kleinste Versandeinheit (er reist nicht auf einer Palette), kann er unter (00) eine eigene SSCC tragen.', it: 'Se il cartone è anche la più piccola unità di spedizione (non viaggia su pallet), può portare un proprio SSCC con l’AI (00).', es: 'Si la caja es además la unidad de envío más pequeña (no viaja en palé), puede llevar su propio SSCC con el AI (00).', ko: '박스가 최소 배송 단위이기도 하다면(팔레트에 실리지 않는다면) AI (00)으로 자체 SSCC를 가질 수 있습니다.', zh: '如果这个纸箱同时也是最小发运单元（不上托盘），它可以带自己的 SSCC，用 AI (00)。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/karton-cimke.svg',
+            alt: {
+              hu: 'Kartoncímke makett GS1-128 és ITF-14 vonalkóddal',
+              en: 'Carton label mock-up with GS1-128 and ITF-14 barcodes', de: 'Muster eines Kartonetiketts mit GS1-128- und ITF-14-Barcode', it: 'Bozzetto di etichetta per cartone con codici GS1-128 e ITF-14', es: 'Maqueta de etiqueta de caja con códigos GS1-128 e ITF-14', ko: 'GS1-128과 ITF-14 바코드가 들어간 박스 라벨 예시', zh: '含 GS1-128 与 ITF-14 条码的纸箱标签样例',
+            },
+            caption: {
+              hu: 'Mindkét kód ugyanazt a GTIN-14-et hordozza; a GS1-128 emellett a sarzsot és a dátumot is. A képen szereplő kódok leolvashatók.',
+              en: 'Both symbols carry the same GTIN-14; the GS1-128 also carries the batch and the date. The codes in the figure are scannable.', de: 'Beide Symbole tragen dieselbe GTIN-14; der GS1-128 zusätzlich Charge und Datum. Die abgebildeten Codes sind scannbar.', it: 'Entrambi i simboli portano lo stesso GTIN-14; il GS1-128 anche lotto e data. I codici nella figura sono leggibili.', es: 'Ambos símbolos llevan el mismo GTIN-14; el GS1-128 además el lote y la fecha. Los códigos de la figura son escaneables.', ko: '두 심볼 모두 같은 GTIN-14를 담고 있으며, GS1-128에는 배치와 날짜도 들어 있습니다. 그림의 코드는 실제로 읽힙니다.', zh: '两个符号承载同一个 GTIN-14；GS1-128 还带有批号和日期。图中条码可实际扫描。',
+            },
+            wide: true,
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '9. A raklapcímke: a GS1 logisztikai címke',
+          en: '9. The pallet label: the GS1 logistic label', de: '9. Das Palettenetikett: das GS1-Logistiketikett', it: '9. L’etichetta pallet: l’etichetta logistica GS1', es: '9. La etiqueta de palé: la etiqueta logística GS1', ko: '9. 팔레트 라벨: GS1 물류 라벨', zh: '9. 托盘标签：GS1 物流标签',
+        },
+        paragraphs: [
+          {
+            hu: 'A raklapcímke felépítése szabványos, és három vízszintes sávból áll. Ez nem esztétika: a targoncás, a raktáros és a leolvasó máshol keresi az információt, és a szabvány pont ezt teszi kiszámíthatóvá.',
+            en: 'The layout of a pallet label is standardised and consists of three horizontal bands. This is not aesthetics: the forklift driver, the warehouse operator and the scanner each look in a different place, and the standard is what makes that predictable.', de: 'Der Aufbau des Palettenetiketts ist genormt und besteht aus drei waagerechten Bändern. Das ist keine Ästhetik: Staplerfahrer, Lagerist und Scanner suchen die Information jeweils anderswo, und die Norm macht genau das vorhersehbar.', it: 'La struttura dell’etichetta pallet è standardizzata e si compone di tre fasce orizzontali. Non è estetica: il carrellista, il magazziniere e il lettore cercano l’informazione in punti diversi, e lo standard rende tutto ciò prevedibile.', es: 'La estructura de la etiqueta de palé está normalizada y consta de tres franjas horizontales. No es estética: el carretillero, el operario y el lector buscan la información en sitios distintos, y la norma es lo que hace eso predecible.', ko: '팔레트 라벨의 구성은 표준화되어 있으며 세 개의 가로 띠로 이루어집니다. 미적인 문제가 아닙니다. 지게차 기사, 창고 담당자, 스캐너가 각각 다른 곳을 보기 때문에, 표준이 그것을 예측 가능하게 만들어 줍니다.', zh: '托盘标签的版式是标准化的，由三条横向区域组成。这不是美观问题：叉车司机、仓管和扫描器各自看不同的位置，标准让这件事变得可预期。',
+          },
+          {
+            hu: 'Az 1. sáv (felül) szabad formátumú: feladó, címzett, szállítmányozó, logó — kizárólag emberi szemnek. A 2. sáv (középen) ugyanazt az adatot mutatja olvasható szöveggel, adatcím-megnevezéssel; ha a leolvasó nem működik, innen lehet kézzel felvinni. A 3. sáv (alul) a vonalkódoké.',
+            en: 'Band 1 (top) is free format: sender, consignee, carrier, logo — for human eyes only. Band 2 (middle) shows the same data in readable text with data titles; if the scanner fails, this is what gets keyed in. Band 3 (bottom) belongs to the barcodes.', de: 'Band 1 (oben) ist frei gestaltbar: Absender, Empfänger, Spediteur, Logo — nur für das menschliche Auge. Band 2 (Mitte) zeigt dieselben Daten als lesbaren Text mit Datenbezeichnungen; fällt der Scanner aus, wird von hier abgetippt. Band 3 (unten) gehört den Barcodes.', it: 'La fascia 1 (in alto) è a formato libero: mittente, destinatario, spedizioniere, logo — solo per l’occhio umano. La fascia 2 (al centro) mostra gli stessi dati in testo leggibile con le denominazioni dei campi; se il lettore non funziona, si digita da qui. La fascia 3 (in basso) è dei codici a barre.', es: 'La franja 1 (arriba) es de formato libre: remitente, destinatario, transportista, logotipo — solo para el ojo humano. La franja 2 (centro) muestra los mismos datos en texto legible con los nombres de campo; si falla el lector, se teclea desde aquí. La franja 3 (abajo) es la de los códigos de barras.', ko: '1번 띠(위)는 자유 형식입니다. 발송인, 수하인, 운송사, 로고 등 사람 눈을 위한 영역입니다. 2번 띠(가운데)는 같은 데이터를 항목명과 함께 읽을 수 있는 글자로 보여 줍니다. 스캐너가 안 될 때 여기서 손으로 입력합니다. 3번 띠(아래)는 바코드의 자리입니다.', zh: '第 1 区（上方）为自由版式：发货人、收货人、承运人、标志——只给人看。第 2 区（中间）用可读文字和字段名展示同样的数据；扫描失败时就照着这里手工录入。第 3 区（下方）属于条码。',
+          },
+          {
+            hu: 'Az SSCC MINDIG a legalsó vonalkód, és mindig önálló kódban áll. Ez a címke egyetlen kötelező eleme: minden más adat opcionális, az SSCC nem.',
+            en: 'The SSCC is ALWAYS the bottom-most barcode and always stands in its own symbol. It is the only mandatory element of the label: everything else is optional, the SSCC is not.', de: 'Die SSCC ist IMMER der unterste Barcode und steht immer in einem eigenen Symbol. Sie ist das einzige Pflichtelement des Etiketts: Alles andere ist optional, die SSCC nicht.', it: 'L’SSCC è SEMPRE il codice a barre più in basso e sta sempre in un simbolo dedicato. È l’unico elemento obbligatorio dell’etichetta: tutto il resto è facoltativo, l’SSCC no.', es: 'El SSCC es SIEMPRE el código de barras inferior y siempre va en un símbolo propio. Es el único elemento obligatorio de la etiqueta: todo lo demás es opcional, el SSCC no.', ko: 'SSCC는 항상 맨 아래 바코드이며 반드시 독립된 심볼로 넣습니다. 라벨에서 유일한 필수 요소입니다. 나머지는 선택이지만 SSCC는 아닙니다.', zh: 'SSCC 永远是最下方的那个条码，并且始终单独成一个符号。它是标签上唯一的必备元素：其余都可选，SSCC 不可选。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'Címkeméret: jellemzően A5 (148 × 210 mm). Ha csak az SSCC kerül rá, A6 (105 × 148 mm) is elég.',
+            en: 'Label size: typically A5 (148 × 210 mm). If only the SSCC goes on it, A6 (105 × 148 mm) is enough.', de: 'Etikettengröße: typisch A5 (148 × 210 mm). Steht nur die SSCC darauf, genügt A6 (105 × 148 mm).', it: 'Formato etichetta: tipicamente A5 (148 × 210 mm). Se contiene solo l’SSCC, basta l’A6 (105 × 148 mm).', es: 'Tamaño de etiqueta: normalmente A5 (148 × 210 mm). Si solo lleva el SSCC, basta con A6 (105 × 148 mm).', ko: '라벨 크기: 보통 A5(148 × 210 mm)입니다. SSCC만 넣는다면 A6(105 × 148 mm)로도 충분합니다.', zh: '标签尺寸：通常为 A5（148 × 210 mm）。如果只放 SSCC，A6（105 × 148 mm）也够。',
+          },
+          {
+            hu: 'Minden GS1-128 kód legalább 32 mm magas legyen, X-mérete 0,495 és 1,016 mm között — az ajánlott érték 0,495 mm.',
+            en: 'Every GS1-128 symbol should be at least 32 mm high, with an X-dimension between 0.495 and 1.016 mm — the recommended value is 0.495 mm.', de: 'Jedes GS1-128-Symbol sollte mindestens 32 mm hoch sein, mit einem X-Maß zwischen 0,495 und 1,016 mm — empfohlen wird 0,495 mm.', it: 'Ogni simbolo GS1-128 dovrebbe essere alto almeno 32 mm, con dimensione X tra 0,495 e 1,016 mm — il valore consigliato è 0,495 mm.', es: 'Cada símbolo GS1-128 debe medir al menos 32 mm de alto, con una dimensión X entre 0,495 y 1,016 mm; el valor recomendado es 0,495 mm.', ko: '모든 GS1-128 심볼은 높이 32 mm 이상, X 치수는 0.495~1.016 mm여야 합니다. 권장값은 0.495 mm입니다.', zh: '每个 GS1-128 符号高度至少 32 mm，X 尺寸在 0.495 至 1.016 mm 之间——推荐值为 0.495 mm。',
+          },
+          {
+            hu: 'A vonalkód alsó éle a raklap talpától mérve 400 és 800 mm között legyen, és legalább 50 mm-re a függőleges éltől.',
+            en: 'The bottom edge of the barcode should sit between 400 and 800 mm from the base of the pallet, and at least 50 mm from the vertical edge.', de: 'Die Unterkante des Barcodes sollte zwischen 400 und 800 mm über der Palettenunterkante liegen und mindestens 50 mm von der senkrechten Kante entfernt sein.', it: 'Il bordo inferiore del codice a barre deve trovarsi tra 400 e 800 mm dalla base del pallet e ad almeno 50 mm dal bordo verticale.', es: 'El borde inferior del código de barras debe quedar entre 400 y 800 mm desde la base del palé, y al menos a 50 mm del borde vertical.', ko: '바코드의 아래쪽 가장자리는 팔레트 바닥에서 400~800 mm 높이에, 수직 모서리에서는 최소 50 mm 떨어져야 합니다.', zh: '条码下缘距托盘底部应在 400 至 800 mm 之间，且距垂直边缘至少 50 mm。',
+          },
+          {
+            hu: 'Két szomszédos oldalra — egy rövidre és egy hosszúra — azonos adattartalmú címke kerüljön, hogy bármely irányból látszódjon egy.',
+            en: 'Put a label with identical content on two adjacent sides — one short and one long — so that one is visible from any direction.', de: 'Bringen Sie auf zwei benachbarten Seiten — einer kurzen und einer langen — ein Etikett mit identischem Inhalt an, damit aus jeder Richtung eines sichtbar ist.', it: 'Applicare un’etichetta con lo stesso contenuto su due lati adiacenti — uno corto e uno lungo — così da averne sempre una visibile da qualsiasi direzione.', es: 'Coloque una etiqueta con el mismo contenido en dos lados adyacentes —uno corto y otro largo— para que siempre haya una visible desde cualquier dirección.', ko: '서로 인접한 두 면(짧은 면 하나, 긴 면 하나)에 내용이 동일한 라벨을 붙여, 어느 방향에서도 하나는 보이게 합니다.', zh: '在相邻的两个面（一个短边、一个长边）贴内容完全相同的标签，确保从任何方向都能看到一张。',
+          },
+          {
+            hu: 'Ha a rakomány alacsony, és a 400 mm-t nem lehet tartani, a címke a lehető legmagasabbra kerüljön a targonca villáinak megfelelő oldalakon.',
+            en: 'If the load is low and 400 mm cannot be kept, place the label as high as possible on the sides that face the forklift entry.', de: 'Ist die Ladung niedrig und lassen sich 400 mm nicht einhalten, bringen Sie das Etikett so hoch wie möglich an den Seiten der Gabeleinfahrt an.', it: 'Se il carico è basso e non si riescono a rispettare i 400 mm, posizionare l’etichetta il più in alto possibile sui lati di infilaggio delle forche.', es: 'Si la carga es baja y no se pueden mantener los 400 mm, coloque la etiqueta lo más alta posible en los lados de entrada de las horquillas.', ko: '적재 높이가 낮아 400 mm를 지킬 수 없다면, 지게차 포크가 진입하는 면에 가능한 한 높이 붙입니다.', zh: '若货物较矮、无法保证 400 mm，就在叉车插入的那几个面上尽可能贴高。',
+          },
+          {
+            hu: 'Homogén raklapnál a (02) + (37) a helyes páros, nem az (01). Az (01) azt állítaná, hogy maga a raklap a megrendelhető cikk — pedig a kartonok azok.',
+            en: 'For a homogeneous pallet the correct pair is (02) + (37), not (01). Using (01) would claim that the pallet itself is the orderable item — but the cartons are.', de: 'Bei einer homogenen Palette ist (02) + (37) das richtige Paar, nicht (01). (01) würde behaupten, die Palette selbst sei der bestellbare Artikel — das sind aber die Kartons.', it: 'Per un pallet omogeneo la coppia corretta è (02) + (37), non l’(01). L’(01) affermerebbe che il pallet stesso è l’articolo ordinabile, mentre lo sono i cartoni.', es: 'En un palé homogéneo la pareja correcta es (02) + (37), no (01). Usar (01) afirmaría que el propio palé es el artículo pedible, cuando lo son las cajas.', ko: '동일 품목 팔레트에서는 (02) + (37)이 올바른 조합이며 (01)이 아닙니다. (01)을 쓰면 팔레트 자체가 주문 가능한 품목이라고 주장하는 셈인데, 실제로는 박스가 그 대상입니다.', zh: '同品项整托的正确组合是 (02) + (37)，不是 (01)。用 (01) 等于宣称托盘本身是可订购商品——可实际可订购的是纸箱。',
+          },
+        ],
+        images: [
+          {
+            src: '/images/vonalkod/raklap-cimke.svg',
+            alt: {
+              hu: 'GS1 logisztikai címke makett három sávval és három vonalkóddal',
+              en: 'GS1 logistic label mock-up with three bands and three barcodes', de: 'Muster eines GS1-Logistiketiketts mit drei Bändern und drei Barcodes', it: 'Bozzetto di etichetta logistica GS1 con tre fasce e tre codici a barre', es: 'Maqueta de etiqueta logística GS1 con tres franjas y tres códigos de barras', ko: '세 개의 띠와 세 개의 바코드로 구성된 GS1 물류 라벨 예시', zh: '含三个区域与三个条码的 GS1 物流标签样例',
+            },
+            caption: {
+              hu: 'A15-ös arányú makett léptéke 4 egység = 1 mm, tehát a rajzon mindhárom vonalkód pontosan a szabvány szerinti 32 mm magas. Az SSCC legalul, önállóan.',
+              en: 'The A5-proportioned mock-up is drawn at 4 units = 1 mm, so all three symbols are exactly the 32 mm required by the standard. The SSCC sits at the bottom, on its own.', de: 'Das Muster im A5-Format ist im Maßstab 4 Einheiten = 1 mm gezeichnet, alle drei Symbole sind also genau die von der Norm geforderten 32 mm hoch. Die SSCC steht ganz unten, allein.', it: 'Il bozzetto in proporzione A5 è disegnato in scala 4 unità = 1 mm, quindi tutti e tre i simboli sono alti esattamente i 32 mm richiesti dallo standard. L’SSCC sta in fondo, da solo.', es: 'La maqueta en proporción A5 está dibujada a escala 4 unidades = 1 mm, de modo que los tres símbolos miden exactamente los 32 mm que exige la norma. El SSCC va abajo, solo.', ko: 'A5 비율의 예시는 4단위 = 1 mm 축척으로 그려져, 세 심볼 모두 표준이 요구하는 32 mm 높이입니다. SSCC는 맨 아래에 단독으로 놓입니다.', zh: '该 A5 比例样例按 4 单位 = 1 mm 绘制，因此三个符号的高度正好是标准要求的 32 mm。SSCC 位于最下方，单独成码。',
+            },
+            wide: true,
+          },
+        ],
+      },
+      {
+        title: {
+          hu: '10. A hét leggyakoribb hiba',
+          en: '10. The seven most common mistakes', de: '10. Die sieben häufigsten Fehler', it: '10. I sette errori più comuni', es: '10. Los siete errores más frecuentes', ko: '10. 가장 흔한 일곱 가지 실수', zh: '10. 最常见的七个错误',
+        },
+        paragraphs: [
+          {
+            hu: 'Ezekkel találkozunk a leggyakrabban, amikor egy vevő rendszere visszautasít egy szállítmányt, vagy a raktárban „nem olvas a kód”.',
+            en: 'These are what we meet most often when a customer’s system rejects a delivery, or when “the code doesn’t scan” in the warehouse.', de: 'Diesen Fehlern begegnen wir am häufigsten, wenn das System eines Kunden eine Lieferung zurückweist oder im Lager „der Code nicht liest“.', it: 'Sono quelli che incontriamo più spesso quando il sistema di un cliente rifiuta una consegna o quando in magazzino «il codice non legge».', es: 'Son los que más vemos cuando el sistema de un cliente rechaza un envío o cuando en el almacén «el código no lee».', ko: '고객사 시스템이 납품을 거부하거나 창고에서 “코드가 안 읽힌다”고 할 때 가장 자주 마주치는 원인들입니다.', zh: '当客户系统拒收，或仓库里“这码扫不出来”时，我们最常遇到的就是这几种。',
+          },
+        ],
+        bullets: [
+          {
+            hu: 'A GTIN-13 ellenőrző számát meghagyni a GTIN-14 végén. Új hossz = új ellenőrző szám, mindig újra kell számolni.',
+            en: 'Leaving the GTIN-13 check digit at the end of a GTIN-14. New length = new check digit; it always has to be recalculated.', de: 'Die Prüfziffer der GTIN-13 am Ende der GTIN-14 stehen lassen. Neue Länge = neue Prüfziffer, sie muss immer neu berechnet werden.', it: 'Lasciare la cifra di controllo del GTIN-13 in fondo al GTIN-14. Nuova lunghezza = nuova cifra di controllo, va sempre ricalcolata.', es: 'Dejar el dígito de control del GTIN-13 al final del GTIN-14. Nueva longitud = nuevo dígito de control; siempre hay que recalcularlo.', ko: 'GTIN-14 끝에 GTIN-13의 체크 디지트를 그대로 두는 것. 길이가 바뀌면 체크 디지트도 다시 계산해야 합니다.', zh: '把 GTIN-13 的校验位留在 GTIN-14 末尾。长度变了，校验位就要重算。',
+          },
+          {
+            hu: 'Az (01) használata a raklapon a (02) + (37) helyett — a vevő rendszere olyan cikket keres, ami nem létezik a törzsadatban.',
+            en: 'Using (01) on a pallet instead of (02) + (37) — the customer’s system then looks for an item that does not exist in the master data.', de: 'Auf der Palette (01) statt (02) + (37) verwenden — das System des Kunden sucht dann einen Artikel, den es in den Stammdaten nicht gibt.', it: 'Usare l’(01) sul pallet invece di (02) + (37): il sistema del cliente cerca un articolo che nell’anagrafica non esiste.', es: 'Usar (01) en el palé en lugar de (02) + (37): el sistema del cliente busca un artículo que no existe en los datos maestros.', ko: '팔레트에 (02) + (37) 대신 (01)을 쓰는 것. 고객사 시스템이 마스터 데이터에 없는 품목을 찾게 됩니다.', zh: '在托盘上用 (01) 而不是 (02) + (37)——客户系统会去找一个主数据里根本不存在的商品。',
+          },
+          {
+            hu: 'A csendzónába lógó keret, szöveg vagy hajtásél. Ez a leggyakoribb oka annak, hogy egy tökéletesen kinéző kód nem olvas.',
+            en: 'A frame, a line of text or a fold reaching into the quiet zone. The most common reason a perfectly good-looking symbol will not scan.', de: 'Ein Rahmen, eine Textzeile oder eine Falzkante, die in die Ruhezone ragt. Der häufigste Grund, warum ein makellos aussehendes Symbol nicht liest.', it: 'Una cornice, una riga di testo o una piega che invade la zona tranquilla. È la ragione più frequente per cui un simbolo dall’aspetto perfetto non si legge.', es: 'Un marco, una línea de texto o un pliegue que invade la zona de silencio. La causa más frecuente de que un símbolo de aspecto impecable no lea.', ko: '테두리, 글자, 접힌 자국이 여백을 침범하는 것. 겉보기에 완벽한 심볼이 읽히지 않는 가장 흔한 이유입니다.', zh: '边框、文字或折痕侵入空白区。这是看起来毫无问题的条码却扫不出来的最常见原因。',
+          },
+          {
+            hu: 'Túl kicsi X-méret a nyomtatóhoz képest. 203 dpi-n a 0,125 mm-es pontnál finomabb sáv nem létezik: a nyomtató kerekít, és a sávszélességek elcsúsznak.',
+            en: 'An X-dimension too small for the printer. At 203 dpi no bar finer than the 0.125 mm dot exists: the printer rounds, and the bar widths drift.', de: 'Ein für den Drucker zu kleines X-Maß. Bei 203 dpi gibt es keinen Strich, der feiner ist als der 0,125-mm-Punkt: Der Drucker rundet, und die Strichbreiten verschieben sich.', it: 'Una dimensione X troppo piccola per la stampante. A 203 dpi non esiste una barra più sottile del punto da 0,125 mm: la stampante arrotonda e le larghezze slittano.', es: 'Una dimensión X demasiado pequeña para la impresora. A 203 dpi no existe barra más fina que el punto de 0,125 mm: la impresora redondea y los anchos se desvían.', ko: '프린터에 비해 X 치수가 너무 작은 경우. 203 dpi에서는 0.125 mm 도트보다 가는 바가 없으므로, 프린터가 반올림하면서 바 폭이 어긋납니다.', zh: 'X 尺寸相对打印机太小。203 dpi 下不存在比 0.125 mm 点更细的条：打印机四舍五入，条宽随之偏移。',
+          },
+          {
+            hu: 'Elmaradt FNC1 elválasztó egy változó hosszúságú AI után — a fogadó rendszer a következő mezőt az előzőhöz ragasztja.',
+            en: 'A missing FNC1 separator after a variable-length AI — the receiving system glues the next field onto the previous one.', de: 'Ein fehlendes FNC1-Trennzeichen nach einem AI variabler Länge — das empfangende System klebt das nächste Feld an das vorherige.', it: 'Un separatore FNC1 mancante dopo un AI a lunghezza variabile: il sistema ricevente attacca il campo successivo al precedente.', es: 'Falta el separador FNC1 tras un AI de longitud variable: el sistema receptor pega el campo siguiente al anterior.', ko: '가변 길이 AI 뒤에 FNC1 구분자를 빠뜨리는 것. 수신 시스템이 다음 필드를 앞 필드에 붙여 버립니다.', zh: '变长 AI 后面漏掉 FNC1 分隔符——接收系统会把下一个字段粘到上一个字段后面。',
+          },
+          {
+            hu: 'Rossz anyag-szalag párosítás. A hiba nem azonnal látszik: a kód frissen tökéletes, és csak a szállítás dörzsölése után lesz olvashatatlan.',
+            en: 'The wrong ribbon for the material. The fault is not immediately visible: the code is perfect when fresh and only becomes unreadable after the abrasion of transport.', de: 'Falsche Kombination aus Material und Farbband. Der Fehler zeigt sich nicht sofort: Der Code ist frisch perfekt und wird erst durch die Reibung beim Transport unlesbar.', it: 'Abbinamento sbagliato tra materiale e ribbon. Il difetto non si vede subito: il codice appena stampato è perfetto e diventa illeggibile solo dopo lo sfregamento del trasporto.', es: 'Combinación errónea de material y ribbon. El fallo no se ve enseguida: el código recién impreso es perfecto y solo se vuelve ilegible tras el roce del transporte.', ko: '소재와 리본의 잘못된 조합. 곧바로 드러나지 않습니다. 갓 인쇄했을 때는 완벽하고, 운송 중 마찰을 거친 뒤에야 읽히지 않게 됩니다.', zh: '材料与碳带搭配错误。问题不会立刻显现：刚印出来完美无缺，经过运输摩擦后才变得无法识读。',
+          },
+          {
+            hu: 'Az SSCC újrahasználata 12 hónapon belül — két különböző szállítmány kerül ugyanarra az azonosítóra a nyomonkövetésben.',
+            en: 'Reusing an SSCC within 12 months — two different consignments end up under the same identifier in the traceability record.', de: 'Wiederverwendung einer SSCC innerhalb von 12 Monaten — zwei verschiedene Sendungen landen in der Rückverfolgung unter derselben Kennung.', it: 'Riutilizzare un SSCC entro 12 mesi: due spedizioni diverse finiscono sotto lo stesso identificativo nella tracciabilità.', es: 'Reutilizar un SSCC antes de 12 meses: dos envíos distintos acaban bajo el mismo identificador en la trazabilidad.', ko: '12개월 이내에 SSCC를 재사용하는 것. 추적 기록에서 서로 다른 두 화물이 같은 식별자로 묶입니다.', zh: '在 12 个月内重复使用 SSCC——追溯记录中两批不同的货会落到同一个标识下。',
+          },
+        ],
+        link: {
+          href: '/tudastar/festekszalag-valaszto',
+          label: {
+            hu: 'Festékszalag-választó: melyik szalag melyik anyaghoz',
+            en: 'Ribbon selector: which ribbon for which material', de: 'Farbband-Auswahl: welches Band für welches Material', it: 'Selettore ribbon: quale nastro per quale materiale', es: 'Selector de ribbon: qué cinta para cada material', ko: '리본 선택 가이드: 소재별 리본', zh: '碳带选择：什么材料配什么碳带',
+          },
+        },
+      },
+      {
+        title: {
+          hu: '11. Nyomtatás és ellenőrzés',
+          en: '11. Printing and verification', de: '11. Druck und Prüfung', it: '11. Stampa e verifica', es: '11. Impresión y verificación', ko: '11. 인쇄와 검증', zh: '11. 打印与检验',
+        },
+        paragraphs: [
+          {
+            hu: 'A kód minőségét nem szemmel kell megítélni, hanem verifikátorral. A leolvashatóság és a szabvány szerinti minőség nem ugyanaz: egy D osztályú kód a friss nyomat után még beolvas, három hét raktár és egy kamion után viszont már nem. A verifikátor azt méri, mennyi tartalék van a kódban.',
+            en: 'Code quality is not something to judge by eye — use a verifier. Readability and standards-compliant quality are not the same thing: a grade D symbol still scans when freshly printed, but not after three weeks in a warehouse and a lorry ride. The verifier measures how much margin the symbol has left.', de: 'Die Codequalität beurteilt man nicht mit dem Auge, sondern mit einem Verifier. Lesbarkeit und normgerechte Qualität sind nicht dasselbe: Ein Symbol der Klasse D liest frisch gedruckt noch, nach drei Wochen Lager und einer Lkw-Fahrt aber nicht mehr. Der Verifier misst, wie viel Reserve im Symbol steckt.', it: 'La qualità del codice non si giudica a occhio, ma con un verificatore. Leggibilità e qualità a norma non sono la stessa cosa: un simbolo di classe D appena stampato si legge ancora, dopo tre settimane di magazzino e un viaggio in camion no. Il verificatore misura quanto margine è rimasto.', es: 'La calidad del código no se juzga a ojo, sino con un verificador. Legibilidad y calidad conforme a norma no son lo mismo: un símbolo de clase D recién impreso todavía lee, pero no tras tres semanas de almacén y un viaje en camión. El verificador mide cuánto margen le queda al símbolo.', ko: '코드 품질은 눈으로 판단할 것이 아니라 검증기로 측정해야 합니다. 읽힌다는 것과 표준을 만족한다는 것은 다릅니다. D 등급 심볼도 갓 인쇄했을 때는 읽히지만, 창고에서 3주를 보내고 트럭을 타고 나면 읽히지 않습니다. 검증기는 심볼에 여유가 얼마나 남았는지를 잽니다.', zh: '条码质量不能靠眼睛判断，要用检测仪。可读性和符合标准的质量不是一回事：D 级符号刚印出来还能扫，但在仓库放三周、再经一趟卡车后就不行了。检测仪测的是这个符号还剩多少余量。',
+          },
+          {
+            hu: 'Felbontás: 203 dpi az általános logisztikai kódokhoz elég; 300 dpi kell apró 2D kódhoz, kis X-mérethez és finom szöveghez; 600 dpi az apró alkatrészjelöléshez. A nyomtatási irány külön téma: ugyanaz a kód „kerítés” és „létra” állásban más minőségi osztályt kaphat.',
+            en: 'Resolution: 203 dpi is enough for general logistics symbols; 300 dpi is needed for small 2D codes, tight X-dimensions and fine text; 600 dpi for small-part marking. Print orientation is a topic of its own: the same symbol can earn a different grade in “picket fence” and in “ladder” orientation.', de: 'Auflösung: 203 dpi genügen für allgemeine Logistikcodes; 300 dpi braucht man für kleine 2D-Codes, geringe X-Maße und feine Schrift; 600 dpi für die Kennzeichnung kleiner Bauteile. Die Druckausrichtung ist ein eigenes Thema: Dasselbe Symbol kann in „Zaun“- und in „Leiter“-Ausrichtung unterschiedliche Klassen erreichen.', it: 'Risoluzione: 203 dpi bastano per i codici logistici generici; 300 dpi servono per piccoli codici 2D, dimensioni X ridotte e testo fine; 600 dpi per la marcatura di piccoli componenti. L’orientamento di stampa è un tema a sé: lo stesso simbolo può ottenere classi diverse in posizione «steccato» e «scala».', es: 'Resolución: 203 dpi bastan para los códigos logísticos generales; 300 dpi hacen falta para códigos 2D pequeños, dimensiones X reducidas y texto fino; 600 dpi para el marcaje de piezas pequeñas. La orientación de impresión es un tema aparte: el mismo símbolo puede obtener clases distintas en posición «valla» y «escalera».', ko: '해상도: 일반 물류 코드에는 203 dpi로 충분하고, 작은 2D 코드·좁은 X 치수·작은 글자에는 300 dpi가 필요하며, 소형 부품 마킹에는 600 dpi를 씁니다. 인쇄 방향은 그 자체로 별도의 주제입니다. 같은 심볼도 “울타리” 방향과 “사다리” 방향에서 등급이 달라질 수 있습니다.', zh: '分辨率：一般物流条码 203 dpi 足够；小尺寸二维码、较小 X 尺寸和细小文字需要 300 dpi；小零件打标用 600 dpi。打印朝向本身就是一个单独的话题：同一个符号在“栅栏”方向和“梯子”方向可能拿到不同的等级。',
+          },
+          {
+            hu: 'Anyag és szalag párban jár: papírcímkére wax, szintetikusra wax-resin vagy resin. A rossz páros nem azonnal derül ki, ezért érdemes a végleges anyagpárral nyomtatott mintát mérni, nem a laborban készültet.',
+            en: 'Material and ribbon go together: wax for paper labels, wax-resin or resin for synthetics. A bad pair does not show up immediately, so measure a sample printed with the final material combination, not one made in the lab.', de: 'Material und Farbband gehören zusammen: Wachs für Papieretiketten, Wachs-Harz oder Harz für Synthetik. Eine schlechte Paarung zeigt sich nicht sofort — messen Sie deshalb ein Muster, das mit der endgültigen Materialkombination gedruckt wurde, nicht eines aus dem Labor.', it: 'Materiale e ribbon vanno in coppia: wax per etichette in carta, wax-resin o resin per i sintetici. Un abbinamento sbagliato non emerge subito: conviene misurare un campione stampato con la combinazione definitiva, non uno prodotto in laboratorio.', es: 'Material y ribbon van en pareja: wax para etiquetas de papel, wax-resin o resin para sintéticos. Una combinación mala no se nota enseguida, así que mida una muestra impresa con la combinación definitiva, no una hecha en laboratorio.', ko: '소재와 리본은 짝을 이룹니다. 종이 라벨에는 왁스, 합성 소재에는 왁스-레진이나 레진을 씁니다. 잘못된 조합은 바로 드러나지 않으므로, 실험실 샘플이 아니라 최종 소재 조합으로 인쇄한 샘플을 측정하십시오.', zh: '材料与碳带成对使用：纸质标签用蜡基，合成材料用混合基或树脂基。搭配不当不会立刻显现，因此要测量用最终材料组合打印的样张，而不是实验室做出来的样张。',
+          },
+        ],
+        link: {
+          href: '/tudastar/vonalkod-nyomtatas',
+          label: {
+            hu: 'Nyomtatási irány, inverz kódok és minősítés — részletesen',
+            en: 'Print orientation, inverse codes and grading — in detail', de: 'Druckausrichtung, Inversdruck und Bewertung — im Detail', it: 'Orientamento di stampa, codici inversi e classificazione — in dettaglio', es: 'Orientación de impresión, códigos inversos y clasificación — en detalle', ko: '인쇄 방향, 반전 코드, 등급 판정 — 자세히', zh: '打印朝向、反白条码与分级——详解',
+          },
+        },
+      },
+    ],
+  },
   {
     slug: 'cimkezo-rendszer-tervezese',
     title: {

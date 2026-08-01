@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 285" width="900" height="285" role="img">
+<rect width="900" height="285" fill="#ffffff"/>
+<rect x="106" y="60" width="44" height="138" fill="#fef3c7"/>
+<rect x="530" y="60" width="28" height="138" fill="#fef3c7"/>
+<rect x="150" y="60" width="4" height="138" fill="#000000"/>
+<rect x="158" y="60" width="4" height="138" fill="#000000"/>
+<rect x="174" y="60" width="4" height="130" fill="#000000"/>
+<rect x="182" y="60" width="8" height="130" fill="#000000"/>
+<rect x="198" y="60" width="4" height="130" fill="#000000"/>
+<rect x="206" y="60" width="12" height="130" fill="#000000"/>
+<rect x="222" y="60" width="4" height="130" fill="#000000"/>
+<rect x="234" y="60" width="12" height="130" fill="#000000"/>
+<rect x="254" y="60" width="8" height="130" fill="#000000"/>
+<rect x="270" y="60" width="4" height="130" fill="#000000"/>
+<rect x="282" y="60" width="4" height="130" fill="#000000"/>
+<rect x="294" y="60" width="8" height="130" fill="#000000"/>
+<rect x="306" y="60" width="4" height="130" fill="#000000"/>
+<rect x="326" y="60" width="4" height="130" fill="#000000"/>
+<rect x="334" y="60" width="4" height="138" fill="#000000"/>
+<rect x="342" y="60" width="4" height="138" fill="#000000"/>
+<rect x="350" y="60" width="4" height="130" fill="#000000"/>
+<rect x="358" y="60" width="12" height="130" fill="#000000"/>
+<rect x="378" y="60" width="4" height="130" fill="#000000"/>
+<rect x="390" y="60" width="12" height="130" fill="#000000"/>
+<rect x="406" y="60" width="4" height="130" fill="#000000"/>
+<rect x="414" y="60" width="4" height="130" fill="#000000"/>
+<rect x="434" y="60" width="4" height="130" fill="#000000"/>
+<rect x="450" y="60" width="4" height="130" fill="#000000"/>
+<rect x="462" y="60" width="4" height="130" fill="#000000"/>
+<rect x="474" y="60" width="4" height="130" fill="#000000"/>
+<rect x="490" y="60" width="4" height="130" fill="#000000"/>
+<rect x="510" y="60" width="4" height="130" fill="#000000"/>
+<rect x="518" y="60" width="4" height="138" fill="#000000"/>
+<rect x="526" y="60" width="4" height="138" fill="#000000"/>
+<text x="128.0" y="212" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#b45309" font-weight="600" text-anchor="middle">11 X</text>
+<text x="544.0" y="212" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#b45309" font-weight="600" text-anchor="middle">7 X</text>
+<text x="128.0" y="46" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#b45309" font-weight="600" text-anchor="middle">csendzóna</text>
+<text x="544.0" y="46" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#b45309" font-weight="600" text-anchor="middle">csendzóna</text>
+<path d="M 162 252 L 166 252" stroke="#1d4ed8" stroke-width="2"/>
+<path d="M 162 247 L 162 257 M 166 247 L 166 257" stroke="#1d4ed8" stroke-width="2"/>
+<path d="M 166 252 L 206 252" fill="none" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="214" y="257" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1d4ed8" font-weight="600" text-anchor="start">X-méret: a legkeskenyebb sáv szélessége</text>
+<path d="M 588 60 L 588 190" stroke="#1d4ed8" stroke-width="2"/>
+<text x="598" y="125" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#1d4ed8" font-weight="normal" text-anchor="start">sávmagasság</text>
+<text x="340.0" y="212" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16" fill="#0f172a" font-weight="600" text-anchor="middle">5990123456783</text>
+<text x="24" y="28" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">Amitől egy vonalkód leolvasható</text>
+</svg>
