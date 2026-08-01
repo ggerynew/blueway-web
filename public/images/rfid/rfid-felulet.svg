@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 392" width="900" height="392" role="img">
+<rect width="900" height="392" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">Miről olvasunk? A felület dönti el a hatótávot</text>
+<rect x="24" y="58" width="852" height="80" rx="8" fill="#f8fafc"/>
+<rect x="24" y="58" width="6" height="80" rx="3" fill="#15803d"/>
+<text x="46" y="84" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">Karton, fa, műanyag</text>
+<text x="46" y="106" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">a hullám átmegy rajta</text>
+<text x="46" y="126" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">ez az alapeset, erre tervezik a szabvány címkét</text>
+<rect x="560" y="88" width="250" height="14" rx="7" fill="#e2e8f0"/>
+<rect x="560" y="88" width="250" height="14" rx="7" fill="#15803d"/>
+<text x="560" y="82" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#15803d" font-weight="700" text-anchor="start">teljes hatótáv</text>
+<rect x="24" y="146" width="852" height="80" rx="8" fill="#f8fafc"/>
+<rect x="24" y="146" width="6" height="80" rx="3" fill="#b91c1c"/>
+<text x="46" y="172" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">Fém felület</text>
+<text x="46" y="194" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">a fém rövidre zárja az antennát</text>
+<text x="46" y="214" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">ide külön „on-metal” címke kell, távtartó réteggel</text>
+<rect x="560" y="176" width="250" height="14" rx="7" fill="#e2e8f0"/>
+<rect x="560" y="176" width="10" height="14" rx="7" fill="#b91c1c"/>
+<text x="560" y="170" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#b91c1c" font-weight="700" text-anchor="start">gyakorlatilag 0</text>
+<rect x="24" y="234" width="852" height="80" rx="8" fill="#f8fafc"/>
+<rect x="24" y="234" width="6" height="80" rx="3" fill="#b45309"/>
+<text x="46" y="260" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">Folyadék, nedves áru</text>
+<text x="46" y="282" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">a víz elnyeli a 868 MHz-et</text>
+<text x="46" y="302" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">távtartó vagy más címkehely segít, HF/NFC kevésbé érzékeny</text>
+<rect x="560" y="264" width="250" height="14" rx="7" fill="#e2e8f0"/>
+<rect x="560" y="264" width="62" height="14" rx="7" fill="#b45309"/>
+<text x="560" y="258" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#b45309" font-weight="700" text-anchor="start">töredékére esik</text>
+<text x="24" y="344" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">A számok nagyságrendek: a valós hatótáv a chiptől, a leolvasó teljesítményétől és a környezettől is függ.</text>
+<text x="24" y="364" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">Ezért kell a végleges terméken, a végleges címkehelyen próbálni — laborban minden működik.</text>
+</svg>

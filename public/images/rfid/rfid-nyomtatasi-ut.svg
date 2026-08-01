@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" width="900" height="440" role="img">
+<rect width="900" height="440" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">Hogyan ír a címkenyomtató a chipbe?</text>
+<path d="M 120 232 L 830 232" stroke="#cbd5e1" stroke-width="3"/>
+<circle cx="78" cy="206" r="44" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+<circle cx="78" cy="206" r="13" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="78" y="274" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="middle">tekercs</text>
+<rect x="140" y="198" width="136" height="34" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<path d="M 158 215 L 198 215 M 218 215 L 258 215" stroke="#d97706" stroke-width="3"/>
+<rect x="200" y="208" width="16" height="14" rx="2" fill="#0f172a"/>
+<rect x="290" y="198" width="136" height="34" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<path d="M 308 215 L 348 215 M 368 215 L 408 215" stroke="#d97706" stroke-width="3"/>
+<rect x="350" y="208" width="16" height="14" rx="2" fill="#0f172a"/>
+<rect x="440" y="198" width="136" height="34" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<path d="M 458 215 L 498 215 M 518 215 L 558 215" stroke="#d97706" stroke-width="3"/>
+<rect x="500" y="208" width="16" height="14" rx="2" fill="#0f172a"/>
+<rect x="590" y="198" width="136" height="34" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<path d="M 608 215 L 648 215 M 668 215 L 708 215" stroke="#d97706" stroke-width="3"/>
+<rect x="650" y="208" width="16" height="14" rx="2" fill="#0f172a"/>
+<rect x="740" y="198" width="136" height="34" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<path d="M 758 215 L 798 215 M 818 215 L 858 215" stroke="#d97706" stroke-width="3"/>
+<rect x="800" y="208" width="16" height="14" rx="2" fill="#0f172a"/>
+<rect x="360" y="254" width="130" height="40" rx="6" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+<text x="425" y="279" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">kódoló antenna</text>
+<path d="M 400 252 Q 425 236 450 252" fill="none" stroke="#1d4ed8" stroke-width="1.5" opacity="0.6"/>
+<path d="M 408 252 Q 425 228 442 252" fill="none" stroke="#1d4ed8" stroke-width="1.5" opacity="0.6"/>
+<path d="M 416 252 Q 425 220 434 252" fill="none" stroke="#1d4ed8" stroke-width="1.5" opacity="0.6"/>
+<rect x="620" y="136" width="150" height="46" rx="6" fill="#0f172a"/>
+<text x="695" y="164" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#ffffff" font-weight="700" text-anchor="middle">nyomtatófej</text>
+<path d="M 695 182 L 695 196" stroke="#0f172a" stroke-width="2"/>
+<path d="M 140 324 L 290 324" stroke="#b45309" stroke-width="2"/>
+<path d="M 140 318 L 140 330 M 290 318 L 290 330" stroke="#b45309" stroke-width="2"/>
+<text x="215.0" y="346" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#b45309" font-weight="600" text-anchor="middle">címkeosztás</text>
+<text x="24" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1d4ed8" font-weight="700" text-anchor="start">1.</text>
+<text x="44" y="62" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">A címke előbb a kódoló antenna fölött halad el: a nyomtató beírja az EPC-t, majd vissza is olvassa.</text>
+<text x="24" y="84" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1d4ed8" font-weight="700" text-anchor="start">2.</text>
+<text x="44" y="84" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">Csak ezután nyomtat. Ha az írás nem sikerült, a címkét áthúzza (VOID) és a következőre lép.</text>
+<text x="24" y="106" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1d4ed8" font-weight="700" text-anchor="start">3.</text>
+<text x="44" y="106" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">A chipnek a címkén belül oda kell esnie, ahol a kódoló antenna éri — a címke nem cserélhető szabadon.</text>
+<rect x="24" y="366" width="852" height="52" rx="8" fill="#fef3c7"/>
+<text x="44" y="390" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">Túl kicsi címkeosztásnál a tér a SZOMSZÉD chipet is eléri, és rossz címkére íródik az adat.</text>
+<text x="44" y="410" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">Ezért ír elő a nyomtató minimális osztást, és ezért kell mintát küldeni a címkéből a beállításhoz.</text>
+</svg>
