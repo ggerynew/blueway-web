@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 506" width="900" height="506" role="img">
+<rect width="900" height="506" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">Bemért címkék a cab katalógusából</text>
+<text x="24" y="52" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">Ezekkel a gyártó már elvégezte a párosítást — jó kiindulópont, de a saját terméken ettől még mérni kell.</text>
+<text x="24" y="82" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">CÍMKE</text>
+<text x="330" y="82" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">MÉRET</text>
+<text x="452" y="82" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">CHIP</text>
+<text x="790" y="82" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">ANTENNA</text>
+<rect x="24" y="94" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="112" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Avery Dennison BJ 269 WET WHITE</text>
+<text x="330" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">93 × 22 mm</text>
+<text x="452" y="112" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">NXP UCODE 7xm</text>
+<rect x="790" y="99" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="111" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="123" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="141" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Avery Dennison BR800 WET WHITE</text>
+<text x="330" y="141" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">93 × 22 mm</text>
+<text x="452" y="141" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">NXP UCODE 8</text>
+<rect x="790" y="128" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="140" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="152" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="170" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Avery Dennison BU117 WET WHITE</text>
+<text x="330" y="170" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">25 × 18 mm</text>
+<text x="452" y="170" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">NXP G2iM</text>
+<rect x="790" y="157" width="42" height="16" rx="8" fill="#0284c7"/>
+<text x="811" y="169" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">HS</text>
+<rect x="24" y="181" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="199" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Omni-ID IQ400 P</text>
+<text x="330" y="199" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">94 × 24 mm</text>
+<text x="452" y="199" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Alien Higgs 3</text>
+<rect x="790" y="186" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="198" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="210" width="852" height="26" rx="4" fill="#fef2f2"/>
+<text x="36" y="228" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Omni-ID IQ150 EU</text>
+<text x="330" y="228" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">54 × 12 mm</text>
+<text x="452" y="228" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza R6</text>
+<rect x="790" y="215" width="42" height="16" rx="8" fill="#b91c1c"/>
+<text x="811" y="227" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">OM</text>
+<rect x="24" y="239" width="852" height="26" rx="4" fill="#fef2f2"/>
+<text x="36" y="257" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Omni-ID IQ600 EU</text>
+<text x="330" y="257" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">94 × 24 mm</text>
+<text x="452" y="257" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza R6</text>
+<rect x="790" y="244" width="42" height="16" rx="8" fill="#b91c1c"/>
+<text x="811" y="256" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">OM</text>
+<rect x="24" y="268" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="286" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">identytag Wet Inlay</text>
+<text x="330" y="286" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">53 × 53 mm</text>
+<text x="452" y="286" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza 4D</text>
+<rect x="790" y="273" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="285" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="297" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="315" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">identytag SmartLabel</text>
+<text x="330" y="315" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">100 × 150 mm</text>
+<text x="452" y="315" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza R6</text>
+<rect x="790" y="302" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="314" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="326" width="852" height="26" rx="4" fill="#fef2f2"/>
+<text x="36" y="344" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">identytag Smart Label (on metal)</text>
+<text x="330" y="344" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">54 × 25 mm</text>
+<text x="452" y="344" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">NXP UCODE 7XM</text>
+<rect x="790" y="331" width="42" height="16" rx="8" fill="#b91c1c"/>
+<text x="811" y="343" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">OM</text>
+<rect x="24" y="355" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="373" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Confidex Automotive Carrier Pro</text>
+<text x="330" y="373" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">92 × 24 mm</text>
+<text x="452" y="373" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza 4QT/4G</text>
+<rect x="790" y="360" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="372" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="384" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="402" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Confidex Casey</text>
+<text x="330" y="402" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">92 × 24 mm</text>
+<text x="452" y="402" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza R6-P</text>
+<rect x="790" y="389" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="401" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<rect x="24" y="413" width="852" height="26" rx="4" fill="#f8fafc"/>
+<text x="36" y="431" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Confidex Automotive Kanban</text>
+<text x="330" y="431" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">80 × 208 mm</text>
+<text x="452" y="431" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="normal" text-anchor="start">Impinj Monza 4E</text>
+<rect x="790" y="418" width="42" height="16" rx="8" fill="#1d4ed8"/>
+<text x="811" y="430" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="700" text-anchor="middle">RS</text>
+<text x="24" y="464" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">A pirossal jelölt sorok fémre szánt címkék — ezekhez az OM antenna kell.</text>
+<text x="24" y="484" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">Forrás: cab „Catalog UHF RFID label printers”, 2025/03.</text>
+</svg>

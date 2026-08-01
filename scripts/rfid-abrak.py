@@ -53,9 +53,16 @@ CEGELOTAG, CIKKSZAM, SOROZAT = '5990123', '045678', 1
 EPC_HEX, EPC_BIT = sgtin96(CEGELOTAG, CIKKSZAM, SOROZAT, szuro=1)
 
 
+def xml(t):
+    """Szöveg XML-be. Az & és a < a rajz szövegében is előfordul („print & apply”),
+    és escapelés nélkül érvénytelen SVG-t ad — a hiba pedig csak megjelenítéskor
+    derülne ki, a fájl írásakor nem."""
+    return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
 def sz(x, y, t, meret=13, betu=None, szin=TINTA, sulyt='normal', igazit='start'):
     return (f'<text x="{x}" y="{y}" font-family="{betu or SANS}" font-size="{meret}" '
-            f'fill="{szin}" font-weight="{sulyt}" text-anchor="{igazit}">{t}</text>')
+            f'fill="{szin}" font-weight="{sulyt}" text-anchor="{igazit}">{xml(t)}</text>')
 
 
 def fej(szeles, magas):
@@ -114,7 +121,7 @@ def cimke_felepites():
 # 2. Frekvenciasávok
 # ——————————————————————————————————————————————————————————————
 def frekvenciak():
-    SZ, MA = 900, 330
+    SZ, MA = 900, 350
     r = fej(SZ, MA)
     r.append(sz(24, 30, 'A három RFID-frekvenciasáv', 15, SANS, TINTA, '600'))
     fejlec = [('SÁV', 24), ('FREKVENCIA', 150), ('OLVASÁSI TÁV', 300), ('FÉM / FOLYADÉK', 450), ('TIPIKUS HASZNÁLAT', 640)]
@@ -295,3 +302,129 @@ if __name__ == '__main__':
         print(f'  {nev:28} {len(svg):6} bájt')
     print(f'\nAz SGTIN-96 kódoló egyezik a GS1 hivatkozási példájával.')
     print(f'A cikk EPC-példája: GTIN 5990123456783 + sorozatszám {SOROZAT} → {EPC_HEX}')
+
+
+# ——————————————————————————————————————————————————————————————
+# 6–8. A cab UHF RFID katalógusából (2025/03)
+# ——————————————————————————————————————————————————————————————
+def modulok():
+    """A négy antennaválasztás: hol ül, és mire való.
+
+    A kulcs, amit a katalógus kimond: az OM antenna a NYOMTATÓFEJEN, az RS és a
+    HS az ADAGOLÓEGYSÉGEN ül. Nem ízlés kérdése tehát, hanem az dönti el,
+    milyen címkét fogunk használni.
+    """
+    SZ, MA = 900, 412
+    r = fej(SZ, MA)
+    r.append(sz(24, 30, 'A cab négy UHF RFID antennaválasztása', 15, SANS, TINTA, '600'))
+    r.append(sz(24, 54, 'Az antenna helye nem mindegy: az OM a nyomtatófejen, az RS és a HS az adagolóegységen ül.',
+                12, SANS, HALVANY))
+    sorok = [
+        ('OM', 'On Metal', 'a nyomtatófejen', 'ha a címke FÉM felületre megy', PIROS),
+        ('RS', 'Regular Sensitivity', 'az adagolóegységen', 'az alapeset: a szokásos RFID-címkékhez', KEK),
+        ('HS', 'High Sensitivity', 'az adagolóegységen', 'ha a címkének különleges sugárzási jellemzői vannak', VILKEK),
+        ('OM + RS', 'mindkettő', 'fejen és adagolón', 'mindkét antenna külön-külön ír és olvas', BOROSTYAN),
+    ]
+    y = 76
+    for rov, nev, hely, mire, szin in sorok:
+        r.append(f'<rect x="24" y="{y}" width="852" height="58" rx="8" fill="#f8fafc"/>')
+        r.append(f'<rect x="24" y="{y}" width="6" height="58" rx="3" fill="{szin}"/>')
+        r.append(sz(46, y + 26, rov, 17, SANS, szin, '700'))
+        r.append(sz(46, y + 46, nev, 11, SANS, HALVANY))
+        r.append(sz(190, y + 36, hely, 13, SANS, TINTA, '600'))
+        r.append(sz(392, y + 36, mire, 13, SANS, TINTA))
+        y += 64
+    r.append(f'<rect x="24" y="{y+6}" width="852" height="56" rx="8" fill="#fef3c7"/>')
+    r.append(sz(46, y + 30, 'A modul mindkét régió sávját ismeri (ETSI és FCC), a szabvány UHF EPC Class 1 Gen 2 / ISO/IEC 18000-63.',
+                13, SANS, TINTA, '600'))
+    r.append(sz(46, y + 50, 'Forrás: cab „Catalog UHF RFID label printers”, 2025/03.', 11, SANS, HALVANY))
+    r.append('</svg>')
+    return '\n'.join(r)
+
+
+def gep_matrix():
+    """Melyik géphez melyik modul — a katalógus táblázata alapján."""
+    SZ, MA = 900, 452
+    r = fej(SZ, MA)
+    r.append(sz(24, 30, 'Melyik géphez melyik RFID-modul?', 15, SANS, TINTA, '600'))
+    oszlopok = ['OM', 'RS', 'HS', 'OM+RS']
+    x0, ow = 470, 96
+    for i, o in enumerate(oszlopok):
+        r.append(sz(x0 + i * ow + ow / 2, 62, o, 12, SANS, HALVANY, '700', 'middle'))
+    sorok = [
+        ('SQUIX 4.3 / 4 / 4.3 M / 4 M', 'asztali és ipari címkenyomtató', [1, 1, 1, 1], ''),
+        ('SQUIX 6.3 / 8.3', 'szélesebb nyomtatási kép', [0, 1, 1, 0], 'tervezés alatt'),
+        ('HERMES Q4.3 / Q4 / Q6.3', 'print & apply gyártósorra', [0, 1, 1, 0], ''),
+        ('PX Q4.3 / Q4 / Q6.3', 'beépíthető nyomtatómodul', [1, 1, 1, 0], 'az antenna a fejre kerül'),
+        ('XD Q4/300', 'kétoldalas nyomtatás végtelen anyagra', [1, 0, 0, 0], ''),
+    ]
+    y = 76
+    for nev, leiras, jelolt, megj in sorok:
+        r.append(f'<rect x="24" y="{y}" width="852" height="56" rx="8" fill="#f8fafc"/>')
+        r.append(sz(46, y + 26, nev, 14, SANS, TINTA, '700'))
+        r.append(sz(46, y + 45, leiras + (f' — {megj}' if megj else ''), 11, SANS, HALVANY))
+        for i, van in enumerate(jelolt):
+            cx = x0 + i * ow + ow / 2
+            if van:
+                r.append(f'<circle cx="{cx}" cy="{y+28}" r="11" fill="{KEK}"/>')
+                r.append(f'<path d="M {cx-5} {y+28} L {cx-1} {y+32} L {cx+5} {y+23}" fill="none" '
+                         f'stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>')
+            else:
+                r.append(f'<path d="M {cx-6} {y+28} L {cx+6} {y+28}" stroke="{VONAL}" stroke-width="2.4" stroke-linecap="round"/>')
+        y += 62
+    r.append(sz(24, y + 24, 'A hibás címkét a nyomtató érvénytelennek jelöli; a PX Q-nál a 4214-es applikátor ki is tudja dobni.',
+                13, SANS, TINTA, '600'))
+    r.append(sz(24, y + 44, 'Forrás: cab „Catalog UHF RFID label printers”, 2025/03. A pontos elérhetőséget rendeléskor egyeztetjük.',
+                11, SANS, HALVANY))
+    r.append('</svg>')
+    return '\n'.join(r)
+
+
+def minositett_cimkek():
+    """A katalógusban felsorolt, bemért címkék — chippel és mérettel együtt."""
+    SZ, MA = 900, 506
+    r = fej(SZ, MA)
+    r.append(sz(24, 30, 'Bemért címkék a cab katalógusából', 15, SANS, TINTA, '600'))
+    r.append(sz(24, 52, 'Ezekkel a gyártó már elvégezte a párosítást — jó kiindulópont, de a saját terméken ettől még mérni kell.',
+                12, SANS, HALVANY))
+    fejlec = [('CÍMKE', 24), ('MÉRET', 330), ('CHIP', 452), ('ANTENNA', 790)]
+    for cim, x in fejlec:
+        r.append(sz(x, 82, cim, 10, SANS, HALVANY, '700'))
+    sorok = [
+        ('Avery Dennison BJ 269 WET WHITE', '93 × 22 mm', 'NXP UCODE 7xm', 'RS'),
+        ('Avery Dennison BR800 WET WHITE', '93 × 22 mm', 'NXP UCODE 8', 'RS'),
+        ('Avery Dennison BU117 WET WHITE', '25 × 18 mm', 'NXP G2iM', 'HS'),
+        ('Omni-ID IQ400 P', '94 × 24 mm', 'Alien Higgs 3', 'RS'),
+        ('Omni-ID IQ150 EU', '54 × 12 mm', 'Impinj Monza R6', 'OM'),
+        ('Omni-ID IQ600 EU', '94 × 24 mm', 'Impinj Monza R6', 'OM'),
+        ('identytag Wet Inlay', '53 × 53 mm', 'Impinj Monza 4D', 'RS'),
+        ('identytag SmartLabel', '100 × 150 mm', 'Impinj Monza R6', 'RS'),
+        ('identytag Smart Label (on metal)', '54 × 25 mm', 'NXP UCODE 7XM', 'OM'),
+        ('Confidex Automotive Carrier Pro', '92 × 24 mm', 'Impinj Monza 4QT/4G', 'RS'),
+        ('Confidex Casey', '92 × 24 mm', 'Impinj Monza R6-P', 'RS'),
+        ('Confidex Automotive Kanban', '80 × 208 mm', 'Impinj Monza 4E', 'RS'),
+    ]
+    SZIN = {'OM': PIROS, 'RS': KEK, 'HS': VILKEK}
+    y = 94
+    for nev, meret, chip, ant in sorok:
+        r.append(f'<rect x="24" y="{y}" width="852" height="26" rx="4" fill="{"#f8fafc" if ant != "OM" else "#fef2f2"}"/>')
+        r.append(sz(36, y + 18, nev, 12, SANS, TINTA))
+        r.append(sz(330, y + 18, meret, 12, BETU, TINTA))
+        r.append(sz(452, y + 18, chip, 12, SANS, TINTA))
+        r.append(f'<rect x="790" y="{y+5}" width="42" height="16" rx="8" fill="{SZIN[ant]}"/>')
+        r.append(sz(811, y + 17, ant, 11, SANS, '#ffffff', '700', 'middle'))
+        y += 29
+    r.append(sz(24, y + 22, 'A pirossal jelölt sorok fémre szánt címkék — ezekhez az OM antenna kell.', 12, SANS, HALVANY))
+    r.append(sz(24, y + 42, 'Forrás: cab „Catalog UHF RFID label printers”, 2025/03.', 11, SANS, HALVANY))
+    r.append('</svg>')
+    return '\n'.join(r)
+
+
+if __name__ == '__main__':
+    for _nev, _svg in {
+        'rfid-modulok.svg': modulok(),
+        'rfid-gepek.svg': gep_matrix(),
+        'rfid-minositett-cimkek.svg': minositett_cimkek(),
+    }.items():
+        open(os.path.join(KI, _nev), 'w', encoding='utf-8').write(_svg)
+        print(f'  {_nev:30} {len(_svg):6} bájt')
