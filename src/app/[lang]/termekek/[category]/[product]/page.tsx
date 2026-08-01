@@ -173,7 +173,7 @@ export default async function ProductPage({
                       strokeLinejoin="round"
                     />
                   </svg>
-                  {dict.products.freeDownload}
+                  {product.downloadLabel?.[lang] ?? dict.products.freeDownload}
                 </a>
               )}
               {product.datasheet && (
