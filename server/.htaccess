@@ -44,6 +44,28 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # RewriteCond %{HTTPS} !=on
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+# ——— bluewaytrade.us: építés alatt ————————————————————————————————
+# A .us domain ugyanezen a tárhelyen él (a tanúsítvány mind a négy nevet
+# fedi). Amíg nincs saját tartalma, minden kérése az /us/index.html-t kapja.
+#
+# Átírás és NEM átirányítás: a látogató a bluewaytrade.us címen marad, nem
+# dobjuk át a magyar oldalra. Az /us/ alatti fájlok kimaradnak a szabályból,
+# különben a logó is a HTML-t kapná vissza kép helyett.
+#
+# A www-s alak ide már nem jut el: azt a fenti szabály levágja.
+#
+# Megjegyzés: ha a .us a tárhelyen SAJÁT könyvtárat kapott, ez a szabály nem
+# érinti — akkor az /us/ mappa tartalmát oda kell feltölteni. A deploy ezt
+# megteszi, ha a FORPSI_US_WEB_ROOT secret meg van adva.
+RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
+RewriteCond %{REQUEST_URI} !^/us/
+RewriteRule ^ /us/index.html [L]
+
+# A blueway.hu-n viszont ne legyen elérhető: aki odatéved, csak összezavarodna
+# egy „under construction” oldaltól a működő weblap alatt.
+RewriteCond %{HTTP_HOST} !^bluewaytrade\.us$ [NC]
+RewriteRule ^us/ - [R=404,L]
+
 # ——— Átnevezett oldalak ——————————————————————————————————————————
 # A 6014-es applikátorból új változat jött ki 6114 néven, ezért az oldal címe
 # is megváltozott. A régi cím már indexelve lehet a keresőkben, és hivatkozás

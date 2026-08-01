@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blueway Trade — Under construction</title>
+    <meta
+      name="description"
+      content="Our website for the United States is under construction. In the meantime, visit blueway.hu or write to info@blueway.hu."
+    />
+    <!--
+      Átmeneti oldal: NEM kerülhet a keresőbe. Ha most indexelődne, a
+      bluewaytrade.us később az „under construction” szöveggel jelenne meg a
+      találati listában, és az indexből kikerülni lassabb, mint bekerülni.
+    -->
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <style>
+      :root {
+        --tinta: #0f172a;
+        --halvany: #64748b;
+        --kek: #1d4ed8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        padding: 2rem 1.5rem 3rem;
+        text-align: center;
+        color: var(--tinta);
+        font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        /* A halvány kék derengés ugyanaz a márkaszín, mint a weblapon. */
+        background:
+          radial-gradient(1100px 620px at 50% -10%, #eff6ff 0%, rgba(239, 246, 255, 0) 70%),
+          #ffffff;
+      }
+      /* A logó az oldal főszereplője, ezért nagy. A kép 1008 px széles, tehát
+         720 px-es megjelenítésnél még a nagy felbontású (2×) kijelzőn is éles
+         marad; ennél nagyobbra nem engedjük, mert ott már lágyulna. */
+      .logo {
+        width: min(90vw, 720px);
+        height: auto;
+        display: block;
+      }
+      .allo {
+        display: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .mozgo {
+          display: none;
+        }
+        .allo {
+          display: block;
+        }
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 5vw, 2.25rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0.75rem 0 0;
+        max-width: 34rem;
+        font-size: clamp(0.95rem, 2.6vw, 1.0625rem);
+        line-height: 1.6;
+        color: var(--halvany);
+      }
+      .linkek {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        margin-top: 1.75rem;
+      }
+      a.gomb {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 999px;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.15s, border-color 0.15s;
+      }
+      a.elsodleges {
+        background: var(--kek);
+        color: #ffffff;
+      }
+      a.elsodleges:hover {
+        background: #1e40af;
+      }
+      a.masodlagos {
+        border: 1px solid #cbd5e1;
+        color: var(--tinta);
+      }
+      a.masodlagos:hover {
+        border-color: var(--halvany);
+      }
+      footer {
+        margin-top: 0.5rem;
+        font-size: 0.8125rem;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      class="logo mozgo"
+      src="blueway-logo-anim.webp"
+      alt="Blueway Trade"
+      width="1008"
+      height="288"
+    />
+    <img
+      class="logo allo"
+      src="blueway-logo-still.png"
+      alt="Blueway Trade"
+      width="1008"
+      height="288"
+    />
+
+    <div>
+      <h1>Under construction</h1>
+      <p>
+        Our website for the United States is on the way. Until it goes live, our European site
+        has the full product range, and we answer enquiries from the US the same way.
+      </p>
+      <div class="linkek">
+        <a class="gomb elsodleges" href="https://blueway.hu/en">Visit blueway.hu</a>
+        <a class="gomb masodlagos" href="mailto:info@blueway.hu">info@blueway.hu</a>
+      </div>
+    </div>
+
+    <footer>Blueway Trade Kft. — product marking and labelling solutions</footer>
+  </body>
+</html>
