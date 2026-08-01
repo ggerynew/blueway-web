@@ -55,6 +55,10 @@ jobs:
       SITE_URL: ${{ secrets.SITE_URL || 'https://blueway.hu' }}
       HAS_SSH: ${{ secrets.FORPSI_SSH_KEY != '' }}
       HAS_FTP: ${{ secrets.FORPSI_FTP_PASSWORD != '' }}
+      # Csak akkor van dolgunk vele, ha a .us SAJÁT webgyökeret kapott a
+      # tárhelyen. Ha ugyanabból a mappából szolgálják ki, a .htaccess intézi,
+      # és ez a secret üresen maradhat.
+      HAS_US_ROOT: ${{ secrets.FORPSI_US_WEB_ROOT != '' }}
     steps:
       - name: Van-e mihez kapcsolódni?
         id: gate
@@ -99,7 +103,16 @@ jobs:
 
       - name: A szerveroldali fájlok a feltöltendő mappába
         if: steps.gate.outputs.go == 'true'
-        run: cp server/.htaccess server/send.php server/.user.ini out/
+        run: |
+          cp server/.htaccess server/send.php server/.user.ini out/
+          # A bluewaytrade.us átmeneti oldala. A mappa ÖNMAGÁBAN teljes (HTML,
+          # logó, ikon), hogy akkor is feltölthető legyen, ha a .us saját
+          # webgyökeret kapott a tárhelyen — akkor ugyanez a mappa megy oda.
+          # A logó itt nagyobb felbontású, mint a weblap fejlécében: ezen a
+          # lapon ez az egyetlen tartalom, és nagy méretben jelenik meg.
+          cp -r server/us out/us
+          test -s out/us/blueway-logo-anim.webp
+          test -s out/us/blueway-logo-still.png
 
       - name: Ellenőrzés — a build nem üres
         if: steps.gate.outputs.go == 'true'
@@ -359,6 +372,25 @@ jobs:
             echo "(a napló üres, vagy még nem jött létre — azóta nem futott küldés)"
           fi
 
+      # ——— A bluewaytrade.us saját webgyökere ————————————————————————
+      # Csak akkor fut, ha a .us külön mappát kapott a tárhelyen. Ilyenkor a
+      # blueway.hu .htaccess-e nem érvényes rá, tehát az átmeneti oldalt oda
+      # is fel kell tölteni. Négy fájl, néhány másodperc.
+      - name: A bluewaytrade.us átmeneti oldala a saját gyökerébe
+        if: steps.gate.outputs.go == 'true' && env.HAS_FTP == 'true' && env.HAS_US_ROOT == 'true'
+        env:
+          FTP_HOST: ${{ secrets.FORPSI_FTP_HOST }}
+          FTP_USER: ${{ secrets.FORPSI_FTP_USER }}
+          LFTP_PASSWORD: ${{ secrets.FORPSI_FTP_PASSWORD }}
+          US_ROOT: ${{ secrets.FORPSI_US_WEB_ROOT }}
+        run: |
+          set -euo pipefail
+          echo "Az /us mappa feltöltése ide: $US_ROOT"
+          lftp -u "$FTP_USER" --env-password \
+            -e "set ftp:passive-mode true; set ftp:sync-mode false; set net:max-retries 2; \
+                set net:timeout 20; mirror -R --parallel=4 out/us/ '$US_ROOT/'; bye" \
+            "$FTP_HOST"
+
       - name: Ellenőrzés — betölt-e az oldal
         if: steps.gate.outputs.go == 'true'
         env:
@@ -394,6 +426,34 @@ jobs:
             echo "::warning::$BAJ útvonal nem 200-zal zárult. Ha a fenti IP-cím még a régi kiszolgálóé, a DNS terjedésére kell várni."
           else
             echo "A weblap kiszolgálása rendben — minden próbált útvonal 200-zal zárult."
+          fi
+
+          # ——— A bluewaytrade.us átmeneti lapja ————————————————————
+          # Ez a domain még nem biztos, hogy erre a tárhelyre mutat, ezért a
+          # próba SOHA nem bukhat el — csak tájékoztat. Két dolgot néz:
+          #   1. ugyanarra az IP-címre mutat-e, mint a blueway.hu (ha nem, a
+          #      DNS-t kell átállítani, a feltöltött lapot senki nem látja),
+          #   2. az „Under construction” szöveg érkezik-e vissza.
+          echo "— bluewaytrade.us —"
+          FO_IP=$(getent hosts "$HOSZT" | awk '{print $1}' | sort -u | tr '\n' ' ')
+          US_IP=$(getent hosts bluewaytrade.us | awk '{print $1}' | sort -u | tr '\n' ' ')
+          echo "  blueway.hu IP: ${FO_IP:-nincs} / bluewaytrade.us IP: ${US_IP:-nincs}"
+          if [ -z "$US_IP" ]; then
+            echo "::warning::A bluewaytrade.us nem oldható fel — a DNS-bejegyzés hiányzik vagy még nem terjedt el."
+          else
+            USV=$(curl -sSL -o /tmp/us.html --max-time 25 -w '%{http_code}' "http://bluewaytrade.us/" || echo 000)
+            echo "  GET http://bluewaytrade.us/ -> $USV"
+            if [ "$USV" = "200" ] && grep -qi 'under construction' /tmp/us.html; then
+              echo "  az átmeneti lap kint van"
+              # A logó külön kérés: ha a kép 404-es, a lap üresen tátong.
+              LOGOV=$(curl -sSL -o /dev/null --max-time 20 -w '%{http_code}' "http://bluewaytrade.us/blueway-logo-anim.webp" || echo 000)
+              echo "  GET /blueway-logo-anim.webp -> $LOGOV"
+              [ "$LOGOV" = "200" ] || echo "::warning::A bluewaytrade.us logója nem érhető el ($LOGOV) — a lap logó nélkül jelenik meg."
+            elif [ "$USV" = "200" ]; then
+              echo "::warning::A bluewaytrade.us válaszol, de nem az átmeneti lapot adja — vagy külön dokumentumgyökere van (ekkor a FORPSI_US_WEB_ROOT titkot kell beállítani), vagy máshová mutat a DNS."
+            else
+              echo "::warning::A bluewaytrade.us nem 200-zal felelt ($USV)."
+            fi
           fi
 
           # Érvényesül-e egyáltalán a .htaccess? A gyorsítótár-fejlécet a mi
