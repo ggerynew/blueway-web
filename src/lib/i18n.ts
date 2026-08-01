@@ -70,6 +70,7 @@ export const dictionaries = {
       backToProducts: 'Termékek',
       requestQuote: 'Ajánlatot kérek erre a termékre',
       datasheet: 'Adatlap letöltése (PDF)',
+      freeDownload: 'Ingyenes verzió letöltése',
       featuresTitle: 'Főbb jellemzők',
       otherProducts: 'További termékek a kategóriában',
       labelsTile: {
@@ -594,6 +595,7 @@ export const dictionaries = {
       backToProducts: 'Products',
       requestQuote: 'Request a quote for this product',
       datasheet: 'Download datasheet (PDF)',
+      freeDownload: 'Download the free version',
       featuresTitle: 'Key features',
       otherProducts: 'More products in this category',
       labelsTile: {
@@ -1117,6 +1119,7 @@ export const dictionaries = {
       backToProducts: 'Produkte',
       requestQuote: 'Angebot für dieses Produkt anfordern',
       datasheet: 'Datenblatt herunterladen (PDF)',
+      freeDownload: 'Kostenlose Version herunterladen',
       featuresTitle: 'Wichtigste Merkmale',
       otherProducts: 'Weitere Produkte dieser Kategorie',
       labelsTile: {
@@ -1639,6 +1642,7 @@ export const dictionaries = {
       backToProducts: 'Prodotti',
       requestQuote: 'Richiedi un preventivo per questo prodotto',
       datasheet: 'Scarica la scheda tecnica (PDF)',
+      freeDownload: 'Scarica la versione gratuita',
       featuresTitle: 'Caratteristiche principali',
       otherProducts: 'Altri prodotti di questa categoria',
       labelsTile: {
@@ -2162,6 +2166,7 @@ export const dictionaries = {
       backToProducts: 'Productos',
       requestQuote: 'Solicitar presupuesto de este producto',
       datasheet: 'Descargar ficha técnica (PDF)',
+      freeDownload: 'Descargar la versión gratuita',
       featuresTitle: 'Características principales',
       otherProducts: 'Más productos de esta categoría',
       labelsTile: {
@@ -2685,6 +2690,7 @@ export const dictionaries = {
       backToProducts: '제품',
       requestQuote: '이 제품 견적 요청',
       datasheet: '데이터시트 다운로드 (PDF)',
+      freeDownload: '무료 버전 다운로드',
       featuresTitle: '주요 특징',
       otherProducts: '이 카테고리의 다른 제품',
       labelsTile: {
@@ -3206,6 +3212,7 @@ export const dictionaries = {
       backToProducts: '产品',
       requestQuote: '获取该产品报价',
       datasheet: '下载产品资料 (PDF)',
+      freeDownload: '下载免费版',
       featuresTitle: '主要特点',
       otherProducts: '该分类的其他产品',
       labelsTile: {
