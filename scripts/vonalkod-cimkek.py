@@ -44,9 +44,14 @@ def savok(sav, x0, y0, modul, magassag):
     return r
 
 
+def xml(t):
+    """Szöveg XML-be: az & és a < escapelés nélkül érvénytelen SVG-t adna."""
+    return str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+
+
 def szoveg(x, y, t, meret=13, betu=None, szin=TINTA, sulyt='normal', igazit='start'):
-    return (f'<text x="{x}" y="{y}" font-family="{betu or SANS}" font-size="{meret}" '
-            f'fill="{szin}" font-weight="{sulyt}" text-anchor="{igazit}">{t}</text>')
+    return (f'<text x="{{x}}" y="{{y}}" font-family="{{betu or SANS}}" font-size="{{meret}}" '
+            f'fill="{{szin}}" font-weight="{{sulyt}}" text-anchor="{{igazit}}">{{xml(t)}}</text>')
 
 
 # ——————————————————————————————————————————————————————————————

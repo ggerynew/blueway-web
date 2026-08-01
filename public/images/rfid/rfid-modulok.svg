@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 412" width="900" height="412" role="img">
+<rect width="900" height="412" fill="#ffffff"/>
+<text x="24" y="30" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="600" text-anchor="start">A cab négy UHF RFID antennaválasztása</text>
+<text x="24" y="54" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="12" fill="#64748b" font-weight="normal" text-anchor="start">Az antenna helye nem mindegy: az OM a nyomtatófejen, az RS és a HS az adagolóegységen ül.</text>
+<rect x="24" y="76" width="852" height="58" rx="8" fill="#f8fafc"/>
+<rect x="24" y="76" width="6" height="58" rx="3" fill="#b91c1c"/>
+<text x="46" y="102" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" fill="#b91c1c" font-weight="700" text-anchor="start">OM</text>
+<text x="46" y="122" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">On Metal</text>
+<text x="190" y="112" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">a nyomtatófejen</text>
+<text x="392" y="112" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">ha a címke FÉM felületre megy</text>
+<rect x="24" y="140" width="852" height="58" rx="8" fill="#f8fafc"/>
+<rect x="24" y="140" width="6" height="58" rx="3" fill="#1d4ed8"/>
+<text x="46" y="166" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" fill="#1d4ed8" font-weight="700" text-anchor="start">RS</text>
+<text x="46" y="186" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">Regular Sensitivity</text>
+<text x="190" y="176" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">az adagolóegységen</text>
+<text x="392" y="176" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">az alapeset: a szokásos RFID-címkékhez</text>
+<rect x="24" y="204" width="852" height="58" rx="8" fill="#f8fafc"/>
+<rect x="24" y="204" width="6" height="58" rx="3" fill="#0284c7"/>
+<text x="46" y="230" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" fill="#0284c7" font-weight="700" text-anchor="start">HS</text>
+<text x="46" y="250" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">High Sensitivity</text>
+<text x="190" y="240" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">az adagolóegységen</text>
+<text x="392" y="240" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">ha a címkének különleges sugárzási jellemzői vannak</text>
+<rect x="24" y="268" width="852" height="58" rx="8" fill="#f8fafc"/>
+<rect x="24" y="268" width="6" height="58" rx="3" fill="#b45309"/>
+<text x="46" y="294" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" fill="#b45309" font-weight="700" text-anchor="start">OM + RS</text>
+<text x="46" y="314" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">mindkettő</text>
+<text x="190" y="304" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">fejen és adagolón</text>
+<text x="392" y="304" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="start">mindkét antenna külön-külön ír és olvas</text>
+<rect x="24" y="338" width="852" height="56" rx="8" fill="#fef3c7"/>
+<text x="46" y="362" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#0f172a" font-weight="600" text-anchor="start">A modul mindkét régió sávját ismeri (ETSI és FCC), a szabvány UHF EPC Class 1 Gen 2 / ISO/IEC 18000-63.</text>
+<text x="46" y="382" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">Forrás: cab „Catalog UHF RFID label printers”, 2025/03.</text>
+</svg>
