@@ -33,9 +33,17 @@ SC = pathlib.Path('/tmp/claude-0/-home-user-blueway-web/2ebbcacd-f1b9-5af6-8a4a-
 NAGY = SC / 'logo' / 'Blueway Vector Logo.png'   # 2654×779, ugyanaz a rajz élesebben
 KOCKAK = sorted(glob.glob(str(SC / 'kockak2' / '*.png')))  # 145 kocka, 1008×288, átlátszó
 
-#: Mennyivel nőjön a hézag: a betűszélesség hányada. 0,10 kis méretben is
-#: olvashatóan elválasztja a betűket, de a szó még egyben marad.
-TOBBLET = 0.10
+#: A CÉLZOTT legszűkebb hézag betűpáronként, az átlagos betűszélesség
+#: hányadában.
+#:
+#: Nem egyenletes többletet adunk, hanem minden párt ugyanarra a hézagra
+#: hozunk. Az eredetiben ugyanis a B|L 2, az L|U 0, az U|E 2 és az E|W 0
+#: képpont, a W|A viszont 43, az A|Y 64 — mert az átlós élű betűk között a
+#: hézag felfelé kinyílik, a függőleges élűek között nem. Egyenletes
+#: többlettől a WAY túl szellős lenne, a BLUE meg még mindig szűk.
+#:
+#: Ahol a pár már tágabb a célnál, ott nem szűkítünk.
+CEL_HEZAG = 0.28
 
 SOROK = {
     'BLUEWAY': dict(y=(212, 447), x=(0, 1760),
@@ -77,11 +85,26 @@ def betuk_szetvalasztasa():
     return rgb, ki
 
 
-def uj_felirat(rgb, betuk, tobblet_arany):
-    """A felirat újrarajzolása nagyobb hézagokkal, RGBA-ban, átlátszó háttérrel."""
+def legszukebb_hezag(m1, m2):
+    """A két betű legkisebb vízszintes távolsága azokban a sorokban, ahol
+    mindkettőnek van tartalma. A szem ezt látja hézagnak — nem a befoglaló
+    dobozok távolságát, ami az átlós betűknél félrevezet."""
+    tavok = []
+    for y in range(m1.shape[0]):
+        a = np.where(m1[y])[0]
+        b = np.where(m2[y])[0]
+        if len(a) and len(b) and b.max() > a.max():
+            d = b.min() - a.max() - 1
+            if d >= 0:
+                tavok.append(d)
+    return min(tavok) if tavok else 0
+
+
+def uj_felirat(rgb, betuk, cel_arany):
+    """A felirat újrarajzolása egyenletes optikai hézagokkal, RGBA-ban."""
     H, W = rgb.shape[:2]
     kimenet = np.zeros((H, W, 4), np.uint8)
-    for lista in betuk.values():
+    for sor, lista in betuk.items():
         dobozok = []
         for betu, m in lista:
             ys, xs = np.where(m)
@@ -89,11 +112,17 @@ def uj_felirat(rgb, betuk, tobblet_arany):
         bal = min(d[1] for d in dobozok); jobb = max(d[2] for d in dobozok)
         teljes = jobb - bal + 1
         atlagszel = float(np.mean([d[2] - d[1] + 1 for d in dobozok]))
-        tobblet = atlagszel * tobblet_arany
-        skala = teljes / (teljes + tobblet * (len(dobozok) - 1))
+        cel = atlagszel * cel_arany
+        # páronként annyi többlet, amennyi a célhézaghoz hiányzik
+        tobbletek = []
+        for i in range(len(lista) - 1):
+            most = legszukebb_hezag(lista[i][1], lista[i + 1][1])
+            tobbletek.append(max(0.0, cel - most))
+            print(f'    {sor} {lista[i][0]}|{lista[i+1][0]}: {most} → {most + tobbletek[-1]:.0f} px')
+        skala = teljes / (teljes + sum(tobbletek))
         kozep_y = (min(d[3] for d in dobozok) + max(d[4] for d in dobozok)) / 2
         eltolas = 0.0
-        for m, x0, x1, y0, y1 in dobozok:
+        for bi, (m, x0, x1, y0, y1) in enumerate(dobozok):
             szin = rgb[y0:y1 + 1, x0:x1 + 1].astype(np.uint8)
             msk = (m[y0:y1 + 1, x0:x1 + 1] * 255).astype(np.uint8)
             uw = max(1, round((x1 - x0 + 1) * skala)); uh = max(1, round((y1 - y0 + 1) * skala))
@@ -101,15 +130,16 @@ def uj_felirat(rgb, betuk, tobblet_arany):
             kmsk = np.array(Image.fromarray(msk).resize((uw, uh), Image.LANCZOS))
             ux = round(bal + (x0 - bal) * skala + eltolas)
             uy = round(kozep_y + (y0 - kozep_y) * skala)
-            cel = kimenet[uy:uy + uh, ux:ux + uw]
-            if cel.shape[:2] != (uh, uw):
-                uh, uw = cel.shape[:2]
+            ter = kimenet[uy:uy + uh, ux:ux + uw]
+            if ter.shape[:2] != (uh, uw):
+                uh, uw = ter.shape[:2]
                 kszin, kmsk = kszin[:uh, :uw], kmsk[:uh, :uw]
             # ahol az új betű átlátszóbb, ott ne törölje a már meglévőt
-            hol = kmsk > cel[..., 3]
-            cel[..., :3][hol] = kszin[hol]
-            cel[..., 3][hol] = kmsk[hol]
-            eltolas += tobblet * skala
+            hol = kmsk > ter[..., 3]
+            ter[..., :3][hol] = kszin[hol]
+            ter[..., 3][hol] = kmsk[hol]
+            if bi < len(tobbletek):
+                eltolas += tobbletek[bi] * skala
     return kimenet
 
 
@@ -132,7 +162,7 @@ def felirat_maszk(kockak):
 
 def main():
     rgb, betuk = betuk_szetvalasztasa()
-    uj = uj_felirat(rgb, betuk, TOBBLET)
+    uj = uj_felirat(rgb, betuk, CEL_HEZAG)
 
     kockak = [np.array(Image.open(f).convert('RGBA')) for f in KOCKAK]
     maszk = felirat_maszk(kockak)
@@ -140,20 +170,27 @@ def main():
     regi_doboz = (xs.min(), ys.min(), xs.max(), ys.max())
     print(f'a régi felirat helye a kockán: x={regi_doboz[0]}-{regi_doboz[2]} y={regi_doboz[1]}-{regi_doboz[3]}')
 
-    # az új felirat ugyanabba a dobozba
+    # Az új felirat a régi doboz SZÉLESSÉGÉRE kerül, az arányát megtartva.
+    # A magasságra feszíteni hiba lenne: a nagyobb hézagok miatt a betűk
+    # keskenyebbek, tehát a felirat alacsonyabb — a régi magasságba
+    # kényszerítve függőlegesen megnyúlna.
     uys, uxs = np.where(uj[..., 3] > 40)
     uj_kivag = uj[uys.min():uys.max() + 1, uxs.min():uxs.max() + 1]
     cw = regi_doboz[2] - regi_doboz[0] + 1
-    ch = regi_doboz[3] - regi_doboz[1] + 1
+    ch = round(uj_kivag.shape[0] * cw / uj_kivag.shape[1])
     uj_kicsi = np.array(Image.fromarray(uj_kivag).resize((cw, ch), Image.LANCZOS))
-    print(f'az új felirat {uj_kivag.shape[1]}×{uj_kivag.shape[0]} → {cw}×{ch}')
+    # függőlegesen a régi felirat közepére igazítva
+    kozep = (regi_doboz[1] + regi_doboz[3]) / 2
+    uy0 = round(kozep - ch / 2)
+    print(f'az új felirat {uj_kivag.shape[1]}×{uj_kivag.shape[0]} → {cw}×{ch}, '
+          f'y={uy0}-{uy0 + ch - 1} (a régi {regi_doboz[1]}-{regi_doboz[3]})')
 
     KI = SC / 'ujkockak'
     KI.mkdir(exist_ok=True)
     for i, k in enumerate(kockak):
         k = k.copy()
         k[maszk] = 0                                   # a régi felirat törlése
-        sav = k[regi_doboz[1]:regi_doboz[3] + 1, regi_doboz[0]:regi_doboz[2] + 1]
+        sav = k[uy0:uy0 + ch, regi_doboz[0]:regi_doboz[2] + 1]
         a = uj_kicsi[..., 3:4].astype(float) / 255.0    # alfa szerinti keverés
         sav[..., :3] = (uj_kicsi[..., :3] * a + sav[..., :3] * (1 - a)).astype(np.uint8)
         sav[..., 3] = np.maximum(sav[..., 3], uj_kicsi[..., 3])
