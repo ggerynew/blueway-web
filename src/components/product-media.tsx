@@ -16,12 +16,21 @@ export interface ProductMediaLabels {
   imageClose: string;
 }
 
-type Tab = 'photo' | 'video' | '3d';
+/** A videófülek azonosítója sorszámozott: 'video-0', 'video-1', … */
+type Tab = 'photo' | '3d' | `video-${number}`;
+
+/** Egy videó a fülsoron: a YouTube-azonosító és — ha van — a saját címe. */
+export interface ProductVideo {
+  videoId: string;
+  /** Mit mutat ez a videó. Csak a kiegészítő videóknak van, a fő videónak nincs. */
+  label?: string;
+}
 
 export function ProductMedia({
   name,
   image,
   videoId,
+  extraVideos,
   model3d,
   model3dIsDemo,
   labels,
@@ -29,6 +38,8 @@ export function ProductMedia({
   name: string;
   image?: string;
   videoId?: string;
+  /** További videók a fő videó mellé — mindegyik saját fület kap. */
+  extraVideos?: ProductVideo[];
   model3d?: string;
   model3dIsDemo?: boolean;
   labels: ProductMediaLabels;
@@ -42,11 +53,25 @@ export function ProductMedia({
     }
   }, [model3d]);
 
+  // A fő videó és a kiegészítők egyetlen listát alkotnak: a látogató
+  // szempontjából mind ugyanolyan videó, csak mást mutatnak.
+  const videok: ProductVideo[] = [
+    ...(videoId ? [{ videoId }] : []),
+    ...(extraVideos ?? []),
+  ];
+
   const tabs: { id: Tab; label: string }[] = [
     { id: 'photo', label: labels.photo },
-    ...(videoId ? [{ id: 'video' as Tab, label: labels.video }] : []),
+    // Egy videónál a felirat marad „Videó”. Többnél sorszámozunk, mert
+    // három egyforma „Videó” fül között nem lehet választani.
+    ...videok.map((_, i) => ({
+      id: `video-${i}` as Tab,
+      label: videok.length > 1 ? `${labels.video} ${i + 1}` : labels.video,
+    })),
     ...(model3d ? [{ id: '3d' as Tab, label: labels.view3d }] : []),
   ];
+
+  const aktivVideo = tab.startsWith('video-') ? videok[Number(tab.slice(6))] : undefined;
 
   return (
     <div>
@@ -94,14 +119,23 @@ export function ProductMedia({
             </div>
           )}
 
-          {tab === 'video' && videoId && (
-            <iframe
-              className="h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
-              title={`${name} — video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+          {aktivVideo && (
+            <>
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${aktivVideo.videoId}?rel=0`}
+                title={aktivVideo.label ? `${name} — ${aktivVideo.label}` : `${name} — video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              {/* A sorszám nem mondja meg, mit mutat a videó — a saját címe
+                  igen. Ezért a kiegészítő videóknál az is kiírjuk. */}
+              {aktivVideo.label && (
+                <p className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 rounded-full bg-ink/70 px-3 py-1 text-xs text-white">
+                  {aktivVideo.label}
+                </p>
+              )}
+            </>
           )}
 
           {tab === '3d' && model3d && (
