@@ -636,6 +636,12 @@ const productsSource: Sourced<Product[]> = [
     image: '/images/products/cab-eos2.webp',
     datasheet: '/datasheets/cab-eos.pdf',
     videoId: 'mFCv2GaNkg0',
+    extraVideos: [
+      {
+        videoId: 'RqS25uZIMnU',
+        label: { hu: 'Az EOS2 és EOS5 bemutatása', en: 'Introducing the EOS2 and EOS5', de: 'Die EOS2 und EOS5 im Überblick', it: 'Presentazione di EOS2 ed EOS5', es: 'Presentación de la EOS2 y la EOS5', ko: 'EOS2와 EOS5 소개', zh: 'EOS2 与 EOS5 介绍' },
+      },
+    ],
   },
   {
     slug: 'cab-eos5',
@@ -660,6 +666,12 @@ const productsSource: Sourced<Product[]> = [
     image: '/images/products/cab-eos5.webp',
     datasheet: '/datasheets/cab-eos.pdf',
     videoId: 'mFCv2GaNkg0',
+    extraVideos: [
+      {
+        videoId: 'RqS25uZIMnU',
+        label: { hu: 'Az EOS2 és EOS5 bemutatása', en: 'Introducing the EOS2 and EOS5', de: 'Die EOS2 und EOS5 im Überblick', it: 'Presentazione di EOS2 ed EOS5', es: 'Presentación de la EOS2 y la EOS5', ko: 'EOS2와 EOS5 소개', zh: 'EOS2 与 EOS5 介绍' },
+      },
+    ],
   },
   {
     slug: 'cab-mach1',
@@ -753,6 +765,12 @@ const productsSource: Sourced<Product[]> = [
     image: '/images/products/cab-xc4.webp',
     datasheet: '/datasheets/cab-xcq.pdf',
     videoId: 'xqlxvt3fOX4',
+    extraVideos: [
+      {
+        videoId: 'HTGYb6krA6w',
+        label: { hu: 'Kétszínű nyomtatás egy menetben', en: 'Two-color printing in one pass', de: 'Zweifarbiger Druck in einem Durchlauf', it: 'Stampa a due colori in un unico passaggio', es: 'Impresión a dos colores en una sola pasada', ko: '한 번의 공정으로 2색 인쇄', zh: '一次走纸完成双色打印' },
+      },
+    ],
   },
   {
     slug: 'cab-xc6',
@@ -777,6 +795,12 @@ const productsSource: Sourced<Product[]> = [
     image: '/images/products/cab-xc6.webp',
     datasheet: '/datasheets/cab-xcq.pdf',
     videoId: 'xqlxvt3fOX4',
+    extraVideos: [
+      {
+        videoId: 'HTGYb6krA6w',
+        label: { hu: 'Kétszínű nyomtatás egy menetben', en: 'Two-color printing in one pass', de: 'Zweifarbiger Druck in einem Durchlauf', it: 'Stampa a due colori in un unico passaggio', es: 'Impresión a dos colores en una sola pasada', ko: '한 번의 공정으로 2색 인쇄', zh: '一次走纸完成双色打印' },
+      },
+    ],
   },
   {
     slug: 'cab-xd-q',
@@ -1277,6 +1301,7 @@ const productsSource: Sourced<Product[]> = [
     category: 'cimkezo-gepek',
     name: 'CAB HERMES C',
     brand: 'CAB',
+    videoId: 'uZAnXGVG8OI',
     short: {
       hu: 'A világ első kétszínű print & apply rendszere — GHS veszélyesanyag-címkékhez.',
       en: 'The world’s first two-colour print & apply system — for GHS hazard labels.', it: 'Il primo sistema stampa e applica bicolore al mondo — per etichette di pericolo GHS.', es: 'El primer sistema de imprimir y aplicar a dos colores del mundo — para etiquetas de peligro GHS.', de: 'Das weltweit erste zweifarbige Print-and-Apply-System — für GHS-Gefahrstoffetiketten.', ko: '세계 최초의 2색 프린트 & 어플라이 시스템 — GHS 위험물 라벨용.', zh: '全球首套双色打印贴标系统——适用于 GHS 危险品标签。',
@@ -1301,6 +1326,7 @@ const productsSource: Sourced<Product[]> = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB HS',
     brand: 'CAB',
+    videoId: 'uCZya7sY4o4',
     image: '/images/products/cab-hs.webp',
     datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
@@ -1323,6 +1349,7 @@ const productsSource: Sourced<Product[]> = [
     category: 'cimke-adagolo-gepek',
     name: 'CAB VS',
     brand: 'CAB',
+    videoId: 'uCZya7sY4o4',
     image: '/images/products/cab-vs.webp',
     datasheet: '/datasheets/cab-hsvs.pdf',
     short: {
@@ -1495,6 +1522,13 @@ const productsSource: Sourced<Product[]> = [
     category: 'szoftverek',
     name: 'cablabel S3',
     brand: 'CAB',
+    videoId: 'tnYI0QV9gZc',
+    extraVideos: [
+      {
+        videoId: '5XdbbQP-RAM',
+        label: { hu: 'Excel-tábla beillesztése a címkébe', en: 'Inserting an Excel file into the label', de: 'Excel-Datei ins Etikett einfügen', it: 'Inserire un file Excel nell’etichetta', es: 'Insertar un archivo de Excel en la etiqueta', ko: '라벨에 엑셀 파일 삽입하기', zh: '将 Excel 表格插入标签' },
+      },
+    ],
     image: '/images/brand/cab-logo.png',
     short: {
       hu: 'cab címketervező és -nyomtató szoftver, teljes körű eszközvezérléssel.',
