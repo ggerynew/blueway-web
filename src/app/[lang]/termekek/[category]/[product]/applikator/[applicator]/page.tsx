@@ -230,6 +230,7 @@ export default async function ApplicatorPage({
               recipient={dict.contact.email}
               productName={`${productName(product, lang)} — ${applicator.name[lang]}`}
               lang={lang}
+              honeypotLabel={dict.ui.honeypot}
             />
             <LegalNotice lang={lang} />
           </div>

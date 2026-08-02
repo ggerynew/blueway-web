@@ -91,7 +91,11 @@ export default async function ContactPage({
 
         <Reveal delay={0.18}>
           <div className="rounded-2xl border border-line bg-white p-6 md:p-8">
-            <ContactForm labels={contact.form} recipient={contact.email} />
+            <ContactForm
+              labels={contact.form}
+              recipient={contact.email}
+              honeypotLabel={dict.ui.honeypot}
+            />
             <LegalNotice lang={lang} />
           </div>
         </Reveal>

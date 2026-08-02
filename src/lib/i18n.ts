@@ -21,6 +21,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: 'Menü megnyitása',
+      honeypot: 'Ezt a mezőt hagyja üresen',
       closeMenu: 'Menü bezárása',
       skipToContent: 'Ugrás a tartalomra',
       searchApplicator: 'applikátor',
@@ -291,7 +292,7 @@ export const dictionaries = {
     },
     faq: {
       title: 'Gyakori kérdések',
-      lead: 'A leggyakoribb kérdések a gépekről, szervizről, garanciáról és a címkegyártásról — ha nem talál választ, írjon nekünk.',
+      lead: 'A leggyakoribb kérdések a gépekről, szervizről és garanciáról, a címkeanyagokról, a vonalkódokról és az RFID-ről — ha nem talál választ, írjon nekünk.',
       short: 'Garancia, szerviz, ajánlatkérés, minták — a leggyakoribb kérdések egy helyen.',
       items: [
         {
@@ -335,6 +336,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: 'Milyen címkeanyagot és ragasztót válasszak?',
+          a: 'A felső anyagot a megjelenés és a tartósság dönti el (papír, PP/PE fólia, PET, poliimid), a ragasztót pedig a felület és a felragasztás hőmérséklete: permanens, erős, visszaszedhető, hűtőházi vagy mélyfagyasztós. A Tudástár címkeanyag-cikke tipikus feladatokhoz párosítja az anyagot, a ragasztót és a szalagot.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: 'Mit jelent a hordozó nélküli (linerless) címke?',
+          a: 'Azt, hogy nincs szilikonozott hátlap: a ragasztó közvetlenül a szalagon van, a címkét pedig a nyomtató vágja méretre. Így nem keletkezik hordozó-hulladék, lényegesen több címke fér egy tekercsre, és a címkék hossza feladatonként eltérhet. Cserébe csak közvetlen termikus nyomtatás megy rá, és erre készült gép kell: asztali feladatra a CAB SQUIX Linerless, gyártósorra a CAB HERMES QL.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: 'A címkéző szoftverekhez adnak támogatást?',
           a: 'Igen — a cab cablabel S3 és a Loftware / NiceLabel szoftverek kiválasztásában, bevezetésében és használatában is segítünk.',
           href: '/termekek/szoftverek',
@@ -358,6 +369,21 @@ export const dictionaries = {
           q: 'Hogyan ellenőrizhető, hogy megfelelő minőségű-e a nyomtatott kód?',
           a: 'Szabványos minősítéssel (ISO/IEC 15416 és 15415), amely A-tól F-ig osztályozza a nyomatot. Ez történhet kézi verifikátorral szúrópróbaszerűen, vagy 100 %-osan a nyomtatásba integrálva — utóbbira a POSTEK OX sorozat kínál megoldást.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Honnan van a raklapcímke SSCC-száma?',
+          a: 'A GS1-től kapott cégelőtagból, a hozzá fűzött saját sorszámból és egy ellenőrző számjegyből áll össze — összesen 18 számjegy, amit 12 hónapon belül nem szabad újra kiadni. A GTIN hasonló elven épül fel. A Tudástár vonalkód-cikke lépésről lépésre végigveszi a felépítést, az ellenőrzőszám számítását, valamint egy karton- és egy raklapcímke teljes tartalmát.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: 'Tudunk RFID-címkét írni a címkenyomtatónkkal?',
+          a: 'Igen, ha a gépben van UHF RFID modul. Az író-olvasó antenna a nyomtatófejre vagy az adagolóegységre kerül, a chip írása pedig a nyomtatással egy menetben történik; ha a chip hibás, a nyomtató érvényteleníti a címkét, hogy ne kerüljön a termékre. Asztali gépnél ez a CAB SQUIX RFID, gyártósoron a CAB HERMES Q RFID.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: 'Mire figyeljünk az RFID-címke kiválasztásánál?',
+          a: 'Elsősorban arra, milyen felületre kerül, és mekkora a címke. Fémre külön, „on-metal” címke való, és ahhoz a nyomtatófejre szerelt OM antenna; a szokásos címkékhez az RS, a nagyon apró vagy sajátos sugárzási képű chipekhez a HS antenna. A címkét és az antennát együtt kell kiválasztani — utólag az egyiket a másikhoz igazítani drága.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: 'Milyen anyagokat lehet lézerrel jelölni?',
@@ -546,6 +572,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: 'Open menu',
+      honeypot: 'Leave this field empty',
       closeMenu: 'Close menu',
       skipToContent: 'Skip to content',
       searchApplicator: 'applicator',
@@ -816,7 +843,7 @@ export const dictionaries = {
     },
     faq: {
       title: 'Frequently asked questions',
-      lead: 'The most common questions about machines, service, warranty and label production — if you cannot find an answer, write to us.',
+      lead: 'The most common questions about machines, service and warranty, label materials, barcodes and RFID — if you cannot find an answer, write to us.',
       short: 'Warranty, service, quotes, samples — the most common questions in one place.',
       items: [
         {
@@ -860,6 +887,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: 'Which face material and adhesive should I choose?',
+          a: 'The face material follows from appearance and durability (paper, PP/PE film, PET, polyimide); the adhesive follows from the surface and the temperature at which the label is applied: permanent, high-tack, removable, chilled or deep-freeze. Our label-materials guide pairs material, adhesive and ribbon for typical tasks.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: 'What does a linerless label mean?',
+          a: 'It means there is no siliconised backing: the adhesive sits on the web itself and the printer cuts each label to length. So no liner waste is produced, far more labels fit on a roll, and label length can differ from job to job. In exchange it only takes direct thermal printing, and it needs a machine built for it: the CAB SQUIX Linerless for desktop work, the CAB HERMES QL for a production line.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: 'Do you support the labeling software?',
           a: 'Yes — we help with selecting, implementing and using cab cablabel S3 and Loftware / NiceLabel software.',
           href: '/termekek/szoftverek',
@@ -883,6 +920,21 @@ export const dictionaries = {
           q: 'How can we check that a printed code is good enough?',
           a: 'By standard grading (ISO/IEC 15416 and 15415), which rates the print from A to F. It can be done on a sample basis with a handheld verifier, or 100 % integrated into printing — the POSTEK OX series offers the latter.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Where does the SSCC on a pallet label come from?',
+          a: 'From the company prefix issued by GS1, your own serial number appended to it, and a check digit — 18 digits in all, which must not be reused within 12 months. The GTIN is built on the same principle. Our barcode guide walks through the structure step by step, the check-digit calculation, and the full content of a carton and a pallet label.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: 'Can we write RFID labels with our label printer?',
+          a: 'Yes, if the machine has a UHF RFID module. The read/write antenna sits on the print head or the feeding unit, and the chip is written in the same pass as the printing; if the chip is faulty the printer marks the label invalid so it never reaches the product. On a desktop machine that is the CAB SQUIX RFID; on a production line, the CAB HERMES Q RFID.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: 'What should we watch for when choosing an RFID label?',
+          a: 'Above all the surface it goes onto, and the size of the label. Metal needs a dedicated “on-metal” label and the OM antenna mounted on the print head; ordinary labels take the RS antenna, and very small tags or those with unusual radiation characteristics take HS. Label and antenna have to be chosen together — fitting one to the other afterwards is expensive.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: 'Which materials can be laser marked?',
@@ -1070,6 +1122,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: 'Menü öffnen',
+      honeypot: 'Dieses Feld bitte leer lassen',
       closeMenu: 'Menü schließen',
       skipToContent: 'Zum Inhalt springen',
       searchApplicator: 'Applikator',
@@ -1339,7 +1392,7 @@ export const dictionaries = {
     },
     faq: {
       title: 'Häufige Fragen',
-      lead: 'Die häufigsten Fragen zu Maschinen, Service, Garantie und Etikettenproduktion — falls Sie keine Antwort finden, schreiben Sie uns.',
+      lead: 'Die häufigsten Fragen zu Maschinen, Service und Garantie, zu Etikettenmaterialien, Barcodes und RFID — falls Sie keine Antwort finden, schreiben Sie uns.',
       short: 'Garantie, Service, Angebote, Muster — die häufigsten Fragen an einem Ort.',
       items: [
         {
@@ -1383,6 +1436,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: 'Welches Obermaterial und welchen Klebstoff soll ich wählen?',
+          a: 'Das Obermaterial ergibt sich aus Optik und Haltbarkeit (Papier, PP/PE-Folie, PET, Polyimid), der Klebstoff aus der Oberfläche und der Temperatur beim Aufbringen: permanent, hochhaftend, ablösbar, Kühlhaus oder Tiefkühl. Unser Beitrag zu Etikettenmaterialien ordnet typischen Aufgaben Material, Klebstoff und Farbband zu.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: 'Was bedeutet ein trägerloses (linerless) Etikett?',
+          a: 'Dass es kein silikonisiertes Trägerpapier gibt: Der Klebstoff sitzt auf der Bahn selbst, und der Drucker schneidet jedes Etikett auf Länge. So entsteht kein Trägerabfall, es passen deutlich mehr Etiketten auf eine Rolle, und die Etikettenlänge darf je Auftrag anders sein. Dafür ist nur Thermodirektdruck möglich, und es braucht eine dafür gebaute Maschine: den CAB SQUIX Linerless für den Tisch, den CAB HERMES QL für die Fertigungslinie.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: 'Unterstützen Sie die Etikettensoftware?',
           a: 'Ja — wir helfen bei Auswahl, Einführung und Nutzung der Software cab cablabel S3 und Loftware / NiceLabel.',
           href: '/termekek/szoftverek',
@@ -1406,6 +1469,21 @@ export const dictionaries = {
           q: 'Wie lässt sich prüfen, ob ein gedruckter Code gut genug ist?',
           a: 'Durch die genormte Klassifizierung (ISO/IEC 15416 und ISO/IEC 15415), die den Druck von A bis F bewertet. Sie kann stichprobenweise mit einem Handheld-Verifizierer erfolgen oder zu 100 % in den Druck integriert werden — Letzteres bietet die POSTEK OX Serie.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Woher kommt die SSCC auf dem Palettenetikett?',
+          a: 'Aus dem von GS1 vergebenen Unternehmenspräfix, der eigenen angehängten Seriennummer und einer Prüfziffer — insgesamt 18 Stellen, die innerhalb von 12 Monaten nicht erneut vergeben werden dürfen. Die GTIN ist nach demselben Prinzip aufgebaut. Unser Barcode-Beitrag geht Aufbau und Prüfzifferberechnung Schritt für Schritt durch, samt vollständigem Inhalt eines Karton- und eines Palettenetiketts.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: 'Können wir mit unserem Etikettendrucker RFID-Etiketten beschreiben?',
+          a: 'Ja, wenn im Gerät ein UHF-RFID-Modul steckt. Die Schreib-/Leseantenne sitzt am Druckkopf oder an der Zuführeinheit, und der Chip wird im selben Durchlauf wie der Druck beschrieben; ist der Chip fehlerhaft, kennzeichnet der Drucker das Etikett als ungültig, damit es nicht an das Produkt gelangt. Beim Tischgerät ist das der CAB SQUIX RFID, in der Fertigungslinie der CAB HERMES Q RFID.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: 'Worauf achten wir bei der Wahl des RFID-Etiketts?',
+          a: 'Vor allem auf die Oberfläche, auf die es kommt, und auf die Größe des Etiketts. Für Metall braucht es ein eigenes „On-Metal“-Etikett und die am Druckkopf montierte OM-Antenne; für gewöhnliche Etiketten die RS-Antenne, für sehr kleine Tags oder solche mit besonderer Abstrahlcharakteristik die HS-Antenne. Etikett und Antenne müssen zusammen gewählt werden — das eine nachträglich an das andere anzupassen ist teuer.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: 'Welche Materialien lassen sich laserbeschriften?',
@@ -1593,6 +1671,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: 'Apri il menu',
+      honeypot: 'Lasciare vuoto questo campo',
       closeMenu: 'Chiudi il menu',
       skipToContent: 'Vai al contenuto',
       searchApplicator: 'applicatore',
@@ -1863,7 +1942,7 @@ export const dictionaries = {
     },
     faq: {
       title: 'Domande frequenti',
-      lead: 'Le domande più frequenti su macchine, assistenza, garanzia e produzione di etichette — se non trova una risposta, ci scriva.',
+      lead: 'Le domande più frequenti su macchine, assistenza e garanzia, materiali per etichette, codici a barre e RFID — se non trova una risposta, ci scriva.',
       short: 'Garanzia, assistenza, preventivi, campioni — le domande più frequenti in un unico posto.',
       items: [
         {
@@ -1907,6 +1986,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: 'Quale materiale e quale adesivo scegliere?',
+          a: 'Il materiale di supporto dipende da aspetto e durata (carta, film PP/PE, PET, poliimmide), l’adesivo dalla superficie e dalla temperatura di applicazione: permanente, high-tack, removibile, per celle frigorifere o per surgelati. La nostra guida ai materiali abbina materiale, adesivo e ribbon alle attività tipiche.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: 'Che cosa significa etichetta senza liner (linerless)?',
+          a: 'Significa che non c’è supporto siliconato: l’adesivo è sul nastro stesso e la stampante taglia ogni etichetta a misura. Non si produce quindi scarto di liner, entrano molte più etichette per rotolo e la lunghezza può cambiare da un lavoro all’altro. In cambio è possibile solo la stampa termica diretta, e serve una macchina costruita per questo: la CAB SQUIX Linerless da tavolo, la CAB HERMES QL per la linea di produzione.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: 'Offrite supporto per il software di etichettatura?',
           a: 'Sì — aiutiamo nella scelta, nell’implementazione e nell’utilizzo dei software cab cablabel S3 e Loftware / NiceLabel.',
           href: '/termekek/szoftverek',
@@ -1930,6 +2019,21 @@ export const dictionaries = {
           q: 'Come possiamo verificare che un codice stampato sia di qualità sufficiente?',
           a: 'Con la verifica normalizzata (ISO/IEC 15416 e 15415), che valuta la stampa da A a F. Può essere eseguita a campione con un verificatore portatile oppure integrata al 100 % nella stampa — la serie POSTEK OX offre questa seconda possibilità.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: 'Da dove viene l’SSCC dell’etichetta pallet?',
+          a: 'Dal prefisso aziendale assegnato da GS1, dal numero seriale che vi si aggiunge e da una cifra di controllo: 18 cifre in tutto, che non vanno riutilizzate entro 12 mesi. Il GTIN segue lo stesso principio. La nostra guida ai codici a barre illustra passo per passo la struttura, il calcolo della cifra di controllo e il contenuto completo di un’etichetta cartone e di una pallet.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: 'Possiamo scrivere etichette RFID con la nostra stampante?',
+          a: 'Sì, se la macchina ha un modulo UHF RFID. L’antenna di lettura/scrittura è sulla testina di stampa o sull’unità di alimentazione, e il chip viene scritto nello stesso passaggio della stampa; se il chip è difettoso la stampante contrassegna l’etichetta come non valida, così non arriva al prodotto. Su macchina da tavolo è la CAB SQUIX RFID, in linea di produzione la CAB HERMES Q RFID.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: 'A che cosa fare attenzione nella scelta dell’etichetta RFID?',
+          a: 'Soprattutto alla superficie su cui verrà applicata e alle dimensioni dell’etichetta. Per il metallo serve un’etichetta “on-metal” dedicata e l’antenna OM montata sulla testina di stampa; per le etichette comuni l’antenna RS, per i tag molto piccoli o con caratteristiche di irradiazione particolari la HS. Etichetta e antenna vanno scelte insieme: adattare l’una all’altra a posteriori è costoso.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: 'Quali materiali possono essere marcati a laser?',
@@ -2117,6 +2221,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: 'Abrir el menú',
+      honeypot: 'Deje este campo vacío',
       closeMenu: 'Cerrar el menú',
       skipToContent: 'Ir al contenido',
       searchApplicator: 'aplicador',
@@ -2387,7 +2492,7 @@ export const dictionaries = {
     },
     faq: {
       title: 'Preguntas frecuentes',
-      lead: 'Las preguntas más habituales sobre máquinas, servicio técnico, garantía y producción de etiquetas — si no encuentra la respuesta, escríbanos.',
+      lead: 'Las preguntas más habituales sobre máquinas, servicio técnico y garantía, materiales de etiqueta, códigos de barras y RFID — si no encuentra la respuesta, escríbanos.',
       short: 'Garantía, servicio técnico, presupuestos, muestras — las preguntas más habituales en un solo lugar.',
       items: [
         {
@@ -2431,6 +2536,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: '¿Qué material de cara y qué adhesivo debo elegir?',
+          a: 'El material de cara depende del aspecto y la durabilidad (papel, film PP/PE, PET, poliimida); el adhesivo, de la superficie y de la temperatura de aplicación: permanente, high-tack, removible, para cámara frigorífica o para congelados. Nuestra guía de materiales empareja material, adhesivo y ribbon para tareas típicas.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: '¿Qué significa etiqueta sin liner (linerless)?',
+          a: 'Que no hay soporte siliconado: el adhesivo está en la propia banda y la impresora corta cada etiqueta a medida. Así no se genera residuo de liner, caben muchas más etiquetas por rollo y la longitud puede variar de un trabajo a otro. A cambio solo admite impresión térmica directa y hace falta una máquina construida para ello: la CAB SQUIX Linerless de sobremesa, o la CAB HERMES QL para línea de producción.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: '¿Dan soporte al software de etiquetado?',
           a: 'Sí — le ayudamos con la selección, la implantación y el uso del software cab cablabel S3 y Loftware / NiceLabel.',
           href: '/termekek/szoftverek',
@@ -2454,6 +2569,21 @@ export const dictionaries = {
           q: '¿Cómo podemos comprobar que un código impreso tiene calidad suficiente?',
           a: 'Mediante la verificación normalizada (ISO/IEC 15416 e ISO/IEC 15415), que califica la impresión de la A a la F. Puede hacerse por muestreo con un verificador manual o al 100 % integrada en la impresión — esto último lo ofrece la serie POSTEK OX.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '¿De dónde sale el SSCC de la etiqueta de palé?',
+          a: 'Del prefijo de empresa asignado por GS1, del número de serie propio que se le añade y de un dígito de control: 18 dígitos en total, que no deben reutilizarse antes de 12 meses. El GTIN se construye con el mismo principio. Nuestra guía de códigos de barras recorre paso a paso la estructura, el cálculo del dígito de control y el contenido completo de una etiqueta de caja y de una de palé.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: '¿Podemos grabar etiquetas RFID con nuestra impresora?',
+          a: 'Sí, si la máquina lleva un módulo UHF RFID. La antena de lectura/escritura va en el cabezal de impresión o en la unidad de alimentación, y el chip se graba en la misma pasada que la impresión; si el chip está defectuoso, la impresora marca la etiqueta como no válida para que no llegue al producto. En equipo de sobremesa es la CAB SQUIX RFID; en línea de producción, la CAB HERMES Q RFID.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: '¿En qué fijarse al elegir una etiqueta RFID?',
+          a: 'Sobre todo en la superficie sobre la que se aplicará y en el tamaño de la etiqueta. El metal exige una etiqueta “on-metal” específica y la antena OM montada en el cabezal de impresión; las etiquetas habituales llevan la antena RS, y los tags muy pequeños o con características de radiación particulares, la HS. Etiqueta y antena deben elegirse juntas: adaptar una a la otra a posteriori sale caro.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: '¿Qué materiales se pueden marcar con láser?',
@@ -2641,6 +2771,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: '메뉴 열기',
+      honeypot: '이 항목은 비워 두십시오',
       closeMenu: '메뉴 닫기',
       skipToContent: '본문으로 건너뛰기',
       searchApplicator: '어플리케이터',
@@ -2910,7 +3041,7 @@ export const dictionaries = {
     },
     faq: {
       title: '자주 묻는 질문',
-      lead: '장비, 서비스, 보증, 라벨 제작에 관한 가장 흔한 질문들 — 답을 찾지 못하셨다면 문의해 주세요.',
+      lead: '장비와 서비스, 보증은 물론 라벨 소재와 바코드, RFID에 관한 가장 흔한 질문들 — 답을 찾지 못하셨다면 문의해 주세요.',
       short: '보증, 서비스, 견적, 샘플 — 자주 묻는 질문을 한곳에.',
       items: [
         {
@@ -2954,6 +3085,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: '어떤 표면재와 접착제를 선택해야 하나요?',
+          a: '표면재는 외관과 내구성에 따라 정해집니다(종이, PP/PE 필름, PET, 폴리이미드). 접착제는 부착면과 부착 시 온도에 따라 영구접착, 강접착, 재박리, 냉장용, 냉동용 중에서 고릅니다. 라벨 소재 문서에서 대표적인 용도별로 소재·접착제·리본의 조합을 정리해 두었습니다.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: '라이너리스 라벨이란 무엇인가요?',
+          a: '실리콘 처리된 이형지가 없다는 뜻입니다. 접착제가 웹 자체에 있고, 프린터가 라벨을 길이에 맞춰 절단합니다. 따라서 이형지 폐기물이 생기지 않고, 롤당 라벨 수가 크게 늘며, 작업마다 라벨 길이를 다르게 할 수 있습니다. 대신 감열 직접 인쇄만 가능하며 전용 장비가 필요합니다. 데스크톱 용도에는 CAB SQUIX Linerless, 생산 라인에는 CAB HERMES QL이 적합합니다.',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: '라벨링 소프트웨어 지원도 제공하나요?',
           a: '네 — cab cablabel S3 및 Loftware / NiceLabel 소프트웨어의 선택, 도입, 사용을 지원합니다.',
           href: '/termekek/szoftverek',
@@ -2977,6 +3118,21 @@ export const dictionaries = {
           q: '인쇄된 코드가 충분히 양호한지 어떻게 확인할 수 있습니까?',
           a: '표준 등급 판정(ISO/IEC 15416 및 ISO/IEC 15415)을 통해 확인하며, 인쇄 품질을 A부터 F까지 평가합니다. 휴대용 검증기로 표본 검사할 수도 있고, 인쇄 공정에 100% 통합할 수도 있습니다. 후자는 POSTEK OX 시리즈가 제공합니다.',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '팔레트 라벨의 SSCC 번호는 어디서 오나요?',
+          a: 'GS1이 발급한 업체 식별 코드와 여기에 붙이는 자체 일련번호, 그리고 검증 숫자로 구성됩니다. 모두 18자리이며 12개월 이내에 재사용해서는 안 됩니다. GTIN도 같은 원리로 구성됩니다. 바코드 문서에서 구성 방식과 검증 숫자 계산을 단계별로 설명하고, 박스 라벨과 팔레트 라벨의 전체 내용도 함께 다룹니다.',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: '보유한 라벨 프린터로 RFID 라벨을 기록할 수 있나요?',
+          a: '장비에 UHF RFID 모듈이 있다면 가능합니다. 읽기/쓰기 안테나는 프린트 헤드나 피딩 유닛에 장착되며, 칩 기록은 인쇄와 같은 공정에서 이루어집니다. 칩이 불량이면 프린터가 해당 라벨을 무효로 표시해 제품에 부착되지 않도록 합니다. 데스크톱 기종은 CAB SQUIX RFID, 생산 라인은 CAB HERMES Q RFID입니다.',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: 'RFID 라벨을 선택할 때 무엇을 살펴야 하나요?',
+          a: '무엇보다 부착면과 라벨 크기입니다. 금속에는 전용 ‘온메탈’ 라벨과 프린트 헤드에 장착하는 OM 안테나가 필요합니다. 일반적인 라벨에는 RS 안테나를, 매우 작거나 방사 특성이 특수한 태그에는 HS 안테나를 사용합니다. 라벨과 안테나는 함께 선정해야 하며, 나중에 한쪽을 다른 쪽에 맞추려면 비용이 많이 듭니다.',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: '레이저 마킹이 가능한 소재는 무엇입니까?',
@@ -3163,6 +3319,7 @@ export const dictionaries = {
     },
     ui: {
       openMenu: '打开菜单',
+      honeypot: '请留空此字段',
       closeMenu: '关闭菜单',
       skipToContent: '跳转到主要内容',
       searchApplicator: '贴标器',
@@ -3432,7 +3589,7 @@ export const dictionaries = {
     },
     faq: {
       title: '常见问题',
-      lead: '关于设备、服务、保修和标签生产的常见问题 — 如果没有找到答案，请联系我们。',
+      lead: '关于设备、服务与保修，以及标签材料、条码和 RFID 的常见问题 — 如果没有找到答案，请联系我们。',
       short: '保修、服务、询价、样品 — 常见问题一站式解答。',
       items: [
         {
@@ -3476,6 +3633,16 @@ export const dictionaries = {
           href: '/tudastar/festekszalag-valaszto',
         },
         {
+          q: '该选什么面材和胶粘剂？',
+          a: '面材由外观与耐久性决定（纸张、PP/PE 薄膜、PET、聚酰亚胺）；胶粘剂则取决于被贴表面和贴标时的温度：永久型、强粘型、可移除型、冷藏型或冷冻型。知识库的标签材料文章按典型任务给出了材料、胶粘剂与碳带的搭配。',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
+          q: '无底纸（linerless）标签是什么意思？',
+          a: '指的是没有硅油底纸：胶粘剂直接在料带上，由打印机把每张标签切到所需长度。这样不会产生底纸废料，每卷能容纳的标签多得多，而且标签长度可以逐个任务不同。代价是只能采用热敏直接打印，并且需要专为此设计的机器：桌面作业用 CAB SQUIX Linerless，产线上用 CAB HERMES QL。',
+          href: '/tudastar/cimkeanyagok',
+        },
+        {
           q: '你们提供标签软件支持吗？',
           a: '是的 — 我们协助选择、部署和使用 cab cablabel S3 和 Loftware / NiceLabel 软件。',
           href: '/termekek/szoftverek',
@@ -3499,6 +3666,21 @@ export const dictionaries = {
           q: '如何检查打印出的条码是否足够好？',
           a: '采用标准等级评定（ISO/IEC 15416 和 ISO/IEC 15415），按 A 到 F 对打印质量进行分级。既可以用手持式验证仪抽样检测，也可以 100% 集成到打印过程中——后者由 POSTEK OX 系列提供。',
           href: '/tudastar/vonalkod-nyomtatas',
+        },
+        {
+          q: '托盘标签上的 SSCC 号从哪里来？',
+          a: '由 GS1 分配的厂商识别代码、在其后附加的自有流水号，以及一位校验位组成——共 18 位，且 12 个月内不得重复使用。GTIN 的构成原理相同。知识库的条码文章逐步讲解了其构成与校验位的计算，并给出了纸箱标签与托盘标签的完整内容。',
+          href: '/tudastar/vonalkod-tipusok',
+        },
+        {
+          q: '我们的标签打印机能写 RFID 标签吗？',
+          a: '如果机器装有 UHF RFID 模块就可以。读写天线位于打印头或送纸单元上，芯片写入与打印在同一次走纸中完成；若芯片有故障，打印机会把该标签标记为无效，使其不会贴到产品上。桌面机型是 CAB SQUIX RFID，产线上则是 CAB HERMES Q RFID。',
+          href: '/tudastar/rfid-cimkek',
+        },
+        {
+          q: '选择 RFID 标签时要注意什么？',
+          a: '首先是贴附的表面和标签尺寸。金属需要专门的“抗金属”标签，并配装在打印头上的 OM 天线；常规标签用 RS 天线，极小的芯片或辐射特性特殊的芯片则用 HS 天线。标签与天线必须一起选定——事后再让一方去迁就另一方代价很高。',
+          href: '/tudastar/rfid-cimkek',
         },
         {
           q: '哪些材料可以进行激光打标？',

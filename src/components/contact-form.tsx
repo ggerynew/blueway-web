@@ -11,9 +11,12 @@ type FormLabels = Dictionary['contact']['form'];
 export function ContactForm({
   labels,
   recipient,
+  honeypotLabel,
 }: {
   labels: FormLabels;
   recipient: string;
+  /** A rejtett csapdamező felirata a lap nyelvén. */
+  honeypotLabel: string;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -61,7 +64,7 @@ export function ContactForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate={false}>
-      <Honeypot />
+      <Honeypot label={honeypotLabel} />
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>

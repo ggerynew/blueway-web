@@ -48,10 +48,13 @@ export function LabelQuoteForm({
   labels,
   recipient,
   lang,
+  honeypotLabel,
 }: {
   labels: Labels;
   recipient: string;
   lang: Locale;
+  /** A rejtett csapdamező felirata a lap nyelvén. */
+  honeypotLabel: string;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -150,7 +153,7 @@ export function LabelQuoteForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
-      <Honeypot />
+      <Honeypot label={honeypotLabel} />
       {/* Kapcsolattartó */}
       <section>
         <h2 className="text-sm font-medium tracking-wide text-ink uppercase">

@@ -346,6 +346,7 @@ export default async function ProductPage({
               recipient={dict.contact.email}
               productName={productName(product, lang)}
               lang={lang}
+              honeypotLabel={dict.ui.honeypot}
             />
             <LegalNotice lang={lang} />
           </div>

@@ -67,10 +67,13 @@ export function ServiceRequestForm({
   labels,
   recipient,
   lang,
+  honeypotLabel,
 }: {
   labels: Labels;
   recipient: string;
   lang: Locale;
+  /** A rejtett csapdamező felirata a lap nyelvén. */
+  honeypotLabel: string;
 }) {
   const [kuldes, setKuldes] = useState(false);
 
@@ -141,7 +144,7 @@ export function ServiceRequestForm({
 
   return (
     <form onSubmit={kuld} className="space-y-10">
-      <Honeypot />
+      <Honeypot label={honeypotLabel} />
 
       <section>
         <h2 className="text-sm font-medium tracking-wide text-ink uppercase">
