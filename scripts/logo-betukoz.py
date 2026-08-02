@@ -43,7 +43,11 @@ KOCKAK = sorted(glob.glob(str(SC / 'kockak2' / '*.png')))  # 145 kocka, 1008×28
 #: többlettől a WAY túl szellős lenne, a BLUE meg még mindig szűk.
 #:
 #: Ahol a pár már tágabb a célnál, ott nem szűkítünk.
-CEL_HEZAG = 0.28
+#:
+#: 0.28-nál a felirat kicsit szellős lett, ezért 0.22. Így a BLUE minden
+#: párja 56 képpontra nyílik (az eredeti 0–2 helyett), a WAY viszont
+#: érdemben nem mozdul — az A|Y már eleve 64 volt.
+CEL_HEZAG = 0.22
 
 SOROK = {
     'BLUEWAY': dict(y=(212, 447), x=(0, 1760),
