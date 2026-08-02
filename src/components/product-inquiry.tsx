@@ -18,11 +18,14 @@ export function ProductInquiry({
   recipient,
   productName,
   lang,
+  honeypotLabel,
 }: {
   labels: Labels;
   recipient: string;
   productName: string;
   lang: Locale;
+  /** A rejtett csapdamező felirata a lap nyelvén. */
+  honeypotLabel: string;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -83,7 +86,7 @@ export function ProductInquiry({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <Honeypot />
+      <Honeypot label={honeypotLabel} />
       <div className="grid gap-4 sm:grid-cols-3">
         <div>
           <label htmlFor="pi-name" className={labelClass}>
