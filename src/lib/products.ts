@@ -159,6 +159,17 @@ export interface Manufacturer {
    * bekezdés, nem egyetlen felsorolás.
    */
   industries?: { name: LocalizedText; text: LocalizedText }[];
+  /**
+   * Kategóriák, amelyek a gyártó lapján előre kerülnek — a felsorolás
+   * sorrendjében. A többi kategória utánuk jön, a `categories` szerinti
+   * globális sorrendben.
+   *
+   * Azért gyártónként állítható, mert a globális sorrend a teljes
+   * kínálatot rendezi, egy-egy gyártónál viszont más a súlypont: a START
+   * Internationalnál a ragasztóadagolók a fő termékek, a weblap globális
+   * sorrendjében viszont hátul állnának.
+   */
+  categoryOrder?: string[];
 }
 
 const manufacturersSource: Sourced<Manufacturer[]> = [
@@ -217,6 +228,7 @@ const manufacturersSource: Sourced<Manufacturer[]> = [
     brand: 'START International',
     name: 'START International',
     logo: '/images/brand/start-logo.jpg',
+    categoryOrder: ['ragaszto-adagolok'],
     description: {
       hu: 'Elektromos, automata címkeadagoló és szalagadagoló gépek ipari felhasználásra — amerikai gyártás, robusztus fémfelépítéssel.',
       en: 'Electric, automatic label and tape dispensers for industrial use — US-made, with robust metal construction.', it: 'Spellicolatori automatici elettrici di etichette e dispenser per nastro adesivo per uso industriale — produzione USA, con robusta struttura metallica.', es: 'Dispensadores eléctricos y automáticos de etiquetas y de cinta adhesiva para uso industrial — fabricados en EE. UU., con una robusta construcción metálica.', de: 'Elektrische, automatische Etiketten- und Klebebandspender für den Industrieeinsatz — hergestellt in den USA, mit robuster Metallkonstruktion.', ko: '산업용 전동 자동 라벨 및 테이프 디스펜서 — 견고한 금속 구조의 미국산 제품.', zh: '工业用电动自动标签剥离机与胶带切割机——美国制造，坚固的金属结构。',
