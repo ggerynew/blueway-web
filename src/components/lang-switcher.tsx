@@ -1,6 +1,7 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { rememberLang } from '@/lib/consent';
 import { locales, type Locale } from '@/lib/i18n';
 
@@ -104,41 +105,45 @@ function Flag({ code }: { code: Locale }) {
 /**
  * Zászlós nyelvválasztó: minden elérhető nyelv látszik; hoverre a nyelv saját
  * neve jelenik meg (title). A váltás ugyanazt az oldalt nyitja a másik nyelven.
+ *
+ * Hivatkozás, nem gomb. Korábban gomb volt `router.push`-sal, és emiatt három
+ * dolog nem működött, amit a látogató egy nyelvválasztótól elvár: nem lehetett
+ * új lapon megnyitni (középső gomb, Ctrl+kattintás), nem lehetett a másik
+ * nyelvű címet kimásolni, és JavaScript nélkül egyáltalán nem csinált semmit.
+ * A `<Link>` ugyanúgy kliensoldalon vált, de van valódi címe.
  */
 export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
   const pathname = usePathname() || `/${lang}`;
-  const router = useRouter();
 
-  function switchTo(next: Locale) {
-    if (next === lang) return;
-    // A választást megjegyezzük, hogy a látogató legközelebb a gyökércímen
-    // (blueway.hu) is a saját nyelvén érkezzen meg. Csak akkor kerül süti a
-    // gépére, ha a kényelmi sütiket engedélyezte — az ellenőrzés a
-    // hozzájárulás-kezelőben van, nem itt.
-    rememberLang(next);
+  function utvonal(next: Locale) {
     const parts = pathname.split('/');
     if (parts.length > 1) parts[1] = next;
-    router.push(parts.join('/') || `/${next}`);
+    return parts.join('/') || `/${next}`;
   }
 
   return (
     <div className="flex items-center gap-1.5" role="group" aria-label="Language / Nyelv">
       {locales.map((l) => (
-        <button
+        <Link
           key={l}
-          type="button"
-          onClick={() => switchTo(l)}
+          href={utvonal(l)}
+          hrefLang={l}
+          // A választást megjegyezzük, hogy a látogató legközelebb a
+          // gyökércímen (blueway.hu) is a saját nyelvén érkezzen meg. Csak
+          // akkor kerül süti a gépére, ha a kényelmi sütiket engedélyezte — az
+          // ellenőrzés a hozzájárulás-kezelőben van, nem itt.
+          onClick={() => rememberLang(l)}
           title={NAMES[l]}
           aria-label={NAMES[l]}
           aria-current={l === lang ? 'true' : undefined}
-          className={`h-[18px] w-[26px] overflow-hidden rounded-[3px] shadow-sm ring-offset-1 transition-all focus:ring-2 focus:ring-brand-500 focus:outline-none ${
+          className={`block h-[18px] w-[26px] overflow-hidden rounded-[3px] shadow-sm ring-offset-1 transition-all focus:ring-2 focus:ring-brand-500 focus:outline-none ${
             l === lang
               ? 'ring-2 ring-brand-600'
               : 'opacity-55 hover:opacity-100 hover:ring-1 hover:ring-line'
           }`}
         >
           <Flag code={l} />
-        </button>
+        </Link>
       ))}
     </div>
   );
