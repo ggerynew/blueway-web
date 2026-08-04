@@ -51,10 +51,19 @@ export default async function ManufacturerPage({
   const dict = getDictionary(lang);
   const items = getProductsByBrand(manufacturer.brand);
 
-  // Kategória szerinti csoportosítás (a categories sorrendje szerint)
+  // Kategória szerinti csoportosítás. Alapesetben a categories globális
+  // sorrendje dönt; ha a gyártónak van saját categoryOrder listája, az abban
+  // szereplő kategóriák kerülnek előre, a felsorolás sorrendjében.
+  const elore = manufacturer.categoryOrder ?? [];
+  const rang = (slug: string) => {
+    const i = elore.indexOf(slug);
+    return i === -1 ? elore.length : i;
+  };
   const categoryGroups = categories
     .map((c) => ({ category: c, list: items.filter((p) => p.category === c.slug) }))
-    .filter((g) => g.list.length > 0);
+    .filter((g) => g.list.length > 0)
+    // A sort stabil, tehát az azonos rangúak megtartják a globális sorrendjüket.
+    .sort((a, b) => rang(a.category.slug) - rang(b.category.slug));
 
   // Morzsamenü + terméklista strukturált adatként
   const jsonLd = {
@@ -70,7 +79,9 @@ export default async function ManufacturerPage({
       {
         '@type': 'ItemList',
         name: manufacturer.name,
-        itemListElement: items.map((p, i) => ({
+        // A csoportokból, nem a nyers terméklistából — így a strukturált
+        // adat sorrendje ugyanaz, mint amit a látogató lát.
+        itemListElement: categoryGroups.flatMap((g) => g.list).map((p, i) => ({
           '@type': 'ListItem',
           position: i + 1,
           name: productName(p, lang),
