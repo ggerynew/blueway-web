@@ -105,7 +105,13 @@ RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-e
 # A minta a REQUEST_URI útvonalrészére illeszkedik, a lekérdezőrészre nem —
 # tehát az /index.php?r=valami alakú régi címek is ide esnek, és a nyitóoldalra
 # érkeznek. A send.php-t nem érinti: a minta a teljes névre horgonyzott.
-RewriteRule ^index2?\.php$ / [R=301,L]
+#
+# A cél teljes cím, kimondott https-sel, nem csak "/". A puszta perjelből az
+# Apache maga állítja össze az abszolút címet, és a tárhely SSL-lezárása mögött
+# http://-t érzékel — élesben mérve 301 http://blueway.hu/ jött, tehát a régi
+# cím egy pillanatra titkosítatlanra esett vissza, és egy fölösleges ugrást is
+# jelentett. A %{HTTP_HOST} megtartja a megszólított gépnevet.
+RewriteRule ^index2?\.php$ https://%{HTTP_HOST}/ [R=301,L]
 
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy

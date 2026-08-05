@@ -581,7 +581,8 @@ jobs:
                  "https://$HOSZT/index.php" 2>/dev/null || echo "000 -")
           echo "  GET /index.php -> $REGI"
           case "$REGI" in
-            301\ *"://$HOSZT/"|301\ *"://$HOSZT") echo "  a régi belépési pont a nyitóoldalra fut" ;;
+            301\ "https://$HOSZT/") echo "  a régi belépési pont a nyitóoldalra fut, HTTPS-en" ;;
+            301\ "http://$HOSZT/") echo "::warning::Az /index.php a nyitóoldalra fut, de HTTP-re — egy fölösleges ugrás, és egy pillanatra titkosítatlan. A .htaccess szabályában ki kell mondani a https-t." ;;
             301\ *) echo "::warning::Az /index.php átirányít, de nem a nyitóoldalra ($REGI)." ;;
             *) echo "::warning::Az /index.php nem 301-gyel felel ($REGI) — a régi cím 404-re fut." ;;
           esac
