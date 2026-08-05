@@ -587,6 +587,31 @@ jobs:
             *) echo "::warning::Az /index.php nem 301-gyel felel ($REGI) — a régi cím 404-re fut." ;;
           esac
 
+          # ——— A régi weblap címei ——————————————————————————————————
+          # Mintavétel a régi Yii-címekből: egy termék, egy kategória, egy
+          # gyártói lap és egy állandó lap, magyarul és angolul. A VÉGÁLLOMÁST
+          # nézzük: a 301-nek nemcsak el kell indulnia, hanem 200-zal is kell
+          # végződnie — egy létező lapra mutató átirányítás ér valamit, a
+          # 404-re mutató rosszabb, mint ha meg sem próbáltuk volna.
+          echo "— a régi weblap címei —"
+          for PAR in \
+            "/termek/cab-squix-4-ipari-cimkenyomtato-1|/hu/termekek/cimkenyomtatok/cab-squix-4" \
+            "/product/cab-eos2-label-printer-5|/en/termekek/cimkenyomtatok/cab-eos2" \
+            "/termekek/kategoriak/cimkezo-gepek-7|/hu/termekek/cimkezo-gepek" \
+            "/products/brands/cab-3|/en/gyartok/cab" \
+            "/partnereink|/hu/gyartok" \
+            "/termek/nincs-ilyen-999|/hu/termekek"; do
+            BE="${PAR%%|*}"; VART="${PAR##*|}"
+            EREDMENY=$(curl -sSL -o /dev/null --max-time 25 \
+                       -w '%{http_code} %{url_effective}' "https://$HOSZT$BE" 2>/dev/null || echo "000 -")
+            ALLAPOT="${EREDMENY%% *}"; VEG="${EREDMENY#* }"
+            if [ "$ALLAPOT" = "200" ] && [ "$VEG" = "https://$HOSZT$VART" ]; then
+              echo "  $BE -> $VART"
+            else
+              echo "::warning::A régi cím $BE nem a várt helyen áll meg. Várt: https://$HOSZT$VART, kapott: $EREDMENY"
+            fi
+          done
+
           echo "— a .htaccess érvényesülése —"
           FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
                    grep -i '^cache-control:' | tail -1)

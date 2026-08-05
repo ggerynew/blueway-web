@@ -113,6 +113,132 @@ RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-e
 # jelentett. A %{HTTP_HOST} megtartja a megszólított gépnevet.
 RewriteRule ^index2?\.php$ https://%{HTTP_HOST}/ [R=301,L]
 
+# ——— A régi weblap címei ——————————————————————————————————————————
+# A régi weblap Yii-alkalmazás volt, és a címeit az adatbázisból állította
+# elő, ezért fájllistából nem lehetett kiolvasni őket. A szerkezetet a
+# protected/config/main.php urlManager szabályai adják, a tényleges címeket
+# pedig a protected/runtime/ naplói: 4529 kérésből 29 termék, 10 kategória és
+# 11 gyártói lap címe került elő.
+#
+# A minták a záró SZÁMRA illeszkednek, nem a szövegre. A régi UrlHelpers
+# ugyanis a cím végi azonosítót nézte, a szöveges részt pedig a termék
+# nevéből generálta — ha a nevet közben átírták, a régi cím szövege más, a
+# száma viszont ugyanaz. Így az elavult szövegű hivatkozások is célba érnek.
+#
+# A keresőből ezek a címek már kikoptak (a site:blueway.hu csak az újakat
+# adja), a könyvjelzőkből, e-mail aláírásokból és nyomtatott anyagokból nem.
+
+# Termékoldalak. A régi cím záró száma a termék azonosítója — a szöveges rész
+# csak dísz volt, a régi rendszer is kizárólag a számot nézte. Ezért a minta
+# is arra illeszkedik: az elgépelt vagy időközben átírt szöveg sem téveszti meg.
+RewriteRule ^termek/[^/]*-1/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-4 [R=301,L]
+RewriteRule ^termek/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L]
+RewriteRule ^termek/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos2 [R=301,L]
+RewriteRule ^termek/[^/]*-6/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L]
+RewriteRule ^termek/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^termek/[^/]*-9/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^termek/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L]
+RewriteRule ^termek/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-2 [R=301,L]
+RewriteRule ^termek/[^/]*-13/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos5 [R=301,L]
+RewriteRule ^termek/[^/]*-14/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach1 [R=301,L]
+RewriteRule ^termek/[^/]*-15/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach2 [R=301,L]
+RewriteRule ^termek/[^/]*-16/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach4s [R=301,L]
+RewriteRule ^termek/[^/]*-18/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc4 [R=301,L]
+RewriteRule ^termek/[^/]*-19/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc6 [R=301,L]
+RewriteRule ^termek/[^/]*-20/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^termek/[^/]*-21/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-q [R=301,L]
+RewriteRule ^termek/[^/]*-22/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-c [R=301,L]
+RewriteRule ^termek/[^/]*-26/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^termek/[^/]*-27/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
+RewriteRule ^termek/[^/]*-28/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
+RewriteRule ^termek/[^/]*-29/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-vs [R=301,L]
+RewriteRule ^termek/[^/]*-30/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L]
+RewriteRule ^termek/[^/]*-31/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L]
+RewriteRule ^termek/[^/]*-33/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L]
+RewriteRule ^termek/[^/]*-34/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-lm-plus [R=301,L]
+RewriteRule ^termek/[^/]*-35/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L]
+RewriteRule ^termek/[^/]*-37/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L]
+RewriteRule ^termek/[^/]*-38/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-tda080 [R=301,L]
+RewriteRule ^product/[^/]*-1/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-4 [R=301,L]
+RewriteRule ^product/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L]
+RewriteRule ^product/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos2 [R=301,L]
+RewriteRule ^product/[^/]*-6/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L]
+RewriteRule ^product/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^product/[^/]*-9/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^product/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L]
+RewriteRule ^product/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-2 [R=301,L]
+RewriteRule ^product/[^/]*-13/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos5 [R=301,L]
+RewriteRule ^product/[^/]*-14/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach1 [R=301,L]
+RewriteRule ^product/[^/]*-15/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach2 [R=301,L]
+RewriteRule ^product/[^/]*-16/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach4s [R=301,L]
+RewriteRule ^product/[^/]*-18/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc4 [R=301,L]
+RewriteRule ^product/[^/]*-19/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc6 [R=301,L]
+RewriteRule ^product/[^/]*-20/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^product/[^/]*-21/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-q [R=301,L]
+RewriteRule ^product/[^/]*-22/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-c [R=301,L]
+RewriteRule ^product/[^/]*-26/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^product/[^/]*-27/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
+RewriteRule ^product/[^/]*-28/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
+RewriteRule ^product/[^/]*-29/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-vs [R=301,L]
+RewriteRule ^product/[^/]*-30/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L]
+RewriteRule ^product/[^/]*-31/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L]
+RewriteRule ^product/[^/]*-33/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L]
+RewriteRule ^product/[^/]*-34/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-lm-plus [R=301,L]
+RewriteRule ^product/[^/]*-35/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L]
+RewriteRule ^product/[^/]*-37/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L]
+RewriteRule ^product/[^/]*-38/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-tda080 [R=301,L]
+
+# Kategórialapok.
+RewriteRule ^termekek/kategoriak/[^/]*-1/?$ https://%{HTTP_HOST}/hu/szolgaltatasok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-3/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-7/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok [R=301,L]
+RewriteRule ^products/categories/[^/]*-1/?$ https://%{HTTP_HOST}/en/szolgaltatasok [R=301,L]
+RewriteRule ^products/categories/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^products/categories/[^/]*-3/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L]
+RewriteRule ^products/categories/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L]
+RewriteRule ^products/categories/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
+RewriteRule ^products/categories/[^/]*-7/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek [R=301,L]
+RewriteRule ^products/categories/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
+RewriteRule ^products/categories/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek [R=301,L]
+RewriteRule ^products/categories/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok [R=301,L]
+
+# Gyártói lapok.
+RewriteRule ^termekek/gyartok/[^/]*-3/?$ https://%{HTTP_HOST}/hu/gyartok/cab [R=301,L]
+RewriteRule ^termekek/gyartok/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L]
+RewriteRule ^termekek/gyartok/[^/]*-5/?$ https://%{HTTP_HOST}/hu/gyartok/tykma-electrox [R=301,L]
+RewriteRule ^termekek/gyartok/[^/]*-12/?$ https://%{HTTP_HOST}/hu/gyartok/start-international [R=301,L]
+RewriteRule ^products/brands/[^/]*-3/?$ https://%{HTTP_HOST}/en/gyartok/cab [R=301,L]
+RewriteRule ^products/brands/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L]
+RewriteRule ^products/brands/[^/]*-5/?$ https://%{HTTP_HOST}/en/gyartok/tykma-electrox [R=301,L]
+RewriteRule ^products/brands/[^/]*-12/?$ https://%{HTTP_HOST}/en/gyartok/start-international [R=301,L]
+
+# Állandó lapok és a nyelvváltó.
+RewriteRule ^partnereink/?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L]
+RewriteRule ^partners/?$ https://%{HTTP_HOST}/en/gyartok [R=301,L]
+RewriteRule ^kapcsolat/?$ https://%{HTTP_HOST}/hu/kapcsolat [R=301,L]
+RewriteRule ^contact/?$ https://%{HTTP_HOST}/en/kapcsolat [R=301,L]
+RewriteRule ^szolgaltatasok(-\d+)?/?$ https://%{HTTP_HOST}/hu/szolgaltatasok [R=301,L]
+RewriteRule ^services(-\d+)?/?$ https://%{HTTP_HOST}/en/szolgaltatasok [R=301,L]
+RewriteRule ^lang/hu/?$ https://%{HTTP_HOST}/hu [R=301,L]
+RewriteRule ^lang/en/?$ https://%{HTTP_HOST}/en [R=301,L]
+
+# Amit név szerint nem ismerünk. A régi weblapnak 1-től 38-ig voltak termék-
+# azonosítói, és a naplókból csak 29 került elő — a többiről nem tudjuk, mi volt.
+# Ezek a gyűjtőszabályok a megfelelő listaoldalra viszik őket 404 helyett.
+# Csak a fenti pontos szabályok UTÁN futhatnak.
+RewriteRule ^termek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
+RewriteRule ^product(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
+RewriteRule ^termekek/gyartok(/.*)?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L]
+RewriteRule ^products/brands(/.*)?$ https://%{HTTP_HOST}/en/gyartok [R=301,L]
+RewriteRule ^termekek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
+RewriteRule ^products(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
+
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy
 # 95 MB-os _blueway_old.rar. A domainre átállás pillanatában ezek bárki
