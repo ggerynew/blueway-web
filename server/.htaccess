@@ -94,6 +94,19 @@ RewriteRule ^([a-z]{2})/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6014/?
 # porelszívókhoz, mert oda tartozik. Az addig kiadott cím ne fusson 404-re.
 RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-es-porelszivok/cab-af5 [R=301,L]
 
+# ——— A régi weblap belépési pontjai ———————————————————————————————
+# A régi weblap PHP-alapú rendszer volt (index.php, index2.php, protected/),
+# tehát a címeit a program állította elő — nincs olyan fájllista, amiből a
+# teljes régi címszerkezet kiolvasható lenne. Egyetlen dolgot viszont biztosan
+# tudunk: a belépési pont az index.php volt, és ez az a cím, ami könyvjelzőben,
+# e-mail aláírásban, nyomtatott anyagon és külső hivatkozásokban a
+# legvalószínűbben fennmaradt. Enélkül 404-re fut.
+#
+# A minta a REQUEST_URI útvonalrészére illeszkedik, a lekérdezőrészre nem —
+# tehát az /index.php?r=valami alakú régi címek is ide esnek, és a nyitóoldalra
+# érkeznek. A send.php-t nem érinti: a minta a teljes névre horgonyzott.
+RewriteRule ^index2?\.php$ / [R=301,L]
+
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy
 # 95 MB-os _blueway_old.rar. A domainre átállás pillanatában ezek bárki
