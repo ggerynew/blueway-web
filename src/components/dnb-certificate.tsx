@@ -59,9 +59,17 @@ export function DnbCertificate({
       <img
         src={src}
         alt={dict.ui.certificateAlt}
-        // Szándékosan nincs width/height: a D&B által adott kép pontos
-        // méretét nem ismerjük, egy rossz érték pedig megnyújtaná a képet.
-        // A méretet a max-width szabja meg, az arányt a kép maga.
+        // A méret CSAK a helyfoglalásra kell: e nélkül a kép nulla magasságról
+        // ugrik a helyére, és arrébb löki alatta a láblécet.
+        //
+        // A két szám a D&B fekvő („typ=l") tanúsítványának valódi mérete, a
+        // szolgáltatótól letöltött képről mérve. Torzítani nem tud: a CSS-ben
+        // a magasság `h-auto`, tehát az attribútumok aránya csak a betöltés
+        // PILLANATÁIG él — utána a kép saját aránya veszi át. Ha a D&B egyszer
+        // más méretű képet ad, annak legfeljebb egy apró elmozdulás a
+        // következménye, nem megnyúlt logó.
+        width={2300}
+        height={635}
         loading="lazy"
         decoding="async"
         className={imgClassName}
