@@ -563,6 +563,23 @@ jobs:
             echo "A várt eredmény: a 7 MB-os 200-zal megy és megérkezik, a 8 MB-os 413-mal elutasítva."
           fi
 
+          # ——— A régi weblap belépési pontja ————————————————————————
+          # A régi weblap index.php-je könyvjelzőben, e-mail aláírásban és
+          # nyomtatott anyagon fennmaradhatott. A .htaccess 301-gyel a
+          # nyitóoldalra viszi; itt az látszik, hogy tényleg meg is teszi.
+          # Nem a végállomást nézzük, hanem az ELSŐ választ: a végállomás a
+          # nyelvválasztó miatt úgyis a nyitóoldal lenne, akkor is, ha a
+          # szabály néma marad és a kérés 404-re fut.
+          echo "— a régi belépési pont —"
+          REGI=$(curl -sSI --max-time 20 -o /dev/null -w '%{http_code} %{redirect_url}' \
+                 "http://$HOSZT/index.php" 2>/dev/null || echo "000 -")
+          echo "  GET /index.php -> $REGI"
+          case "$REGI" in
+            301\ *"://$HOSZT/"|301\ *"://$HOSZT") echo "  a régi belépési pont a nyitóoldalra fut" ;;
+            301\ *) echo "::warning::Az /index.php átirányít, de nem a nyitóoldalra ($REGI)." ;;
+            *) echo "::warning::Az /index.php nem 301-gyel felel ($REGI) — a régi cím 404-re fut." ;;
+          esac
+
           echo "— a .htaccess érvényesülése —"
           FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
                    grep -i '^cache-control:' | tail -1)
