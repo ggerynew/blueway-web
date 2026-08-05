@@ -570,9 +570,15 @@ jobs:
           # Nem a végállomást nézzük, hanem az ELSŐ választ: a végállomás a
           # nyelvválasztó miatt úgyis a nyitóoldal lenne, akkor is, ha a
           # szabály néma marad és a kérés 404-re fut.
+          #
+          # A kérés HTTPS-sel indul, nem HTTP-vel. A tárhely panelja a
+          # HTTP-kéréseket előbb tereli HTTPS-re, mint hogy a .htaccess szóhoz
+          # jutna — http://-ról indítva tehát az első válasz a protokollváltás
+          # lenne (301 https://blueway.hu/index.php), és a mérés a saját
+          # szabályunkat sosem látná. Ezen bukott el az első éles próbán.
           echo "— a régi belépési pont —"
           REGI=$(curl -sSI --max-time 20 -o /dev/null -w '%{http_code} %{redirect_url}' \
-                 "http://$HOSZT/index.php" 2>/dev/null || echo "000 -")
+                 "https://$HOSZT/index.php" 2>/dev/null || echo "000 -")
           echo "  GET /index.php -> $REGI"
           case "$REGI" in
             301\ *"://$HOSZT/"|301\ *"://$HOSZT") echo "  a régi belépési pont a nyitóoldalra fut" ;;
