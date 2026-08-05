@@ -605,6 +605,13 @@ jobs:
             EREDMENY=$(curl -sSL -o /dev/null --max-time 25 \
                        -w '%{http_code} %{url_effective}' "https://$HOSZT$BE" 2>/dev/null || echo "000 -")
             ALLAPOT="${EREDMENY%% *}"; VEG="${EREDMENY#* }"
+            # A záró perjel nem számít különbségnek. A kiszolgáló azokhoz a
+            # lapokhoz teszi ki, amelyek mappaként is léteznek (a Next.js
+            # ugyanazon a néven mappát és .html-t is készít) — a
+            # /hu/termekek/cimkezo-gepek tehát perjellel áll meg, a
+            # /hu/termekek/cimkenyomtatok/cab-squix-4 pedig anélkül. Enélkül a
+            # három ilyen cím hamis figyelmeztetést adott.
+            VEG="${VEG%/}"
             if [ "$ALLAPOT" = "200" ] && [ "$VEG" = "https://$HOSZT$VART" ]; then
               echo "  $BE -> $VART"
             else
