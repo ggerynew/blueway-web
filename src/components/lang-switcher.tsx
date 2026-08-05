@@ -128,6 +128,10 @@ export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
           key={l}
           href={utvonal(l)}
           hrefLang={l}
+          // Előtöltés nélkül: a hét zászló hat idegen nyelvű adatcsomagot
+          // töltene le minden lapon (~270 kB), pedig nyelvet a látogatók
+          // töredéke vált — és ő is egyszer.
+          prefetch={false}
           // A választást megjegyezzük, hogy a látogató legközelebb a
           // gyökércímen (blueway.hu) is a saját nyelvén érkezzen meg. Csak
           // akkor kerül süti a gépére, ha a kényelmi sütiket engedélyezte — az
