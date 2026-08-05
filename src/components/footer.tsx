@@ -30,7 +30,13 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <DnbCertificate
             lang={lang}
             dict={dict}
-            className="mt-5 block w-fit rounded-lg bg-white p-2"
+            // Rögzített szélesség, nem `w-fit`. A `w-fit` a betöltetlen képnél
+            // nullára zsugorodik, a képnek pedig `w-full` a szélessége — így a
+            // width/height attribútumokból számolt arány sem tud helyet
+            // foglalni, és a jelvény érkezésekor arrébb ugrik a fél lábléc.
+            // A 316 px = a kép 300 px-e + a p-2 kétszer 8 px-e, tehát a kész
+            // lap ugyanúgy néz ki, mint eddig.
+            className="mt-5 block w-full max-w-[316px] rounded-lg bg-white p-2"
             imgClassName="h-auto w-full max-w-[300px] border border-[#CCCCCC]"
           />
         </div>
