@@ -36,16 +36,23 @@ export default async function HomePage({
   // Termékfotók a forgó hero-gömbhöz — a TELJES kínálat, nem válogatás.
   // A gömb felülete elbírja: a hengeres elrendezésnél a kerület korlátozta a
   // csempék számát, itt viszont minden termék elfér olvasható méretben.
+  // A képek a tiles/ mappából jönnek, nem a products/-ból: a csempe 82×62
+  // képpontos, a termékfotó 900 széles — a kicsinyített készlettel a fal
+  // ~2 MB helyett ~180 kB képet tölt. Előállítása: scripts/csempe-kepek.py.
   const heroTiles = products
     .filter((p) => p.image)
     .map((p) => ({
-      src: asset(p.image as string),
+      src: asset(
+        (p.image as string)
+          .replace('/images/products/', '/images/tiles/')
+          .replace(/\.(webp|jpg)$/, '.webp'),
+      ),
       alt: productName(p, lang),
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     }));
   // Címkék csempe a falra — a letisztított tekercses képpel.
   heroTiles.splice(1, 0, {
-    src: asset('/images/products/cimkek.webp'),
+    src: asset('/images/tiles/cimkek.webp'),
     alt: dict.products.labelsTile.title,
     href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });

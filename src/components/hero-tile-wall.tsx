@@ -233,6 +233,12 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
                   href={t.href}
                   aria-label={t.alt}
                   title={t.alt}
+                  // Előtöltés nélkül. A falon minden termék szerepel, és a
+                  // next/link a látótérbe kerülő linkek célját magától
+                  // letöltené — mérve 44 adatcsomag, ~2,3 MB, minden főoldal-
+                  // megnyitáskor. A fal böngészőfelület, nem célzott lista:
+                  // egy csempére kattintva a betöltés így is azonnali érzetű.
+                  prefetch={false}
                   onClick={kattintas}
                   className="absolute flex cursor-pointer items-center justify-center rounded-xl border border-line bg-white/95 p-1.5 shadow-[0_10px_28px_-10px_rgba(29,78,216,0.4)] ring-1 ring-transparent transition-[box-shadow,border-color] hover:border-brand-300 hover:ring-brand-500/50"
                   style={{
