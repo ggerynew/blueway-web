@@ -49,9 +49,8 @@ export const TERKEP_URL = `https://www.google.com/maps/search/?api=1&query=${enc
  * telephely földrajzi helyként is értelmet nyerjen — „címkenyomtató Budapest
  * környékén" típusú keresésnél ez a különbség.
  *
- * Nyitvatartás és földrajzi koordináta szándékosan NINCS benne: egyiket sem
- * tudjuk, kitalálni pedig nem szabad. Ha megvannak, ide kerülnek
- * (openingHoursSpecification, geo).
+ * Földrajzi koordináta szándékosan NINCS benne: nem tudjuk, kitalálni pedig
+ * nem szabad. Ha megvan, ide kerül (geo).
  */
 export function szervezetNode(lang: Locale) {
   const dict = getDictionary(lang);
@@ -80,6 +79,17 @@ export function szervezetNode(lang: Locale) {
     ],
     address: CIM,
     hasMap: TERKEP_URL,
+    // Hétköznap 8-tól 15-ig. A hétvégét nem soroljuk fel külön: ami nincs a
+    // listán, azt a keresők zárva értelmezik, a kiírt „zárva" bejegyzés pedig
+    // több validátort megzavar.
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:00',
+        closes: '15:00',
+      },
+    ],
     areaServed: { '@type': 'Country', name: 'Hungary' },
     sameAs: ['https://www.facebook.com/share/1Bb1i3eHqk/'],
     contactPoint: [
