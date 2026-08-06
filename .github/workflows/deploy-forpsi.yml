@@ -175,8 +175,9 @@ jobs:
             echo "::error::A privát kulcs nem olvasható: $(cat /tmp/kulcs-hiba.txt)"
             echo "  A FORPSI_SSH_KEY titokban a -----BEGIN OPENSSH PRIVATE KEY----- sortól a"
             echo "  -----END OPENSSH PRIVATE KEY----- sorig MINDENNEK benne kell lennie, sortörésekkel."
-            echo "  Windowson a másolás legegyszerűbb módja: notepad %USERPROFILE%\\.ssh\\blueway-deploy"
-            echo "  majd Ctrl+A, Ctrl+C — és a GitHub titok mezőjébe Ctrl+V."
+            echo "  Windowson a legbiztosabb másolás a vágólapra irányítás — így nem lehet lemaradni"
+            echo "  a nyitó vagy a záró sorról:   type %USERPROFILE%\\.ssh\\blueway-deploy | clip"
+            echo "  Utána a GitHub titok mezőjébe Ctrl+V."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
           echo "  a kulcs ép, ujjlenyomata: $(ssh-keygen -lf /tmp/kulcs.pub | awk '{print $2}')"
