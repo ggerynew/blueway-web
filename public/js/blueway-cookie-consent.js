@@ -359,10 +359,52 @@
     document.dispatchEvent(new CustomEvent('blueway:consent', { detail: c }));
   }
 
+  /* ---------- új tartalom a lapon ----------
+   * A weblap egyoldalas alkalmazásként navigál: a menüből kattintva nem
+   * töltődik újra a lap, csak kicserélődik a tartalma. Az `init` viszont
+   * egyszer fut le, betöltéskor — a kapcsolatoldalra ÁTKATTINTVA tehát a
+   * frissen beillesztett térkép-iframe úgy maradt, ahogy a kiszolgáló adta:
+   * `src` nélkül, rejtve. Frissítésre működött, kattintásra nem.
+   *
+   * Ezért figyeljük, kerül-e új, hozzájáruláshoz kötött elem a lapra, és ha
+   * igen, újra alkalmazzuk rá a döntést. Képkockánként legfeljebb egyszer:
+   * a figyelő maga csak egy jelzőt állít, a munkát a rajzolás előtt végezzük.
+   */
+  var ujraVar = false;
+  function ujraAlkalmaz() {
+    if (ujraVar) return;
+    ujraVar = true;
+    var futtat = function () {
+      ujraVar = false;
+      var c = readConsent();
+      applyThirdParty(!!(c && c.thirdparty));
+    };
+    if (window.requestAnimationFrame) window.requestAnimationFrame(futtat);
+    else setTimeout(futtat, 0);
+  }
+
+  function figyelesIndit() {
+    if (!window.MutationObserver) return;
+    new MutationObserver(function (lista) {
+      for (var i = 0; i < lista.length; i++) {
+        var uj = lista[i].addedNodes;
+        for (var j = 0; j < uj.length; j++) {
+          var n = uj[j];
+          if (n.nodeType !== 1) continue;
+          // Maga az elem, vagy bármi alatta.
+          if (n.matches && n.matches('[data-consent]')) return ujraAlkalmaz();
+          if (n.querySelector && n.querySelector('[data-consent]')) return ujraAlkalmaz();
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
   /* ---------- public API ---------- */
   window.BluewayConsent = {
     open: openSettings,
     get: readConsent,
+    /** Újra alkalmazza a döntést a lapon lévő beágyazásokra. */
+    refresh: ujraAlkalmaz,
     allowed: function (cat) {
       var c = readConsent();
       if (cat === 'necessary') return true;
@@ -379,6 +421,7 @@
     injectCss();
     var c = readConsent();
     applyThirdParty(!!(c && c.thirdparty));
+    figyelesIndit();
     if (!c) showBanner();
   }
   if (document.readyState === 'loading') {
