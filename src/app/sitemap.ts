@@ -34,6 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   add('szolgaltatasok/szerviz', 0.8);
   add('iparagak', 0.8);
   add('tudastar', 0.7);
+  add('fogalomtar', 0.7);
   add('gyik', 0.7);
   add('cimke-ajanlatkero', 0.8);
   add('rolunk', 0.6);

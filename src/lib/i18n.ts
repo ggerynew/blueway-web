@@ -9,6 +9,7 @@ export const dictionaries = {
   hu: {
     nav: {
       home: 'Főoldal',
+      glossary: 'Fogalomtár',
       products: 'Termékek',
       manufacturers: 'Gyártók',
       services: 'Szolgáltatások',
@@ -258,6 +259,21 @@ export const dictionaries = {
       ctaTitle: 'Kérdése van? Segítünk választani.',
       ctaText: 'Írja meg a feladatot, és javaslatot adunk a megfelelő címke–szalag–nyomtató kombinációra.',
       ctaButton: 'Kapcsolatfelvétel',
+    },
+    glossary: {
+      title: 'Fogalomtár',
+      lead: 'A termékjelölés szakszavai röviden — mit jelentenek, mikor számítanak, és melyik gépnél kerülnek elő.',
+      themes: {
+        nyomtatas: 'Nyomtatás és festékszalag',
+        cimke: 'Címke és címkeanyag',
+        kod: 'Kód és azonosítás',
+        gep: 'Gépek és folyamat',
+      },
+      relatedGuides: 'Bővebben',
+      relatedCategories: 'Kapcsolódó kategória',
+      relatedProducts: 'Tipikus gép',
+      jumpTitle: 'Ugrás témakörre',
+      termCount: (n: number) => `${n} fogalom`,
     },
     industries: {
       title: 'Iparágak',
@@ -577,6 +593,7 @@ export const dictionaries = {
     nav: {
       home: 'Home',
       products: 'Products',
+      glossary: 'Glossary',
       manufacturers: 'Manufacturers',
       services: 'Services',
       knowledge: 'Knowledge',
@@ -825,6 +842,21 @@ export const dictionaries = {
       ctaTitle: 'Questions? We help you choose.',
       ctaText: 'Describe the task and we will suggest the right label-ribbon-printer combination.',
       ctaButton: 'Contact us',
+    },
+    glossary: {
+      title: 'Glossary',
+      lead: 'The vocabulary of product marking, briefly — what each term means, when it matters, and which machine it comes up with.',
+      themes: {
+        nyomtatas: 'Printing and ribbons',
+        cimke: 'Labels and label materials',
+        kod: 'Codes and identification',
+        gep: 'Machines and process',
+      },
+      relatedGuides: 'Read more',
+      relatedCategories: 'Related category',
+      relatedProducts: 'Typical machine',
+      jumpTitle: 'Jump to a topic',
+      termCount: (n: number) => `${n} terms`,
     },
     industries: {
       title: 'Industries',
@@ -1142,6 +1174,7 @@ export const dictionaries = {
   de: {
     nav: {
       home: 'Startseite',
+      glossary: 'Glossar',
       products: 'Produkte',
       manufacturers: 'Hersteller',
       services: 'Leistungen',
@@ -1390,6 +1423,21 @@ export const dictionaries = {
       ctaTitle: 'Fragen? Wir helfen bei der Auswahl.',
       ctaText: 'Beschreiben Sie die Aufgabe — wir schlagen die passende Kombination aus Etikett, Farbband und Drucker vor.',
       ctaButton: 'Kontakt aufnehmen',
+    },
+    glossary: {
+      title: 'Glossar',
+      lead: 'Die Fachbegriffe der Produktkennzeichnung, kurz erklärt — was sie bedeuten, wann sie zählen und bei welchem Gerät sie auftauchen.',
+      themes: {
+        nyomtatas: 'Druck und Farbband',
+        cimke: 'Etikett und Etikettenmaterial',
+        kod: 'Codes und Identifikation',
+        gep: 'Geräte und Prozess',
+      },
+      relatedGuides: 'Mehr dazu',
+      relatedCategories: 'Zugehörige Kategorie',
+      relatedProducts: 'Typisches Gerät',
+      jumpTitle: 'Zum Themenbereich springen',
+      termCount: (n: number) => `${n} Begriffe`,
     },
     industries: {
       title: 'Branchen',
@@ -1708,6 +1756,7 @@ export const dictionaries = {
     nav: {
       home: 'Home',
       products: 'Prodotti',
+      glossary: 'Glossario',
       manufacturers: 'Produttori',
       services: 'Servizi',
       knowledge: 'Conoscenze',
@@ -1956,6 +2005,21 @@ export const dictionaries = {
       ctaTitle: 'Domande? La aiutiamo a scegliere.',
       ctaText: 'Ci descriva l’applicazione e Le suggeriremo la combinazione giusta di etichetta, ribbon e stampante.',
       ctaButton: 'Ci contatti',
+    },
+    glossary: {
+      title: 'Glossario',
+      lead: 'Il lessico della marcatura di prodotto, in breve — che cosa significa ogni termine, quando conta e con quale macchina si incontra.',
+      themes: {
+        nyomtatas: 'Stampa e ribbon',
+        cimke: 'Etichetta e materiali',
+        kod: 'Codici e identificazione',
+        gep: 'Macchine e processo',
+      },
+      relatedGuides: 'Approfondisci',
+      relatedCategories: 'Categoria collegata',
+      relatedProducts: 'Macchina tipica',
+      jumpTitle: 'Vai a un argomento',
+      termCount: (n: number) => `${n} termini`,
     },
     industries: {
       title: 'Settori',
@@ -2273,6 +2337,7 @@ export const dictionaries = {
   es: {
     nav: {
       home: 'Inicio',
+      glossary: 'Glosario',
       products: 'Productos',
       manufacturers: 'Fabricantes',
       services: 'Servicios',
@@ -2522,6 +2587,21 @@ export const dictionaries = {
       ctaTitle: '¿Tiene dudas? Le ayudamos a elegir.',
       ctaText: 'Descríbanos la tarea y le propondremos la combinación adecuada de etiqueta, ribbon e impresora.',
       ctaButton: 'Contáctenos',
+    },
+    glossary: {
+      title: 'Glosario',
+      lead: 'El vocabulario del marcaje de producto, en breve — qué significa cada término, cuándo importa y con qué máquina aparece.',
+      themes: {
+        nyomtatas: 'Impresión y ribbons',
+        cimke: 'Etiqueta y materiales',
+        kod: 'Códigos e identificación',
+        gep: 'Máquinas y proceso',
+      },
+      relatedGuides: 'Más información',
+      relatedCategories: 'Categoría relacionada',
+      relatedProducts: 'Máquina típica',
+      jumpTitle: 'Ir a un tema',
+      termCount: (n: number) => `${n} términos`,
     },
     industries: {
       title: 'Sectores',
@@ -2839,6 +2919,7 @@ export const dictionaries = {
   ko: {
     nav: {
       home: '홈',
+      glossary: '용어집',
       products: '제품',
       manufacturers: '제조사',
       services: '서비스',
@@ -3087,6 +3168,21 @@ export const dictionaries = {
       ctaTitle: '궁금한 점이 있으신가요? 선택을 도와드립니다.',
       ctaText: '작업 내용을 알려주시면 적합한 라벨–리본–프린터 조합을 제안해 드립니다.',
       ctaButton: '문의하기',
+    },
+    glossary: {
+      title: '용어집',
+      lead: '제품 마킹 분야의 용어를 짧게 정리했습니다. 무엇을 뜻하는지, 언제 중요한지, 어떤 장비에서 나오는지.',
+      themes: {
+        nyomtatas: '인쇄와 리본',
+        cimke: '라벨과 라벨 소재',
+        kod: '코드와 식별',
+        gep: '장비와 공정',
+      },
+      relatedGuides: '자세히',
+      relatedCategories: '관련 분류',
+      relatedProducts: '대표 장비',
+      jumpTitle: '주제로 이동',
+      termCount: (n: number) => `용어 ${n}개`,
     },
     industries: {
       title: '산업 분야',
@@ -3403,6 +3499,7 @@ export const dictionaries = {
   zh: {
     nav: {
       home: '首页',
+      glossary: '术语表',
       products: '产品',
       manufacturers: '制造商',
       services: '服务',
@@ -3651,6 +3748,21 @@ export const dictionaries = {
       ctaTitle: '有疑问？我们帮您选择。',
       ctaText: '告诉我们您的任务，我们将推荐合适的标签–碳带–打印机组合。',
       ctaButton: '联系我们',
+    },
+    glossary: {
+      title: '术语表',
+      lead: '产品标识领域的术语简释——含义是什么、什么时候要紧、在哪类设备上会遇到。',
+      themes: {
+        nyomtatas: '打印与碳带',
+        cimke: '标签与标签材料',
+        kod: '条码与标识',
+        gep: '设备与工艺',
+      },
+      relatedGuides: '了解更多',
+      relatedCategories: '相关类别',
+      relatedProducts: '典型设备',
+      jumpTitle: '跳转到主题',
+      termCount: (n: number) => `${n} 个术语`,
     },
     industries: {
       title: '应用行业',

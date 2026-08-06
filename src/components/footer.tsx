@@ -11,6 +11,7 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/tudastar`, label: dict.nav.knowledge },
+    { href: `/${lang}/fogalomtar`, label: dict.nav.glossary },
     { href: `/${lang}/gyik`, label: dict.faq.title },
     { href: `/${lang}/cimke-ajanlatkero`, label: dict.nav.labelQuote },
     { href: `/${lang}/rolunk`, label: dict.nav.about },
