@@ -63,6 +63,9 @@ export default async function ContactPage({
     { label: contact.companyLabel, value: contact.company, href: undefined },
     { label: contact.siteLabel, value: contact.site, href: undefined },
     { label: contact.billingLabel, value: contact.billing, href: undefined },
+    // A nyitvatartás azért van itt is, nem csak a Google cégprofilban: aki a
+    // weblapról hív, itt látja, mikor van értelme. A kettőnek egyeznie kell.
+    { label: contact.hoursLabel, value: contact.hours, href: undefined },
     {
       label: contact.phoneLabel,
       value: contact.phone,

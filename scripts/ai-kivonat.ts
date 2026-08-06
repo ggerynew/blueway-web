@@ -128,7 +128,10 @@ function llms(): string {
   s.push(`- [Gyakori kérdések](${url('hu/gyik')}): ${hu.faq.items.length} kérdés-válasz / [FAQ in English](${url('en/gyik')})`);
   s.push(`- [Szolgáltatások](${url('hu/szolgaltatasok')}): tanácsadás, telepítés, szerviz, alkatrész`);
   s.push(`- [Rólunk](${url('hu/rolunk')})`);
-  s.push(`- [Kapcsolat](${url('hu/kapcsolat')}): info@blueway.hu, +36 30 279 6679, 2142 Nagytarcsa, Déri Miksa u. 10/A.`);
+  s.push(
+    `- [Kapcsolat](${url('hu/kapcsolat')}): info@blueway.hu, +36 30 279 6679, ` +
+      `2142 Nagytarcsa, Déri Miksa u. 10/A. — ${hu.contact.hours} / ${en.contact.hours}`,
+  );
   s.push('');
   s.push(
     '## Megjegyzés / Note\n\nAz árak ajánlatkérés alapján érhetők el — a gépek ' +
