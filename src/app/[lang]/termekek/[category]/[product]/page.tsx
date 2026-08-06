@@ -10,7 +10,8 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { industriesForProduct } from '@/lib/iparagak';
-import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName } from '@/lib/products';
+import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName, manufacturers } from '@/lib/products';
+import { morzsa, szervezetRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -57,26 +58,62 @@ export default async function ProductPage({
 
   // Product + breadcrumb strukturált adat a keresőknek
   const productUrl = absUrl(`${lang}/termekek/${cat.slug}/${product.slug}`);
+  const gyarto = manufacturers.find((m) => m.brand === product.brand);
+  // A változatok paramétertáblája gépi alakban: a lapon táblázatként áll, a
+  // strukturált adatban PropertyValue — így az összehasonlító szolgáltatások
+  // és az AI-válaszmotorok is látják, nem csak a képernyőn olvasó ember.
+  const muszakiAdatok = (product.variants ?? []).flatMap((v) =>
+    (v.params ?? []).map((x) => ({
+      '@type': 'PropertyValue',
+      name: `${v.name} — ${x.label[lang]}`,
+      value: typeof x.value === 'string' ? x.value : x.value[lang],
+    })),
+  );
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Product',
+        '@id': productUrl,
         name: productName(product, lang),
         description: product.short[lang],
         brand: { '@type': 'Brand', name: product.brand },
+        // A gyártó saját oldala a weblapon belül — ettől köti össze a kereső
+        // a gépet azzal a céggel, amelyik készíti, nem csak a márkanévvel.
+        ...(gyarto
+          ? {
+              manufacturer: {
+                '@type': 'Organization',
+                name: gyarto.name,
+                url: absUrl(`${lang}/gyartok/${gyarto.slug}`),
+              },
+            }
+          : {}),
+        // Nem árat hirdetünk — a gépek konfigurációfüggők —, de azt megmondjuk,
+        // kitől szerezhető be. Ár nélküli `offers` félrevezető lenne.
+        seller: szervezetRef,
         category: cat.name[lang],
         url: productUrl,
+        mainEntityOfPage: productUrl,
         ...(product.image ? { image: absUrl(product.image.replace(/^\//, '')) } : {}),
+        // A gép változatai — a nyomtatott táblázat gépi párja.
+        ...(muszakiAdatok.length ? { additionalProperty: muszakiAdatok } : {}),
+        // Melyik iparági feladatra ajánljuk. Ez a mező köti össze a
+        // terméktörzset az iparági oldalakkal a strukturált adatban is.
+        ...(iparagak.length
+          ? {
+              isRelatedTo: iparagak.map((i) => ({
+                '@type': 'Thing',
+                name: i.name[lang],
+                url: absUrl(`${lang}/iparagak/${i.slug}`),
+              })),
+            }
+          : {}),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
-          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
-          { '@type': 'ListItem', position: 3, name: productName(product, lang), item: productUrl },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.products.title, path: 'termekek' },
+        { name: cat.name[lang], path: `termekek/${cat.slug}` },
+      ]),
     ],
   };
 

@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { categories, manufacturers, getManufacturer, getProductsByBrand , productName } from '@/lib/products';
+import { morzsa } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -69,13 +70,10 @@ export default async function ManufacturerPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.manufacturers.title, item: absUrl(`${lang}/gyartok`) },
-          { '@type': 'ListItem', position: 2, name: manufacturer.name, item: absUrl(`${lang}/gyartok/${manufacturer.slug}`) },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.manufacturers.title, path: 'gyartok' },
+        { name: manufacturer.name, path: `gyartok/${manufacturer.slug}` },
+      ]),
       {
         '@type': 'ItemList',
         name: manufacturer.name,

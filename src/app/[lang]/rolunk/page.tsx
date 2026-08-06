@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { DnbCertificate } from '@/components/dnb-certificate';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { szervezetRef, weblapRef } from '@/lib/jsonld';
 import { SITE_URL, absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -42,19 +43,8 @@ export default async function AboutPage({
     description: about.lead,
     url: absUrl(`${lang}/rolunk`),
     inLanguage: lang,
-    mainEntity: {
-      '@type': 'Organization',
-      name: 'Blueway Trade Kft.',
-      url: SITE_URL,
-      foundingDate: '2014',
-      email: dict.contact.email,
-      telephone: dict.footer.phone,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Nagytarcsa',
-        addressCountry: 'HU',
-      },
-    },
+    isPartOf: weblapRef,
+    mainEntity: szervezetRef,
   };
 
   return (

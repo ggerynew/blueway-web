@@ -8,6 +8,7 @@ import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getIndustry, industries } from '@/lib/iparagak';
 import { getGuide } from '@/lib/knowledge';
 import { categories, products } from '@/lib/products';
+import { morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -65,18 +66,36 @@ export default async function IndustryPage({
     '@graph': [
       {
         '@type': 'CollectionPage',
+        '@id': absUrl(`${lang}/iparagak/${ind.slug}`),
         name: ind.name[lang],
         description: ind.short[lang],
         inLanguage: lang,
         url: absUrl(`${lang}/iparagak/${ind.slug}`),
+        isPartOf: weblapRef,
+        publisher: szervezetRef,
+        // Miről szól a lap: maga az iparág. A szakaszcímek a lapon belüli
+        // konkrét feladatokat nevezik meg — ezek a keresett kifejezések.
+        about: {
+          '@type': 'Thing',
+          name: ind.name[lang],
+          description: ind.short[lang],
+        },
+        // A hivatkozott előírások nevesítve. Egy AI-válaszmotor ebből tudja,
+        // hogy ez a lap az adott jogszabályról is mond valamit.
+        ...(ind.regulations?.length
+          ? {
+              mentions: ind.regulations.map((r) => ({
+                '@type': 'Thing',
+                name: r.name,
+                description: r.explanation[lang],
+              })),
+            }
+          : {}),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.industries.title, item: absUrl(`${lang}/iparagak`) },
-          { '@type': 'ListItem', position: 2, name: ind.name[lang], item: absUrl(`${lang}/iparagak/${ind.slug}`) },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.industries.title, path: 'iparagak' },
+        { name: ind.name[lang], path: `iparagak/${ind.slug}` },
+      ]),
       {
         '@type': 'ItemList',
         name: ind.name[lang],

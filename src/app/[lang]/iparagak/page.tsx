@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { industries } from '@/lib/iparagak';
+import { szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -37,10 +38,13 @@ export default async function IndustriesPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    '@id': absUrl(`${lang}/iparagak`),
     name: dict.industries.title,
     description: dict.industries.lead,
     inLanguage: lang,
     url: absUrl(`${lang}/iparagak`),
+    isPartOf: weblapRef,
+    publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: industries.map((ind, i) => ({

@@ -1,0 +1,159 @@
+import { getDictionary, type Locale } from '@/lib/i18n';
+import { categories, manufacturers } from '@/lib/products';
+import { SITE_NAME, SITE_URL, absUrl } from '@/lib/site';
+
+/**
+ * A weblap entitásgráfja — a strukturált adat gerince.
+ *
+ * Korábban minden oldal a maga kis Organization-blokkját írta ki, egymástól
+ * függetlenül. A kereső és az AI-válaszmotor ilyenkor nem tudja biztosan, hogy
+ * a hetven oldalon szereplő „Blueway Trade Kft." mind ugyanaz a cég — csak
+ * sejti a névegyezésből. Ezért kap a szervezet és a weblap egy-egy állandó
+ * `@id`-t, és minden más csomópont EZEKRE hivatkozik ahelyett, hogy újra
+ * leírná őket.
+ *
+ *   https://blueway.hu/#szervezet   — a cég
+ *   https://blueway.hu/#weblap      — maga a weblap
+ *
+ * A horgony a séma szerinti szokásos alak: az URL a weblapé, a `#` utáni rész
+ * pedig azt mondja meg, a lapon belül melyik dologról van szó.
+ */
+
+export const SZERVEZET_ID = `${SITE_URL}/#szervezet`;
+export const WEBLAP_ID = `${SITE_URL}/#weblap`;
+
+/** Hivatkozás a szervezetre — ez megy minden „publisher", „seller" mezőbe. */
+export const szervezetRef = { '@id': SZERVEZET_ID } as const;
+export const weblapRef = { '@id': WEBLAP_ID } as const;
+
+/** A telephely — a számlázási cím szándékosan nem ez, az nem nyilvános hely. */
+export const CIM = {
+  '@type': 'PostalAddress',
+  streetAddress: 'Déri Miksa u. 10/A.',
+  addressLocality: 'Nagytarcsa',
+  addressRegion: 'Pest',
+  postalCode: '2142',
+  addressCountry: 'HU',
+} as const;
+
+const TERKEP_KERDES = 'Déri Miksa u. 10/A, 2142 Nagytarcsa, Hungary';
+export const TERKEP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  TERKEP_KERDES,
+)}`;
+
+/**
+ * A cég csomópontja.
+ *
+ * Két típussal: Organization ÉS LocalBusiness. Az előbbi a cégazonosításhoz
+ * kell (adószám, cégjegyzékszám, márkakapcsolatok), az utóbbi ahhoz, hogy a
+ * telephely földrajzi helyként is értelmet nyerjen — „címkenyomtató Budapest
+ * környékén" típusú keresésnél ez a különbség.
+ *
+ * Nyitvatartás és földrajzi koordináta szándékosan NINCS benne: egyiket sem
+ * tudjuk, kitalálni pedig nem szabad. Ha megvannak, ide kerülnek
+ * (openingHoursSpecification, geo).
+ */
+export function szervezetNode(lang: Locale) {
+  const dict = getDictionary(lang);
+  return {
+    '@type': ['Organization', 'LocalBusiness'],
+    '@id': SZERVEZET_ID,
+    name: SITE_NAME,
+    legalName: 'Blueway Trade Korlátolt Felelősségű Társaság',
+    url: absUrl(lang),
+    logo: {
+      '@type': 'ImageObject',
+      url: absUrl('images/brand/blueway-logo-still.png'),
+    },
+    image: absUrl('images/og.png'),
+    description: dict.hero.lead,
+    email: 'info@blueway.hu',
+    telephone: '+36302796679',
+    foundingDate: '2014',
+    taxID: '25051632-2-13',
+    vatID: 'HU25051632',
+    // A cégjegyzékszám a magyar cégnyilvántartás azonosítója — ettől köthető
+    // a weblapon szereplő cég egy konkrét, hivatalosan bejegyzett céghez.
+    identifier: [
+      { '@type': 'PropertyValue', name: 'Cégjegyzékszám', value: '13-09-206022' },
+      { '@type': 'PropertyValue', name: 'Adószám', value: '25051632-2-13' },
+    ],
+    address: CIM,
+    hasMap: TERKEP_URL,
+    areaServed: { '@type': 'Country', name: 'Hungary' },
+    sameAs: ['https://www.facebook.com/share/1Bb1i3eHqk/'],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        telephone: '+36302796679',
+        email: 'info@blueway.hu',
+        availableLanguage: ['hu', 'en', 'de'],
+        areaServed: 'HU',
+      },
+      {
+        '@type': 'ContactPoint',
+        contactType: 'technical support',
+        telephone: '+36703415535',
+        email: 'info@blueway.hu',
+        availableLanguage: ['hu', 'en'],
+        areaServed: 'HU',
+      },
+    ],
+    // Miről szól ez a cég. A kategórianevekből és a forgalmazott márkákból
+    // épül, tehát nem külön karbantartandó lista: ha új kategória vagy gyártó
+    // kerül a kínálatba, ez magától követi.
+    knowsAbout: [
+      ...categories.map((c) => c.name[lang]),
+      ...manufacturers.map((m) => m.name),
+    ],
+    // A kínálat szerkezete — ebből tudja a kereső, hogy nem egyetlen terméket
+    // árulunk, hanem hét, egymástól jól elkülönülő géptípus-családot.
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: dict.nav.products,
+      itemListElement: categories.map((c) => ({
+        '@type': 'OfferCatalog',
+        name: c.name[lang],
+        url: absUrl(`${lang}/termekek/${c.slug}`),
+      })),
+    },
+  };
+}
+
+/** A weblap csomópontja — a kiadója a fenti szervezet. */
+export function weblapNode(lang: Locale) {
+  return {
+    '@type': 'WebSite',
+    '@id': WEBLAP_ID,
+    name: SITE_NAME,
+    url: absUrl(lang),
+    inLanguage: lang,
+    publisher: szervezetRef,
+  };
+}
+
+/**
+ * Morzsamenü a főoldallal kezdve.
+ *
+ * A főoldal eddig hiányzott a láncból, pedig a kereső abból tudja, hogy a
+ * termékoldal nem gyökérszintű lap, hanem két kattintásra van a nyitólaptól.
+ */
+export function morzsa(lang: Locale, elemek: { name: string; path: string }[]) {
+  const dict = getDictionary(lang);
+  const lista = [{ name: dict.nav.home, path: '' }, ...elemek];
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: lista.map((e, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: e.name,
+      item: absUrl(e.path ? `${lang}/${e.path}` : lang),
+    })),
+  };
+}
+
+/** Egy oldal saját `@graph`-ja, a szokásos `@context` burkolattal. */
+export function graf(nodes: unknown[]) {
+  return { '@context': 'https://schema.org', '@graph': nodes };
+}

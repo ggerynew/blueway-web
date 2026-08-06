@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getCategory, getProductsByCategory, manufacturers , productName } from '@/lib/products';
+import { morzsa } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -60,13 +61,10 @@ export default async function CategoryPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
-          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.products.title, path: 'termekek' },
+        { name: cat.name[lang], path: `termekek/${cat.slug}` },
+      ]),
       {
         '@type': 'ItemList',
         name: cat.name[lang],

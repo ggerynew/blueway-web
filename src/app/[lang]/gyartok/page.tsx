@@ -5,6 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getProductsByBrand } from '@/lib/products';
+import { szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -37,10 +38,13 @@ export default async function ManufacturersPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    '@id': absUrl(`${lang}/gyartok`),
     name: dict.manufacturers.title,
     description: dict.manufacturers.lead,
     inLanguage: lang,
     url: absUrl(`${lang}/gyartok`),
+    isPartOf: weblapRef,
+    publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: manufacturers.map((mf, i) => ({

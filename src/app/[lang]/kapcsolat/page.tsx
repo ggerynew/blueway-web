@@ -4,7 +4,8 @@ import { ContactForm } from '@/components/contact-form';
 import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { pageMetadata } from '@/lib/site';
+import { TERKEP_URL, graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -34,6 +35,25 @@ export default async function ContactPage({
   const dict = getDictionary(lang);
   const { contact } = dict;
 
+  // A kapcsolatoldalnak eddig nem volt saját strukturált adata, pedig ez az
+  // a lap, amit a kereső a cég elérhetőségeihez köt. A cégadatokat nem
+  // ismételjük meg: a központi szervezet-csomópontra hivatkozunk.
+  const jsonLd = graf([
+    {
+      '@type': 'ContactPage',
+      '@id': absUrl(`${lang}/kapcsolat`),
+      name: dict.contact.title,
+      description: dict.contact.lead,
+      inLanguage: lang,
+      url: absUrl(`${lang}/kapcsolat`),
+      isPartOf: weblapRef,
+      about: szervezetRef,
+      mainEntity: szervezetRef,
+      significantLink: TERKEP_URL,
+    },
+    morzsa(lang, [{ name: dict.contact.title, path: 'kapcsolat' }]),
+  ]);
+
   // Google Maps – a nagytarcsai telephely (API-kulcs nélküli beágyazás)
   const mapQuery = 'Déri Miksa u. 10/A, 2142 Nagytarcsa, Hungary';
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&hl=${lang}&output=embed`;
@@ -53,6 +73,10 @@ export default async function ContactPage({
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {contact.title}

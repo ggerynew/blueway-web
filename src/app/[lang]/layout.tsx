@@ -7,7 +7,7 @@ import { AnalyticsRouteTracker } from '@/components/analytics';
 import { PartsFinder } from '@/components/parts-finder';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { SITE_URL, absUrl } from '@/lib/site';
+import { graf, szervezetNode, weblapNode } from '@/lib/jsonld';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -39,45 +39,16 @@ export default async function LangLayout({
   const dict = getDictionary(lang);
   const skipLabel = dict.ui.skipToContent;
 
-  // Cégadatok strukturált formában a keresőknek (Organization / LocalBusiness)
-  const orgJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Blueway Trade Kft.',
-    url: SITE_URL,
-    logo: absUrl('images/brand/blueway-logo-still.png'),
-    email: 'info@blueway.hu',
-    telephone: '+36302796679',
-    taxID: '25051632-2-13',
-    vatID: 'HU25051632',
-    // A cég egyéb hivatalos jelenlétei — ettől a keresők ugyanahhoz a
-    // szervezethez kötik a Facebook-oldalt is.
-    sameAs: ['https://www.facebook.com/share/1Bb1i3eHqk/'],
-    // Kapcsolatfelvételi pont: a keresők ebből tudják, milyen nyelveken és
-    // milyen ügyben lehet minket elérni — a márkanévre keresve ez jelenhet
-    // meg a találat mellett.
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'sales',
-      telephone: '+36302796679',
-      email: 'info@blueway.hu',
-      availableLanguage: ['hu', 'en', 'de'],
-      areaServed: 'HU',
-    },
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Déri Miksa u. 10/A.',
-      addressLocality: 'Nagytarcsa',
-      postalCode: '2142',
-      addressCountry: 'HU',
-    },
-  };
+  // A cég és a weblap csomópontja állandó @id-vel. Minden további oldal
+  // ezekre HIVATKOZIK, nem újraírja őket — így a kereső és az AI-válaszmotor
+  // is tudja, hogy a hétszáz lapon ugyanarról a cégről van szó.
+  const alapGraf = graf([szervezetNode(lang), weblapNode(lang)]);
 
   return (
     <div className="flex min-h-screen flex-col">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(alapGraf) }}
       />
       {/* Sets the correct document language per locale (root <html> defaults to hu). WCAG 3.1.1
           Also exposes the basePath for the cookie-consent script (policy URLs). */}

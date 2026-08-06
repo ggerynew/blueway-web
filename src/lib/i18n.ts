@@ -8,6 +8,7 @@ export function isLocale(value: string): value is Locale {
 export const dictionaries = {
   hu: {
     nav: {
+      home: 'Főoldal',
       products: 'Termékek',
       manufacturers: 'Gyártók',
       services: 'Szolgáltatások',
@@ -574,6 +575,7 @@ export const dictionaries = {
   },
   en: {
     nav: {
+      home: 'Home',
       products: 'Products',
       manufacturers: 'Manufacturers',
       services: 'Services',
@@ -1139,6 +1141,7 @@ export const dictionaries = {
   },
   de: {
     nav: {
+      home: 'Startseite',
       products: 'Produkte',
       manufacturers: 'Hersteller',
       services: 'Leistungen',
@@ -1703,6 +1706,7 @@ export const dictionaries = {
   },
   it: {
     nav: {
+      home: 'Home',
       products: 'Prodotti',
       manufacturers: 'Produttori',
       services: 'Servizi',
@@ -2268,6 +2272,7 @@ export const dictionaries = {
   },
   es: {
     nav: {
+      home: 'Inicio',
       products: 'Productos',
       manufacturers: 'Fabricantes',
       services: 'Servicios',
@@ -2833,6 +2838,7 @@ export const dictionaries = {
   },
   ko: {
     nav: {
+      home: '홈',
       products: '제품',
       manufacturers: '제조사',
       services: '서비스',
@@ -3396,6 +3402,7 @@ export const dictionaries = {
   },
   zh: {
     nav: {
+      home: '首页',
       products: '产品',
       manufacturers: '制造商',
       services: '服务',
