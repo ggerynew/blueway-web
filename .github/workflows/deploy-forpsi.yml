@@ -623,6 +623,27 @@ jobs:
             fi
           done
 
+          # ——— A régi PHP-alkalmazás nem szivároghat ————————————————
+          # Az archiválás a webgyökéren KÍVÜLRE tette a régi weblapot, tehát
+          # ezeknek nem szabad kiszolgálódniuk. Külön ellenőrzés, mert a
+          # protected/config/main.php az adatbázis jelszavát tartalmazza, a
+          # pma pedig egy phpMyAdmin volt — ha bármelyik újra elérhetővé
+          # válna (rossz WEB_ROOT, visszamásolás, szolgáltatói visszaállítás),
+          # arról tudni akarunk, méghozzá azonnal.
+          echo "— a régi alkalmazás nem szolgálódik ki —"
+          SZIVARGAS=0
+          for UT in /protected/config/main.php /protected/config/db.php /pma/ /admin/ \
+                    /uploads/ /_blueway_old.rar; do
+            V=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT$UT" 2>/dev/null || echo 000)
+            # 404 vagy 403 a jó válasz; a 301 is rendben van, ha a nyitóoldalra visz.
+            case "$V" in
+              200) echo "::warning::A $UT KISZOLGÁLÓDIK ($V) — a régi alkalmazás visszakerült a webgyökérbe."
+                   SZIVARGAS=$((SZIVARGAS + 1)) ;;
+              *)   echo "  $UT -> $V" ;;
+            esac
+          done
+          [ "$SZIVARGAS" -eq 0 ] && echo "  a régi alkalmazás egyetlen próbált útvonalon sem érhető el"
+
           # ——— Az AI-olvasóknak szánt fájlok ————————————————————————
           # A /llms.txt a gépi olvasók (AI-keresők, asszisztensek) belépési
           # pontja. Két dolognak kell teljesülnie: szövegként jöjjön (ne a
