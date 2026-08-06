@@ -11,6 +11,9 @@ import { guides } from '@/lib/knowledge';
 export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const nav = [
     { href: `/${lang}/termekek`, label: dict.nav.products },
+    // Az iparágak a termékek MELLETT állnak, nem alattuk: ugyanahhoz a
+    // kínálathoz két belépés, és a vevő jellemzően a feladatában gondolkodik.
+    { href: `/${lang}/iparagak`, label: dict.nav.industries },
     { href: `/${lang}/gyartok`, label: dict.nav.manufacturers },
     { href: `/${lang}/szolgaltatasok`, label: dict.nav.services },
     { href: `/${lang}/tudastar`, label: dict.nav.knowledge },

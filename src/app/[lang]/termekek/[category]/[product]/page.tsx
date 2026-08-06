@@ -9,6 +9,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
+import { industriesForProduct } from '@/lib/iparagak';
 import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName } from '@/lib/products';
 import { absUrl, pageMetadata } from '@/lib/site';
 
@@ -51,6 +52,7 @@ export default async function ProductPage({
   if (!cat || !product) notFound();
   const dict = getDictionary(lang);
   const others = getProductsByCategory(cat.slug).filter((p) => p.slug !== product.slug);
+  const iparagak = industriesForProduct(product.slug);
   const brandLogo = product.brandLogo ?? getBrandLogo(product.brand);
 
   // Product + breadcrumb strukturált adat a keresőknek
@@ -342,6 +344,31 @@ export default async function ProductPage({
           </div>
         </section>
       </Reveal>
+
+      {/* Melyik iparágakhoz ajánljuk ezt a gépet. A kapcsolat mindkét irányban
+          járható: az iparági lapról ide, innen pedig vissza a feladathoz —
+          a látogató így akkor is talál kontextust, ha kereszthivatkozásból
+          érkezett egyetlen géptípusra. */}
+      {iparagak.length > 0 && (
+        <Reveal delay={0.05}>
+          <div className="mt-20 border-t border-line pt-10">
+            <h2 className="text-lg font-semibold tracking-tight">
+              {dict.industries.forProductTitle}
+            </h2>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {iparagak.map((ind) => (
+                <Link
+                  key={ind.slug}
+                  href={`/${lang}/iparagak/${ind.slug}`}
+                  className="rounded-full border border-line bg-white px-4 py-2 text-sm transition-colors hover:border-brand-300 hover:text-brand-700"
+                >
+                  {ind.name[lang]}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      )}
 
       {others.length > 0 && (
         <Reveal delay={0.1}>
