@@ -429,6 +429,15 @@ ErrorDocument 404 /404.html
   <Files "robots.txt">
     Header unset X-Robots-Tag
   </Files>
+  # Az llms.txt és a teljes szöveges kivonat szintén kivétel: ezek kimondottan
+  # a gépi olvasóknak (AI-keresők, asszisztensek) készülnek — pont az a
+  # dolguk, hogy elolvassák őket.
+  <Files "llms.txt">
+    Header unset X-Robots-Tag
+  </Files>
+  <Files "llms-full.txt">
+    Header unset X-Robots-Tag
+  </Files>
 </IfModule>
 
 # ——— Tömörítés ————————————————————————————————————————————————————
