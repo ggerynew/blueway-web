@@ -76,7 +76,7 @@ export default async function IndustriesPage({
           <Reveal key={ind.slug} delay={(i % 2) * 0.06} className="h-full">
             <Link
               href={`/${lang}/iparagak/${ind.slug}`}
-              className="group flex h-full flex-col rounded-2xl border border-line bg-white p-7 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+              className="group product-tile flex h-full flex-col p-7"
             >
               <h2 className="text-xl font-semibold tracking-tight group-hover:text-brand-700">
                 {ind.name[lang]}

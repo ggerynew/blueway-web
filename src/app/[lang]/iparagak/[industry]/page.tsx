@@ -93,7 +93,7 @@ export default async function IndustryPage({
           : {}),
       },
       morzsa(lang, [
-      { name: dict.industries.title, path: 'iparagak' },
+        { name: dict.industries.title, path: 'iparagak' },
         { name: ind.name[lang], path: `iparagak/${ind.slug}` },
       ]),
       {
@@ -228,7 +228,7 @@ export default async function IndustryPage({
                 <Link
                   key={g.slug}
                   href={`/${lang}/tudastar/${g.slug}`}
-                  className="group rounded-xl border border-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-brand-300"
+                  className="group product-tile p-5"
                 >
                   <span className="font-medium group-hover:text-brand-700">{g.title[lang]}</span>
                   <p className="mt-1 text-sm text-ink-muted">{g.short[lang]}</p>
