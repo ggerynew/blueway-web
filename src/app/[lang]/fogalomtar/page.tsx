@@ -132,18 +132,19 @@ export default async function GlossaryPage({
                 {dict.glossary.themes[g.theme]}
               </h2>
             </Reveal>
-            <dl className="mt-8 space-y-10">
+            {/* Nem dl/dt/dd: a fogalom neve címsor (h3), hogy a felolvasó
+                címsorról címsorra tudjon ugrani — a HTML viszont a dt-ben
+                tiltja a címsorokat, ezért a lista sima szakaszokból áll. */}
+            <div className="mt-8 space-y-10">
               {g.items.map((t) => {
                 const linkek = kapcsolodo(t);
                 return (
-                  <div key={t.slug} id={t.slug} className="scroll-mt-32">
-                    <dt>
-                      <h3 className="text-lg font-semibold tracking-tight">{t.name[lang]}</h3>
-                      {/* A rövid mondat a válasz a „mi az a …?" kérdésre —
-                          sötétebb, mint a kifejtés, hogy elváljon tőle. */}
-                      <p className="mt-1 text-ink">{t.short[lang]}</p>
-                    </dt>
-                    <dd className="mt-3 text-ink-muted">
+                  <section key={t.slug} id={t.slug} className="scroll-mt-32">
+                    <h3 className="text-lg font-semibold tracking-tight">{t.name[lang]}</h3>
+                    {/* A rövid mondat a válasz a „mi az a …?" kérdésre —
+                        sötétebb, mint a kifejtés, hogy elváljon tőle. */}
+                    <p className="mt-1 text-ink">{t.short[lang]}</p>
+                    <div className="mt-3 text-ink-muted">
                       <LinkedText text={t.definition[lang]} lang={lang} />
                       {linkek.length > 0 && (
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -158,11 +159,11 @@ export default async function GlossaryPage({
                           ))}
                         </div>
                       )}
-                    </dd>
-                  </div>
+                    </div>
+                  </section>
                 );
               })}
-            </dl>
+            </div>
           </section>
         ))}
       </div>
