@@ -619,6 +619,26 @@ jobs:
             fi
           done
 
+          # ——— Az AI-olvasóknak szánt fájlok ————————————————————————
+          # A /llms.txt a gépi olvasók (AI-keresők, asszisztensek) belépési
+          # pontja. Két dolognak kell teljesülnie: szövegként jöjjön (ne a
+          # .txt→.html átírás HTML-je), és NE legyen rajta a lapozás-
+          # adatcsomagokra szánt noindex fejléc.
+          echo "— AI-fájlok —"
+          AIV=$(curl -sS -o /tmp/llms.txt --max-time 20 -w '%{http_code} %{content_type}' "https://$HOSZT/llms.txt" 2>/dev/null || echo "000 -")
+          AIFEJ=$(curl -sSI --max-time 20 "https://$HOSZT/llms.txt" 2>/dev/null | grep -i '^x-robots-tag:' || true)
+          if [ "${AIV%% *}" = "200" ] && head -1 /tmp/llms.txt | grep -q '^# Blueway'; then
+            if [ -z "$AIFEJ" ]; then
+              echo "  /llms.txt -> $AIV, noindex fejléc nélkül — rendben"
+            else
+              echo "::warning::A /llms.txt-n rajta maradt a noindex fejléc ($AIFEJ) — a .htaccess kivétele nem érvényesül."
+            fi
+          else
+            echo "::warning::A /llms.txt nem jó ($AIV) — az AI-olvasók belépési pontja nem érhető el."
+          fi
+          JSONV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT/ai/termekek.json" 2>/dev/null || echo 000)
+          [ "$JSONV" = "200" ] && echo "  /ai/termekek.json -> 200" || echo "::warning::Az /ai/termekek.json nem érhető el ($JSONV)."
+
           echo "— a .htaccess érvényesülése —"
           FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
                    grep -i '^cache-control:' | tail -1)
