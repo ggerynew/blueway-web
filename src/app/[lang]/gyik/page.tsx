@@ -5,7 +5,8 @@ import { Reveal } from '@/components/reveal';
 import { LinkedText } from '@/components/linked-text';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getCategory } from '@/lib/products';
-import { pageMetadata } from '@/lib/site';
+import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -40,6 +41,9 @@ export default async function FaqPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    '@id': absUrl(`${lang}/gyik`),
+    isPartOf: weblapRef,
+    publisher: szervezetRef,
     mainEntity: faq.items.map((item) => ({
       '@type': 'Question',
       name: item.q,

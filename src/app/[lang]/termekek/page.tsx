@@ -4,6 +4,7 @@ import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getProductsByCategory } from '@/lib/products';
 import type { Metadata } from 'next';
+import { szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
@@ -32,10 +33,13 @@ export default async function ProductsPage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
+    '@id': absUrl(`${lang}/termekek`),
     name: dict.products.title,
     description: dict.products.lead,
     inLanguage: lang,
     url: absUrl(`${lang}/termekek`),
+    isPartOf: weblapRef,
+    publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
       itemListElement: categories.map((c, i) => ({

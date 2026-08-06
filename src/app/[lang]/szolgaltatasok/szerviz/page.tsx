@@ -5,6 +5,7 @@ import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { ServiceRequestForm } from '@/components/service-request-form';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { morzsa, szervezetRef } from '@/lib/jsonld';
 import { SZERVIZ_TELEFONOK, absUrl, pageMetadata, telLink } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -40,35 +41,19 @@ export default async function ServicePage({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: dict.nav.services,
-            item: absUrl(`${lang}/szolgaltatasok`),
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: t.title,
-            item: absUrl(`${lang}/szolgaltatasok/szerviz`),
-          },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.nav.services, path: 'szolgaltatasok' },
+        { name: t.title, path: 'szolgaltatasok/szerviz' },
+      ]),
       {
         '@type': 'Service',
         name: t.title,
         description: t.lead,
         serviceType: t.title,
-        provider: {
-          '@type': 'Organization',
-          name: 'Blueway Trade Kft.',
-          telephone: SZERVIZ_TELEFONOK[0],
-          email,
-        },
-        areaServed: 'HU',
+        provider: szervezetRef,
+        telephone: SZERVIZ_TELEFONOK[0],
+        email,
+        areaServed: { '@type': 'Country', name: 'Hungary' },
         url: absUrl(`${lang}/szolgaltatasok/szerviz`),
       },
     ],

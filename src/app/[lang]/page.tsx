@@ -8,7 +8,8 @@ import { getDictionary, isLocale } from '@/lib/i18n';
 import { industries } from '@/lib/iparagak';
 import { productName, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
-import { SITE_URL, pageMetadata } from '@/lib/site';
+import { graf, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { absUrl, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
   params,
@@ -58,13 +59,22 @@ export default async function HomePage({
     href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Blueway Trade Kft.',
-    url: SITE_URL,
-    inLanguage: lang,
-  };
+  // A WebSite és az Organization csomópontot az elrendezés írja ki, minden
+  // lapon egyszer. Itt már csak maga a nyitólap kap saját azonosítót, és
+  // hozzáköti magát a kettőhöz.
+  const jsonLd = graf([
+    {
+      '@type': 'WebPage',
+      '@id': absUrl(lang),
+      name: dict.hero.title,
+      description: dict.hero.lead,
+      inLanguage: lang,
+      url: absUrl(lang),
+      isPartOf: weblapRef,
+      about: szervezetRef,
+      primaryImageOfPage: absUrl('images/og.png'),
+    },
+  ]);
 
   return (
     <>

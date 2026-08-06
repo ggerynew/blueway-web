@@ -7,6 +7,7 @@ import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
+import { morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 /** A tudástár-cikkek első publikálásának dátuma (strukturált adathoz). */
@@ -54,17 +55,15 @@ export default async function GuidePage({
         image: absUrl('images/og.png'),
         datePublished: PUBLISHED,
         dateModified: PUBLISHED,
-        author: { '@type': 'Organization', name: 'Blueway Trade Kft.' },
-        publisher: { '@type': 'Organization', name: 'Blueway Trade Kft.' },
+        author: szervezetRef,
+        publisher: szervezetRef,
+        isPartOf: weblapRef,
         mainEntityOfPage: absUrl(`${lang}/tudastar/${guide.slug}`),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.knowledge.title, item: absUrl(`${lang}/tudastar`) },
-          { '@type': 'ListItem', position: 2, name: guide.title[lang], item: absUrl(`${lang}/tudastar/${guide.slug}`) },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.knowledge.title, path: 'tudastar' },
+        { name: guide.title[lang], path: `tudastar/${guide.slug}` },
+      ]),
     ],
   };
 

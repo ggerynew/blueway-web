@@ -8,6 +8,7 @@ import { ZoomableImage } from '@/components/zoomable-image';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getApplicator, getBrandLogo, getCategory, products , productName } from '@/lib/products';
 import type { Metadata } from 'next';
+import { morzsa } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -74,15 +75,11 @@ export default async function ApplicatorPage({
         url: appUrl,
         ...(applicator.image ? { image: absUrl(applicator.image.replace(/^\//, '')) } : {}),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: dict.products.title, item: absUrl(`${lang}/termekek`) },
-          { '@type': 'ListItem', position: 2, name: cat.name[lang], item: absUrl(`${lang}/termekek/${cat.slug}`) },
-          { '@type': 'ListItem', position: 3, name: productName(product, lang), item: absUrl(`${lang}/termekek/${category}/${product.slug}`) },
-          { '@type': 'ListItem', position: 4, name: applicator.name[lang], item: appUrl },
-        ],
-      },
+      morzsa(lang, [
+      { name: dict.products.title, path: 'termekek' },
+        { name: cat.name[lang], path: `termekek/${cat.slug}` },
+          { name: productName(product, lang), path: `termekek/${category}/${product.slug}` },
+      ]),
     ],
   };
 

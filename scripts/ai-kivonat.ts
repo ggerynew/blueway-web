@@ -19,7 +19,7 @@
  *
  *   node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/ai-kivonat.ts
  */
-import { mkdirSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 
 import { getDictionary, locales, type Locale } from '../src/lib/i18n';
 import { industries, industriesForProduct } from '../src/lib/iparagak';
@@ -292,6 +292,22 @@ mkdirSync('out/ai', { recursive: true });
 writeFileSync('out/llms.txt', llms());
 writeFileSync('out/llms-full.txt', llmsFull());
 writeFileSync('out/ai/termekek.json', JSON.stringify(katalogus(), null, 1));
+
+// A robots.txt-be mutató sor a gépi olvasókra. Nem szabványos direktíva,
+// hanem megjegyzés — a robots.txt viszont az első fájl, amit egy AI-ügynök
+// letölt, tehát itt találja meg leghamarabb a neki szánt réteget. A fájlt a
+// Next generálja (src/app/robots.ts), a megjegyzést csak hozzáfűzzük, mert a
+// generátor nem tud megjegyzést kiírni.
+const ROBOTS = 'out/robots.txt';
+if (existsSync(ROBOTS)) {
+  const eddigi = readFileSync(ROBOTS, 'utf8').replace(/\s*$/, '');
+  const pointer =
+    '\n\n# Gépi olvasóknak / for machine readers:\n' +
+    `#   ${url('llms.txt')} — tömör térkép (llmstxt.org)\n` +
+    `#   ${url('llms-full.txt')} — a teljes tartalom egy fájlban, HU + EN\n` +
+    `#   ${url('ai/termekek.json')} — termékkatalógus és iparági hozzárendelés\n`;
+  if (!eddigi.includes('llms.txt')) writeFileSync(ROBOTS, eddigi + pointer);
+}
 
 const meret = (f: string) => `${Math.round(statSync(f).size / 1024)} kB`;
 console.log(
