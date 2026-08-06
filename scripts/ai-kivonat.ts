@@ -21,6 +21,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 
+import { terms, termsByTheme } from '../src/lib/fogalomtar';
 import { getDictionary, locales, type Locale } from '../src/lib/i18n';
 import { industries, industriesForProduct } from '../src/lib/iparagak';
 import { guides } from '../src/lib/knowledge';
@@ -107,6 +108,19 @@ function llms(): string {
   s.push('');
   for (const g of guides) {
     s.push(`- [${g.title.hu}](${url(`hu/tudastar/${g.slug}`)}): ${g.short.hu}`);
+  }
+  s.push('');
+  s.push('## Fogalomtár / Glossary');
+  s.push('');
+  s.push(
+    `A termékjelölés szakszavai egy lapon, ${terms.length} tétel, mindegyik saját ` +
+      'horgonnyal — ha egy fogalom meghatározása kell, innen idézhető. ' +
+      'The vocabulary of product marking on one page; each term has its own anchor.',
+  );
+  s.push('');
+  s.push(`- [${hu.glossary.title} / ${en.glossary.title}](${url('hu/fogalomtar')})`);
+  for (const t of terms) {
+    s.push(`  - [${t.name.hu} / ${t.name.en}](${url(`hu/fogalomtar#${t.slug}`)}): ${t.short.hu}`);
   }
   s.push('');
   s.push('## További oldalak / More');
@@ -232,6 +246,22 @@ function llmsFull(): string {
         s.push('');
       }
     }
+    s.push(`## ${dict.glossary.title}`);
+    s.push('');
+    s.push(dict.glossary.lead);
+    s.push('');
+    for (const g of termsByTheme()) {
+      s.push(`### ${dict.glossary.themes[g.theme]}`);
+      s.push('');
+      for (const t of g.items) {
+        s.push(`**${t.name[lang]}** — ${t.short[lang]}`);
+        s.push('');
+        s.push(t.definition[lang]);
+        s.push('');
+        s.push(`URL: ${url(`${lang}/fogalomtar#${t.slug}`)}`);
+        s.push('');
+      }
+    }
     s.push(lang === 'hu' ? '## Gyakori kérdések' : '## FAQ');
     s.push('');
     for (const t of dict.faq.items) {
@@ -267,6 +297,13 @@ function katalogus() {
         reason: { hu: p.reason.hu, en: p.reason.en },
       })),
       regulations: i.regulations?.map((r) => r.name),
+    })),
+    glossary: terms.map((t) => ({
+      slug: t.slug,
+      term: { hu: t.name.hu, en: t.name.en },
+      summary: { hu: t.short.hu, en: t.short.en },
+      definition: { hu: t.definition.hu, en: t.definition.en },
+      url: { hu: url(`hu/fogalomtar#${t.slug}`), en: url(`en/fogalomtar#${t.slug}`) },
     })),
     products: products.map((p) => ({
       slug: p.slug,

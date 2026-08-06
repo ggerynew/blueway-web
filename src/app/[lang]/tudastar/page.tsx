@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { terms } from '@/lib/fogalomtar';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { guides } from '@/lib/knowledge';
 import { szervezetRef, weblapRef } from '@/lib/jsonld';
@@ -69,6 +70,18 @@ export default async function KnowledgePage({
       </Reveal>
       <Reveal delay={0.08}>
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">{dict.knowledge.lead}</p>
+      </Reveal>
+
+      {/* A fogalomtár az útmutatók mellé tartozik: aki egy szakszót keres,
+          nem akar végigolvasni egy útmutatót, csak a meghatározást kéri. */}
+      <Reveal delay={0.12}>
+        <Link
+          href={`/${lang}/fogalomtar`}
+          className="mt-8 inline-flex flex-wrap items-baseline gap-x-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700"
+        >
+          <span className="font-medium">{dict.glossary.title}</span>
+          <span className="text-ink-muted">{dict.glossary.termCount(terms.length)} →</span>
+        </Link>
       </Reveal>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-2">
