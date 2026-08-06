@@ -6,12 +6,13 @@
  *                        (llmstxt.org): mi ez az oldal, mi hol van, hova
  *                        érdemes menni. Ezt olvassa el egy AI először.
  *   /llms-full.txt     — a teljes érdemi tartalom egyetlen markdown fájlban:
- *                        minden termék adata és a Tudástár összes útmutatója,
- *                        magyarul és angolul. Ebből egy AI kérdezés nélkül,
- *                        böngészés nélkül tud pontosan válaszolni.
+ *                        minden termék adata, az iparági oldalak és a Tudástár
+ *                        összes útmutatója, magyarul és angolul. Ebből egy AI
+ *                        kérdezés nélkül, böngészés nélkül tud válaszolni.
  *   /ai/termekek.json  — a termékkatalógus szerkezetes adatként (név, márka,
  *                        kategória, jellemzők, változatok, adatlap-URL, oldal-
- *                        URL nyelvenként) — ügynököknek, összehasonlítóknak.
+ *                        URL nyelvenként) és az iparági hozzárendelés mindkét
+ *                        irányban — ügynököknek, összehasonlítóknak.
  *
  * A forrás ugyanaz a három adatfájl, amiből a weblap is épül — tehát nem
  * eshet szét a kettő. Futtatás a build után (a package.json build lépésében):
@@ -21,6 +22,7 @@
 import { mkdirSync, statSync, writeFileSync } from 'node:fs';
 
 import { getDictionary, locales, type Locale } from '../src/lib/i18n';
+import { industries, industriesForProduct } from '../src/lib/iparagak';
 import { guides } from '../src/lib/knowledge';
 import {
   categories,
@@ -81,6 +83,20 @@ function llms(): string {
     s.push(`- [${c.name.hu} / ${c.name.en}](${url(`hu/termekek/${c.slug}`)}): ${db} termék — ${c.description.hu}`);
   }
   s.push('');
+  s.push('## Iparágak / Industries');
+  s.push('');
+  s.push(
+    'Ugyanaz a kínálat feladat szerint rendezve — ha a kérdés egy iparágról ' +
+      'szól, itt kezdd. Same offering grouped by application.',
+  );
+  s.push('');
+  for (const i of industries) {
+    s.push(
+      `- [${i.name.hu} / ${i.name.en}](${url(`hu/iparagak/${i.slug}`)}): ` +
+        `${i.products.length} ajánlott gép — ${i.short.hu}`,
+    );
+  }
+  s.push('');
   s.push('## Gyártók / Manufacturers');
   s.push('');
   for (const m of manufacturers) {
@@ -115,6 +131,10 @@ function termekBlokk(p: Product, lang: Locale): string {
   s.push(`### ${productName(p, lang)} (${p.brand})`);
   s.push('');
   s.push(`- Kategória / category: ${kategoriaNev(p.category, lang)}`);
+  const ipar = industriesForProduct(p.slug);
+  if (ipar.length) {
+    s.push(`- ${lang === 'hu' ? 'Iparágak' : 'Industries'}: ${ipar.map((i) => i.name[lang]).join(', ')}`);
+  }
   s.push(`- URL: ${termekUrl(p, lang)}`);
   if (p.datasheet) s.push(`- Adatlap PDF: ${url(p.datasheet)}`);
   s.push('');
@@ -165,6 +185,36 @@ function llmsFull(): string {
       s.push('');
       for (const p of lista) s.push(termekBlokk(p, lang));
     }
+    s.push(lang === 'hu' ? '## Iparágak' : '## Industries');
+    s.push('');
+    for (const ind of industries) {
+      s.push(`### ${ind.name[lang]}`);
+      s.push('');
+      s.push(`URL: ${url(`${lang}/iparagak/${ind.slug}`)}`);
+      s.push('');
+      s.push(ind.lead[lang]);
+      s.push('');
+      for (const sec of ind.sections) {
+        s.push(`#### ${sec.title[lang]}`);
+        s.push('');
+        s.push(sec.text[lang]);
+        s.push('');
+      }
+      if (ind.regulations?.length) {
+        s.push(lang === 'hu' ? 'Vonatkozó előírások:' : 'Applicable regulations:');
+        s.push('');
+        for (const r of ind.regulations) s.push(`- **${r.name}** — ${r.explanation[lang]}`);
+        s.push('');
+      }
+      s.push(lang === 'hu' ? 'Ajánlott gépek:' : 'Recommended machines:');
+      s.push('');
+      for (const ip of ind.products) {
+        const p = products.find((x) => x.slug === ip.slug);
+        if (!p) continue;
+        s.push(`- ${productName(p, lang)} (${p.brand}) — ${ip.reason[lang]}`);
+      }
+      s.push('');
+    }
     s.push(lang === 'hu' ? '## Tudástár' : '## Knowledge base');
     s.push('');
     for (const g of guides) {
@@ -206,6 +256,18 @@ function katalogus() {
       languages: locales,
     },
     generated_from: 'a weblap forrásadataiból, a builddel együtt frissül',
+    industries: industries.map((i) => ({
+      slug: i.slug,
+      name: { hu: i.name.hu, en: i.name.en },
+      summary: { hu: i.short.hu, en: i.short.en },
+      url: { hu: url(`hu/iparagak/${i.slug}`), en: url(`en/iparagak/${i.slug}`) },
+      // A géplista slug szinten, hogy a products tömbbel összefűzhető legyen.
+      recommended_products: i.products.map((p) => ({
+        slug: p.slug,
+        reason: { hu: p.reason.hu, en: p.reason.en },
+      })),
+      regulations: i.regulations?.map((r) => r.name),
+    })),
     products: products.map((p) => ({
       slug: p.slug,
       name: { hu: productName(p, 'hu'), en: productName(p, 'en') },
@@ -216,6 +278,7 @@ function katalogus() {
         en: kategoriaNev(p.category, 'en'),
       },
       summary: { hu: p.short.hu, en: p.short.en },
+      industries: industriesForProduct(p.slug).map((i) => i.slug),
       features: p.features.map((f) => ({ hu: f.hu, en: f.en })),
       url: { hu: termekUrl(p, 'hu'), en: termekUrl(p, 'en') },
       datasheet_pdf: p.datasheet ? url(p.datasheet) : undefined,

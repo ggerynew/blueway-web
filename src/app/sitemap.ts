@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { locales } from '@/lib/i18n';
 import { categories, manufacturers, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
+import { industries } from '@/lib/iparagak';
 import { absUrl } from '@/lib/site';
 
 export const dynamic = 'force-static';
@@ -31,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   add('gyartok', 0.8);
   add('szolgaltatasok', 0.7);
   add('szolgaltatasok/szerviz', 0.8);
+  add('iparagak', 0.8);
   add('tudastar', 0.7);
   add('gyik', 0.7);
   add('cimke-ajanlatkero', 0.8);
@@ -45,6 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
   for (const m of manufacturers) add(`gyartok/${m.slug}`, 0.7);
   for (const g of guides) add(`tudastar/${g.slug}`, 0.7);
+  for (const i of industries) add(`iparagak/${i.slug}`, 0.8);
 
   // Statikus jogi oldalak (nem nyelvi útvonalon)
   for (const f of ['adatkezelesi-tajekoztato.html', 'altalanos-szerzodesi-feltetelek.html', 'privacy-policy.html']) {

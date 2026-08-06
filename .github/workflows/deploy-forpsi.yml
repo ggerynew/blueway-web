@@ -414,7 +414,11 @@ jobs:
           # tehát egy kétszintű oldal működése még nem bizonyítja, hogy a
           # mélyebb is működik.
           BAJ=0
-          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz; do
+          # Az /hu/iparagak/gyogyszeripar szintén három szintű, és a listán az
+          # egyetlen lap, ami a legutóbb hozzáadott adatfájlból épül — ha ez
+          # hiányzik, az a statikus kimenetre és nem a kiszolgálásra mutat.
+          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz \
+                    /hu/iparagak /hu/iparagak/gyogyszeripar; do
             V=$(curl -sSL -o /dev/null --max-time 25 \
                  -w '%{http_code} vegallomas=%{url_effective} meret=%{size_download}' \
                  "http://$HOSZT$ut" || echo "000 -")

@@ -5,6 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { HeroTileWall } from '@/components/hero-tile-wall';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale } from '@/lib/i18n';
+import { industries } from '@/lib/iparagak';
 import { productName, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
 import { SITE_URL, pageMetadata } from '@/lib/site';
@@ -129,6 +130,42 @@ export default async function HomePage({
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* Iparági belépés: aki nem géptípust keres, hanem a saját feladatát,
+          innen indul. Csak nevek, kép nélkül — a főoldal súlya így nem nő. */}
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <Reveal>
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  {dict.industries.title}
+                </h2>
+                <p className="mt-3 max-w-xl text-ink-muted">{dict.industries.lead}</p>
+              </div>
+              <Link
+                href={`/${lang}/iparagak`}
+                className="text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+              >
+                {dict.industries.title} →
+              </Link>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              {industries.map((ind) => (
+                <Link
+                  key={ind.slug}
+                  href={`/${lang}/iparagak/${ind.slug}`}
+                  className="rounded-full border border-line bg-white px-4 py-2 text-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700"
+                >
+                  {ind.name[lang]}
+                </Link>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 

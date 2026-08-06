@@ -9,15 +9,18 @@ export function ProductCard({
   lang,
   delay = 0,
   headingLevel: Heading = 'h3',
+  className,
 }: {
   product: Product;
   lang: Locale;
   delay?: number;
   /** A kártyacím szintje: h2, ha közvetlenül a h1 alatt áll, egyébként h3. */
   headingLevel?: 'h2' | 'h3';
+  /** A kártyát körülvevő doboz osztályai — ahol a kártya alá még szöveg kerül. */
+  className?: string;
 }) {
   return (
-    <Reveal delay={delay}>
+    <Reveal delay={delay} className={className}>
       <Link
         href={`/${lang}/termekek/${product.category}/${product.slug}`}
         className="group product-tile flex h-full flex-col p-5"
