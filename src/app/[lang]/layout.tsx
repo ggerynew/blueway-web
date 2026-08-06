@@ -8,6 +8,7 @@ import { PartsFinder } from '@/components/parts-finder';
 import { asset } from '@/lib/asset';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { graf, szervezetNode, weblapNode } from '@/lib/jsonld';
+import { SUTI_VERZIO } from '@/lib/suti-verzio';
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -75,8 +76,14 @@ export default async function LangLayout({
           vevőnek: a szervizhívás közben nyitja ki. */}
       {ALKATRESZKERESO && <PartsFinder lang={lang} />}
       <Toaster position="bottom-right" richColors />
-      {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon */}
-      <Script src={asset('/js/blueway-cookie-consent.js')} strategy="afterInteractive" />
+      {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon.
+          A cím végén a fájl tartalmi lenyomata: enélkül a böngésző az
+          egyéves, „immutable" gyorsítótár miatt a régi szkriptet futtatná
+          a javítások után is (lásd src/lib/suti-verzio.ts). */}
+      <Script
+        src={`${asset('/js/blueway-cookie-consent.js')}?v=${SUTI_VERZIO}`}
+        strategy="afterInteractive"
+      />
       {/* Látogatottságmérés (GoatCounter): sütit nem tesz le, IP-címet és
           teljes User-Agentet nem tárol, csak napi összesítést — ezért
           jogos érdek alapján, consent nélkül futhat (lásd az adatkezelési
