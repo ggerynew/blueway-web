@@ -147,19 +147,36 @@ jobs:
           PORT="${SSH_PORT:-22}"
           echo "— SSH-kapcsolat előkészítése (port $PORT) —"
           mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          # A soremelés-karakter (\r) eltávolítása. Windowson generált és
+          # onnan bemásolt kulcsnál a sorok CR+LF-fel érnek véget; az OpenSSH
+          # ilyenkor „error in libcrypto"-val elszáll, mert a base64-törzsbe
+          # nem való a \r. Ez a legapróbb és leggyakoribb buktató, viszont
+          # ártalmatlanul javítható — a kulcs tartalmát nem érinti.
+          printf '%s\n' "$SSH_KEY" | tr -d '\r' > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
 
+          # Mit kaptunk egyáltalán? A tartalomból semmit nem írunk ki — csak
+          # olyan tulajdonságokat, amikből a kulcs nem állítható vissza, de a
+          # tipikus beillesztési hibák azonnal látszanak.
+          SOROK=$(wc -l < ~/.ssh/id_deploy)
+          echo "  a kulcs $SOROK sor"
+          head -1 ~/.ssh/id_deploy | grep -q -- '-----BEGIN .*PRIVATE KEY-----' \
+            || echo "::error::Az első sor nem a -----BEGIN … PRIVATE KEY----- sor. Talán a PUBLIKUS kulcs (.pub) került a titokba a privát helyett."
+          tail -1 ~/.ssh/id_deploy | grep -q -- '-----END .*PRIVATE KEY-----' \
+            || echo "::error::Az utolsó sor nem a -----END … PRIVATE KEY----- sor — a tartalom csonka."
+          [ "$SOROK" -ge 4 ] \
+            || echo "::error::A kulcs túl kevés sorból áll: a beillesztésnél elvesztek a sortörések."
+
           # A kulcs formájának ellenőrzése, MIELŐTT bármit próbálnánk vele.
-          # A leggyakoribb hiba a beillesztésnél romlik el: hiányzik a záró
-          # sor, vagy a szerkesztő elvette a sortöréseket. Ilyenkor az ssh
-          # csak annyit mond, hogy „invalid format", és nehéz kitalálni, mire
-          # gondol. A -y a publikus felét számolja ki a privátból: ha ez
-          # lefut, a kulcs ép.
+          # A -y a publikus felét számolja ki a privátból: ha ez lefut, a
+          # kulcs ép, és az ujjlenyomatból az is látszik, ugyanaz-e, mint ami
+          # a kiszolgálóra került.
           if ! ssh-keygen -y -f ~/.ssh/id_deploy -P '' > /tmp/kulcs.pub 2>/tmp/kulcs-hiba.txt; then
             echo "::error::A privát kulcs nem olvasható: $(cat /tmp/kulcs-hiba.txt)"
-            echo "  Ellenőrizd a FORPSI_SSH_KEY titkot: a -----BEGIN OPENSSH PRIVATE KEY----- sortól"
-            echo "  a -----END OPENSSH PRIVATE KEY----- sorig MINDENNEK benne kell lennie, sortörésekkel."
+            echo "  A FORPSI_SSH_KEY titokban a -----BEGIN OPENSSH PRIVATE KEY----- sortól a"
+            echo "  -----END OPENSSH PRIVATE KEY----- sorig MINDENNEK benne kell lennie, sortörésekkel."
+            echo "  Windowson a másolás legegyszerűbb módja: notepad %USERPROFILE%\\.ssh\\blueway-deploy"
+            echo "  majd Ctrl+A, Ctrl+C — és a GitHub titok mezőjébe Ctrl+V."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
           echo "  a kulcs ép, ujjlenyomata: $(ssh-keygen -lf /tmp/kulcs.pub | awk '{print $2}')"
