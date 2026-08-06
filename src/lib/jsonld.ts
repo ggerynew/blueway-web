@@ -49,8 +49,8 @@ export const TERKEP_URL = `https://www.google.com/maps/search/?api=1&query=${enc
  * telephely földrajzi helyként is értelmet nyerjen — „címkenyomtató Budapest
  * környékén" típusú keresésnél ez a különbség.
  *
- * Földrajzi koordináta szándékosan NINCS benne: nem tudjuk, kitalálni pedig
- * nem szabad. Ha megvan, ide kerül (geo).
+ * A koordináta a Google cégprofilból való, nem a címből becsülve: a
+ * geokódolás egy ipari parkban simán a szomszéd telekre esne.
  */
 export function szervezetNode(lang: Locale) {
   const dict = getDictionary(lang);
@@ -78,6 +78,11 @@ export function szervezetNode(lang: Locale) {
       { '@type': 'PropertyValue', name: 'Adószám', value: '25051632-2-13' },
     ],
     address: CIM,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 47.5139066,
+      longitude: 19.2793119,
+    },
     hasMap: TERKEP_URL,
     // Hétköznap 8-tól 15-ig. A hétvégét nem soroljuk fel külön: ami nincs a
     // listán, azt a keresők zárva értelmezik, a kiírt „zárva" bejegyzés pedig
