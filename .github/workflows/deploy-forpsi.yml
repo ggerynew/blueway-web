@@ -218,8 +218,15 @@ jobs:
           # néhány másodperc az első teljes szinkron után.
           FLAGS="-rlvz --checksum --omit-dir-times --no-perms"
           if [ "$DELETE_EXTRA" = "true" ]; then FLAGS="$FLAGS --delete"; fi
-          rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
-            out/ "$SSH_USER@$SSH_HOST:$WEB_ROOT/"
+          # A hibacsatorna külön fájlba is megy: az rsync panasza egyetlen sor
+          # a kétezer átmásolt fájlnév között, és a napló végét úgyis az
+          # ellenőrző lépés tölti ki — a záró összefoglaló ebből dolgozik.
+          if ! rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
+                 out/ "$SSH_USER@$SSH_HOST:$WEB_ROOT/" 2>/tmp/rsync-hiba.txt; then
+            echo "::error::Az rsync nem futott le rendben."
+            sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
+            rm -f ~/.ssh/id_deploy; exit 1
+          fi
           rm -f ~/.ssh/id_deploy
 
       # ——— FTP ———————————————————————————————————————————————————
@@ -840,3 +847,28 @@ jobs:
               echo "  https://$GEP/ -> ${HV:-hiba}: $(head -c 200 /tmp/https-hiba.txt 2>/dev/null)"
             fi
           done
+
+      # ——— Az SSH hibája, a napló legvégén ————————————————————————
+      # Az SSH-lépés diagnosztikája a build ezer sora és az ellenőrző lépés
+      # közé szorul, a napló végét pedig ez utóbbi tölti ki — a hiba oka
+      # gyakorlatilag olvashatatlan marad. Ezért a job UTOLSÓ lépéseként
+      # megismételjük a lényeget. A titkokból semmit nem ír ki: csak az
+      # OpenSSH és az rsync saját hibaüzeneteit, amiket a lépés fájlba is
+      # elmentett.
+      - name: Miért nem ment az SSH
+        if: steps.gate.outputs.go == 'true' && steps.ssh.outcome == 'failure'
+        run: |
+          echo "Az SSH-s feltöltés elhasalt, a weblap FTP-vel frissült."
+          VOLT=0
+          for PAR in "a kulcs beolvasása|/tmp/kulcs-hiba.txt" \
+                     "a kiszolgáló gazdakulcsa|/tmp/keyscan.txt" \
+                     "a bejelentkezés|/tmp/ssh-hiba.txt" \
+                     "az rsync|/tmp/rsync-hiba.txt"; do
+            CIMKE="${PAR%%|*}"; F="${PAR##*|}"
+            if [ -s "$F" ]; then
+              echo "— $CIMKE —"
+              sed 's/^/  /' "$F"
+              VOLT=1
+            fi
+          done
+          [ "$VOLT" = "1" ] || echo "Egyetlen diagnosztikai fájl sem keletkezett — a lépés a legelső ellenőrzésen bukott el, lásd a „Feltöltés SSH-val” lépés naplóját."
