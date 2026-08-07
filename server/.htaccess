@@ -46,7 +46,14 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
 # ——— bluewaytrade.us: építés alatt ————————————————————————————————
 # A .us domain ugyanezen a tárhelyen él (a tanúsítvány mind a négy nevet
-# fedi). Amíg nincs saját tartalma, minden kérése az /us/index.html-t kapja.
+# fedi). Amíg nincs saját tartalma, minden kérése az /us-atmeneti/index.html-t
+# kapja.
+#
+# Az /us-atmeneti/ név nem szépészeti kérdés: az /us/ mappában MOSTANTÓL az
+# amerikai angol nyelvi változat lakik (110 lap, a sitemapben és minden lap
+# hreflangjában szerepel). A két dolog nem férhet meg ugyanazon az útvonalon —
+# az átmeneti lap költözött, mert a nyelvi változat címeit a kereső már
+# ismeri.
 #
 # Átírás és NEM átirányítás: a látogató a bluewaytrade.us címen marad, nem
 # dobjuk át a magyar oldalra.
@@ -54,7 +61,7 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # A www-s alak ide már nem jut el: azt a fenti szabály levágja.
 #
 # Megjegyzés: ha a .us a tárhelyen SAJÁT könyvtárat kapott, ez a szabály nem
-# érinti — akkor az /us/ mappa tartalmát oda kell feltölteni. A deploy ezt
+# érinti — akkor az átmeneti lap tartalmát oda kell feltölteni. A deploy ezt
 # megteszi, ha a FORPSI_US_WEB_ROOT secret meg van adva.
 
 # ELŐSZÖR a lap kellékei. A lap a saját mappájából hivatkozik rájuk relatívan
@@ -69,18 +76,23 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # A relatív hivatkozás szándékos: ha a .us saját webgyökeret kap, ugyanezek a
 # fájlok ott a gyökérben állnak, és ez a szabály eleve nem is fut le.
 RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
-RewriteRule ^(blueway-logo-anim\.webp|blueway-logo-still\.png|favicon\.ico)$ /us/$1 [L]
+RewriteRule ^(blueway-logo-anim\.webp|blueway-logo-still\.png|favicon\.ico)$ /us-atmeneti/$1 [L]
 
-# Minden más kérés a lapot kapja. Az /us/ alattiak kimaradnak, különben a fenti
-# átírás után végtelen körbe futnánk.
+# Minden más kérés a lapot kapja. Az /us-atmeneti/ alattiak kimaradnak,
+# különben a fenti átírás után végtelen körbe futnánk.
 RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
-RewriteCond %{REQUEST_URI} !^/us/
-RewriteRule ^ /us/index.html [L]
+RewriteCond %{REQUEST_URI} !^/us-atmeneti/
+RewriteRule ^ /us-atmeneti/index.html [L]
 
 # A blueway.hu-n viszont ne legyen elérhető: aki odatéved, csak összezavarodna
 # egy „under construction” oldaltól a működő weblap alatt.
+#
+# A szabály az ÁTMENETI LAPRA szól, nem az /us/ mappára. Eredetileg is ez volt
+# a szándéka — akkor a kettő ugyanazon az útvonalon állt. Ha így maradt volna,
+# a blueway.hu 404-et adna az amerikai angol változat mind a 110 lapjára,
+# miközben a sitemap beküldi és minden lap hreflangje odamutat.
 RewriteCond %{HTTP_HOST} !^bluewaytrade\.us$ [NC]
-RewriteRule ^us/ - [R=404,L]
+RewriteRule ^us-atmeneti/ - [R=404,L]
 
 # ——— Átnevezett oldalak ——————————————————————————————————————————
 # A 6014-es applikátorból új változat jött ki 6114 néven, ezért az oldal címe
