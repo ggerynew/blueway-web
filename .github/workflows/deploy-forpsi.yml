@@ -114,9 +114,15 @@ jobs:
           # webgyökeret kapott a tárhelyen — akkor ugyanez a mappa megy oda.
           # A logó itt nagyobb felbontású, mint a weblap fejlécében: ezen a
           # lapon ez az egyetlen tartalom, és nagy méretben jelenik meg.
-          cp -r server/us out/us
-          test -s out/us/blueway-logo-anim.webp
-          test -s out/us/blueway-logo-still.png
+          #
+          # NEM az /us/ mappába: az mostantól az amerikai angol nyelvi változat
+          # helye (out/us/**, 110 lap a sitemapben). Ha ide másolnánk, a
+          # `cp -r` a meglévő mappa ALÁ tenné (out/us/us), a lenti ellenőrzés
+          # pedig elhasalna — pontosan ez döntötte le a deployt.
+          cp -r server/us-atmeneti out/us-atmeneti
+          test -s out/us-atmeneti/blueway-logo-anim.webp
+          test -s out/us-atmeneti/blueway-logo-still.png
+          test ! -e out/us/us
 
       - name: Ellenőrzés — a build nem üres
         if: steps.gate.outputs.go == 'true'
@@ -464,10 +470,15 @@ jobs:
           US_ROOT: ${{ secrets.FORPSI_US_WEB_ROOT }}
         run: |
           set -euo pipefail
-          echo "Az /us mappa feltöltése ide: $US_ROOT"
+          # Az átmeneti lap megy ki, nem az out/us/ (az az amerikai angol
+          # nyelvi változat, ami a blueway.hu gyökeréhez képest hivatkozik a
+          # kellékeire — külön gyökérbe kiszakítva kép és szkript nélkül
+          # maradna). Amíg a .us tényleges tartalma nem dől el, ide az
+          # önmagában teljes átmeneti lap való.
+          echo "Az átmeneti lap feltöltése ide: $US_ROOT"
           lftp -u "$FTP_USER" --env-password \
             -e "set ftp:passive-mode true; set ftp:sync-mode false; set net:max-retries 2; \
-                set net:timeout 20; mirror -R --parallel=4 out/us/ '$US_ROOT/'; bye" \
+                set net:timeout 20; mirror -R --parallel=4 server/us-atmeneti/ '$US_ROOT/'; bye" \
             "$FTP_HOST"
 
       - name: Ellenőrzés — betölt-e az oldal
@@ -496,8 +507,12 @@ jobs:
           # Az /hu/iparagak/gyogyszeripar szintén három szintű, és a listán az
           # egyetlen lap, ami a legutóbb hozzáadott adatfájlból épül — ha ez
           # hiányzik, az a statikus kimenetre és nem a kiszolgálásra mutat.
+          # Az /us/ azért van rajta, mert a .htaccess-ben évekig egy szabály
+          # 404-elte ezt az útvonalat (akkor az átmeneti lap lakott ott). Ha
+          # valaki visszateszi, az amerikai angol változat mind a 110 lapja
+          # némán eltűnik, miközben a sitemap és a hreflang odamutat.
           for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz \
-                    /hu/iparagak /hu/iparagak/gyogyszeripar; do
+                    /hu/iparagak /hu/iparagak/gyogyszeripar /us /us/kapcsolat; do
             V=$(curl -sSL -o /dev/null --max-time 25 \
                  -w '%{http_code} vegallomas=%{url_effective} meret=%{size_download}' \
                  "http://$HOSZT$ut" || echo "000 -")
