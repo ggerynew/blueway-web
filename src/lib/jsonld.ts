@@ -58,6 +58,8 @@ export function szervezetNode(lang: Locale) {
     '@type': ['Organization', 'LocalBusiness'],
     '@id': SZERVEZET_ID,
     name: SITE_NAME,
+    // A rövid hívónév, ahogy a vevők emlegetik — a kereső így is összeköti.
+    alternateName: 'Blueway',
     legalName: 'Blueway Trade Korlátolt Felelősségű Társaság',
     url: absUrl(lang),
     logo: {
