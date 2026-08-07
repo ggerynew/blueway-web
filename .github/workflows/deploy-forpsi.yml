@@ -151,7 +151,12 @@ jobs:
           DELETE_EXTRA: ${{ inputs.delete_extra }}
         run: |
           PORT="${SSH_PORT:-22}"
-          echo "— SSH-kapcsolat előkészítése (port $PORT) —"
+          # Mérföldkövek külön fájlba is: a lépés naplója a build és az
+          # ellenőrzés közé szorul, a záró összefoglaló pedig ebből mondja
+          # meg, MEDDIG jutott el a kapcsolatfelvétel. Enélkül csak annyi
+          # látszik, hogy „nem ment", és a következő kör megint tippelés.
+          JEGYZET() { printf '%s\n' "$*" | tee -a /tmp/ssh-allapot.txt; }
+          JEGYZET "— SSH-kapcsolat előkészítése (port $PORT) —"
           mkdir -p ~/.ssh
           # A soremelés-karakter (\r) eltávolítása. Windowson generált és
           # onnan bemásolt kulcsnál a sorok CR+LF-fel érnek véget; az OpenSSH
@@ -165,7 +170,7 @@ jobs:
           # olyan tulajdonságokat, amikből a kulcs nem állítható vissza, de a
           # tipikus beillesztési hibák azonnal látszanak.
           SOROK=$(wc -l < ~/.ssh/id_deploy)
-          echo "  a kulcs $SOROK sor"
+          JEGYZET "  a kulcs $SOROK sor"
           head -1 ~/.ssh/id_deploy | grep -q -- '-----BEGIN .*PRIVATE KEY-----' \
             || echo "::error::Az első sor nem a -----BEGIN … PRIVATE KEY----- sor. Talán a PUBLIKUS kulcs (.pub) került a titokba a privát helyett."
           tail -1 ~/.ssh/id_deploy | grep -q -- '-----END .*PRIVATE KEY-----' \
@@ -186,33 +191,35 @@ jobs:
             echo "  Utána a GitHub titok mezőjébe Ctrl+V."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
-          echo "  a kulcs ép, ujjlenyomata: $(ssh-keygen -lf /tmp/kulcs.pub | awk '{print $2}')"
+          JEGYZET "  a kulcs ép, ujjlenyomata: $(ssh-keygen -lf /tmp/kulcs.pub | awk '{print $2}')"
 
           # Válaszol-e egyáltalán a kiszolgáló ezen a porton? A kimenetet NEM
           # dobjuk el: korábban ez rejtette el a hiba okát.
           if ! ssh-keyscan -p "$PORT" -T 10 "$SSH_HOST" > ~/.ssh/known_hosts 2>/tmp/keyscan.txt; then
-            echo "::error::Az ssh-keyscan nem futott le rendben."
+            JEGYZET "::error::Az ssh-keyscan nem futott le rendben (kilépési kód nem nulla)."
           fi
           sed 's/^/  keyscan: /' /tmp/keyscan.txt || true
           if [ ! -s ~/.ssh/known_hosts ]; then
-            echo "::error::A kiszolgáló nem adott vissza gazdakulcsot a(z) $PORT porton."
+            JEGYZET "::error::A kiszolgáló nem adott vissza gazdakulcsot a(z) $PORT porton — a keyscan üres."
             echo "  Vagy nincs bekapcsolva az SSH, vagy más porton figyel (ekkor a FORPSI_SSH_PORT titkot állítsd be),"
             echo "  vagy a szolgáltató nem enged be a GitHub futtatóinak IP-címéről."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
-          echo "  a gazdakulcs megvan"
+          JEGYZET "  a gazdakulcs megvan"
 
           # Beenged-e a kulcs? Külön lépésben, hogy a hitelesítési hiba ne
           # keveredjen össze az rsync fájlhibáival.
           if ! ssh -i ~/.ssh/id_deploy -p "$PORT" -o StrictHostKeyChecking=yes \
                    -o BatchMode=yes -o ConnectTimeout=15 \
                    "$SSH_USER@$SSH_HOST" 'echo BELEPES_OK; pwd' 2>/tmp/ssh-hiba.txt; then
-            echo "::error::A bejelentkezés nem sikerült."
+            JEGYZET "::error::A bejelentkezés nem sikerült."
             sed 's/^/  ssh: /' /tmp/ssh-hiba.txt || true
             echo "  „Permission denied (publickey)” — a publikus kulcs nincs a kiszolgálón, vagy más a felhasználónév."
             echo "  „This service allows sftp connections only” — a tárhely csak SFTP-t ad, rsync-et nem."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
+
+          JEGYZET "  a bejelentkezés sikerült"
 
           # Csak a megváltozott fájlok mennek át — a második deploytól ez
           # néhány másodperc az első teljes szinkron után.
@@ -223,7 +230,7 @@ jobs:
           # ellenőrző lépés tölti ki — a záró összefoglaló ebből dolgozik.
           if ! rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
                  out/ "$SSH_USER@$SSH_HOST:$WEB_ROOT/" 2>/tmp/rsync-hiba.txt; then
-            echo "::error::Az rsync nem futott le rendben."
+            JEGYZET "::error::Az rsync nem futott le rendben."
             sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
             rm -f ~/.ssh/id_deploy; exit 1
           fi
@@ -859,6 +866,10 @@ jobs:
         if: steps.gate.outputs.go == 'true' && steps.ssh.outcome == 'failure'
         run: |
           echo "Az SSH-s feltöltés elhasalt, a weblap FTP-vel frissült."
+          if [ -s /tmp/ssh-allapot.txt ]; then
+            echo "— meddig jutott el —"
+            sed 's/^/  /' /tmp/ssh-allapot.txt
+          fi
           VOLT=0
           for PAR in "a kulcs beolvasása|/tmp/kulcs-hiba.txt" \
                      "a kiszolgáló gazdakulcsa|/tmp/keyscan.txt" \
