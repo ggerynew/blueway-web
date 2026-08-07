@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { asset } from '@/lib/asset';
+import { fajlLenyomat } from '@/lib/fajl-lenyomat';
 import type { Locale } from '@/lib/i18n';
 
 /**
@@ -16,6 +17,19 @@ import type { Locale } from '@/lib/i18n';
  *    helyükön maradtak, hogy a kapcsoló átbillentésével vissza lehessen állni.
  */
 const ATLATSZO = true;
+
+/**
+ * A logófájlok tartalmi lenyomata a cím végén.
+ *
+ * A .htaccess a képeket fél évre gyorsítótáraztatja, a logó pedig FIX néven
+ * megy a public mappából — enélkül a visszatérő látogató hónapokig a régi
+ * képet látná. (Épp ez történt a süti-szkripttel, lásd a fajlLenyomat
+ * leírását: a javítás kint volt a szerveren, mégsem érvényesült.)
+ */
+const ANIM = 'images/brand/blueway-logo-anim.webp';
+const ALLO = 'images/brand/blueway-logo-still-atlatszo.png';
+const ANIM_V = fajlLenyomat(ANIM);
+const ALLO_V = fajlLenyomat(ALLO);
 
 export function Logo({
   lang,
@@ -37,7 +51,7 @@ export function Logo({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={`logo-video ${mediaClassName}`}
-            src={asset('/images/brand/blueway-logo-anim.webp')}
+            src={`${asset(`/${ANIM}`)}?v=${ANIM_V}`}
             alt=""
             aria-hidden="true"
             width={504}
@@ -46,7 +60,7 @@ export function Logo({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className={`logo-still ${mediaClassName}`}
-            src={asset('/images/brand/blueway-logo-still-atlatszo.png')}
+            src={`${asset(`/${ALLO}`)}?v=${ALLO_V}`}
             alt="Blueway Trade"
             width={504}
             height={144}
