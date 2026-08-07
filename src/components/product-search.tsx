@@ -115,7 +115,11 @@ export function ProductSearch({
       />
 
       {open && query.trim() && (
-        <div className="absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-lg sm:left-auto sm:w-80">
+        // A lista keskenyebb, mint a mező, ezért az egyik széléhez kell
+        // tapadnia. A balhoz: a nagyító, a beírt szöveg és a találatok így egy
+        // függőleges vonalra kerülnek — a szem ott keresi őket. Mobilon a
+        // mező szélességét veszi fel, ott nincs miből választani.
+        <div className="absolute top-full right-0 left-0 z-50 mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-lg sm:right-auto sm:w-80">
           {results.length === 0 ? (
             <p className="px-4 py-3 text-sm text-ink-muted">{noResults}</p>
           ) : (
