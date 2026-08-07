@@ -10,11 +10,11 @@ name: Deploy to FORPSI
 # Beállítandó secretek — Settings → Secrets and variables → Actions:
 #
 #   SSH-val (ajánlott, gyorsabb és megbízhatóbb):
-#     FORPSI_SSH_HOST     pl. ftpx.forpsi.com
+#     FORPSI_SSH_HOST     opcionális; üresen a saját domain (SITE_URL) a gazdanév
 #     FORPSI_SSH_USER     az SSH felhasználónév
 #     FORPSI_SSH_KEY      a privát kulcs teljes tartalma
 #     FORPSI_WEB_ROOT     a webgyökér útvonala a szerveren, pl. /web
-#     FORPSI_SSH_PORT     opcionális, ha nem a 22-es porton figyel
+#     FORPSI_SSH_PORT     opcionális; üresen 2222, a FORPSI dokumentált portja
 #
 #   Ha az SSH be van állítva, de nem működik, a deploy nem áll meg: az FTP-s
 #   lépés veszi át, és a napló végén figyelmeztetés jelzi, hogy mi történt.
@@ -153,13 +153,26 @@ jobs:
           # hogy az FTP-é válaszol-e helyette. Magát a nevet nem írjuk ki.
           FTP_HOST_OSSZEVETES: ${{ secrets.FORPSI_FTP_HOST }}
         run: |
-          PORT="${SSH_PORT:-22}"
+          # A FORPSI dokumentált kapcsolódási alakja:
+          #   ssh -p 2222 felhasznalonev@sajat-domain.com
+          # Tehát a gazdanév a SAJÁT DOMAIN, a port pedig 2222 — nem a 22.
+          # Ez a munkafolyamat kizárólag FORPSI-ra telepít, úgyhogy ezek az
+          # alapértelmezések; a titkok felülírják, ha egyszer más lesz.
+          # Mérés is alátámasztja: a blueway.hu:2222 ad gazdakulcsot, a
+          # korábbi beállítás egyetlen porton sem.
+          SAJAT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
+          HOST="${SSH_HOST:-$SAJAT}"
+          PORT="${SSH_PORT:-2222}"
+          if [ -z "$SSH_USER" ]; then
+            echo "::error::A FORPSI_SSH_USER titok üres — felhasználónév nélkül nincs mihez csatlakozni."
+            exit 1
+          fi
           # Mérföldkövek külön fájlba is: a lépés naplója a build és az
           # ellenőrzés közé szorul, a záró összefoglaló pedig ebből mondja
           # meg, MEDDIG jutott el a kapcsolatfelvétel. Enélkül csak annyi
           # látszik, hogy „nem ment", és a következő kör megint tippelés.
           JEGYZET() { printf '%s\n' "$*" | tee -a /tmp/ssh-allapot.txt; }
-          JEGYZET "— SSH-kapcsolat előkészítése (port $PORT) —"
+          JEGYZET "— SSH-kapcsolat előkészítése ($HOST, port $PORT) —"
           mkdir -p ~/.ssh
           # A soremelés-karakter (\r) eltávolítása. Windowson generált és
           # onnan bemásolt kulcsnál a sorok CR+LF-fel érnek véget; az OpenSSH
@@ -198,7 +211,7 @@ jobs:
 
           # Válaszol-e egyáltalán a kiszolgáló ezen a porton? A kimenetet NEM
           # dobjuk el: korábban ez rejtette el a hiba okát.
-          if ! ssh-keyscan -p "$PORT" -T 10 "$SSH_HOST" > ~/.ssh/known_hosts 2>/tmp/keyscan.txt; then
+          if ! ssh-keyscan -p "$PORT" -T 10 "$HOST" > ~/.ssh/known_hosts 2>/tmp/keyscan.txt; then
             JEGYZET "::error::Az ssh-keyscan nem futott le rendben (kilépési kód nem nulla)."
           fi
           sed 's/^/  keyscan: /' /tmp/keyscan.txt || true
@@ -210,7 +223,7 @@ jobs:
             # ugyanúgy néz ki, pedig egészen mást kell tenni ellenük.
             # Gazdanevet nem írunk ki, csak azt, melyik eset jött be.
             for P in 22 2222 22222 2022; do
-              if ssh-keyscan -p "$P" -T 5 "$SSH_HOST" 2>/dev/null | grep -q '^[^#]'; then
+              if ssh-keyscan -p "$P" -T 5 "$HOST" 2>/dev/null | grep -q '^[^#]'; then
                 JEGYZET "  a(z) $P porton VAN SSH — ezt kell a FORPSI_SSH_PORT titokba írni"
               fi
             done
@@ -218,12 +231,10 @@ jobs:
                && ssh-keyscan -T 5 "$FTP_HOST_OSSZEVETES" 2>/dev/null | grep -q '^[^#]'; then
               JEGYZET "  az FTP-gazdanév viszont felel SSH-ra a 22 porton — a FORPSI_SSH_HOST titok rossz gépre mutat"
             fi
-            # A FORPSI tudásbázisa szerint a kapcsolódás alakja
-            # `ssh -p 2222 felhasznalo@sajat-domain.com` — tehát a gazdanév a
-            # SAJÁT DOMAIN, a port pedig 2222. Ez nem titok, a SITE_URL-ből
-            # kiolvasható, úgyhogy külön megpróbáljuk: ha ez felel, akkor
-            # tudjuk, mit kell a két titokba írni.
-            SAJAT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
+            # Ha a titokban más gazdanév áll, a saját domaint külön is
+            # megnézzük: a FORPSI szerint az a helyes cím, és ha felel,
+            # kimondjuk, mit kell a titokba írni. (A SAJAT a lépés elején
+            # már megvan.)
             for P in 2222 22; do
               if ssh-keyscan -p "$P" -T 5 "$SAJAT" 2>/dev/null | grep -q '^[^#]'; then
                 JEGYZET "  a SAJÁT DOMAIN ($SAJAT) felel SSH-ra a(z) $P porton — a FORPSI_SSH_HOST legyen $SAJAT, a FORPSI_SSH_PORT pedig $P"
@@ -240,7 +251,7 @@ jobs:
           # keveredjen össze az rsync fájlhibáival.
           if ! ssh -i ~/.ssh/id_deploy -p "$PORT" -o StrictHostKeyChecking=yes \
                    -o BatchMode=yes -o ConnectTimeout=15 \
-                   "$SSH_USER@$SSH_HOST" 'echo BELEPES_OK; pwd' 2>/tmp/ssh-hiba.txt; then
+                   "$SSH_USER@$HOST" 'echo BELEPES_OK; pwd' 2>/tmp/ssh-hiba.txt; then
             JEGYZET "::error::A bejelentkezés nem sikerült."
             sed 's/^/  ssh: /' /tmp/ssh-hiba.txt || true
             echo "  „Permission denied (publickey)” — a publikus kulcs nincs a kiszolgálón, vagy más a felhasználónév."
@@ -258,7 +269,7 @@ jobs:
           # a kétezer átmásolt fájlnév között, és a napló végét úgyis az
           # ellenőrző lépés tölti ki — a záró összefoglaló ebből dolgozik.
           if ! rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
-                 out/ "$SSH_USER@$SSH_HOST:$WEB_ROOT/" 2>/tmp/rsync-hiba.txt; then
+                 out/ "$SSH_USER@$HOST:$WEB_ROOT/" 2>/tmp/rsync-hiba.txt; then
             JEGYZET "::error::Az rsync nem futott le rendben."
             sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
             rm -f ~/.ssh/id_deploy; exit 1
