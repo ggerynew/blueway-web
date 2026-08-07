@@ -218,6 +218,17 @@ jobs:
                && ssh-keyscan -T 5 "$FTP_HOST_OSSZEVETES" 2>/dev/null | grep -q '^[^#]'; then
               JEGYZET "  az FTP-gazdanév viszont felel SSH-ra a 22 porton — a FORPSI_SSH_HOST titok rossz gépre mutat"
             fi
+            # A FORPSI tudásbázisa szerint a kapcsolódás alakja
+            # `ssh -p 2222 felhasznalo@sajat-domain.com` — tehát a gazdanév a
+            # SAJÁT DOMAIN, a port pedig 2222. Ez nem titok, a SITE_URL-ből
+            # kiolvasható, úgyhogy külön megpróbáljuk: ha ez felel, akkor
+            # tudjuk, mit kell a két titokba írni.
+            SAJAT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
+            for P in 2222 22; do
+              if ssh-keyscan -p "$P" -T 5 "$SAJAT" 2>/dev/null | grep -q '^[^#]'; then
+                JEGYZET "  a SAJÁT DOMAIN ($SAJAT) felel SSH-ra a(z) $P porton — a FORPSI_SSH_HOST legyen $SAJAT, a FORPSI_SSH_PORT pedig $P"
+              fi
+            done
 
             echo "  Vagy nincs bekapcsolva az SSH, vagy más porton figyel (ekkor a FORPSI_SSH_PORT titkot állítsd be),"
             echo "  vagy a szolgáltató nem enged be a GitHub futtatóinak IP-címéről."
