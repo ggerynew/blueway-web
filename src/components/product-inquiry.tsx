@@ -129,7 +129,10 @@ export function ProductInquiry({
             tooLarge={labels.attachTooLarge}
       />
 
-      <div className="flex flex-wrap items-center gap-4">
+      {/* Záró blokk a többi űrlappal egyező rendben: kötelező-mezők jegyzet,
+          alatta az egyetlen kék gomb — a jogi sor (LegalNotice) ez alá kerül. */}
+      <div className="space-y-3 border-t border-line pt-5">
+        <p className="text-xs text-ink-muted">{labels.requiredNote}</p>
         <button
           type="submit"
           disabled={sending}
@@ -137,7 +140,6 @@ export function ProductInquiry({
         >
           {sending ? labels.sending : labels.submit}
         </button>
-        <p className="text-xs text-ink-muted">{labels.requiredNote}</p>
       </div>
     </form>
   );

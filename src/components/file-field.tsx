@@ -88,15 +88,18 @@ export function FileField({
   return (
     <div>
       <span className="block text-sm font-medium text-ink">{label}</span>
+      {/* A gomb másodlagos (fehér, keretes): az űrlap egyetlen kék gombja a
+          küldés maradjon. Mellette rögtön a tudnivaló áll — külön „nincs
+          kiválasztott fájl” sorra nincs szükség, a fájllista úgyis megjelenik. */}
       <div className="mt-1.5 flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="rounded-full bg-brand-700 px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-brand-800"
+          className="rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink-muted"
         >
           {t.fileChoose}
         </button>
-        {fajlok.length === 0 && <span className="text-xs text-ink-muted">{t.fileNone}</span>}
+        <span className="text-xs text-ink-muted">{hint}</span>
       </div>
 
       <input
@@ -154,8 +157,6 @@ export function FileField({
           {tulNagy && tooLarge ? ` — ${tooLarge}` : null}
         </p>
       )}
-
-      <p className="mt-1.5 text-xs text-ink-muted">{hint}</p>
     </div>
   );
 }
