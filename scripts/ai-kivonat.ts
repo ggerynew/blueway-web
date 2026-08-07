@@ -70,6 +70,10 @@ function llms(): string {
       'az angolok /en/ előtaggal kezdődnek. Available in 7 languages; swap the ' +
       'path prefix to switch.',
   );
+  // A keltezés a válaszmotornak szól: látja, hogy a kivonat karban van
+  // tartva, és meg tudja ítélni, mennyire friss, amit idéz.
+  s.push('');
+  s.push(`Frissítve / Updated: ${new Date().toISOString().slice(0, 10)}`);
   s.push('');
   s.push('## Gépi adatok / Machine-readable');
   s.push('');

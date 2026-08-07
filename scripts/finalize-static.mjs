@@ -37,3 +37,43 @@ for (const file of files) {
 }
 
 console.log(`finalize-static: ${touched} file(s) rewritten to ${siteUrl}`);
+
+/**
+ * A <html lang> attribútum nyelvenként.
+ *
+ * A gyökér-elrendezés minden lapra lang="hu"-t ír, mert a nyelv a [lang]
+ * szegmensben dől el, ami a gyökér ALATT van — futásidőben egy kliensoldali
+ * szkript állítja át a helyeset. A JavaScript nélküli olvasók (keresőrobotok
+ * egy része, felolvasók az első pillanatban, fordítóeszközök) viszont a
+ * statikus HTML-t látják, abban pedig a német és a kínai lap is magyarnak
+ * vallotta magát. Itt, a kész kimeneten írjuk át — a fájl útvonala pontosan
+ * megmondja a nyelvet. A kliensoldali szkript marad: átírás után ártalmatlan.
+ */
+const NYELVEK = ['hu', 'en', 'de', 'it', 'es', 'ko', 'zh'];
+
+async function htmlFajlok(mappa) {
+  const bejegyzesek = await readdir(mappa, { withFileTypes: true });
+  const lista = [];
+  for (const b of bejegyzesek) {
+    const teljes = join(mappa, b.name);
+    if (b.isDirectory()) lista.push(...(await htmlFajlok(teljes)));
+    else if (b.name.endsWith('.html')) lista.push(teljes);
+  }
+  return lista;
+}
+
+let nyelvesitett = 0;
+for (const nyelv of NYELVEK) {
+  const celok = [];
+  if (existsSync(join(OUT, `${nyelv}.html`))) celok.push(join(OUT, `${nyelv}.html`));
+  if (existsSync(join(OUT, nyelv))) celok.push(...(await htmlFajlok(join(OUT, nyelv))));
+  for (const path of celok) {
+    const html = await readFile(path, 'utf8');
+    const csere = html.replace(/<html lang="hu"/, `<html lang="${nyelv}"`);
+    if (csere !== html) {
+      await writeFile(path, csere);
+      nyelvesitett += 1;
+    }
+  }
+}
+console.log(`finalize-static: ${nyelvesitett} lap kapott saját <html lang> értéket`);
