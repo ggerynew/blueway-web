@@ -115,7 +115,7 @@ export function ProductInquiry({
         </div>
         <div className="sm:col-span-2">
           <label htmlFor="pi-message" className={labelClass}>{labels.message}</label>
-          <input id="pi-message" name="message" type="text" placeholder={labels.messagePlaceholder} className={fieldClass} />
+          <textarea id="pi-message" name="message" rows={5} placeholder={labels.messagePlaceholder} className={`${fieldClass} resize-y`} />
         </div>
       </div>
 
