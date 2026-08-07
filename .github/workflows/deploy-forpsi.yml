@@ -149,6 +149,9 @@ jobs:
           SSH_PORT: ${{ secrets.FORPSI_SSH_PORT }}
           WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
           DELETE_EXTRA: ${{ inputs.delete_extra }}
+          # Csak a hibakereséshez: ha az SSH-gazdanév nem válaszol, kiderül,
+          # hogy az FTP-é válaszol-e helyette. Magát a nevet nem írjuk ki.
+          FTP_HOST_OSSZEVETES: ${{ secrets.FORPSI_FTP_HOST }}
         run: |
           PORT="${SSH_PORT:-22}"
           # Mérföldkövek külön fájlba is: a lépés naplója a build és az
@@ -201,6 +204,21 @@ jobs:
           sed 's/^/  keyscan: /' /tmp/keyscan.txt || true
           if [ ! -s ~/.ssh/known_hosts ]; then
             JEGYZET "::error::A kiszolgáló nem adott vissza gazdakulcsot a(z) $PORT porton — a keyscan üres."
+
+            # Innentől már elhasaltunk, tehát ráérünk keresgélni: a három
+            # eset (rossz port / rossz gépnév / zárt tűzfal) kívülről
+            # ugyanúgy néz ki, pedig egészen mást kell tenni ellenük.
+            # Gazdanevet nem írunk ki, csak azt, melyik eset jött be.
+            for P in 22 2222 22222 2022; do
+              if ssh-keyscan -p "$P" -T 5 "$SSH_HOST" 2>/dev/null | grep -q '^[^#]'; then
+                JEGYZET "  a(z) $P porton VAN SSH — ezt kell a FORPSI_SSH_PORT titokba írni"
+              fi
+            done
+            if [ -n "$FTP_HOST_OSSZEVETES" ] \
+               && ssh-keyscan -T 5 "$FTP_HOST_OSSZEVETES" 2>/dev/null | grep -q '^[^#]'; then
+              JEGYZET "  az FTP-gazdanév viszont felel SSH-ra a 22 porton — a FORPSI_SSH_HOST titok rossz gépre mutat"
+            fi
+
             echo "  Vagy nincs bekapcsolva az SSH, vagy más porton figyel (ekkor a FORPSI_SSH_PORT titkot állítsd be),"
             echo "  vagy a szolgáltató nem enged be a GitHub futtatóinak IP-címéről."
             rm -f ~/.ssh/id_deploy; exit 1
