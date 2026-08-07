@@ -3,12 +3,19 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { rememberLang } from '@/lib/consent';
-import { locales, type Locale } from '@/lib/i18n';
+import { HREFLANG, locales, type Locale } from '@/lib/i18n';
 
-/** A nyelv neve a saját nyelvén — hoverre (title) és felolvasóknak. */
+/**
+ * A nyelv neve a saját nyelvén — hoverre (title) és felolvasóknak.
+ *
+ * A két angol változat országjelölést kap: egymás mellett két angol zászló áll,
+ * és a különbséget csak a név mondja meg. A brit szövegek helyesírása brit
+ * (colour, labelling, catalogue), az amerikaié amerikai.
+ */
 const NAMES: Record<Locale, string> = {
   hu: 'Magyar',
-  en: 'English',
+  en: 'English (UK)',
+  us: 'English (US)',
   de: 'Deutsch',
   it: 'Italiano',
   es: 'Español',
@@ -36,6 +43,30 @@ function Flag({ code }: { code: Locale }) {
           <path d="M0,0 L24,16 M24,0 L0,16" stroke="#C8102E" strokeWidth="1.6" />
           <path d="M12,0 V16 M0,8 H24" stroke="#fff" strokeWidth="5.2" />
           <path d="M12,0 V16 M0,8 H24" stroke="#C8102E" strokeWidth="3" />
+        </svg>
+      );
+    case 'us':
+      return (
+        <svg viewBox="0 0 24 16" {...common}>
+          <rect width="24" height="16" fill="#fff" />
+          {/* 13 sáv, a páros sorszámúak pirosak */}
+          {[0, 2, 4, 6, 8, 10, 12].map((i) => (
+            <rect key={i} y={(i * 16) / 13} width="24" height={16 / 13} fill="#B22234" />
+          ))}
+          <rect width="9.6" height={(7 * 16) / 13} fill="#3C3B6E" />
+          {/* Ekkora zászlón az ötágú csillag egy folt lenne: a felismerhetőséget
+              az eltolt soros rács adja, ahogy a kínai zászló kis csillagainál is. */}
+          {Array.from({ length: 5 }, (_, sor) =>
+            Array.from({ length: sor % 2 ? 4 : 5 }, (_, oszlop) => (
+              <circle
+                key={`${sor}-${oszlop}`}
+                cx={1.2 + oszlop * 1.8 + (sor % 2 ? 0.9 : 0)}
+                cy={1.15 + sor * 1.72}
+                r="0.4"
+                fill="#fff"
+              />
+            )),
+          )}
         </svg>
       );
     case 'de':
@@ -112,8 +143,25 @@ function Flag({ code }: { code: Locale }) {
  * nyelvű címet kimásolni, és JavaScript nélkül egyáltalán nem csinált semmit.
  * A `<Link>` ugyanúgy kliensoldalon vált, de van valódi címe.
  */
-export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
+export function LangSwitcher({
+  lang,
+  compact = false,
+}: {
+  lang: Locale;
+  /** Szűkebb kiosztás oda, ahol a zászlósor más elemekkel osztozik a soron. */
+  compact?: boolean;
+}) {
   const pathname = usePathname() || `/${lang}`;
+
+  // A fejlécben nyolc zászló áll a logó és a hétpontos menü mellett. Mérve: az
+  // lg töréspont alján (1024 px) a teljes méretű sor 14 képponttal túlcsordul —
+  // a nyolcadik zászló pont annyival több, mint amennyi hely maradt. Ezért a
+  // fejlécben lg-n szűkebb, xl-től teljes méretű. A mobilmenüben saját sora
+  // van, ott nincs mivel osztoznia.
+  const zaszloMeret = compact
+    ? 'h-[15px] w-[22px] xl:h-[18px] xl:w-[26px]'
+    : 'h-[18px] w-[26px]';
+  const koz = compact ? 'gap-1 xl:gap-1.5' : 'gap-1.5';
 
   function utvonal(next: Locale) {
     const parts = pathname.split('/');
@@ -122,12 +170,12 @@ export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
   }
 
   return (
-    <div className="flex items-center gap-1.5" role="group" aria-label="Language / Nyelv">
+    <div className={`flex items-center ${koz}`} role="group" aria-label="Language / Nyelv">
       {locales.map((l) => (
         <Link
           key={l}
           href={utvonal(l)}
-          hrefLang={l}
+          hrefLang={HREFLANG[l]}
           // Előtöltés nélkül: a hét zászló hat idegen nyelvű adatcsomagot
           // töltene le minden lapon (~270 kB), pedig nyelvet a látogatók
           // töredéke vált — és ő is egyszer.
@@ -140,7 +188,7 @@ export function LangSwitcher({ lang }: { lang: Locale; compact?: boolean }) {
           title={NAMES[l]}
           aria-label={NAMES[l]}
           aria-current={l === lang ? 'true' : undefined}
-          className={`block h-[18px] w-[26px] overflow-hidden rounded-[3px] shadow-sm ring-offset-1 transition-all focus:ring-2 focus:ring-brand-500 focus:outline-none ${
+          className={`block ${zaszloMeret} overflow-hidden rounded-[3px] shadow-sm ring-offset-1 transition-all focus:ring-2 focus:ring-brand-500 focus:outline-none ${
             l === lang
               ? 'ring-2 ring-brand-600'
               : 'opacity-55 hover:opacity-100 hover:ring-1 hover:ring-line'

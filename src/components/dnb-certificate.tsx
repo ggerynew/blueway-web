@@ -24,6 +24,7 @@ const KEP_NYELV: Record<Locale, 'hu' | 'en' | 'de'> = {
   hu: 'hu',
   de: 'de',
   en: 'en',
+  us: 'en',
   it: 'en',
   es: 'en',
   ko: 'en',

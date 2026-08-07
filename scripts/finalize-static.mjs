@@ -11,6 +11,7 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { HREFLANG, locales } from '../src/lib/i18n';
 
 const OUT = 'out';
 const TOKEN = '__SITE_URL__';
@@ -48,8 +49,13 @@ console.log(`finalize-static: ${touched} file(s) rewritten to ${siteUrl}`);
  * statikus HTML-t látják, abban pedig a német és a kínai lap is magyarnak
  * vallotta magát. Itt, a kész kimeneten írjuk át — a fájl útvonala pontosan
  * megmondja a nyelvet. A kliensoldali szkript marad: átírás után ártalmatlan.
+ *
+ * A nyelvek listája és a kiírt címke a szótárból jön, nem kézzel felsorolva:
+ * korábban itt egy másolat állt, és egy új nyelv hozzáadásakor némán kimaradt
+ * volna belőle. A mappanév és a nyelvi címke nem ugyanaz — a `us` mappa
+ * tartalma `en-US`, az `en`-é `en-GB` —, ezért a HREFLANG táblán megy át.
  */
-const NYELVEK = ['hu', 'en', 'de', 'it', 'es', 'ko', 'zh'];
+const NYELVEK = locales;
 
 async function htmlFajlok(mappa) {
   const bejegyzesek = await readdir(mappa, { withFileTypes: true });
@@ -69,7 +75,7 @@ for (const nyelv of NYELVEK) {
   if (existsSync(join(OUT, nyelv))) celok.push(...(await htmlFajlok(join(OUT, nyelv))));
   for (const path of celok) {
     const html = await readFile(path, 'utf8');
-    const csere = html.replace(/<html lang="hu"/, `<html lang="${nyelv}"`);
+    const csere = html.replace(/<html lang="hu"/, `<html lang="${HREFLANG[nyelv]}"`);
     if (csere !== html) {
       await writeFile(path, csere);
       nyelvesitett += 1;

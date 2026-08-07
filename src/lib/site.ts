@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { locales, type Locale } from '@/lib/i18n';
+import { HREFLANG, locales, type Locale } from '@/lib/i18n';
 
 /**
  * Az oldal publikus alap-URL-je (basePath-szel együtt). FORPSI/egyedi domainre
@@ -40,7 +40,10 @@ export function absUrl(path: string) {
  *  megosztóknak és a keresőknek, melyik nyelvi változatot látják. */
 const OG_LOCALE: Record<Locale, string> = {
   hu: 'hu_HU',
-  en: 'en_US',
+  // A brit változat en_GB — eddig tévesen en_US-ként hirdette magát, holott a
+  // szövege brit helyesírású. Az amerikai kapta meg az en_US-t.
+  en: 'en_GB',
+  us: 'en_US',
   de: 'de_DE',
   it: 'it_IT',
   es: 'es_ES',
@@ -165,7 +168,7 @@ export function pageMetadata({
     alternates: {
       canonical,
       languages: {
-        ...Object.fromEntries(locales.map((l) => [l, absUrl(`${l}${suffix}`)])),
+        ...Object.fromEntries(locales.map((l) => [HREFLANG[l], absUrl(`${l}${suffix}`)])),
         'x-default': absUrl(`hu${suffix}`),
       },
     },

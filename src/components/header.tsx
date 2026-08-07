@@ -70,7 +70,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     <header className="sticky top-0 z-50 border-b border-line bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6">
         <Logo lang={lang} className="shrink-0" mediaClassName="h-12 w-auto" />
-        {/* A teljes menüsor csak lg-től fér el a hét zászló és a kereső mellett;
+        {/* A teljes menüsor csak lg-től fér el a nyolc zászló és a kereső mellett;
             alatta a hamburgermenü viszi ugyanezeket a pontokat. */}
         <nav className="hidden items-center gap-4 text-sm whitespace-nowrap text-ink-muted lg:flex xl:gap-5">
           {nav.map((item) => (
@@ -90,7 +90,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <MobileNav lang={lang} items={nav} />
       </div>
 
-      {/* A kereső saját sorban: a fejléc-sorban a hét zászló, a menü és az
+      {/* A kereső saját sorban: a fejléc-sorban a nyolc zászló, a menü és az
           ajánlatkérő gomb mellett egyetlen nyelven sem maradna neki hely. */}
       <div className="border-t border-line px-6 py-2.5">
         <div className="mx-auto max-w-6xl">{search}</div>

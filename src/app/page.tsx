@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { asset } from '@/lib/asset';
-import { locales } from '@/lib/i18n';
+import { HREFLANG, locales } from '@/lib/i18n';
 import { absUrl } from '@/lib/site';
 
 /**
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     // hivatkozások. A nyelvi változatokat innen is felsoroljuk, hogy a kereső
     // egy lépésből mind a hetet megtalálja.
     languages: {
-      ...Object.fromEntries(locales.map((l) => [l, absUrl(l)])),
+      ...Object.fromEntries(locales.map((l) => [HREFLANG[l], absUrl(l)])),
       'x-default': absUrl('hu'),
     },
   },
@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 /** A nyelvválasztóban a nyelv a SAJÁT nevén szerepel — azt ismeri fel a látogató. */
 const NYELV_NEVE: Record<(typeof locales)[number], string> = {
   hu: 'Magyar',
-  en: 'English',
+  en: 'English (UK)',
+  us: 'English (US)',
   de: 'Deutsch',
   it: 'Italiano',
   es: 'Español',
@@ -83,7 +84,7 @@ export default function RootPage() {
               <li key={l}>
                 <Link
                   href={`/${l}`}
-                  hrefLang={l}
+                  hrefLang={HREFLANG[l]}
                   className="rounded-full border border-line px-4 py-2 text-sm transition-colors hover:border-ink-muted"
                 >
                   {NYELV_NEVE[l]}

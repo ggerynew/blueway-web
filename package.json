@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/finalize-static.mjs && node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/ai-kivonat.ts",
+    "build": "next build && node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/finalize-static.mjs && node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/ai-kivonat.ts",
     "start": "next start",
     "lint": "next lint",
     "build:live": "STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://blueway.hu} NEXT_PUBLIC_FORM_ENDPOINT=${NEXT_PUBLIC_FORM_ENDPOINT:-https://blueway.hu/send.php} NEXT_PUBLIC_GOATCOUNTER_CODE=${NEXT_PUBLIC_GOATCOUNTER_CODE:-blueway} npm run build"

@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { AnalyticsRouteTracker } from '@/components/analytics';
 import { PartsFinder } from '@/components/parts-finder';
 import { asset } from '@/lib/asset';
-import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { getDictionary, HREFLANG, isLocale, locales } from '@/lib/i18n';
 import { graf, szervezetNode, weblapNode } from '@/lib/jsonld';
 import { SUTI_VERZIO } from '@/lib/suti-verzio';
 
@@ -56,7 +56,9 @@ export default async function LangLayout({
       <script
         dangerouslySetInnerHTML={{
           __html:
-            `document.documentElement.lang=${JSON.stringify(lang)};` +
+            // BCP-47 címke, nem a mappanév: a `us` önmagában nem nyelvkód, a
+            // felolvasó és a kereső `en-US`-t vár. (A brit változat `en-GB`.)
+            `document.documentElement.lang=${JSON.stringify(HREFLANG[lang])};` +
             `window.__BLUEWAY_BASE__=${JSON.stringify(process.env.NEXT_PUBLIC_BASE_PATH || '')};`,
         }}
       />

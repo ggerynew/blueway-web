@@ -66,9 +66,10 @@ function llms(): string {
   );
   s.push('');
   s.push(
-    `A weblap 7 nyelven érhető el (${locales.join(', ')}); a magyar címek /hu/, ` +
-      'az angolok /en/ előtaggal kezdődnek. Available in 7 languages; swap the ' +
-      'path prefix to switch.',
+    `A weblap ${locales.length} nyelven érhető el (${locales.join(', ')}); a magyar címek ` +
+      '/hu/, a brit angolok /en/, az amerikaiak /us/ előtaggal kezdődnek. ' +
+      `Available in ${locales.length} languages (/en/ is British English, /us/ American); ` +
+      'swap the path prefix to switch.',
   );
   // A keltezés a válaszmotornak szól: látja, hogy a kivonat karban van
   // tartva, és meg tudja ítélni, mennyire friss, amit idéz.

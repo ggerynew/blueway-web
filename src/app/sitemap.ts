@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { locales } from '@/lib/i18n';
+import { HREFLANG, locales } from '@/lib/i18n';
 import { categories, manufacturers, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
 import { industries } from '@/lib/iparagak';
@@ -20,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority,
         alternates: {
           languages: Object.fromEntries(
-            locales.map((l) => [l, absUrl(`${l}${suffix}`)]),
+            locales.map((l) => [HREFLANG[l], absUrl(`${l}${suffix}`)]),
           ),
         },
       });

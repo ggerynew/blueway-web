@@ -136,6 +136,14 @@ const T = {
   },
 } as const;
 
+/**
+ * Az amerikai változat szövegei itt szó szerint megegyeznek a britekkel: ezen
+ * az ábrán nincs olyan szó, amit a két angol másképp ír („matte", „vinyl",
+ * „labels" mindkettőben ugyanaz). Külön blokk helyett ezért hivatkozás — így
+ * nem tud elcsúszni a kettő egymástól egy későbbi javításnál.
+ */
+const SZOVEGEK: Record<Locale, (typeof T)[keyof typeof T]> = { ...T, us: T.en };
+
 const CENTERS = [190, 450, 710];
 
 /**
@@ -145,7 +153,7 @@ const CENTERS = [190, 450, 710];
  * alul az ár/tartósság tengely.
  */
 export function RibbonSpectrum({ lang }: { lang: Locale }) {
-  const t = T[lang];
+  const t = SZOVEGEK[lang];
   return (
     <div className="rounded-2xl border border-line bg-white p-6 md:p-8">
       <svg viewBox="0 0 900 348" className="h-auto w-full text-ink" role="img" aria-label={t.aria}>
