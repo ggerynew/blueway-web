@@ -516,6 +516,18 @@ const industriesSource: Sourced<Industry[]> = [
         },
       },
       {
+        slug: 'cab-lm-plus',
+        reason: {
+          hu: 'Alvázszám- és adattábla-címkéket jelöl és vág ki egy menetben, közvetlenül a tekercsről — stancszerszám nélkül, tehát a tábla mérete rajzonként változhat.',
+          en: 'Marks and cuts VIN and data-plate labels in a single pass straight from the roll — with no die, so the plate size can differ from drawing to drawing.',
+          de: 'Markiert und schneidet FIN- und Typenschild-Etiketten in einem Durchgang direkt von der Rolle — ohne Stanzwerkzeug, sodass die Schildgröße je Zeichnung variieren kann.',
+          it: 'Marca e taglia in un unico passaggio le etichette VIN e delle targhette dati direttamente dal rotolo — senza fustella, quindi la dimensione della targhetta può variare da disegno a disegno.',
+          es: 'Marca y corta en una sola pasada las etiquetas VIN y de placas de características directamente desde el rollo, sin troquel, de modo que el tamaño de la placa puede variar según el plano.',
+          ko: '차대번호(VIN)와 명판 라벨을 롤에서 바로 한 번의 공정으로 마킹하고 컷팅합니다 — 금형이 없으므로 도면마다 명판 크기가 달라도 됩니다.',
+          zh: '直接从卷料上一次完成车架号（VIN）与铭牌标签的打标和切割——无需模具，因此铭牌尺寸可随图纸变化。',
+        },
+      },
+      {
         slug: 'cab-squix-rfid',
         reason: {
           hu: 'Az UHF transzponder írása és a címke nyomtatása egy menetben történik, így a hibás chip még a nyomtatóban kiderül.',
