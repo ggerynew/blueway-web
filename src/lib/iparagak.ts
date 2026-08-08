@@ -468,6 +468,18 @@ const industriesSource: Sourced<Industry[]> = [
     ],
     products: [
       {
+        slug: 'cab-lm-plus',
+        reason: {
+          hu: 'Alvázszám- és adattábla-címkéket jelöl és vág ki egy menetben, közvetlenül a tekercsről — stancszerszám nélkül, tehát a tábla mérete rajzonként változhat.',
+          en: 'Marks and cuts VIN and data-plate labels in a single pass straight from the roll — with no die, so the plate size can differ from drawing to drawing.',
+          de: 'Markiert und schneidet FIN- und Typenschild-Etiketten in einem Durchgang direkt von der Rolle — ohne Stanzwerkzeug, sodass die Schildgröße je Zeichnung variieren kann.',
+          it: 'Marca e taglia in un unico passaggio le etichette VIN e delle targhette dati direttamente dal rotolo — senza fustella, quindi la dimensione della targhetta può variare da disegno a disegno.',
+          es: 'Marca y corta en una sola pasada las etiquetas VIN y de placas de características directamente desde el rollo, sin troquel, de modo que el tamaño de la placa puede variar según el plano.',
+          ko: '차대번호(VIN)와 명판 라벨을 롤에서 바로 한 번의 공정으로 마킹하고 컷팅합니다 — 금형이 없으므로 도면마다 명판 크기가 달라도 됩니다.',
+          zh: '直接从卷料上一次完成车架号（VIN）与铭牌标签的打标和切割——无需模具，因此铭牌尺寸可随图纸变化。',
+        },
+      },
+      {
         slug: 'cab-xeno-4',
         reason: {
           hu: 'Fiber lézer, amely maradandó sorozat- és sarzsszámot ír a fémalkatrészre — a jelölés az anyagban van, nem a felületén ülő festékrétegben.',
@@ -513,18 +525,6 @@ const industriesSource: Sourced<Industry[]> = [
           es: 'Marcador de fibra de sobremesa en clase 1 para grandes volúmenes — placas VIN y piezas metálicas pequeñas, con ciclo automático de cierre de puerta, marcado y apertura.',
           ko: '대량 생산용 탁상형 Class 1 파이버 마커. 도어 닫힘 / 마킹 / 도어 열림 시퀀스가 자동으로 진행되며, VIN 플레이트와 소형 금속 부품에 쓰인다.',
           zh: '台式 1 类光纤打标机，适合大批量：VIN 铭牌与较小的金属零件，关门/打标/开门流程自动完成。',
-        },
-      },
-      {
-        slug: 'cab-lm-plus',
-        reason: {
-          hu: 'Alvázszám- és adattábla-címkéket jelöl és vág ki egy menetben, közvetlenül a tekercsről — stancszerszám nélkül, tehát a tábla mérete rajzonként változhat.',
-          en: 'Marks and cuts VIN and data-plate labels in a single pass straight from the roll — with no die, so the plate size can differ from drawing to drawing.',
-          de: 'Markiert und schneidet FIN- und Typenschild-Etiketten in einem Durchgang direkt von der Rolle — ohne Stanzwerkzeug, sodass die Schildgröße je Zeichnung variieren kann.',
-          it: 'Marca e taglia in un unico passaggio le etichette VIN e delle targhette dati direttamente dal rotolo — senza fustella, quindi la dimensione della targhetta può variare da disegno a disegno.',
-          es: 'Marca y corta en una sola pasada las etiquetas VIN y de placas de características directamente desde el rollo, sin troquel, de modo que el tamaño de la placa puede variar según el plano.',
-          ko: '차대번호(VIN)와 명판 라벨을 롤에서 바로 한 번의 공정으로 마킹하고 컷팅합니다 — 금형이 없으므로 도면마다 명판 크기가 달라도 됩니다.',
-          zh: '直接从卷料上一次完成车架号（VIN）与铭牌标签的打标和切割——无需模具，因此铭牌尺寸可随图纸变化。',
         },
       },
       {
