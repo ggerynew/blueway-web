@@ -272,17 +272,23 @@ jobs:
 
           # Beenged-e a kulcs? Külön lépésben, hogy a hitelesítési hiba ne
           # keveredjen össze az rsync fájlhibáival.
-          if ! ssh -i ~/.ssh/id_deploy -p "$PORT" -o StrictHostKeyChecking=yes \
+          # A pwd és a mappalista nem kíváncsiskodás: az FTP-hez megadott
+          # webgyökér az FTP-belépés saját gyökeréhez képest értendő, SSH-n
+          # viszont a fájlrendszer tetejéről — ezért futott az rsync
+          # „mkdir … Permission denied”-ba. Innen látszik, mi a helyes út.
+          if BELEPES=$(ssh -i ~/.ssh/id_deploy -p "$PORT" -o StrictHostKeyChecking=yes \
                    -o BatchMode=yes -o ConnectTimeout=15 \
-                   "$SSH_USER@$HOST" 'echo BELEPES_OK; pwd' 2>/tmp/ssh-hiba.txt; then
+                   "$SSH_USER@$HOST" 'pwd; echo "—"; ls -1p | head -20' \
+                   2>/tmp/ssh-hiba.txt); then
+            JEGYZET "  a bejelentkezés sikerült; a belépési könyvtár és tartalma:"
+            printf '%s\n' "$BELEPES" | sed 's/^/    /' | tee -a /tmp/ssh-allapot.txt
+          else
             JEGYZET "::error::A bejelentkezés nem sikerült."
             sed 's/^/  ssh: /' /tmp/ssh-hiba.txt || true
             echo "  „Permission denied (publickey)” — a publikus kulcs nincs a kiszolgálón, vagy más a felhasználónév."
             echo "  „This service allows sftp connections only” — a tárhely csak SFTP-t ad, rsync-et nem."
             rm -f ~/.ssh/id_deploy; exit 1
           fi
-
-          JEGYZET "  a bejelentkezés sikerült"
 
           # Csak a megváltozott fájlok mennek át — a második deploytól ez
           # néhány másodperc az első teljes szinkron után.
