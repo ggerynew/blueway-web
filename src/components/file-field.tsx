@@ -112,10 +112,20 @@ export function FileField({
         aria-label={label}
         className="sr-only"
         onChange={(e) => {
-          hozzaad(Array.from(e.target.files ?? []));
-          // Ugyanaz a fájl újra kiválasztható legyen: e nélkül a böngésző
-          // nem küldene change eseményt, mert az érték nem változott.
+          const ujak = Array.from(e.target.files ?? []);
+          // ELŐBB ürítjük a mezőt, és csak UTÁNA írjuk vissza a teljes
+          // listát (a hozzaad → szinkron teszi meg). Az ürítés azért kell,
+          // hogy ugyanaz a fájl újra kiválasztható legyen: nélküle a
+          // böngésző nem küldene change eseményt, mert az érték nem
+          // változott.
+          //
+          // A sorrend nem stílus kérdése. Fordítva — előbb visszaírni,
+          // aztán üríteni — az ürítés a most beállított listát is elvitte:
+          // a felületen ott állt a kiválasztott fájl, a mezőben viszont nem
+          // volt semmi, és a küldés ezt a mezőt olvassa. A csatolmány így
+          // sosem ért el a levélig.
           e.target.value = '';
+          hozzaad(ujak);
         }}
       />
 
