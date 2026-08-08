@@ -292,13 +292,30 @@ jobs:
 
           # Csak a megváltozott fájlok mennek át — a második deploytól ez
           # néhány másodperc az első teljes szinkron után.
+          # A cél útvonala a BELÉPÉSI KÖNYVTÁRHOZ képest értendő, nem a
+          # fájlrendszer tetejétől. A FORPSI_WEB_ROOT titkot az FTP-hez adtuk
+          # meg, az FTP pedig a fiók saját gyökerébe lép be — ugyanoda,
+          # ahová az SSH. A vezető perjel ott a fiókon belüli utat jelenti,
+          # itt viszont a gépét: emiatt próbálta az rsync létrehozni a
+          # mappát a gyökérben, és kapott „Permission denied”-ot.
+          #
+          # Ezért a belépési könyvtárat elé illesztjük — kivéve, ha az érték
+          # már eleve azzal kezdődik (tehát valaki a teljes utat adta meg).
+          BELEPESI_KONYVTAR=$(printf '%s' "$BELEPES" | head -1)
+          case "$WEB_ROOT" in
+            "$BELEPESI_KONYVTAR"*) CEL="$WEB_ROOT" ;;
+            /*)                    CEL="$BELEPESI_KONYVTAR$WEB_ROOT" ;;
+            *)                     CEL="$BELEPESI_KONYVTAR/$WEB_ROOT" ;;
+          esac
+          JEGYZET "  a feltöltés célja: $CEL"
+
           FLAGS="-rlvz --checksum --omit-dir-times --no-perms"
           if [ "$DELETE_EXTRA" = "true" ]; then FLAGS="$FLAGS --delete"; fi
           # A hibacsatorna külön fájlba is megy: az rsync panasza egyetlen sor
           # a kétezer átmásolt fájlnév között, és a napló végét úgyis az
           # ellenőrző lépés tölti ki — a záró összefoglaló ebből dolgozik.
           if ! rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
-                 out/ "$SSH_USER@$HOST:$WEB_ROOT/" 2>/tmp/rsync-hiba.txt; then
+                 out/ "$SSH_USER@$HOST:$CEL/" 2>/tmp/rsync-hiba.txt; then
             JEGYZET "::error::Az rsync nem futott le rendben."
             sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
             rm -f ~/.ssh/id_deploy; exit 1
