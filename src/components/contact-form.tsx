@@ -40,6 +40,7 @@ export function ContactForm({
     const name = String(data.get('name') ?? '').trim();
     const email = String(data.get('email') ?? '').trim();
     const company = String(data.get('company') ?? '').trim();
+    const phone = String(data.get('phone') ?? '').trim();
     const subject = String(data.get('subject') ?? '').trim();
     const message = String(data.get('message') ?? '').trim();
     const _gotcha = String(data.get('_gotcha') ?? '').trim();
@@ -59,6 +60,7 @@ export function ContactForm({
       `${labels.name}: ${name}`,
       `${labels.email}: ${email}`,
       `${labels.company}: ${company}`,
+      phone ? `${labels.phone}: ${phone}` : '',
       // A mailto-tartalék nem tud fájlt vinni, csak a nevüket — így a
       // látogató tudja, mit kell kézzel mellékelnie a megnyíló levélhez.
       files.length ? `${labels.attachBody}: ${files.map((f) => f.name).join(', ')}` : '',
@@ -66,7 +68,7 @@ export function ContactForm({
 
     try {
       const result = await sendForm({
-        fields: { name, email, company, subject, message, _gotcha },
+        fields: { name, email, company, phone, subject, message, _gotcha },
         subject: subject || `${labels.subject}: ${name}`,
         bodyLines,
         recipient,
@@ -119,21 +121,37 @@ export function ContactForm({
         </div>
       </div>
 
-      <div>
-        <label htmlFor="company" className={labelClass}>
-          {labels.company}{' '}
-          <span className="text-brand-600" aria-hidden="true">
-            *
-          </span>
-        </label>
-        <input
-          id="company"
-          name="company"
-          type="text"
-          required
-          placeholder={labels.companyPlaceholder}
-          className={fieldClass}
-        />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="company" className={labelClass}>
+            {labels.company}{' '}
+            <span className="text-brand-600" aria-hidden="true">
+              *
+            </span>
+          </label>
+          <input
+            id="company"
+            name="company"
+            type="text"
+            required
+            placeholder={labels.companyPlaceholder}
+            className={fieldClass}
+          />
+        </div>
+        {/* A telefonszám nem kötelező — de ha megadják, sokszor egy hívás
+            gyorsabban elintézi az ügyet, mint a levélváltás. */}
+        <div>
+          <label htmlFor="phone" className={labelClass}>
+            {labels.phone}
+          </label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder={labels.phonePlaceholder}
+            className={fieldClass}
+          />
+        </div>
       </div>
 
       <div>
