@@ -72,21 +72,31 @@ export default async function KnowledgePage({
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">{dict.knowledge.lead}</p>
       </Reveal>
 
-      {/* A fogalomtár az útmutatók mellé tartozik: aki egy szakszót keres,
-          nem akar végigolvasni egy útmutatót, csak a meghatározást kéri. */}
-      <Reveal delay={0.12}>
-        <Link
-          href={`/${lang}/fogalomtar`}
-          className="mt-8 inline-flex flex-wrap items-baseline gap-x-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-700"
-        >
-          <span className="font-medium">{dict.glossary.title}</span>
-          <span className="text-ink-muted">{dict.glossary.termCount(terms.length)} →</span>
-        </Link>
-      </Reveal>
-
       <div className="mt-12 grid gap-4 sm:grid-cols-2">
+        {/* A fogalomtár az útmutatók ELŐTT áll, és teljes értékű csempeként:
+            aki egy szakszót keres, nem akar végigolvasni egy útmutatót, csak
+            a meghatározást kéri — a többi lap szókincse is innen való.
+            Eddig egy keskeny hivatkozás volt a rács fölött; a helye maradt,
+            a súlya nőtt.
+
+            A késleltetések ezért eggyel eltolódnak: a rácsban az útmutatók
+            az 1. helytől kezdődnek, nem a nulladiktól. */}
+        <Reveal className="h-full">
+          <Link
+            href={`/${lang}/fogalomtar`}
+            className="group product-tile flex h-full flex-col p-7"
+          >
+            <h2 className="text-xl font-semibold tracking-tight group-hover:text-brand-700">
+              {dict.glossary.title}
+            </h2>
+            <p className="mt-3 flex-1 text-ink-muted">{dict.glossary.lead}</p>
+            <span className="mt-5 text-sm font-medium text-brand-700">
+              {dict.glossary.termCount(terms.length)} →
+            </span>
+          </Link>
+        </Reveal>
         {guides.map((guide, i) => (
-          <Reveal key={guide.slug} delay={(i % 2) * 0.06} className="h-full">
+          <Reveal key={guide.slug} delay={((i + 1) % 2) * 0.06} className="h-full">
             <Link
               href={`/${lang}/tudastar/${guide.slug}`}
               className="group product-tile flex h-full flex-col p-7"
@@ -101,7 +111,7 @@ export default async function KnowledgePage({
             </Link>
           </Reveal>
         ))}
-        <Reveal delay={(guides.length % 2) * 0.06} className="h-full">
+        <Reveal delay={((guides.length + 1) % 2) * 0.06} className="h-full">
           <Link
             href={`/${lang}/gyik`}
             className="group product-tile flex h-full flex-col p-7"
