@@ -225,6 +225,111 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
           }}
         >
           <div ref={gombRef} className="relative" style={{ transformStyle: 'preserve-3d' }}>
+            {/* — Az izzó vörös mag és a lézernyalábok —
+                A mag a gömb középpontjában ül, és minden csempéhez fut belőle
+                egy vörös nyaláb — mintha azok tartanák a termékeket. A nyaláb
+                ugyanazt a két forgatást kapja, mint a csempéje, majd egy
+                rotateY(-90°) a saját hossztengelyét fordítja a csempe felé:
+                így a vonal pontosan a középpontból a csempe közepéig ér.
+
+                Minden nyaláb KÉT, hossztengelye mentén 90°-kal elforgatott
+                lapból áll. Egyetlen lap éléről nézve eltűnne — a kereszt
+                minden irányból vonalnak látszik.
+
+                A mag ugyanezért három, egymásra merőleges korong: külön-külön
+                lapos körök, együtt minden szögből gömbnek hatnak, a
+                homályosítás pedig elmossa az élüket.
+
+                Az időzítés az indexből számolt általálomszám — Math.random()
+                itt hidratálási eltérést okozna, mert a kiszolgáló és a
+                böngésző mást sorsolna. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              {helyek.map(({ szelesseg, hosszusag }, i) => {
+                const ido = (1.15 + (((i * 37) % 97) / 97) * 1.25).toFixed(2);
+                const keses = (-(((i * 53) % 89) / 89) * 2.4).toFixed(2);
+                const nyalab = `rotateY(${hosszusag}deg) rotateX(${-szelesseg}deg) rotateY(-90deg)`;
+                // A fénylés a háttérszínátmenetbe van belesütve, nem
+                // box-shadow és nem filter: azokat a böngésző a forgás minden
+                // képkockájában újraszámolná — mérve a gömb 27 képkocka/mp-ről
+                // 3,5-re esett tőlük. A színátmenetes elem egyszer rajzolódik
+                // meg, utána csak transzformálódik.
+                const lap = {
+                  position: 'absolute' as const,
+                  left: 0,
+                  top: -3,
+                  width: SUGAR,
+                  height: 6,
+                  transformOrigin: '0 50%',
+                  background:
+                    'radial-gradient(120% 50% at 0% 50%, rgba(255,90,65,0.95), rgba(255,45,45,0.35) 55%, rgba(255,45,45,0.1) 85%, transparent)',
+                };
+                return (
+                  <div key={`nyalab-${i}`} style={{ transformStyle: 'preserve-3d' }}>
+                    <div style={{ ...lap, transform: nyalab }}>
+                      {/* A villám: fénylő csík, ami a magtól a csempéig fut és
+                          vissza (alternate) — az útja a globals.css-ben. */}
+                      <span
+                        className="lezer-villam"
+                        style={
+                          {
+                            position: 'absolute',
+                            left: 0,
+                            top: -2,
+                            width: 34,
+                            height: 10,
+                            background:
+                              'radial-gradient(50% 50% at 50% 50%, #fff 0%, #ff5a40 40%, rgba(255,60,40,0.35) 65%, transparent)',
+                            '--villam-tav': `${SUGAR - 34}px`,
+                            '--villam-ido': `${ido}s`,
+                            '--villam-keses': `${keses}s`,
+                          } as React.CSSProperties
+                        }
+                      />
+                    </div>
+                    <div style={{ ...lap, transform: `${nyalab} rotateX(90deg)` }} />
+                  </div>
+                );
+              })}
+
+              {/* A mag: három merőleges izzó korong + tágabb fényudvar. */}
+              {['', 'rotateY(90deg)', 'rotateX(90deg)'].map((forgatas, i) => (
+                <div
+                  key={`mag-${i}`}
+                  className="lezer-mag-korong"
+                  style={{
+                    position: 'absolute',
+                    left: -30,
+                    top: -30,
+                    width: 60,
+                    height: 60,
+                    borderRadius: '50%',
+                    transform: forgatas || undefined,
+                    // Elmosás helyett lágy átmenet — a filter minden
+                    // képkockában újraszámolódna a forgás alatt.
+                    background:
+                      'radial-gradient(circle, #fff 0%, #ffb3a0 18%, #ff6a50 34%, rgba(255,45,30,0.4) 58%, transparent 75%)',
+                  }}
+                />
+              ))}
+              <div
+                className="lezer-mag-korong"
+                style={{
+                  position: 'absolute',
+                  left: -70,
+                  top: -70,
+                  width: 140,
+                  height: 140,
+                  borderRadius: '50%',
+                  background:
+                    'radial-gradient(circle, rgba(255,70,45,0.45) 0%, rgba(255,50,32,0.22) 40%, rgba(255,45,30,0.08) 62%, transparent 78%)',
+                }}
+              />
+            </div>
+
             {tiles.map((t, i) => {
               const { szelesseg, hosszusag } = helyek[i];
               return (
