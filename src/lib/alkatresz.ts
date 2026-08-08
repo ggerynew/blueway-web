@@ -406,10 +406,18 @@ function sorra(
 // ——— betöltés ————————————————————————————————————————————————————
 let gyorsitotar: Promise<AlkatreszIndex> | null = null;
 
-/** Az index egyszer töltődik le, a keresőfül első megnyitásakor. */
+/**
+ * Az index egyszer töltődik le, a keresőfül első megnyitásakor.
+ *
+ * A cím végén a fájl tartalmi lenyomata áll (a next.config.mjs számolja
+ * buildkor). Enélkül egy frissített alkatrészlista nem érne el a visszatérő
+ * látogatóhoz: a .htaccess a JSON-ra nem ír elő lejáratot, tehát a böngésző a
+ * saját becslésére hagyatkozik, és napokig a régit használja.
+ */
 export function betoltIndex(): Promise<AlkatreszIndex> {
   if (!gyorsitotar) {
-    gyorsitotar = fetch(asset('/alkatreszek.json'))
+    const verzio = process.env.NEXT_PUBLIC_ALKATRESZ_V;
+    gyorsitotar = fetch(asset(`/alkatreszek.json${verzio ? `?v=${verzio}` : ''}`))
       .then((r) => {
         if (!r.ok) throw new Error(`alkatreszek.json: ${r.status}`);
         return r.json() as Promise<AlkatreszIndex>;

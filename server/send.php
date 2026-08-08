@@ -31,7 +31,14 @@ const FROM_NAME      = 'Blueway Trade weboldal';
 // 7 MB → ~9,6 MB levél (mérve: az 5 MB-os próba megérkezett, a 8 MB-os nem).
 const MAX_TOTAL_SIZE = 7 * 1024 * 1024;
 const RATE_LIMIT     = 5;                          // küldés / IP / óra
-const ALLOWED_EXT    = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'ai', 'eps', 'zip'];
+// A bmp/tif/tiff/heic/heif/avif nem azért van itt, mert bárki kérte, hanem
+// mert az űrlapok fájlválasztója `accept="image/*"`-ot mond. Az böngészőnként
+// mást jelent, de mindenütt többet, mint ez a lista volt: telefonról érkező
+// fénykép jellemzően .heic, szkennerből .tif. A látogató kiválaszthatta,
+// feltöltötte, és a szerver 415-tel visszautasította — a fájlválasztó és a
+// szerver ugyanarról mást gondolt.
+const ALLOWED_EXT    = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'tif', 'tiff',
+                        'heic', 'heif', 'avif', 'pdf', 'ai', 'eps', 'zip'];
 
 // ——— Naplózás ——————————————————————————————————————————————————
 /**
