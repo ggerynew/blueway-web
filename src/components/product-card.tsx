@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/reveal';
 import { ProductThumb } from '@/components/product-thumb';
+import { kepVerzio } from '@/lib/kep-verzio';
 import type { Locale } from '@/lib/i18n';
 import { productName, type Product } from '@/lib/products';
 
@@ -27,7 +28,7 @@ export function ProductCard({
       >
         <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
           <ProductThumb
-            image={product.image}
+            image={kepVerzio(product.image)}
             name={productName(product, lang)}
             imgClassName="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           />

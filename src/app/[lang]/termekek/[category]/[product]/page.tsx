@@ -8,6 +8,7 @@ import { ZoomableImage } from '@/components/zoomable-image';
 import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { industriesForProduct } from '@/lib/iparagak';
 import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName, manufacturers } from '@/lib/products';
@@ -144,7 +145,7 @@ export default async function ProductPage({
         <Reveal delay={0.05}>
           <ProductMedia
             name={productName(product, lang)}
-            image={product.image}
+            image={kepVerzio(product.image)}
             videoId={product.videoId}
             extraVideos={product.extraVideos?.map((v) => ({
               videoId: v.videoId,
@@ -163,7 +164,7 @@ export default async function ProductPage({
             {brandLogo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={asset(brandLogo)}
+                src={asset(kepVerzio(brandLogo))}
                 alt={product.brand}
                 className={`w-auto object-contain ${
                   product.brand === 'CAB' || product.brand === 'START International'
@@ -255,7 +256,7 @@ export default async function ProductPage({
           <section className="mt-20 border-t border-line pt-10">
             <div className="grid items-center gap-8 rounded-2xl border border-line bg-white p-6 md:grid-cols-2 md:p-8">
               <ZoomableImage
-                src={product.orientation.image}
+                src={kepVerzio(product.orientation.image)}
                 alt={product.orientation.title[lang]}
                 className="flex items-center justify-center overflow-hidden rounded-xl bg-surface p-4"
                 nagyitasFelirat={dict.ui.imageZoom}
@@ -341,7 +342,7 @@ export default async function ProductPage({
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-4">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={asset(a.image)}
+                      src={asset(kepVerzio(a.image))}
                       alt={a.name[lang]}
                       className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                     />
@@ -421,7 +422,7 @@ export default async function ProductPage({
                   className="group product-tile p-4"
                 >
                   <div className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-surface p-3">
-                    <ProductThumb image={p.image} name={productName(p, lang)} />
+                    <ProductThumb image={kepVerzio(p.image)} name={productName(p, lang)} />
                   </div>
                   <p className="mt-3 text-sm font-medium group-hover:text-brand-700">
                     {productName(p, lang)}

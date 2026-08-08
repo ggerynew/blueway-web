@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getCategory, getProductsByCategory, manufacturers , productName } from '@/lib/products';
 import { morzsa } from '@/lib/jsonld';
@@ -123,7 +124,7 @@ export default async function CategoryPage({
                   {group.manufacturer.logo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={asset(group.manufacturer.logo)}
+                      src={asset(kepVerzio(group.manufacturer.logo))}
                       alt={group.manufacturer.name}
                       className={`w-auto object-contain ${
                         group.manufacturer.slug === 'cab'
@@ -172,7 +173,7 @@ export default async function CategoryPage({
                 <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-surface">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={asset('/images/products/cimkek.webp')}
+                    src={asset(kepVerzio('/images/products/cimkek.webp'))}
                     alt={dict.products.labelsTile.title}
                     className="max-h-[95%] max-w-[95%] object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                   />

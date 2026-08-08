@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 
 /**
  * Egyedi 404 — a statikus exportban 404.html-ként jelenik meg, amit a GitHub
@@ -11,7 +12,7 @@ export default function NotFound() {
     <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={asset('/images/brand/blueway-logo-still.png')}
+        src={asset(kepVerzio('/images/brand/blueway-logo-still.png'))}
         alt="Blueway Trade"
         className="h-12 w-auto"
       />

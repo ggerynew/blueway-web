@@ -5,6 +5,7 @@ import { LangSwitcher } from '@/components/lang-switcher';
 import { Logo } from '@/components/logo';
 import { ProductSearch, type SearchItem } from '@/components/product-search';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { categories, manufacturers, products , productName } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
 
@@ -25,7 +26,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     ...products.map((p) => ({
       name: productName(p, lang),
       brand: p.brand,
-      image: p.image ? asset(p.image) : '',
+      image: p.image ? asset(kepVerzio(p.image)) : '',
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     })),
     // Applikátorok is kereshetők — a szülő termék nevével a második sorban
@@ -33,7 +34,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       (p.applicators ?? []).map((a) => ({
         name: a.name[lang],
         brand: `${productName(p, lang)} — ${dict.ui.searchApplicator}`,
-        image: a.image ? asset(a.image) : '',
+        image: a.image ? asset(kepVerzio(a.image)) : '',
         href: `/${lang}/termekek/${p.category}/${p.slug}/applikator/${a.slug}`,
       })),
     ),
@@ -47,7 +48,7 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
     ...manufacturers.map((m) => ({
       name: m.name,
       brand: dict.ui.searchManufacturer,
-      image: m.logo ? asset(m.logo) : '',
+      image: m.logo ? asset(kepVerzio(m.logo)) : '',
       href: `/${lang}/gyartok/${m.slug}`,
     })),
     // Tudástár-cikkek

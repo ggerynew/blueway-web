@@ -4,6 +4,7 @@ import { LegalNotice } from '@/components/legal-notice';
 import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { ZoomableImage } from '@/components/zoomable-image';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { getApplicator, getBrandLogo, getCategory, products , productName } from '@/lib/products';
@@ -114,7 +115,7 @@ export default async function ApplicatorPage({
         <Reveal delay={0.05}>
           <div className="aspect-square overflow-hidden rounded-2xl border border-line bg-white p-3">
             <ZoomableImage
-              src={applicator.image}
+              src={kepVerzio(applicator.image)}
               alt={applicator.name[lang]}
               nagyitasFelirat={dict.ui.imageZoom}
               bezarasFelirat={dict.ui.imageClose}
@@ -127,7 +128,7 @@ export default async function ApplicatorPage({
             {brandLogo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={asset(brandLogo)}
+                src={asset(kepVerzio(brandLogo))}
                 alt={product.brand}
                 className={`w-auto object-contain ${
                   product.brand === 'CAB' || product.brand === 'START International'

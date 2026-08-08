@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getProductsByBrand } from '@/lib/products';
 import { szervezetRef, weblapRef } from '@/lib/jsonld';
@@ -89,7 +90,7 @@ export default async function ManufacturersPage({
                     {m.logo ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={asset(m.logo)}
+                        src={asset(kepVerzio(m.logo))}
                         alt={m.name}
                         className={`w-auto object-contain ${
                           m.slug === 'cab'

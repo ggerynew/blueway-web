@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getProduct, productName } from '@/lib/products';
 import { pageMetadata } from '@/lib/site';
@@ -92,7 +93,7 @@ export default async function ServicesPage({
                 <div className="flex aspect-[16/9] items-center justify-center overflow-hidden bg-surface">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={asset(software.image)}
+                    src={asset(kepVerzio(software.image))}
                     alt={productName(software, lang)}
                     className="h-full w-full object-cover"
                   />
