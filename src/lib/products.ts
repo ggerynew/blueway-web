@@ -719,7 +719,6 @@ const productsSource: Sourced<Product[]> = [
     ],
     image: '/images/products/cab-eos2.webp',
     datasheet: '/datasheets/cab-eos.pdf',
-    videoId: 'mFCv2GaNkg0',
     extraVideos: [
       {
         videoId: 'RqS25uZIMnU',
@@ -749,7 +748,6 @@ const productsSource: Sourced<Product[]> = [
     ],
     image: '/images/products/cab-eos5.webp',
     datasheet: '/datasheets/cab-eos.pdf',
-    videoId: 'mFCv2GaNkg0',
     extraVideos: [
       {
         videoId: 'RqS25uZIMnU',
