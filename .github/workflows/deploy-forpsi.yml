@@ -163,10 +163,33 @@ jobs:
           SAJAT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
           HOST="${SSH_HOST:-$SAJAT}"
           PORT="${SSH_PORT:-2222}"
+
+          # A titkok végéről levágjuk a láthatatlan szemetet: sortörés, szóköz,
+          # tabulátor. A GitHub titokmezőjébe beillesztéskor könnyen odakerül,
+          # a kimásolt sor végén ott marad — az OpenSSH viszont kereken
+          # visszautasítja: „remote username contains invalid characters”.
+          # Pontosan ez történt; ugyanaz a baj, mint a kulcs CRLF-je.
+          TISZTIT() { printf '%s' "$1" | tr -d '\r\n\t' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'; }
+          SSH_USER_EREDETI="$SSH_USER"
+          SSH_USER=$(TISZTIT "$SSH_USER")
+          HOST=$(TISZTIT "$HOST")
+          if [ "$SSH_USER" != "$SSH_USER_EREDETI" ]; then
+            echo "::warning::A FORPSI_SSH_USER titok végén szóköz vagy sortörés volt — levágtam. Érdemes a titkot is megtisztítani."
+          fi
+
           if [ -z "$SSH_USER" ]; then
             echo "::error::A FORPSI_SSH_USER titok üres — felhasználónév nélkül nincs mihez csatlakozni."
             exit 1
           fi
+          # Amit az OpenSSH nem fogad el felhasználónévben. Ha ilyen maradt
+          # benne, a hiba nem beillesztési malőr, hanem rossz érték — például
+          # a teljes e-mail cím vagy a „felhasznalo@gep” alak a puszta név
+          # helyett.
+          case "$SSH_USER" in
+            *@* | *[\ \'\"\;\&\<\>\|\(\)\$\`\\!\*\?]* | -*)
+              echo "::error::A FORPSI_SSH_USER értéke nem érvényes felhasználónév. Csak a kukac ELŐTTI részt kell megadni (a FORPSI alakja: ssh -p 2222 felhasznalonev@sajat-domain.com), idézőjel és szóköz nélkül."
+              exit 1 ;;
+          esac
           # Mérföldkövek külön fájlba is: a lépés naplója a build és az
           # ellenőrzés közé szorul, a záró összefoglaló pedig ebből mondja
           # meg, MEDDIG jutott el a kapcsolatfelvétel. Enélkül csak annyi
