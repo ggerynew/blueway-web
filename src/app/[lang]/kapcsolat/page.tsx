@@ -121,6 +121,7 @@ export default async function ContactPage({
             <ContactForm
               labels={contact.form}
               recipient={contact.email}
+              lang={lang}
               honeypotLabel={dict.ui.honeypot}
             />
             <LegalNotice lang={lang} />

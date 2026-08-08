@@ -2,19 +2,30 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { FileField } from '@/components/file-field';
 import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
-import type { Dictionary } from '@/lib/i18n';
+import type { Dictionary, Locale } from '@/lib/i18n';
 
 type FormLabels = Dictionary['contact']['form'];
+
+/**
+ * A csatolmányok együttes felső határa. Ugyanaz az érték, mint a többi
+ * űrlapon és a szerveroldali send.php-ban — mérésből, nem becslésből: 7 MB
+ * fölött a tárhely levelezője némán eldobja a levelet (lásd file-field.tsx).
+ */
+const MAX_CSATOLMANY = 7 * 1024 * 1024;
 
 export function ContactForm({
   labels,
   recipient,
+  lang,
   honeypotLabel,
 }: {
   labels: FormLabels;
   recipient: string;
+  /** A fájlmező feliratai és a méretkijelzés nyelve. */
+  lang: Locale;
   /** A rejtett csapdamező felirata a lap nyelvén. */
   honeypotLabel: string;
 }) {
@@ -33,6 +44,14 @@ export function ContactForm({
     const message = String(data.get('message') ?? '').trim();
     const _gotcha = String(data.get('_gotcha') ?? '').trim();
 
+    const csatolo = form.elements.namedItem('attachments') as HTMLInputElement | null;
+    const files = Array.from(csatolo?.files ?? []);
+    if (files.reduce((n, f) => n + f.size, 0) > MAX_CSATOLMANY) {
+      toast.error(labels.attachTooLarge);
+      setSending(false);
+      return;
+    }
+
     const bodyLines = [
       message,
       '',
@@ -40,6 +59,9 @@ export function ContactForm({
       `${labels.name}: ${name}`,
       `${labels.email}: ${email}`,
       `${labels.company}: ${company}`,
+      // A mailto-tartalék nem tud fájlt vinni, csak a nevüket — így a
+      // látogató tudja, mit kell kézzel mellékelnie a megnyíló levélhez.
+      files.length ? `${labels.attachBody}: ${files.map((f) => f.name).join(', ')}` : '',
     ].filter(Boolean);
 
     try {
@@ -48,8 +70,11 @@ export function ContactForm({
         subject: subject || `${labels.subject}: ${name}`,
         bodyLines,
         recipient,
+        files,
       });
-      toast.success(result === 'sent' ? labels.sent : labels.success);
+      toast.success(
+        result === 'sent' ? labels.sent : files.length ? labels.attachMailto : labels.success,
+      );
       form.reset();
     } catch {
       toast.error(labels.error);
@@ -138,6 +163,16 @@ export function ContactForm({
           className={`${fieldClass} resize-y`}
         />
       </div>
+
+      <FileField
+        id="attachments"
+        name="attachments"
+        label={labels.attach}
+        hint={labels.attachHint}
+        lang={lang}
+        accept="image/*,.pdf"
+        tooLarge={labels.attachTooLarge}
+      />
 
       <p className="text-xs text-ink-muted">{labels.requiredNote}</p>
 
