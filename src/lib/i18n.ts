@@ -681,7 +681,7 @@ export const dictionaries = {
     ],
     products: {
       title: 'Products',
-      lead: 'Label printers, labeling machines, laser engravers and consumables — from the simplest task to complex systems.',
+      lead: 'Label printers, labelling machines, laser engravers and consumables — from the simplest task to complex systems.',
       browseCategory: 'Browse category',
       productCount: (n: number) => `${n} products`,
       comingSoon: 'Products in this category are coming soon — in the meantime, request a quote and we will help you choose.',
@@ -952,7 +952,7 @@ export const dictionaries = {
       items: [
         {
           q: 'Which manufacturers do you represent?',
-          a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, Purex fume and dust extraction systems, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labeling software. We also supply consumables and spare parts for the machines.',
+          a: 'We distribute the machines of CAB, POSTEK and TYKMA Electrox, the dispensing equipment of START International, Purex fume and dust extraction systems, DNP and ARMOR-IIMAK thermal transfer ribbons, and the Loftware / NiceLabel labelling software. We also supply consumables and spare parts for the machines.',
           href: '/gyartok',
         },
         {
@@ -1001,7 +1001,7 @@ export const dictionaries = {
           href: '/tudastar/cimkeanyagok',
         },
         {
-          q: 'Do you support the labeling software?',
+          q: 'Do you support the labelling software?',
           a: 'Yes — we help with selecting, implementing and using cab cablabel S3 and Loftware / NiceLabel software.',
           href: '/termekek/szoftverek',
         },
@@ -1042,7 +1042,7 @@ export const dictionaries = {
         },
         {
           q: 'Which materials can be laser marked?',
-          a: 'Fiber lasers can deep-engrave and anneal-mark metals (steel, stainless, aluminium, copper), and typically produce colour-change marks on plastics. On request we produce a sample marking on your own part.',
+          a: 'Fibre lasers can deep-engrave and anneal-mark metals (steel, stainless, aluminium, copper), and typically produce colour-change marks on plastics. On request we produce a sample marking on your own part.',
           href: '/tudastar/lezeres-jeloles',
         },
         {
@@ -1056,8 +1056,8 @@ export const dictionaries = {
           href: '/tudastar/lezeres-jeloles',
         },
         {
-          q: 'What data is needed to quote an automatic labeling system?',
-          a: 'The label dimensions and roll data, the material and size of the product, the process (triggering, speed, cycle time), the label position on the product with its tolerance, and the installation situation. cab’s official labeling checklist walks through all of this — it is downloadable from the Knowledge base.',
+          q: 'What data is needed to quote an automatic labelling system?',
+          a: 'The label dimensions and roll data, the material and size of the product, the process (triggering, speed, cycle time), the label position on the product with its tolerance, and the installation situation. cab’s official labelling checklist walks through all of this — it is downloadable from the Knowledge base.',
           href: '/tudastar/cimkezo-rendszer-tervezese',
         },
         {
