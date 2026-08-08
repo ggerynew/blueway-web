@@ -5,7 +5,24 @@ import { DnbCertificate } from '@/components/dnb-certificate';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { getCategory, products } from '@/lib/products';
 import { SITE_URL, absUrl, pageMetadata } from '@/lib/site';
+
+/**
+ * A „Mit kínálunk” pontok célpontjai, a szótár offer tömbjével azonos
+ * sorrendben.
+ *
+ * Miért itt, és nem a szótárban: a szövegek nyelvenként változnak, az
+ * útvonalak nem. Nyolc nyelvre lemásolva csak eltévedni lehetne bennük —
+ * egy elgépelt szlug hét nyelven jó maradna, a nyolcadikon 404-re vinne.
+ */
+const AJANLAT_CELOK = [
+  'termekek/cimkenyomtatok',
+  'termekek/lezer-gravirozok',
+  'termekek/cimkek-es-festekszalagok',
+  'termekek/szoftverek',
+  'szolgaltatasok',
+] as const;
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -32,6 +49,7 @@ export default async function AboutPage({
 }: Readonly<{ params: Promise<{ lang: string }> }>) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
+  const nyelv = lang; // isLocale után már Locale — a beágyazott függvény ezt látja
   const dict = getDictionary(lang);
   const { about } = dict;
 
@@ -46,6 +64,32 @@ export default async function AboutPage({
     isPartOf: weblapRef,
     mainEntity: szervezetRef,
   };
+
+  // A szótár és a hivatkozáslista együtt mozog. Ha valaki hatodik pontot ír
+  // a „Mit kínálunk” listába, itt derül ki, a buildben — nem a látogatónál,
+  // egy hivatkozás nélküli csempe képében.
+  if (about.offer.length !== AJANLAT_CELOK.length) {
+    throw new Error(
+      `A „Mit kínálunk” ${about.offer.length} pontjához ${AJANLAT_CELOK.length} hivatkozás tartozik.`,
+    );
+  }
+
+  /**
+   * A hivatkozás felirata a CÉLPONTBÓL következik, nem külön szöveg — így
+   * nem tud eltérni tőle (ugyanez a rend a GYIK-lapon). A kategóriáknál a
+   * termékek száma a legbeszédesebb: megmondja, hogy nem egy általános
+   * szöveg vár, hanem konkrét kínálat.
+   */
+  function celFelirata(ut: string): string {
+    if (ut === 'szolgaltatasok') return dict.nav.services;
+    const szlug = ut.match(/^termekek\/([a-z0-9-]+)$/)?.[1];
+    const kategoria = szlug ? getCategory(szlug) : undefined;
+    if (!kategoria) {
+      throw new Error(`A „Mit kínálunk” pont ismeretlen célra mutat: ${ut}`);
+    }
+    const db = products.filter((p) => p.category === kategoria.slug).length;
+    return db > 0 ? dict.products.productCount(db) : kategoria.name[nyelv];
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
@@ -122,13 +166,24 @@ export default async function AboutPage({
       <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {about.offer.map((item, i) => (
           <Reveal key={item.title} delay={i * 0.05} className="h-full">
-            <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-6">
+            <Link
+              href={`/${lang}/${AJANLAT_CELOK[i]}`}
+              className="group product-tile flex h-full flex-col p-6"
+            >
               <span className="text-sm font-medium text-brand-700">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="mt-3 font-semibold tracking-tight">{item.title}</h3>
-              <p className="mt-2 text-sm text-ink-muted">{item.body}</p>
-            </div>
+              <h3 className="mt-3 font-semibold tracking-tight group-hover:text-brand-700">
+                {item.title}
+              </h3>
+              <p className="mt-2 flex-1 text-sm text-ink-muted">{item.body}</p>
+              <p className="mt-5 text-sm font-medium text-brand-700">
+                {celFelirata(AJANLAT_CELOK[i])}
+                <span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </p>
+            </Link>
           </Reveal>
         ))}
       </div>
