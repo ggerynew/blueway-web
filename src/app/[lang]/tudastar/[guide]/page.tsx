@@ -5,6 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { RibbonSpectrum } from '@/components/ribbon-spectrum';
 import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
 import { morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
@@ -134,7 +135,7 @@ export default async function GuidePage({
                       <div className="overflow-hidden rounded-xl border border-line bg-white p-4">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={asset(kep.src)}
+                          src={asset(kepVerzio(kep.src))}
                           alt={kep.alt[lang]}
                           loading="lazy"
                           className="mx-auto h-auto w-full max-w-full"

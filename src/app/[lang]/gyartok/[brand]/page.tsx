@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { categories, manufacturers, getManufacturer, getProductsByBrand , productName } from '@/lib/products';
 import { morzsa } from '@/lib/jsonld';
@@ -107,7 +108,7 @@ export default async function ManufacturerPage({
             <span className="inline-flex items-center rounded-2xl bg-white px-6 py-4 shadow-[0_8px_24px_-12px_rgba(37,99,235,0.28)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={asset(manufacturer.logo)}
+                src={asset(kepVerzio(manufacturer.logo))}
                 alt={manufacturer.name}
                 className="h-12 w-auto md:h-14"
               />

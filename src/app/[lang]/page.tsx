@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { HeroTileWall } from '@/components/hero-tile-wall';
 import { asset } from '@/lib/asset';
+import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { industries } from '@/lib/iparagak';
 import { productName, products } from '@/lib/products';
@@ -45,16 +46,18 @@ export default async function HomePage({
     .filter((p) => p.image)
     .map((p) => ({
       src: asset(
-        (p.image as string)
-          .replace('/images/products/', '/images/tiles/')
-          .replace(/\.(webp|jpg)$/, '.webp'),
+        kepVerzio(
+          (p.image as string)
+            .replace('/images/products/', '/images/tiles/')
+            .replace(/\.(webp|jpg)$/, '.webp'),
+        ),
       ),
       alt: productName(p, lang),
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     }));
   // Címkék csempe a falra — a letisztított tekercses képpel.
   heroTiles.splice(1, 0, {
-    src: asset('/images/tiles/cimkek.webp'),
+    src: asset(kepVerzio('/images/tiles/cimkek.webp')),
     alt: dict.products.labelsTile.title,
     href: `/${lang}/termekek/cimkek-es-festekszalagok`,
   });
