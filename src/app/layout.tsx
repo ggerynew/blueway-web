@@ -22,7 +22,12 @@ export const metadata: Metadata = {
     images: [{ url: absUrl('images/og.png'), width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image' },
-  robots: { index: true, follow: true },
+  // A `robots: { index: true, follow: true }` szándékosan nincs itt. Az
+  // indexelés az alapértelmezés, tehát a címke a 889 rendes lapon semmit nem
+  // mondott — a 404-en viszont ártott: a Next oda saját „noindex" címkét ír,
+  // és a gyökérből érkező „index, follow" ellentmondott neki. Az ellentmondást
+  // a keresők a szigorúbb javára oldják fel, tehát a lap eddig sem indexelődött,
+  // de a nem létező címek lapja nem múlhat azon, ki hogyan old fel egy vitát.
 };
 
 export default function RootLayout({
