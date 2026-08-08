@@ -45,60 +45,6 @@ body {
   animation: media-fade-in 0.3s ease;
 }
 
-/* — A termékgömb vörös magja és lézernyalábjai (hero-tile-wall) ——————
-   A mag „izzása" és a villám útja itt él, mert mindkettő tiszta CSS-animáció:
-   a JavaScript csak a gömb forgatását végzi, ezek a GPU-n futnak mellette. */
-
-/* A mag korongjainak lüktetése. Szándékosan nem transform: a korongok 3D-ben
-   elforgatva állnak, egy transform-os kulcskocka felülírná az állásukat. */
-@keyframes lezer-mag-izzas {
-  from {
-    opacity: 0.72;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.lezer-mag-korong {
-  animation: lezer-mag-izzas 1.4s ease-in-out infinite alternate;
-}
-
-/* A villám útja a nyaláb mentén. A vízszintes haladásnak minden kulcskockában
-   szerepelnie kell (a transform mindig egészben cserélődik), a függőleges
-   rezgés ettől lesz cikcakk és nem csúszás. A táv a nyaláb hossza mínusz a
-   villám szélessége — a komponens adja át változóként. */
-@keyframes lezer-villam-ut {
-  from {
-    transform: translateX(0) translateY(0);
-  }
-  22% {
-    transform: translateX(calc(var(--villam-tav) * 0.22)) translateY(-1.4px);
-  }
-  47% {
-    transform: translateX(calc(var(--villam-tav) * 0.47)) translateY(1.3px);
-  }
-  73% {
-    transform: translateX(calc(var(--villam-tav) * 0.73)) translateY(-1.1px);
-  }
-  to {
-    transform: translateX(var(--villam-tav)) translateY(0);
-  }
-}
-
-.lezer-villam {
-  animation: lezer-villam-ut var(--villam-ido, 1.6s) linear var(--villam-keses, 0s) infinite
-    alternate;
-}
-
-/* Aki csökkentett mozgást kér, annak a gömb áll — az izzás és a villámok is. */
-@media (prefers-reduced-motion: reduce) {
-  .lezer-mag-korong,
-  .lezer-villam {
-    animation: none;
-  }
-}
-
 /* Lebegő termékcsempe kékes árnyékkal */
 .product-tile {
   background-color: #fff;

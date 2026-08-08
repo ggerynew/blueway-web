@@ -54,6 +54,7 @@ const BILLENES_HATAR = 22;
 export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
   const kulsoRef = useRef<HTMLDivElement>(null);
   const gombRef = useRef<HTMLDivElement>(null);
+  const vaszonRef = useRef<HTMLCanvasElement>(null);
   const [meret, setMeret] = useState(TERV);
 
   const szog = useRef({ x: -6, y: 0 });
@@ -77,6 +78,22 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
     figyelo.observe(el);
     return () => figyelo.disconnect();
   }, []);
+
+  /**
+   * Fibonacci-gömb: az i-edik pont helye az aranyszög szerint.
+   * A visszaadott két szög közvetlenül CSS-forgatás, a csempe így kifelé néz.
+   */
+  const ARANYSZOG = Math.PI * (3 - Math.sqrt(5));
+  const helyek = tiles.map((_, i) => {
+    // A pólusokat kicsit elkerüljük (0,5 eltolás), különben ott torlódnának.
+    const y = tiles.length === 1 ? 0 : 1 - ((i + 0.5) / tiles.length) * 2;
+    const sugarY = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = ARANYSZOG * i;
+    const szelesseg = (Math.asin(y) * 180) / Math.PI; // -90…90
+    const hosszusag = (Math.atan2(Math.sin(theta) * sugarY, Math.cos(theta) * sugarY) * 180) / Math.PI;
+    return { szelesseg, hosszusag };
+  });
+
 
   useEffect(() => {
     const el = gombRef.current;
@@ -112,6 +129,120 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
     };
     idozit();
 
+    // ——— A lézer-réteg előkészítése ————————————————————————————————
+    // A csempék iránya a gömbön, egységvektorként. Ugyanaz a képlet, mint a
+    // CSS-forgatásé: rotateY(λ) rotateX(−φ) translateZ(R) a (R·cosφ·sinλ,
+    // R·sinφ, R·cosφ·cosλ) pontba visz. A villámok üteme az indexből számolt
+    // álvéletlen, hogy ne egyszerre lüktessen mind.
+    const iranyok = helyek.map(({ szelesseg, hosszusag }) => {
+      const fi = (szelesseg * Math.PI) / 180;
+      const lam = (hosszusag * Math.PI) / 180;
+      return {
+        x: Math.cos(fi) * Math.sin(lam),
+        y: Math.sin(fi),
+        z: Math.cos(fi) * Math.cos(lam),
+      };
+    });
+    const utemek = helyek.map((_, i) => ({
+      ido: 1.15 + (((i * 37) % 97) / 97) * 1.25,
+      fazis: ((i * 53) % 89) / 89,
+    }));
+
+    const vaszon = vaszonRef.current;
+    const ctx = vaszon?.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (vaszon && ctx) {
+      vaszon.width = TERV * dpr;
+      vaszon.height = TERV * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    /** A perspektíva mélysége — a tartó `perspective: 1500px` értékével azonos. */
+    const P = 1500;
+    const KOZEP = TERV / 2;
+
+    const rajzol = (most: number) => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, TERV, TERV);
+      const rx = (szog.current.x * Math.PI) / 180;
+      const ry = (szog.current.y * Math.PI) / 180;
+      const cx = Math.cos(rx), sx = Math.sin(rx);
+      const cy = Math.cos(ry), sy = Math.sin(ry);
+
+      // Egy pont a középpont és a csempe közti szakaszon (t: 0…1), kivetítve.
+      const vetit = (v: { x: number; y: number; z: number }, t: number) => {
+        const x1 = v.x * cy + v.z * sy;
+        const z1 = -v.x * sy + v.z * cy;
+        const y2 = v.y * cx - z1 * sx;
+        const z2 = v.y * sx + z1 * cx;
+        const a = SUGAR * t;
+        const s = P / (P - z2 * a);
+        return { x: KOZEP + x1 * a * s, y: KOZEP + y2 * a * s, z: z2 };
+      };
+
+      ctx.lineCap = 'round';
+      for (let i = 0; i < iranyok.length; i++) {
+        const veg = vetit(iranyok[i], 1);
+        // A hátsó félteke nyalábjai halványabbak — ez adja a mélységet.
+        const melyseg = (veg.z + 1) / 2;
+        const er = 0.35 + 0.5 * melyseg;
+
+        ctx.strokeStyle = `rgba(255,45,45,${(0.5 * er).toFixed(3)})`;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(KOZEP, KOZEP);
+        ctx.lineTo(veg.x, veg.y);
+        ctx.stroke();
+
+        // A mag felőli szakasz fényesebb — a nyaláb onnan „táplálkozik".
+        const belso = vetit(iranyok[i], 0.68);
+        ctx.strokeStyle = `rgba(255,85,60,${(0.8 * er).toFixed(3)})`;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(KOZEP, KOZEP);
+        ctx.lineTo(belso.x, belso.y);
+        ctx.stroke();
+
+        // A villám: rövid, fénylő szakasz, ami a magtól a csempéig fut és
+        // vissza (háromszögjel), enyhe remegéssel.
+        const u0 = most / 1000 / utemek[i].ido + utemek[i].fazis;
+        const m = u0 % 2;
+        const u = m < 1 ? m : 2 - m;
+        const a1 = vetit(iranyok[i], Math.max(0, u - 0.05));
+        const a2 = vetit(iranyok[i], Math.min(1, u + 0.05));
+        const rezges = Math.sin(most / 47 + i) * 1.2;
+        ctx.strokeStyle = `rgba(255,60,40,${(0.55 * er + 0.25).toFixed(3)})`;
+        ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.moveTo(a1.x, a1.y + rezges);
+        ctx.lineTo(a2.x, a2.y - rezges);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(a1.x, a1.y + rezges);
+        ctx.lineTo(a2.x, a2.y - rezges);
+        ctx.stroke();
+      }
+
+      // Az izzó mag: fényudvar + fehér közepű korong, lüktetéssel.
+      const luktetes = 0.8 + 0.2 * Math.sin(most / 450);
+      ctx.globalAlpha = luktetes;
+      const udvar = ctx.createRadialGradient(KOZEP, KOZEP, 0, KOZEP, KOZEP, 72);
+      udvar.addColorStop(0, 'rgba(255,70,45,0.5)');
+      udvar.addColorStop(0.5, 'rgba(255,50,32,0.2)');
+      udvar.addColorStop(1, 'rgba(255,45,30,0)');
+      ctx.fillStyle = udvar;
+      ctx.fillRect(KOZEP - 72, KOZEP - 72, 144, 144);
+      const mag = ctx.createRadialGradient(KOZEP, KOZEP, 0, KOZEP, KOZEP, 30);
+      mag.addColorStop(0, '#fff');
+      mag.addColorStop(0.25, '#ffb3a0');
+      mag.addColorStop(0.5, 'rgba(255,106,80,0.75)');
+      mag.addColorStop(1, 'rgba(255,45,30,0)');
+      ctx.fillStyle = mag;
+      ctx.fillRect(KOZEP - 30, KOZEP - 30, 60, 60);
+      ctx.globalAlpha = 1;
+    };
+
     let raf = 0;
     const kepkocka = () => {
       const all = huzas.current || felette.current;
@@ -127,6 +258,9 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
         }
       }
       el.style.transform = `rotateX(${szog.current.x}deg) rotateY(${szog.current.y}deg)`;
+      // Csökkentett mozgásnál az idő áll: a nyalábok látszanak, de a villámok
+      // és a lüktetés nem mozog — összhangban a gömb álló forgásával.
+      rajzol(csokkentett ? 0 : performance.now());
       raf = requestAnimationFrame(kepkocka);
     };
     raf = requestAnimationFrame(kepkocka);
@@ -135,6 +269,9 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
       cancelAnimationFrame(raf);
       clearTimeout(ido);
     };
+    // A helyek a csempelistából determinisztikusan számolódnak, és a lista a
+    // statikus oldalon nem változik — az első renderelés értéke végig érvényes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Húzás — ablakszintű figyelők, hogy a mutató a felületen kívül is működjön.
@@ -173,21 +310,6 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
     if (mozdult.current) e.preventDefault();
   }
 
-  /**
-   * Fibonacci-gömb: az i-edik pont helye az aranyszög szerint.
-   * A visszaadott két szög közvetlenül CSS-forgatás, a csempe így kifelé néz.
-   */
-  const ARANYSZOG = Math.PI * (3 - Math.sqrt(5));
-  const helyek = tiles.map((_, i) => {
-    // A pólusokat kicsit elkerüljük (0,5 eltolás), különben ott torlódnának.
-    const y = tiles.length === 1 ? 0 : 1 - ((i + 0.5) / tiles.length) * 2;
-    const sugarY = Math.sqrt(Math.max(0, 1 - y * y));
-    const theta = ARANYSZOG * i;
-    const szelesseg = (Math.asin(y) * 180) / Math.PI; // -90…90
-    const hosszusag = (Math.atan2(Math.sin(theta) * sugarY, Math.cos(theta) * sugarY) * 180) / Math.PI;
-    return { szelesseg, hosszusag };
-  });
-
   return (
     <div
       ref={kulsoRef}
@@ -215,6 +337,7 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
       >
         <div
           style={{
+            position: 'relative',
             transformStyle: 'preserve-3d',
             transform: `scale(${meret / TERV})`,
             width: TERV,
@@ -224,112 +347,28 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
             justifyContent: 'center',
           }}
         >
+          {/* — Az izzó vörös mag, a lézernyalábok és a rajtuk futó villámok —
+              Egyetlen vásznon, nem DOM-elemekként. Az első változat ~180 külön
+              3D-elemből állt, és a preserve-3d térben ezek mélységi rendezése
+              minden képkockában a fő szálon futott — élesben a görgetés
+              szaggatott, a forgás lelassult. A vászon egyetlen réteg: a
+              nyalábokat a forgatás amúgy is meglévő animációs ciklusa rajzolja
+              újra, képkockánként ~150 vonalhúzással.
+
+              A vászon lapos, z=0-nál áll, ezért NEM a forgó gömbben ül, hanem
+              mellette: a rajzolás vetíti ki a csempék irányát ugyanazzal a
+              forgatással és perspektívával, amit a CSS használ. Az elülső
+              csempék a mélységi rendezés szerint a vászon fölé kerülnek, tehát
+              a nyaláb vége a csempe MÖGÖTT tűnik el — mintha az tartaná. */}
+          <canvas
+            ref={vaszonRef}
+            aria-hidden="true"
+            width={TERV}
+            height={TERV}
+            className="pointer-events-none absolute"
+            style={{ left: 0, top: 0, width: TERV, height: TERV }}
+          />
           <div ref={gombRef} className="relative" style={{ transformStyle: 'preserve-3d' }}>
-            {/* — Az izzó vörös mag és a lézernyalábok —
-                A mag a gömb középpontjában ül, és minden csempéhez fut belőle
-                egy vörös nyaláb — mintha azok tartanák a termékeket. A nyaláb
-                ugyanazt a két forgatást kapja, mint a csempéje, majd egy
-                rotateY(-90°) a saját hossztengelyét fordítja a csempe felé:
-                így a vonal pontosan a középpontból a csempe közepéig ér.
-
-                Minden nyaláb KÉT, hossztengelye mentén 90°-kal elforgatott
-                lapból áll. Egyetlen lap éléről nézve eltűnne — a kereszt
-                minden irányból vonalnak látszik.
-
-                A mag ugyanezért három, egymásra merőleges korong: külön-külön
-                lapos körök, együtt minden szögből gömbnek hatnak, a
-                homályosítás pedig elmossa az élüket.
-
-                Az időzítés az indexből számolt általálomszám — Math.random()
-                itt hidratálási eltérést okozna, mert a kiszolgáló és a
-                böngésző mást sorsolna. */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              {helyek.map(({ szelesseg, hosszusag }, i) => {
-                const ido = (1.15 + (((i * 37) % 97) / 97) * 1.25).toFixed(2);
-                const keses = (-(((i * 53) % 89) / 89) * 2.4).toFixed(2);
-                const nyalab = `rotateY(${hosszusag}deg) rotateX(${-szelesseg}deg) rotateY(-90deg)`;
-                // A fénylés a háttérszínátmenetbe van belesütve, nem
-                // box-shadow és nem filter: azokat a böngésző a forgás minden
-                // képkockájában újraszámolná — mérve a gömb 27 képkocka/mp-ről
-                // 3,5-re esett tőlük. A színátmenetes elem egyszer rajzolódik
-                // meg, utána csak transzformálódik.
-                const lap = {
-                  position: 'absolute' as const,
-                  left: 0,
-                  top: -3,
-                  width: SUGAR,
-                  height: 6,
-                  transformOrigin: '0 50%',
-                  background:
-                    'radial-gradient(120% 50% at 0% 50%, rgba(255,90,65,0.95), rgba(255,45,45,0.35) 55%, rgba(255,45,45,0.1) 85%, transparent)',
-                };
-                return (
-                  <div key={`nyalab-${i}`} style={{ transformStyle: 'preserve-3d' }}>
-                    <div style={{ ...lap, transform: nyalab }}>
-                      {/* A villám: fénylő csík, ami a magtól a csempéig fut és
-                          vissza (alternate) — az útja a globals.css-ben. */}
-                      <span
-                        className="lezer-villam"
-                        style={
-                          {
-                            position: 'absolute',
-                            left: 0,
-                            top: -2,
-                            width: 34,
-                            height: 10,
-                            background:
-                              'radial-gradient(50% 50% at 50% 50%, #fff 0%, #ff5a40 40%, rgba(255,60,40,0.35) 65%, transparent)',
-                            '--villam-tav': `${SUGAR - 34}px`,
-                            '--villam-ido': `${ido}s`,
-                            '--villam-keses': `${keses}s`,
-                          } as React.CSSProperties
-                        }
-                      />
-                    </div>
-                    <div style={{ ...lap, transform: `${nyalab} rotateX(90deg)` }} />
-                  </div>
-                );
-              })}
-
-              {/* A mag: három merőleges izzó korong + tágabb fényudvar. */}
-              {['', 'rotateY(90deg)', 'rotateX(90deg)'].map((forgatas, i) => (
-                <div
-                  key={`mag-${i}`}
-                  className="lezer-mag-korong"
-                  style={{
-                    position: 'absolute',
-                    left: -30,
-                    top: -30,
-                    width: 60,
-                    height: 60,
-                    borderRadius: '50%',
-                    transform: forgatas || undefined,
-                    // Elmosás helyett lágy átmenet — a filter minden
-                    // képkockában újraszámolódna a forgás alatt.
-                    background:
-                      'radial-gradient(circle, #fff 0%, #ffb3a0 18%, #ff6a50 34%, rgba(255,45,30,0.4) 58%, transparent 75%)',
-                  }}
-                />
-              ))}
-              <div
-                className="lezer-mag-korong"
-                style={{
-                  position: 'absolute',
-                  left: -70,
-                  top: -70,
-                  width: 140,
-                  height: 140,
-                  borderRadius: '50%',
-                  background:
-                    'radial-gradient(circle, rgba(255,70,45,0.45) 0%, rgba(255,50,32,0.22) 40%, rgba(255,45,30,0.08) 62%, transparent 78%)',
-                }}
-              />
-            </div>
-
             {tiles.map((t, i) => {
               const { szelesseg, hosszusag } = helyek[i];
               return (
