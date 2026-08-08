@@ -138,3 +138,60 @@ if (irasmodGond.length) {
   process.exit(1);
 }
 console.log('finalize-static: a brit és az amerikai lapok írásmódja rendben');
+
+/**
+ * Az űrlap és a szerver ugyanarról gondolja-e ugyanazt.
+ *
+ * A csatolmány szabályai két nyelven, két fájlban élnek: a böngészőé
+ * TypeScriptben, a szerveré PHP-ban. Importálni nem tudják egymást, tehát
+ * csak fegyelem tartaná őket együtt — az pedig egyszer már elfogyott. A
+ * méretkorlát öt helyen szerepelt, és kettőben elcsúszott: a látogató
+ * feltöltött nyolc megabájtot, a képernyőn közben ott állt a „legfeljebb
+ * 7 MB", a szerver pedig visszautasította.
+ *
+ * Ezért itt, a kész kimeneten vetjük össze a kettőt. Ha eltérnek, a build
+ * elhasal — a szétcsúszás nem élesedhet ki némán.
+ */
+const php = await readFile('server/send.php', 'utf8');
+const ts = await readFile('src/lib/csatolmany.ts', 'utf8');
+
+const phpMeret = php.match(/const MAX_TOTAL_SIZE\s*=\s*(\d+)\s*\*\s*1024\s*\*\s*1024/);
+const tsMeret = ts.match(/export const MAX_CSATOLMANY\s*=\s*(\d+)\s*\*\s*1024\s*\*\s*1024/);
+const urlapGond = [];
+if (!phpMeret || !tsMeret) {
+  urlapGond.push('a méretkorlát nem olvasható ki (elmozdult a send.php vagy a csatolmany.ts?)');
+} else if (phpMeret[1] !== tsMeret[1]) {
+  urlapGond.push(`méretkorlát: a böngésző ${tsMeret[1]} MB-ot enged, a szerver ${phpMeret[1]} MB-ot fogad`);
+}
+
+// A fájlválasztó kiterjesztései szerepelnek-e a szerver listáján. Az
+// `image/*` nem ellenőrizhető gépileg — az böngészőnként mást jelent —,
+// a pontosan megnevezett kiterjesztések viszont igen.
+const engedett = new Set(
+  (php.match(/const ALLOWED_EXT\s*=\s*\[([\s\S]*?)\]/)?.[1] ?? '')
+    .match(/'([a-z0-9]+)'/g)
+    ?.map((s) => s.replace(/'/g, '')) ?? [],
+);
+const kertek = new Set();
+for (const path of await htmlFajlok(OUT)) {
+  for (const m of (await readFile(path, 'utf8')).matchAll(/accept="([^"]+)"/g)) {
+    for (const rész of m[1].split(',')) {
+      const t = rész.trim();
+      if (t.startsWith('.')) kertek.add(t.slice(1).toLowerCase());
+    }
+  }
+}
+const hianyzo = [...kertek].filter((k) => !engedett.has(k));
+if (hianyzo.length) {
+  urlapGond.push(`a fájlválasztó elfogadja, a szerver nem: .${hianyzo.join(', .')}`);
+}
+
+if (urlapGond.length) {
+  console.error('finalize-static: az űrlap és a szerver nem ugyanazt mondja:');
+  for (const g of urlapGond) console.error(`   ${g}`);
+  process.exit(1);
+}
+console.log(
+  `finalize-static: a csatolmány szabályai egyeznek (${tsMeret[1]} MB, ` +
+    `${engedett.size} engedett kiterjesztés)`,
+);

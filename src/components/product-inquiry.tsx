@@ -6,6 +6,7 @@ import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import { FileField } from '@/components/file-field';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
 type Labels = Dictionary['products']['inquiry'];
 
@@ -38,7 +39,7 @@ export function ProductInquiry({
 
     const attachInput = form.elements.namedItem('attachments') as HTMLInputElement | null;
     const files = Array.from(attachInput?.files ?? []);
-    if (files.reduce((n, f) => n + f.size, 0) > 10 * 1024 * 1024) {
+    if (files.reduce((n, f) => n + f.size, 0) > MAX_CSATOLMANY) {
       toast.error(labels.attachTooLarge);
       setSending(false);
       return;

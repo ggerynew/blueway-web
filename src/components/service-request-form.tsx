@@ -6,23 +6,10 @@ import { FileField } from '@/components/file-field';
 import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import type { Dictionary, Locale } from '@/lib/i18n';
+import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
 type Labels = Dictionary['servicePage']['form'];
 
-/**
- * Szerviz megkeresés — ugyanaz a szerkezet, mint a címke-ajánlatkérőnél.
- *
- * Két mező visz előre mindenkinél: a GÉPTÍPUS és a HIBA leírása. A géptípus
- * nélkül a szerviz nem tud alkatrészt előkészíteni, tehát az kötelező; a gyári
- * szám viszont nem, mert a gép hátulján van, és a bejelentő gyakran nem áll
- * mellette, amikor ír. Inkább jöjjön be a megkeresés hiányos gyári számmal,
- * mint sehogy.
- *
- * A csatolmány határa 7 MB — ugyanaz, amit a szerveroldali küldő (send.php)
- * elfogad. Ha a kliens többet engedne, a küldés a szerveren bukna el, és a
- * látogató csak annyit látna, hogy a levelezője nyílik meg.
- */
-const MAX_CSATOLMANY = 7 * 1024 * 1024;
 
 const mezoOsztaly =
   'mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-muted/70 focus:border-brand-500 focus:ring-2 focus:ring-brand-100';
