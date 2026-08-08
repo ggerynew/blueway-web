@@ -83,3 +83,58 @@ for (const nyelv of NYELVEK) {
   }
 }
 console.log(`finalize-static: ${nyelvesitett} lap kapott saját <html lang> értéket`);
+
+/**
+ * A két angol változat írásmódjának őrszeme.
+ *
+ * Az /en/ brit (en-GB), a /us/ amerikai (en-US) — a keresőnek ezt ígéri a
+ * hreflang. Az amerikai szöveg a britből származik (`localize()` írja át az
+ * írásmódot), a felület szövegei viszont két külön szótárból jönnek, és ott
+ * kézzel kell eltalálni. Egyszer már szétcsúszott: a brit lapokon 127-szer
+ * állt „labeling" és 62-szer „fiber" — épp a szakma két alapszava, épp azon a
+ * piacon, ahol „labelling"-re és „fibre"-re keresnek.
+ *
+ * Ezért itt, a kész kimeneten mérjük meg. Ha egy alak rossz oldalra kerül, a
+ * build elhasal — a hiba nem élesedhet ki némán.
+ */
+const IRASMOD = [
+  ['labelling', 'labeling'], ['labelled', 'labeled'], ['fibre', 'fiber'],
+  ['colour', 'color'], ['coloured', 'colored'], ['centre', 'center'],
+  ['centred', 'centered'], ['aluminium', 'aluminum'], ['catalogue', 'catalog'],
+  ['organisation', 'organization'], ['optimise', 'optimize'],
+  ['specialised', 'specialized'], ['centralised', 'centralized'],
+  ['analyse', 'analyze'], ['behaviour', 'behavior'], ['licence', 'license'],
+  ['siliconised', 'siliconized'], ['motorised', 'motorized'],
+  ['anodised', 'anodized'], ['customisation', 'customization'],
+  ['recognise', 'recognize'], ['utilise', 'utilize'], ['metre', 'meter'],
+];
+
+/** A látható szöveg — a beágyazott szkriptek ugyanezt még egyszer tartalmaznák. */
+function latszoSzoveg(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, '')
+    .replace(/<[^>]+>/g, ' ');
+}
+
+const IDEGEN = { en: 1, us: 0 }; // az /en/-en a második (amerikai) alak idegen
+const irasmodGond = [];
+for (const nyelv of ['en', 'us']) {
+  const celok = [];
+  if (existsSync(join(OUT, `${nyelv}.html`))) celok.push(join(OUT, `${nyelv}.html`));
+  if (existsSync(join(OUT, nyelv))) celok.push(...(await htmlFajlok(join(OUT, nyelv))));
+  for (const path of celok) {
+    const szoveg = latszoSzoveg(await readFile(path, 'utf8'));
+    for (const par of IRASMOD) {
+      const szo = par[IDEGEN[nyelv]];
+      const talalat = szoveg.match(new RegExp(`\\b${szo}\\b`, 'gi'));
+      if (talalat) irasmodGond.push(`${path}: „${szo}" ${talalat.length}× (helyette: ${par[1 - IDEGEN[nyelv]]})`);
+    }
+  }
+}
+if (irasmodGond.length) {
+  console.error(`finalize-static: rossz oldalon álló angol írásmód (${irasmodGond.length} eset):`);
+  for (const g of irasmodGond.slice(0, 20)) console.error(`   ${g}`);
+  if (irasmodGond.length > 20) console.error(`   … és még ${irasmodGond.length - 20}`);
+  process.exit(1);
+}
+console.log('finalize-static: a brit és az amerikai lapok írásmódja rendben');

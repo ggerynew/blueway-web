@@ -262,7 +262,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'cab-squix-4m',
         reason: {
           hu: 'Középre igazított anyagvezetésű változat a keskeny csőcímkékhez, ahol csak a pontos szalagvezetés ad egyenes nyomatot.',
-          en: 'The center-aligned media guide version, for narrow tube labels where only precise web guiding gives a straight print.',
+          en: 'The centre-aligned media guide version, for narrow tube labels where only precise web guiding gives a straight print.',
           de: 'Variante mit mittenzentrierter Materialführung für schmale Röhrchenetiketten, bei denen nur die exakte Bandführung ein gerades Druckbild ergibt.',
           it: 'Versione con guida del materiale centrata, per le etichette strette delle provette, dove solo una guida precisa dà una stampa dritta.',
           es: 'Versión con guiado de material centrado, para las etiquetas estrechas de tubos, donde solo un guiado preciso da una impresión recta.',
@@ -483,7 +483,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'cab-xeno-4',
         reason: {
           hu: 'Fiber lézer, amely maradandó sorozat- és sarzsszámot ír a fémalkatrészre — a jelölés az anyagban van, nem a felületén ülő festékrétegben.',
-          en: 'A fiber laser that writes permanent serial and batch numbers into metal parts — the mark lives in the material, not in a layer of ink on top of it.',
+          en: 'A fibre laser that writes permanent serial and batch numbers into metal parts — the mark lives in the material, not in a layer of ink on top of it.',
           de: 'Faserlaser, der Serien- und Chargennummern dauerhaft in Metallteile schreibt — die Markierung liegt im Werkstoff, nicht in einer Farbschicht darauf.',
           it: 'Laser in fibra che incide numeri di serie e di lotto in modo permanente sui componenti metallici: il segno sta nel materiale, non in uno strato di inchiostro.',
           es: 'Láser de fibra que graba números de serie y de lote de forma permanente en piezas metálicas: la marca está en el material, no en una capa de tinta.',
@@ -519,7 +519,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'tykma-minilase',
         reason: {
           hu: 'Asztali Class 1 fiber jelölő nagy darabszámhoz — VIN-táblákhoz és kisebb fémalkatrészekhez, automatikus ajtózárás–jelölés–ajtónyitás ciklussal.',
-          en: 'A benchtop Class 1 fiber marker for high volumes — VIN plates and smaller metal parts, with an automated door-close / mark / door-open cycle.',
+          en: 'A benchtop Class 1 fibre marker for high volumes — VIN plates and smaller metal parts, with an automated door-close / mark / door-open cycle.',
           de: 'Class-1-Faserbeschrifter für den Tisch, für hohe Stückzahlen — VIN-Schilder und kleinere Metallteile, mit automatisiertem Ablauf Tür schließen / Markieren / Tür öffnen.',
           it: 'Marcatore in fibra da banco in classe 1 per grandi volumi — targhette VIN e minuteria metallica, con ciclo automatico di chiusura porta / marcatura / apertura porta.',
           es: 'Marcador de fibra de sobremesa en clase 1 para grandes volúmenes — placas VIN y piezas metálicas pequeñas, con ciclo automático de cierre de puerta, marcado y apertura.',
@@ -688,7 +688,7 @@ const industriesSource: Sourced<Industry[]> = [
         },
         text: {
           hu: 'Ahol a címke nem élné túl a folyamatot — újraömlesztés, panelmosás, oldószeres tisztítás —, ott a jelölés a felületbe kerül. Fiber lézerrel a fémházon, a csatlakozón és a hűtőbordán kontrasztos, kopásálló Data Matrix marad; a műanyag házaknál az állítható impulzushosszú MOPA forrás kisebb hőterheléssel ad kontrasztot. A gyakorlati kérdés nem a lézer, hanem a körülötte lévő doboz: zárt, 1. lézerosztályú állomásban a szerelősor mellett is lehet jelölni, mert nem kell lézervédő szemüveg, és a keletkező por egy helyen elszívható.',
-          en: 'Where a label would not survive the process — reflow, board washing, solvent cleaning — the mark goes into the surface itself. A fiber laser leaves a high-contrast, abrasion-resistant Data Matrix on a metal housing, a connector or a heat sink; on plastic housings a MOPA source with adjustable pulse length gives contrast with less heat input. The practical question is not the laser but the box around it: in an enclosed Class 1 station marking can be done next to the assembly line, because no laser goggles are needed and the dust stays in one place where it can be extracted.',
+          en: 'Where a label would not survive the process — reflow, board washing, solvent cleaning — the mark goes into the surface itself. A fibre laser leaves a high-contrast, abrasion-resistant Data Matrix on a metal housing, a connector or a heat sink; on plastic housings a MOPA source with adjustable pulse length gives contrast with less heat input. The practical question is not the laser but the box around it: in an enclosed Class 1 station marking can be done next to the assembly line, because no laser goggles are needed and the dust stays in one place where it can be extracted.',
           de: 'Wo ein Etikett den Prozess nicht überstehen würde — Reflow, Baugruppenreinigung, Lösemittelreinigung —, geht die Kennzeichnung in die Oberfläche. Ein Faserlaser hinterlässt auf Metallgehäuse, Steckverbinder und Kühlkörper einen kontrastreichen, abriebfesten Data Matrix; bei Kunststoffgehäusen erzeugt eine MOPA-Quelle mit einstellbarer Pulsdauer den Kontrast mit geringerem Wärmeeintrag. Die praktische Frage ist nicht der Laser, sondern das Gehäuse darum: In einer geschlossenen Station der Laserklasse 1 lässt sich direkt neben der Montagelinie beschriften, denn es braucht keine Laserschutzbrille, und der Staub bleibt an einer Stelle, an der er abgesaugt werden kann.',
           it: 'Dove un’etichetta non sopravvivrebbe al processo — reflow, lavaggio della scheda, pulizia con solventi — la marcatura entra nella superficie. Il laser in fibra lascia su involucro metallico, connettore e dissipatore un Data Matrix contrastato e resistente all’abrasione; sui corpi in plastica una sorgente MOPA a durata d’impulso regolabile dà contrasto con minore apporto termico. La domanda pratica non è il laser ma la cabina attorno: in una stazione chiusa di classe 1 si può marcare accanto alla linea di montaggio, perché non servono occhiali protettivi e la polvere resta in un punto da cui è possibile aspirarla.',
           es: 'Donde una etiqueta no sobreviviría al proceso — reflow, lavado de placa, limpieza con disolvente — la marca va dentro de la superficie. El láser de fibra deja un Data Matrix contrastado y resistente a la abrasión sobre carcasa metálica, conector o disipador; en cuerpos de plástico una fuente MOPA con duración de pulso ajustable da contraste con menos aporte térmico. La pregunta práctica no es el láser sino la cabina que lo rodea: en una estación cerrada de clase 1 se puede marcar junto a la línea de montaje, porque no hacen falta gafas de protección y el polvo queda en un punto del que se puede aspirar.',
@@ -860,7 +860,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'tykma-virtus',
         reason: {
           hu: 'MOPA fiber forrása állítható impulzushosszal dolgozik, ezért műanyag házon és bevonatos felületen is kontrasztot ad, kisebb hőterheléssel.',
-          en: 'Its MOPA fiber source works with adjustable pulse length, so it produces contrast on plastic housings and coated surfaces with less heat input.',
+          en: 'Its MOPA fibre source works with adjustable pulse length, so it produces contrast on plastic housings and coated surfaces with less heat input.',
           de: 'Die MOPA-Faserquelle arbeitet mit einstellbarer Pulsdauer und erzeugt daher auch auf Kunststoffgehäusen und beschichteten Flächen Kontrast — bei geringerem Wärmeeintrag.',
           it: 'La sorgente MOPA in fibra lavora con durata d’impulso regolabile e dà contrasto anche su corpi in plastica e superfici rivestite, con minore apporto termico.',
           es: 'Su fuente MOPA de fibra trabaja con duración de pulso ajustable, de modo que da contraste también en carcasas de plástico y superficies recubiertas, con menos aporte térmico.',
@@ -2012,7 +2012,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'cab-xeno-4',
         reason: {
           hu: 'Fiber lézerforrás különálló szkennerfejjel, amely meglévő gépbe vagy cellába építhető — a fémeszközök jelölése így a gyártás menetében történik, nem külön munkahelyen.',
-          en: 'A fiber laser source with a separate scanner head that builds into an existing machine or cell — so metal instruments are marked in the flow of production, not at a separate workplace.',
+          en: 'A fibre laser source with a separate scanner head that builds into an existing machine or cell — so metal instruments are marked in the flow of production, not at a separate workplace.',
           de: 'Faserlaserquelle mit separatem Scannerkopf, die sich in eine vorhandene Maschine oder Zelle einbauen lässt — Metallinstrumente werden im Fertigungsfluss gekennzeichnet, nicht an einem eigenen Arbeitsplatz.',
           it: 'Sorgente laser in fibra con testa di scansione separata, integrabile in una macchina o in una cella esistente: gli strumenti metallici si marcano nel flusso produttivo, non in una postazione a parte.',
           es: 'Fuente láser de fibra con cabezal de escaneo separado, integrable en una máquina o célula existente: el instrumental metálico se marca dentro del flujo de producción, no en un puesto aparte.',
@@ -2072,7 +2072,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'cab-squix-4m',
         reason: {
           hu: 'Keskeny csőcímkékhez és végtelenített anyagokhoz készült, középre igazított anyagvezetéssel — anyagváltáskor nem kell újra beállítani a vezetést.',
-          en: 'Built for narrow tube labels and continuous materials, with center-aligned media guidance — no re-adjustment when the material changes.',
+          en: 'Built for narrow tube labels and continuous materials, with centre-aligned media guidance — no re-adjustment when the material changes.',
           de: 'Für schmale Röhrchenetiketten und Endlosmaterial, mit mittiger Materialführung — beim Materialwechsel muss nichts nachjustiert werden.',
           it: 'Per etichette strette da provetta e materiali continui, con guida centrata: al cambio materiale non serve ritarare la guida.',
           es: 'Para etiquetas estrechas de tubo y materiales continuos, con guía centrada: al cambiar de material no hay que reajustar la guía.',
@@ -2185,7 +2185,7 @@ const industriesSource: Sourced<Industry[]> = [
         },
         text: {
           hu: 'A típustábla rozsdamentes acélra vagy eloxált alumíniumra készül, és a gyártó adatait, a típusjelet, a gyári számot és a gyártási évet viseli. A fiber lézer a fémbe magába írja a feliratot, az eloxált rétegnél pedig a felső réteget távolítja el — a kontraszt így nem festékrétegen múlik, amit le lehet dörzsölni. Táblajelölő rendszerben a munka magazinból megy: 40 × 20 – 120 × 100 mm-es, 0,5–1 mm vastag táblák akár 50 mm magas kötegben, egymás után.',
-          en: 'A type plate is made from stainless steel or anodised aluminium and carries the manufacturer’s details, the type designation, the serial number and the year of manufacture. A fiber laser writes the text into the metal itself, and on anodised surfaces it removes the top layer — so the contrast does not depend on a coat of ink that can be rubbed off. In a plate marking system the work comes from a magazine: plates of 40 × 20 to 120 × 100 mm, 0.5–1 mm thick, in stacks up to 50 mm high, one after another.', us: 'A type plate is made from stainless steel or anodized aluminum and carries the manufacturer’s details, the type designation, the serial number and the year of manufacture. A fiber laser writes the text into the metal itself, and on anodized surfaces it removes the top layer — so the contrast does not depend on a coat of ink that can be rubbed off. In a plate marking system the work comes from a magazine: plates of 40 × 20 to 120 × 100 mm, 0.5–1 mm thick, in stacks up to 50 mm high, one after another.',
+          en: 'A type plate is made from stainless steel or anodised aluminium and carries the manufacturer’s details, the type designation, the serial number and the year of manufacture. A fibre laser writes the text into the metal itself, and on anodised surfaces it removes the top layer — so the contrast does not depend on a coat of ink that can be rubbed off. In a plate marking system the work comes from a magazine: plates of 40 × 20 to 120 × 100 mm, 0.5–1 mm thick, in stacks up to 50 mm high, one after another.', us: 'A type plate is made from stainless steel or anodized aluminum and carries the manufacturer’s details, the type designation, the serial number and the year of manufacture. A fiber laser writes the text into the metal itself, and on anodized surfaces it removes the top layer — so the contrast does not depend on a coat of ink that can be rubbed off. In a plate marking system the work comes from a magazine: plates of 40 × 20 to 120 × 100 mm, 0.5–1 mm thick, in stacks up to 50 mm high, one after another.',
           de: 'Das Typenschild entsteht auf Edelstahl oder eloxiertem Aluminium und trägt die Herstellerangaben, die Typbezeichnung, die Seriennummer und das Baujahr. Der Faserlaser schreibt die Beschriftung in den Werkstoff selbst, bei eloxierten Flächen trägt er die obere Schicht ab — der Kontrast hängt also nicht an einer Farbschicht, die sich abreiben lässt. In einem Schildbeschriftungssystem kommt die Arbeit aus dem Magazin: Schilder von 40 × 20 bis 120 × 100 mm, 0,5–1 mm dick, im Stapel bis 50 mm Höhe, eines nach dem anderen.',
           it: 'La targhetta identificativa si realizza su acciaio inox o alluminio anodizzato e riporta i dati del costruttore, la designazione del tipo, il numero di serie e l’anno di costruzione. Il laser in fibra incide la scritta nel metallo stesso e sull’anodizzato asporta lo strato superiore: il contrasto non dipende quindi da uno strato di inchiostro che si può sfregare via. In un sistema di marcatura targhette il lavoro arriva dal magazzino: targhette da 40 × 20 a 120 × 100 mm, spesse 0,5–1 mm, impilate fino a 50 mm di altezza, una dopo l’altra.',
           es: 'La placa de características se hace sobre acero inoxidable o aluminio anodizado y lleva los datos del fabricante, la designación del tipo, el número de serie y el año de fabricación. El láser de fibra graba el texto en el propio metal y, sobre el anodizado, retira la capa superior: el contraste no depende de una capa de tinta que se pueda frotar. En un sistema de marcado de placas el trabajo llega desde un cargador: placas de 40 × 20 a 120 × 100 mm, de 0,5–1 mm de espesor, apiladas hasta 50 mm de altura, una tras otra.',
@@ -2341,7 +2341,7 @@ const industriesSource: Sourced<Industry[]> = [
         slug: 'tykma-virtus',
         reason: {
           hu: 'MOPA fiber forrás bevonatos felületekhez: a bevonat eltávolítható vagy megjelölhető anélkül, hogy az alatta lévő anyagot fel kellene marni.',
-          en: 'A MOPA fiber source for coated surfaces: the coating can be marked or ablated without having to cut into the material underneath.',
+          en: 'A MOPA fibre source for coated surfaces: the coating can be marked or ablated without having to cut into the material underneath.',
           de: 'MOPA-Faserquelle für beschichtete Oberflächen: Die Schicht lässt sich markieren oder abtragen, ohne den Grundwerkstoff anzugreifen.',
           it: 'Sorgente in fibra MOPA per superfici rivestite: il rivestimento si marca o si asporta senza dover incidere il materiale sottostante.',
           es: 'Fuente de fibra MOPA para superficies recubiertas: el recubrimiento se marca o se ablaciona sin tener que atacar el material de debajo.',
