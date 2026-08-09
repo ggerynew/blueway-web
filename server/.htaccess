@@ -282,17 +282,36 @@ RewriteRule ^deploy-manifest\.json$ - [F,L]
 # index.html, tehát fájllista vagy 403 jönne a nyitóoldalak helyett.
 # A döntő feltétel mindenhol az, hogy létezik-e a hozzá tartozó .html.
 
+# A perjel-hozzáfűző átirányítás kikapcsolása.
+#
+# A mod_dir alapból minden mappaként is létező címet 301-gyel a perjeles
+# alakra irányít, MIELŐTT a lenti átírásaink futnának. A /hu, a /hu/termekek
+# és minden társuk — 84 útvonal, köztük az összes nyelvi nyitóoldal — így nem
+# 200-zal felelt, hanem átirányítással. Pontosan ezek a címek állnak a
+# sitemapban és a kanonikus hivatkozásokban, és a Search Console 2026
+# augusztusában név szerint ezt jelezte: „a webhelytérképben szereplő oldalak
+# némelyike nincs indexelve — átirányítást tartalmazó oldal".
+#
+# Kikapcsolva a kérés eljut az átírásokig, és a /hu közvetlenül a hu.html
+# tartalmát adja, átirányítás nélkül. A fájllista-védelem nem sérül: a
+# nyitóoldal nélküli valódi mappákat (pl. /images) a lenti 404-szabály fogja
+# meg, mielőtt bármi listázná őket.
+#
+# Az override-igénye ugyanaz az „Indexes" csoport, mint az ExpiresByType-é —
+# az pedig bizonyítottan működik ezen a tárhelyen, tehát ez a sor nem
+# okozhat 500-at.
+<IfModule mod_dir.c>
+  DirectorySlash Off
+</IfModule>
+
 # Záró perjeles alak: a tartalmat KISZOLGÁLJUK, nem átirányítunk.
 #
-# Kézenfekvő lenne a /hu/ címet a /hu-ra irányítani, de ezen a kiszolgálón
-# az végtelen körhöz vezet. A mod_dir itt előbb fut, mint a mi átírásaink:
-# a /hu-t — ami mappa is, mert a Next.js azonos néven mappát és .html-t is
-# készít — átdobja /hu/-ra, a perjelet levágó szabály pedig vissza /hu-ra.
-# Élesben ez "Maximum (50) redirects followed" hibával állt elő minden
-# nyelvi nyitóoldalon.
-#
-# Belső átírással a kör nem jön létre: a /hu/ egyszerűen a hu.html tartalmát
-# adja. A /hu-ból így egy átirányítás lesz a /hu/-ra, utána 200.
+# A perjeles cím (pl. régi könyvjelzőből: /hu/) ugyanazt a tartalmat adja,
+# mint a perjel nélküli — a kanonikus hivatkozás mindkettőn a perjel
+# nélkülire mutat, tehát a kereső össze tudja vonni őket. Visszairányítani
+# nem szabad: amíg a mod_dir hozzáfűzte a perjelet, a levágó szabállyal
+# együtt végtelen kör lett belőle („Maximum (50) redirects followed" —
+# élesben megtörtént), és a DirectorySlash Off mellett sincs rá szükség.
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ $1.html [L]
 
