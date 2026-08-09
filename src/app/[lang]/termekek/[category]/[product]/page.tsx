@@ -92,6 +92,13 @@ export default async function ProductPage({
           : {}),
         // Nem árat hirdetünk — a gépek konfigurációfüggők —, de azt megmondjuk,
         // kitől szerezhető be. Ár nélküli `offers` félrevezető lenne.
+        //
+        // A Search Console emiatt „kritikus problémát" jelez a Termékkivonatok
+        // jelentésben: az offers/review/aggregateRating egyike sincs megadva.
+        // Ez DÖNTÉS, nem hiba (Gáspár, 2026-08-10): az árazás minden vevőnél
+        // egyedi, árat nem teszünk közzé, kitalált értékelést nem írunk be. A
+        // következménye annyi, hogy a találati listában nincs ár-kivonat — az
+        // oldalak indexelését nem érinti. A figyelmeztetés tehát maradhat.
         seller: szervezetRef,
         category: cat.name[lang],
         url: productUrl,
