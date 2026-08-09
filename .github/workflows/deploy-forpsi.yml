@@ -626,6 +626,31 @@ jobs:
             echo "A weblap kiszolgálása rendben — minden próbált útvonal 200-zal zárult."
           fi
 
+          # ——— A sitemap-beli címek átirányítás nélkül feleljenek —————
+          # A sitemapban és a kanonikus hivatkozásokban a perjel NÉLKÜLI alak
+          # áll (/hu, /hu/termekek). A mod_dir ezeket sokáig a perjeles alakra
+          # irányította — a Search Console 2026 augusztusában név szerint ezt
+          # jelezte („átirányítást tartalmazó oldal" a webhelytérképben). A
+          # .htaccess DirectorySlash Off állítása szüntette meg; ez a próba
+          # azt őrzi, hogy meg is maradjon úgy.
+          #
+          # A kérés végállomásának ÚTVONALÁT hasonlítjuk a kérthez: a
+          # gazdagép- vagy sémaváltás (www, https) nem hiba, a hozzáfűzött
+          # perjel az. Mind a három próbált cím mappaként is létezik, tehát
+          # pontosan őket fenyegeti a perjeles átirányítás.
+          PERJEL_BAJ=0
+          for ut in /hu /hu/termekek /us; do
+            VEG=$(curl -sSL -o /dev/null --max-time 25 -w '%{url_effective}' "http://$HOSZT$ut" || echo "-")
+            VEG_UT=$(printf '%s' "$VEG" | sed 's#^https\?://[^/]*##')
+            echo "GET $ut -> végállomás útvonala: ${VEG_UT:-(üres)}"
+            if [ "$VEG_UT" != "$ut" ]; then PERJEL_BAJ=$((PERJEL_BAJ + 1)); fi
+          done
+          if [ "$PERJEL_BAJ" -gt 0 ]; then
+            echo "::warning::$PERJEL_BAJ sitemap-beli cím átirányításra fut (perjeles alak?) — a keresők emiatt nem indexelik őket. Ellenőrizd a .htaccess DirectorySlash Off sorát."
+          else
+            echo "A sitemap-beli címek átirányítás nélkül felelnek."
+          fi
+
           # ——— A bluewaytrade.us átmeneti lapja ————————————————————
           # Ez a domain még nem biztos, hogy erre a tárhelyre mutat, ezért a
           # próba SOHA nem bukhat el — csak tájékoztat. Két dolgot néz:
