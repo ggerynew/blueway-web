@@ -3,8 +3,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { HeroTileWall } from '@/components/hero-tile-wall';
+import { VideoBand } from '@/components/video-band';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
+import { publicFajlVan } from '@/lib/fajl-lenyomat';
+import { bemutatoCsempek } from '@/lib/bemutato-videok';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { industries } from '@/lib/iparagak';
 import { productName, products } from '@/lib/products';
@@ -55,6 +58,32 @@ export default async function HomePage({
       alt: productName(p, lang),
       href: `/${lang}/termekek/${p.category}/${p.slug}`,
     }));
+  // A videósáv csempéi.
+  //
+  // A HIÁNYZÓ FÁJLÚ KLIP KIMARAD, és a klip nélkül maradt csempe sem
+  // jelenik meg. Ez szándékos védelem: a gyártói felvételek megérkezéséig a
+  // sáv egyszerűen nincs ott, ahelyett hogy üres dobozokat mutatna. Amint a
+  // fájl a public/videos/bemutato/ mappába kerül, a csempe magától megjelenik.
+  const bemutatoSav = bemutatoCsempek
+    .map((cs) => ({
+      id: cs.id,
+      cim: cs.cim[lang],
+      videok: cs.videok
+        .filter((v) => publicFajlVan(v.mp4) && publicFajlVan(v.poszter))
+        .map((v, i, megvan) => ({
+          // Lenyomat a címben: az mp4-et a .htaccess fél évre
+          // gyorsítótáraztatja, tehát csere után enélkül a régi menne tovább.
+          mp4: asset(kepVerzio(v.mp4)),
+          webm: v.webm && publicFajlVan(v.webm) ? asset(kepVerzio(v.webm)) : undefined,
+          poszter: asset(kepVerzio(v.poszter)),
+          hossz: v.hossz,
+          // A sorszámos tartaléknév CSAK ott kell, ahol van miből választani:
+          // egyetlen klipnél az „1. videó" felirat semmit nem mondana.
+          cim: v.cim?.[lang] ?? (megvan.length > 1 ? dict.showreel.videoNumber(i + 1) : undefined),
+        })),
+    }))
+    .filter((cs) => cs.videok.length > 0);
+
   // Címkék csempe a falra — a letisztított tekercses képpel.
   heroTiles.splice(1, 0, {
     src: asset(kepVerzio('/images/tiles/cimkek.webp')),
@@ -127,6 +156,19 @@ export default async function HomePage({
           </Reveal>
         </div>
       </section>
+
+      {bemutatoSav.length > 0 && (
+        <VideoBand
+          csempek={bemutatoSav}
+          feliratok={{
+            title: dict.showreel.title,
+            pickVideo: dict.showreel.pickVideo,
+            play: dict.showreel.play,
+            pause: dict.showreel.pause,
+            muted: dict.showreel.muted,
+          }}
+        />
+      )}
 
       <section className="border-t border-line bg-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-3">
