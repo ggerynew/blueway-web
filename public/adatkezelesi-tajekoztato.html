@@ -29,13 +29,19 @@ h1{font-size:20px;color:#1f3864;margin:32px 0 12px}
 h2{font-size:17px;margin:24px 0 8px;text-decoration:underline}
 p{margin:0 0 12px;text-align:justify}
 table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+/* A sütitáblázat öt hasábja telefonon nem fér ki. Saját gördülődoboz
+   nélkül nem a táblázat csúszott oldalra, hanem az EGÉSZ lap — a
+   bekezdések is elmozdultak a képernyő szélén. Nyomtatásban és a
+   PDF-készítésnél a doboz nem korlátoz, különben levágná a hasábokat. */
+.tabla{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabla table{min-width:560px}
 th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;vertical-align:top}
 th{background:#1f3864;color:#fff}
 ul{margin:0 0 12px;padding-left:24px}
 a{color:#1f3864}
 .pdflink{display:inline-block;margin:4px 0 18px;padding:9px 16px;border:1px solid #1f3864;border-radius:999px;color:#1f3864;text-decoration:none;font-size:14px}
 .pdflink:hover{background:#1f3864;color:#fff}
-@media print{ .wrap{max-width:none;padding:0} .pdflink,.noprint,.bwc-banner,.bwc-modal{display:none !important} body{font-size:11pt;line-height:1.45} h1.title{font-size:19pt;margin:0 0 4px} h1{font-size:13pt;margin:18px 0 8px} h2{font-size:11.5pt;margin:14px 0 6px} p{margin:0 0 8px} table{font-size:9.5pt} h1,h2{break-after:avoid} tr{break-inside:avoid} }
+@media print{ .tabla{overflow:visible} .tabla table{min-width:0} .wrap{max-width:none;padding:0} .pdflink,.noprint,.bwc-banner,.bwc-modal{display:none !important} body{font-size:11pt;line-height:1.45} h1.title{font-size:19pt;margin:0 0 4px} h1{font-size:13pt;margin:18px 0 8px} h2{font-size:11.5pt;margin:14px 0 6px} p{margin:0 0 8px} table{font-size:9.5pt} h1,h2{break-after:avoid} tr{break-inside:avoid} }
 </style>
 </head>
 <body>
@@ -75,6 +81,7 @@ a{color:#1f3864}
 <p><strong>Adatkezelés időtartama:</strong> a naplózástól számított 30 nap</p>
 <p><strong><u>3. Sütik (cookie-k)</u></strong></p>
 <p>A süti (cookie) a felhasználó eszközén elhelyezett, kisméretű adatfájl. Az Adatkezelő a weboldalon kizárólag az alábbi sütiket alkalmazza:</p>
+<div class="tabla">
 <table>
 <colgroup>
 <col style="width: 20%" />
@@ -123,6 +130,7 @@ a{color:#1f3864}
 </tr>
 </tbody>
 </table>
+</div>
 <p>A weboldal működéséhez feltétlenül szükséges sütik alkalmazásához az Eker. tv. 13/A. § (3) bekezdése alapján nincs szükség hozzájárulásra. Minden más süti – ideértve a kényelmi és a harmadik féltől származó sütiket – kizárólag az Ön előzetes, önkéntes, tájékozott és egyértelmű hozzájárulásával kerül elhelyezésre, amelyet a weboldalon megjelenő süti-beállítási felületen (consent banner) adhat meg. A Google Maps térkép – és az ahhoz kapcsolódó sütik – kizárólag a harmadik féltől származó sütikhez adott hozzájárulást követően töltődik be. Hozzájárulását bármikor, ugyanezen a felületen módosíthatja vagy visszavonhatja; a visszavonás nem érinti a visszavonás előtti adatkezelés jogszerűségét. A hozzájárulás megtagadása a weboldal alapvető funkcióinak használatát nem korlátozza.</p>
 <p>A sütiket Ön a böngészőjének beállításaiban is törölheti, illetve letilthatja; ez azonban nem helyettesíti, hanem kiegészíti a süti-beállítási felületen adott nyilatkozatát.</p>
 <p><strong><u>4. Külső szolgáltatók</u></strong></p>
