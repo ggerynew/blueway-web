@@ -42,7 +42,9 @@ export interface VideoBandFeliratok {
  *   - Lapbetöltéskor SEMMI nem tölt. A `<video>` `preload="none"`, és nincs
  *     `src`-e — csak a poszterkép megy ki a HTML-lel.
  *   - A forrás akkor kerül be, amikor a csempe 400 képpontra megközelíti a
- *     látóteret. Így a görgetés közben már kész, de a hajtás fölött nulla.
+ *     látóteret — de csak annyi csempéé, amennyi játszani is fog. Telefonon
+ *     ez egy: ott korábban mind a három klip letöltődött, pedig egyszerre
+ *     csak egy megy, és a különbség mobilneten több megabájt.
  *   - Lejátszani csak a láthatóak játszanak, és egyszerre legfeljebb annyi,
  *     amennyi indokolt: keskeny kijelzőn egy, szélesen három. A választás a
  *     láthatóság aránya szerint történik, tehát mindig az megy, amit néznek.
@@ -52,7 +54,9 @@ export interface VideoBandFeliratok {
  *     kompozitoron fut. A fő szálon így nulla a költsége.
  *
  * Aki csökkentett mozgást kér, vagy adattakarékos módban böngészik, annál
- * semmi nem indul magától: poszter marad, és van egy valódi indítógomb.
+ * semmi nem indul magától: poszter marad, és van egy valódi indítógomb. Nála
+ * a letöltés is elmarad — adattakarékos módban megabájtokat tölteni olyan
+ * videóhoz, ami sosem indul el, pont az ellenkezője a kérésnek.
  * A szünetgomb mindig ott van és fókuszálható — a WCAG 2.2.2 megköveteli,
  * hogy az öt másodpercnél hosszabb, magától induló mozgás megállítható legyen.
  */
@@ -95,6 +99,8 @@ export function VideoBand({
 }) {
   const elemek = useRef(new Map<string, HTMLVideoElement>());
   const lathatosag = useRef(new Map<string, number>());
+  /** Amelyik csempe már a látótér közelébe ért — betöltésre jelölt. */
+  const kozel = useRef(new Set<string>());
   /** Melyik klip megy éppen az egyes csempéken (index a csempe videói közt). */
   const [aktiv, setAktiv] = useState<Record<string, number>>(() =>
     Object.fromEntries(csempek.map((cs) => [cs.id, 0])),
@@ -112,6 +118,28 @@ export function VideoBand({
       typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
         ? EGYSZERRE_SZELES
         : EGYSZERRE_KESKENY;
+
+    // Betöltésre az kerül, ami játszani IS fog: a látótér közelébe ért
+    // csempék közül a legláthatóbb `keret` darab. Enélkül telefonon mind a
+    // három klip letöltődött, pedig egyszerre csak egy játszik — mérve több
+    // megabájt fölösleges forgalom mobilneten.
+    if (!onkentes) {
+      const jeloltek = [...kozel.current]
+        .sort((a, b) => (lathatosag.current.get(b) ?? 0) - (lathatosag.current.get(a) ?? 0))
+        .slice(0, keret);
+      for (const id of jeloltek) {
+        const el = elemek.current.get(id);
+        if (!el || el.getAttribute('src')) continue;
+        const forras = valasztottForras(el);
+        if (!forras) continue;
+        // Előbb CSAK a fejadatot kérjük (`metadata`): az a fájl elején ülő
+        // pár száz kilobájt, amitől a hossz és az első képkocka megvan. A
+        // teljes puffereléshez a lejátszás előtt kapcsolunk.
+        el.preload = 'metadata';
+        el.setAttribute('src', forras);
+        el.load();
+      }
+    }
 
     const sorrend = [...lathatosag.current.entries()]
       .filter(([, arany]) => arany >= JATSZIK_FELETT)
@@ -159,24 +187,25 @@ export function VideoBand({
     const elemLista = [...elemek.current.values()];
     if (!elemLista.length) return;
 
+    // Ez a megfigyelő MAGA nem tölt: csak számon tartja, melyik csempe ért a
+    // látótér közelébe. A döntést az `ujraoszt` hozza meg, mert csak az tudja,
+    // hány klip futhat egyszerre — és csak annyit szabad letölteni.
     const tolto = new IntersectionObserver(
       (bejegyzesek) => {
+        let valtozott = false;
         for (const b of bejegyzesek) {
-          const el = b.target as HTMLVideoElement;
-          if (b.isIntersecting && !el.getAttribute('src')) {
-            const forras = valasztottForras(el);
-            if (forras) {
-              // Előbb CSAK a fejadatot kérjük (`metadata`): az a fájl elején
-              // ülő pár száz kilobájt, amitől a hossz és az első képkocka
-              // megvan. A teljes puffereléshez a lejátszás előtt kapcsolunk
-              // — így a látótér szélét épp csak megkarcoló sáv nem tölt le
-              // több megabájtot fölöslegesen.
-              el.preload = 'metadata';
-              el.setAttribute('src', forras);
-              el.load();
+          const id = (b.target as HTMLElement).dataset.csempe;
+          if (!id) continue;
+          if (b.isIntersecting) {
+            if (!kozel.current.has(id)) {
+              kozel.current.add(id);
+              valtozott = true;
             }
+          } else if (kozel.current.delete(id)) {
+            valtozott = true;
           }
         }
+        if (valtozott) ujraoszt();
       },
       { rootMargin: TOLTES_ELOTT },
     );
