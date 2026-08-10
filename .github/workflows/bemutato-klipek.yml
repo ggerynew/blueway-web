@@ -26,6 +26,15 @@ jobs:
         with:
           node-version: 22
 
+      # A futtatóképben nincs ffmpeg (2026-ban kikerült belőle), ezért a
+      # disztribúció saját csomagjából tesszük fel. Szándékosan nem külső
+      # GitHub-akcióval: ez a munkafolyamat a repóba ír, tehát minél kevesebb
+      # idegen kód fusson benne.
+      - name: ffmpeg telepítése
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg
+
       - name: Van-e ffmpeg, és tudja-e a kell kodekeket?
         run: |
           ffmpeg -hide_banner -version | head -1
