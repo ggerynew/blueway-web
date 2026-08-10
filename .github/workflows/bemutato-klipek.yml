@@ -1,0 +1,80 @@
+name: Bemutató klipek legyártása
+
+# Kézzel indítható. A kezdőlapi videósáv klipjeit állítja elő a gyártói
+# forrásfelvételekből, és beteszi őket a repóba.
+#
+# Miért itt fut, és nem a fejlesztői gépen: a forrásfájlok a gyártó szerverén
+# vannak (cab.de), amit a fejlesztői homokozó hálózata nem ér el. A GitHub
+# futtatója igen. A vágás paraméterei a src/lib/bemutato-videok.ts `forras`
+# mezőiből jönnek — ez a szkript nem talál ki semmit, csak végrehajtja.
+#
+# A kimenet a FUTTATÁS ÁGÁRA kerül, nem a main-re: a klipek élesítése a
+# szokásos úton, PR-rel történik.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  klipek:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Van-e ffmpeg, és tudja-e a kell kodekeket?
+        run: |
+          ffmpeg -hide_banner -version | head -1
+          # A H.264 a Safarihoz, a VP9 mindenki máshoz kell. Ha valamelyik
+          # hiányzik, itt derüljön ki, ne a néma kimeneten.
+          for k in libx264 libvpx-vp9 libwebp; do
+            if ffmpeg -hide_banner -encoders 2>/dev/null | grep -q " $k "; then
+              echo "  ✓ $k"
+            else
+              echo "::error::hiányzó kódoló: $k"; exit 1
+            fi
+          done
+
+      - name: Klipek legyártása
+        run: |
+          node --experimental-strip-types --import ./scripts/ts-betolto.mjs \
+               scripts/bemutato-klipek.mjs
+
+      - name: Mi lett belőle?
+        run: |
+          echo "— videók —"
+          ls -la public/videos/bemutato/ 2>/dev/null || echo "  (üres)"
+          echo "— poszterek —"
+          ls -la public/images/bemutato/ 2>/dev/null || echo "  (üres)"
+
+      # Az ellenőrző képkockák a szakasz elejéről és végéről. Azért kellenek,
+      # mert a vágási pontokat a YouTube-változaton mértük: ha a gyártó saját
+      # fájlja más vágás, a szakasz máshová esik. A képeket meg kell nézni,
+      # mielőtt a klipek élesbe kerülnek.
+      - name: Ellenőrző képkockák megőrzése
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ellenorzo-kepkockak
+          path: /tmp/bemutato-ellenorzes/
+          if-no-files-found: ignore
+
+      - name: A kész klipek beküldése az ágra
+        run: |
+          if [ -z "$(git status --porcelain public/videos/bemutato public/images/bemutato)" ]; then
+            echo "Nincs új vagy változott klip — nincs mit beküldeni."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/videos/bemutato public/images/bemutato
+          git commit -m "A bemutató klipek legyártva a gyártói forrásból
+
+          A vágási pontok a src/lib/bemutato-videok.ts forras mezőiből jönnek,
+          a fájlokat a scripts/bemutato-klipek.mjs állította elő: szakasz
+          kivágva, hangsáv törölve, 540 képpont magas, MP4 és WebM, poszterrel."
+          git push origin HEAD:"${GITHUB_REF_NAME}"

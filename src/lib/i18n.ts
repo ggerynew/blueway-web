@@ -73,6 +73,16 @@ export const dictionaries = {
       ctaPrimary: 'Kérjen ajánlatot',
       ctaSecondary: 'Termékeink',
     },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Gépeink munka közben',
+      pickVideo: 'Videó választása',
+      videoNumber: (n: number) => `${n}. videó`,
+      play: 'Videó indítása',
+      pause: 'Videó szüneteltetése',
+      muted: 'néma, ismétlődő felvétel',
+    },
     pillars: [
       {
         title: 'Megoldások',
@@ -665,6 +675,16 @@ export const dictionaries = {
       ctaPrimary: 'Request a quote',
       ctaSecondary: 'Our products',
     },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Our machines at work',
+      pickVideo: 'Choose video',
+      videoNumber: (n: number) => `Video ${n}`,
+      play: 'Play video',
+      pause: 'Pause video',
+      muted: 'silent looping clip',
+    },
     pillars: [
       {
         title: 'Solutions',
@@ -1255,6 +1275,16 @@ export const dictionaries = {
       lead: 'Label printing, laser marking, spare parts and service — from the simplest task to complex enterprise systems.',
       ctaPrimary: 'Request a quote',
       ctaSecondary: 'Our products',
+    },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Our machines at work',
+      pickVideo: 'Choose video',
+      videoNumber: (n: number) => `Video ${n}`,
+      play: 'Play video',
+      pause: 'Pause video',
+      muted: 'silent looping clip',
     },
     pillars: [
       {
@@ -1847,6 +1877,16 @@ export const dictionaries = {
       ctaPrimary: 'Angebot anfordern',
       ctaSecondary: 'Unsere Produkte',
     },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Unsere Maschinen im Einsatz',
+      pickVideo: 'Video auswählen',
+      videoNumber: (n: number) => `Video ${n}`,
+      play: 'Video abspielen',
+      pause: 'Video anhalten',
+      muted: 'stumme Aufnahme in Endlosschleife',
+    },
     pillars: [
       {
         title: 'Lösungen',
@@ -2436,6 +2476,16 @@ export const dictionaries = {
       lead: 'Stampa di etichette, marcatura laser, ricambi e assistenza — dall’applicazione più semplice ai sistemi aziendali complessi.',
       ctaPrimary: 'Richiedi un preventivo',
       ctaSecondary: 'I nostri prodotti',
+    },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Le nostre macchine al lavoro',
+      pickVideo: 'Scegli il video',
+      videoNumber: (n: number) => `Video ${n}`,
+      play: 'Riproduci il video',
+      pause: 'Metti in pausa il video',
+      muted: 'filmato muto in loop',
     },
     pillars: [
       {
@@ -3028,6 +3078,16 @@ export const dictionaries = {
       ctaPrimary: 'Solicitar presupuesto',
       ctaSecondary: 'Nuestros productos',
     },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: 'Nuestras máquinas en funcionamiento',
+      pickVideo: 'Elegir vídeo',
+      videoNumber: (n: number) => `Vídeo ${n}`,
+      play: 'Reproducir vídeo',
+      pause: 'Pausar vídeo',
+      muted: 'clip mudo en bucle',
+    },
     pillars: [
       {
         title: 'Soluciones',
@@ -3619,6 +3679,16 @@ export const dictionaries = {
       ctaPrimary: '견적 요청하기',
       ctaSecondary: '제품 보기',
     },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: '가동 중인 장비',
+      pickVideo: '영상 선택',
+      videoNumber: (n: number) => `영상 ${n}`,
+      play: '영상 재생',
+      pause: '영상 일시정지',
+      muted: '무음 반복 영상',
+    },
     pillars: [
       {
         title: '솔루션',
@@ -4207,6 +4277,16 @@ export const dictionaries = {
       lead: '标签打印、激光打标、备件供应与售后服务 — 从最简单的任务到复杂的企业级系统。',
       ctaPrimary: '获取报价',
       ctaSecondary: '我们的产品',
+    },
+    // A kezdőlapi videósáv feliratai. A sávnak nincs látható címsora — a
+    // `title` a rejtett H2, ami a dokumentum vázlatát tartja rendben.
+    showreel: {
+      title: '设备实际运行',
+      pickVideo: '选择视频',
+      videoNumber: (n: number) => `视频 ${n}`,
+      play: '播放视频',
+      pause: '暂停视频',
+      muted: '静音循环片段',
     },
     pillars: [
       {

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
@@ -25,6 +25,20 @@ import { join } from 'node:path';
  *
  * @param utvonal a public mappán BELÜLI útvonal, kezdő perjel nélkül
  */
+/**
+ * Megvan-e a fájl a public/ mappában?
+ *
+ * A kezdőlapi videósáv miatt van rá szükség: a klipek a gyártói forrásanyag
+ * megérkezéséig hiányoznak, és a hiányzó fájlú csempét ki kell hagyni. Így a
+ * sáv nem tud félkészen kimenni élesbe, és amint a fájl a helyére kerül, a
+ * csempe magától megjelenik — kódot nem kell hozzá írni.
+ *
+ * Csak KISZOLGÁLÓOLDALON hívható (fájlrendszert olvas).
+ */
+export function publicFajlVan(utvonal: string): boolean {
+  return existsSync(join(process.cwd(), 'public', ...utvonal.split('/')));
+}
+
 export function fajlLenyomat(utvonal: string): string {
   return createHash('sha256')
     .update(readFileSync(join(process.cwd(), 'public', ...utvonal.split('/'))))
