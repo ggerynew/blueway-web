@@ -199,6 +199,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Térkép',
       mapOpen: 'Megnyitás a Google Térképen',
+      navLabel: 'Útvonaltervezés',
+      navGoogle: 'Google Térkép',
+      navWaze: 'Waze',
       form: {
         name: 'Név',
         namePlaceholder: 'Az Ön neve',
@@ -801,6 +804,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Map',
       mapOpen: 'Open in Google Maps',
+      navLabel: 'Get directions',
+      navGoogle: 'Google Maps',
+      navWaze: 'Waze',
       form: {
         name: 'Name',
         namePlaceholder: 'Your name',
@@ -1402,6 +1408,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Map',
       mapOpen: 'Open in Google Maps',
+      navLabel: 'Get directions',
+      navGoogle: 'Google Maps',
+      navWaze: 'Waze',
       form: {
         name: 'Name',
         namePlaceholder: 'Your name',
@@ -2002,6 +2011,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Karte',
       mapOpen: 'In Google Maps öffnen',
+      navLabel: 'Route planen',
+      navGoogle: 'Google Maps',
+      navWaze: 'Waze',
       form: {
         name: 'Name',
         namePlaceholder: 'Ihr Name',
@@ -2603,6 +2615,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Mappa',
       mapOpen: 'Apri in Google Maps',
+      navLabel: 'Indicazioni stradali',
+      navGoogle: 'Google Maps',
+      navWaze: 'Waze',
       form: {
         name: 'Nome',
         namePlaceholder: 'Il Suo nome',
@@ -3204,6 +3219,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: 'Mapa',
       mapOpen: 'Abrir en Google Maps',
+      navLabel: 'Cómo llegar',
+      navGoogle: 'Google Maps',
+      navWaze: 'Waze',
       form: {
         name: 'Nombre',
         namePlaceholder: 'Su nombre',
@@ -3804,6 +3822,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: '지도',
       mapOpen: 'Google 지도에서 열기',
+      navLabel: '길찾기',
+      navGoogle: 'Google 지도',
+      navWaze: 'Waze',
       form: {
         name: '이름',
         namePlaceholder: '성함',
@@ -4403,6 +4424,9 @@ export const dictionaries = {
       email: 'info@blueway.hu',
       mapLabel: '地图',
       mapOpen: '在 Google 地图中打开',
+      navLabel: '路线导航',
+      navGoogle: 'Google 地图',
+      navWaze: 'Waze',
       form: {
         name: '姓名',
         namePlaceholder: '您的姓名',

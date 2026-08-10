@@ -4,7 +4,7 @@ import { ContactForm } from '@/components/contact-form';
 import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { TERKEP_URL, graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { NAVIGACIO, TERKEP_URL, graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -148,15 +148,66 @@ export default async function ContactPage({
               allowFullScreen
             />
           </div>
-          <a
-            href={mapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
-          >
-            {contact.mapOpen}
-            <span aria-hidden="true">→</span>
-          </a>
+          {/* Útvonaltervezés indítása. Sima hivatkozások, nem beágyazás:
+              amíg a látogató rá nem kattint, egyetlen kérés sem megy ki a
+              Google-höz vagy a Waze-hez, tehát nem tartoznak a
+              süti-hozzájárulás alá — ellentétben a fenti térképpel.
+
+              Az ikonok saját rajzú SVG-k, nem a szolgáltatások logói: a
+              márkajelek átvétele védjegykérdés, és külső fájlt sem akarunk
+              betölteni miattuk. A célt a felirat mondja meg. */}
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <a
+              href={NAVIGACIO.google}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2.5 text-sm font-medium transition-colors hover:border-ink-muted"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-4 w-4 shrink-0 text-brand-700"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" />
+                <circle cx="12" cy="10" r="2.6" />
+              </svg>
+              {contact.navGoogle}
+            </a>
+            <a
+              href={NAVIGACIO.waze}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2.5 text-sm font-medium transition-colors hover:border-ink-muted"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-4 w-4 shrink-0 text-brand-700"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20.5 3.5 3.8 10.2c-.8.3-.8 1.5.1 1.7l6.6 1.6 1.6 6.6c.2.9 1.4.9 1.7.1L20.5 3.5Z" />
+              </svg>
+              {contact.navWaze}
+            </a>
+            <a
+              href={mapLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 transition-colors hover:text-brand-800"
+            >
+              {contact.mapOpen}
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
         </section>
       </Reveal>
     </div>

@@ -42,6 +42,33 @@ export const TERKEP_URL = `https://www.google.com/maps/search/?api=1&query=${enc
 )}`;
 
 /**
+ * A telephely koordinátája — a Google cégprofilból, nem a címből becsülve.
+ *
+ * Ez a különbségtétel nem elméleti: a Déri Miksa utca egy ipari parkban van,
+ * ahol a házszám szerinti geokódolás simán a szomszéd telekre esik. Aki a
+ * navigációt innen indítja, a kapunk elé érkezzen, ne a kerítés túloldalára.
+ */
+export const KOORDINATA = { szelesseg: 47.5139066, hosszusag: 19.2793119 } as const;
+
+/**
+ * Útvonaltervezés indítása a két itthon használt alkalmazásba.
+ *
+ * Mindkettő SIMA HIVATKOZÁS, nem beágyazás: amíg a látogató rá nem kattint,
+ * egyetlen kérés sem megy ki a Google-höz vagy a Waze-hez. Ezért nem is
+ * tartoznak a süti-hozzájárulás alá — ellentétben az alattuk lévő beágyazott
+ * térképpel, ami csak elfogadás után töltődik.
+ *
+ * Mobilon mindkét cím a telepített alkalmazást nyitja meg, ha van; ha nincs,
+ * a böngészős változat jön be. Külön alkalmazás-séma (waze://) ezért nem
+ * kell, sőt ártana: telepített alkalmazás híján az hibaüzenetet adna.
+ */
+const KOORD = `${KOORDINATA.szelesseg},${KOORDINATA.hosszusag}`;
+export const NAVIGACIO = {
+  google: `https://www.google.com/maps/dir/?api=1&destination=${KOORD}`,
+  waze: `https://waze.com/ul?ll=${KOORD}&navigate=yes`,
+} as const;
+
+/**
  * A cég csomópontja.
  *
  * Két típussal: Organization ÉS LocalBusiness. Az előbbi a cégazonosításhoz
@@ -82,8 +109,8 @@ export function szervezetNode(lang: Locale) {
     address: CIM,
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 47.5139066,
-      longitude: 19.2793119,
+      latitude: KOORDINATA.szelesseg,
+      longitude: KOORDINATA.hosszusag,
     },
     hasMap: TERKEP_URL,
     // Hétköznap 8-tól 15-ig. A hétvégét nem soroljuk fel külön: ami nincs a
