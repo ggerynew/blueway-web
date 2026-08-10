@@ -40,8 +40,24 @@ export interface BemutatoVideo {
   hossz: number;
   /** Mit mutat EZ a felvétel. Több klipnél a jelzősáv címkéje lesz. */
   cim?: LocalizedText;
-  /** Honnan vágtuk — a nyilvántartás és a „teljes videó” hivatkozás miatt. */
-  forras?: { videoId: string; kezdet: number; veg: number };
+  /**
+   * Honnan vágtuk. A `kezdet`/`veg` másodpercben, a LETÖLTÖTT fájl
+   * időtengelyén.
+   *
+   * FIGYELEM: az időpontokat eredetileg a YouTube-változaton mértük. Ha a
+   * gyártó saját fájlja más vágás (például nincs benne a főcím), akkor a
+   * szakasz máshová esik — ezért a vágószkript minden klipnél kiír egy-egy
+   * képkockát a szakasz elejéről és végéről, hogy szemre ellenőrizhető
+   * legyen, mielőtt élesbe kerül.
+   */
+  forras?: {
+    /** A gyártó saját fájlja, ha van — ebből vágunk. */
+    letoltes?: string;
+    /** A nyilvános YouTube-változat azonosítója — a nyilvántartás miatt. */
+    videoId?: string;
+    kezdet: number;
+    veg: number;
+  };
 }
 
 export interface BemutatoCsempe {
@@ -110,7 +126,12 @@ const forras: Sourced<BemutatoCsempe[]> = [
         webm: '/videos/bemutato/lm-plus.webm',
         poszter: '/images/bemutato/lm-plus.webp',
         hossz: 114,
-        forras: { videoId: 'Q7-qCKuZ708', kezdet: 6, veg: 120 },
+        forras: {
+          letoltes: 'https://www.cab.de/media/videos/lmplus02_robot_form_pad.mp4',
+          videoId: 'Q7-qCKuZ708',
+          kezdet: 6,
+          veg: 120,
+        },
       },
     ],
   },
