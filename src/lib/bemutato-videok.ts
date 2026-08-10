@@ -55,8 +55,16 @@ export interface BemutatoVideo {
     letoltes?: string;
     /** A nyilvános YouTube-változat azonosítója — a nyilvántartás miatt. */
     videoId?: string;
-    kezdet: number;
-    veg: number;
+    /**
+     * Egy vagy több szakasz, sorrendben egymás után fűzve.
+     *
+     * A többes szám nem elméleti: a gyártói felvételek jellemzően montázsok,
+     * amikben a gép működése két-három rövid ablakban látszik, közte pedig
+     * olyasmi, aminek a kezdőlapon nincs helye (gyári szerelés, főcím). Egy
+     * összefüggő szakasz ilyenkor vagy vág le használható részt, vagy benne
+     * hagyja a fölöslegeset.
+     */
+    szakaszok: Array<{ kezdet: number; veg: number }>;
   };
 }
 
@@ -98,8 +106,7 @@ const forras: Sourced<BemutatoCsempe[]> = [
           // vágások, főcímmel az elején és a végén.
           letoltes: 'https://www.cab.de/media/videos/HERMESQ_4114_FormPad_720p.mp4',
           videoId: 'P-9HXQJ-Lds',
-          kezdet: 8,
-          veg: 38,
+          szakaszok: [{ kezdet: 8, veg: 38 }],
         },
       },
     ],
@@ -115,16 +122,30 @@ const forras: Sourced<BemutatoCsempe[]> = [
         mp4: '/videos/bemutato/squix.mp4',
         webm: '/videos/bemutato/squix.webm',
         poszter: '/images/bemutato/squix.webp',
-        hossz: 61,
+        hossz: 24,
         forras: {
           // Ez a felvétel sokáig névtelen volt: a YouTube-azonosító a
           // katalógusban sehol nem szerepelt, ezért „Ipari címkézés működés
           // közben” általános cím állt itt. A gyártói fájl neve mondta meg,
           // mit mutat — SQUIX.
+          //
+          // A forrás nem termékbemutató, hanem gyárlátogatás: a 72 percnyi…
+          // pontosabban 72 másodpercnyi anyag nagyobbik fele a nyomtató
+          // GYÁRTÁSA — marás hűtőfolyadékkal, szerelősor, panelbeültetés,
+          // vonalkódos végellenőrzés. A kezdőlapon a gépnek dolgoznia kell,
+          // nem készülnie, ezért csak a két működés-ablak marad:
+          //
+          //   15→29  a nyomtató a címketekerccsel, táblagépes távvezérlés
+          //   47→57  kifutó nyomtatott címkeszalag, kijelzőkezelés, adagolás
+          //
+          // A köztes 29→47 és a záró 57→ végig gyári munka. A két ablakot a
+          // vágószkript egymás után fűzi, így 24 másodperc lesz belőle.
           letoltes: 'https://www.cab.de/media/videos/SQUIXINACTION_EN_1080p.mp4',
           videoId: 'gyz6JmDsWIc',
-          kezdet: 11,
-          veg: 72,
+          szakaszok: [
+            { kezdet: 15, veg: 29 },
+            { kezdet: 47, veg: 57 },
+          ],
         },
       },
     ],
@@ -153,8 +174,7 @@ const forras: Sourced<BemutatoCsempe[]> = [
           // körében, ezért a szakasz a kettő közé esik.
           letoltes: 'https://www.cab.de/media/videos/lmplus02_robot_form_pad.mp4',
           videoId: 'Q7-qCKuZ708',
-          kezdet: 5,
-          veg: 53,
+          szakaszok: [{ kezdet: 5, veg: 53 }],
         },
       },
     ],

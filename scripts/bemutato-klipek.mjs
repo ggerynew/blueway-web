@@ -31,7 +31,7 @@
  * forrásanyagok. A `--ujra` a már meglévő klipeket is újravágja.
  */
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { bemutatoCsempek } from '../src/lib/bemutato-videok';
@@ -43,6 +43,16 @@ const CEL_KEP = 'public/images/bemutato';
 const MUNKA = process.env.MUNKA_MAPPA ?? '/tmp/bemutato-forras';
 /** Az ellenőrző képkockák helye — szándékosan a repón KÍVÜL. */
 const ELLENORZO = process.env.ELLENORZO_MAPPA ?? '/tmp/bemutato-ellenorzes';
+/**
+ * Miből készült az egyes klipek.
+ *
+ * Enélkül a „már megvan, hagyd békén” szabály csendben hazudik: ha valaki
+ * átírja a vágási pontokat a bemutato-videok.ts-ben, a szkript a RÉGI fájlt
+ * találja a helyén, kihagyja, és a weblap attól kezdve mást állít magáról,
+ * mint amit mutat. Ez a nyilvántartás dönti el, hogy a meglévő klip a MOSTANI
+ * vágásból való-e.
+ */
+const NYILVANTARTAS = 'scripts/bemutato-vagas.json';
 
 const ervek = process.argv.slice(2);
 const helyiMappa = ervek.includes('--helyi') ? ervek[ervek.indexOf('--helyi') + 1] : null;
@@ -87,6 +97,21 @@ async function letolt(cim, cel) {
   writeFileSync(cel, Buffer.from(await valasz.arrayBuffer()));
 }
 
+/** A vágás azonosítója: ha ez változik, a klip újravágandó. */
+function vagasUjjlenyomat(forras) {
+  return JSON.stringify({
+    be: forras.letoltes ?? forras.videoId ?? null,
+    szakaszok: forras.szakaszok.map((sz) => [sz.kezdet, sz.veg]),
+  });
+}
+
+let nyilvantartas = {};
+try {
+  nyilvantartas = JSON.parse(readFileSync(NYILVANTARTAS, 'utf8'));
+} catch {
+  // Első futás, vagy sérült a fájl — mindent újravágunk. Ez a biztos irány.
+}
+
 let kesz = 0;
 let kimaradt = 0;
 
@@ -100,15 +125,23 @@ for (const csempe of bemutatoCsempek) {
       continue;
     }
 
-    // Ami már megvan, azt békén hagyjuk.
+    const ujjlenyomat = vagasUjjlenyomat(forras);
+
+    // Ami már megvan UGYANEBBŐL A VÁGÁSBÓL, azt békén hagyjuk.
     //
     // Nem sebességi kérdés: a kész klipek ELLENŐRZÖTT fájlok. A futtató
     // ffmpeg-je más verzió, mint a fejlesztői gépé, tehát az újravágás
     // bitre eltérő — de tartalmilag azonos — fájlt adna, ami a repóban
     // értelmetlen, felülvizsgálhatatlan diffként jelenne meg. Aki tényleg
     // újra akarja vágni, kéri: --ujra.
-    if (!ujravagas && existsSync(`${CEL_VIDEO}/${nev}.mp4`)) {
-      console.log(`${nev}: kimarad — már megvan (--ujra kényszeríti a újravágást)`);
+    //
+    // A vágási pont MEGVÁLTOZÁSA viszont nem ilyen: ott az új fájl kell.
+    if (
+      !ujravagas &&
+      existsSync(`${CEL_VIDEO}/${nev}.mp4`) &&
+      nyilvantartas[nev] === ujjlenyomat
+    ) {
+      console.log(`${nev}: kimarad — már megvan, ugyanebből a vágásból`);
       kimaradt += 1;
       continue;
     }
@@ -135,17 +168,22 @@ for (const csempe of bemutatoCsempek) {
       continue;
     }
 
-    const hossz = forras.veg - forras.kezdet;
-    console.log(`${nev}: ${forras.kezdet} mp-től ${hossz} mp hosszan (forrás: ${be})`);
+    const szakaszok = forras.szakaszok;
+    const hossz = szakaszok.reduce((ossz, sz) => ossz + (sz.veg - sz.kezdet), 0);
+    const vegsoVeg = Math.max(...szakaszok.map((sz) => sz.veg));
+    console.log(
+      `${nev}: ${szakaszok.map((sz) => `${sz.kezdet}→${sz.veg}`).join(' + ')} ` +
+        `= ${hossz} mp (forrás: ${be})`,
+    );
 
     // A forrás teljes hossza — ha rövidebb, mint a kért szakasz vége, a
     // vágási pontok nem ehhez a vágáshoz készültek.
     const teljes = hosszMasodpercben(be);
     if (teljes !== null) {
       console.log(`   a forrás teljes hossza: ${teljes.toFixed(1)} mp`);
-      if (teljes < forras.veg) {
+      if (teljes < vegsoVeg) {
         console.log(
-          `   FIGYELEM: a kért szakasz vége (${forras.veg} mp) TÚLNYÚLIK a forráson ` +
+          `   FIGYELEM: a kért szakasz vége (${vegsoVeg} mp) TÚLNYÚLIK a forráson ` +
             `(${teljes.toFixed(1)} mp). A vágási pontokat a YouTube-változaton mértük — ` +
             'ez a fájl más vágás. A klip rövidebb lesz a kértnél.',
         );
@@ -155,8 +193,22 @@ for (const csempe of bemutatoCsempek) {
     }
 
     const mp4 = `${CEL_VIDEO}/${nev}.mp4`;
-    ff('-ss', String(forras.kezdet), '-i', be, '-t', String(hossz),
-       '-an', '-vf', 'scale=-2:540',
+
+    // A szakaszokat EGY menetben vágjuk ki és fűzzük össze.
+    //
+    // A `trim` a forrás időtengelyén dolgozik, a `setpts=PTS-STARTPTS` pedig
+    // minden darabot nullára húz vissza — enélkül a `concat` a darabok közé
+    // beengedné az eredeti időbélyegek közti hézagot, és a klip közepén állna
+    // egyet a kép. Egy szakasznál is ugyanez az út fut: egy ág, egy concat.
+    const agak = szakaszok
+      .map((sz, k) => `[0:v]trim=${sz.kezdet}:${sz.veg},setpts=PTS-STARTPTS[sz${k}]`)
+      .join(';');
+    const bemenetek = szakaszok.map((_, k) => `[sz${k}]`).join('');
+    const szuro =
+      `${agak};${bemenetek}concat=n=${szakaszok.length}:v=1:a=0,scale=-2:540[ki]`;
+
+    ff('-i', be, '-filter_complex', szuro, '-map', '[ki]',
+       '-an',
        '-c:v', 'libx264', '-profile:v', 'high', '-crf', '24', '-preset', 'slow',
        '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4);
 
@@ -166,11 +218,16 @@ for (const csempe of bemutatoCsempek) {
     ff('-i', mp4, '-frames:v', '1', '-c:v', 'libwebp', '-q:v', '78',
        `${CEL_KEP}/${nev}.webp`);
 
-    // Ellenőrző képkockák: a szakasz eleje és vége a FORRÁS időtengelyén.
-    ff('-ss', String(forras.kezdet), '-i', be, '-frames:v', '1',
-       `${ELLENORZO}/${nev}-eleje.png`);
-    ff('-ss', String(Math.max(0, forras.veg - 0.5)), '-i', be, '-frames:v', '1',
-       `${ELLENORZO}/${nev}-vege.png`);
+    // Ellenőrző képkockák: MINDEN szakasz eleje és vége, a FORRÁS
+    // időtengelyén. Több szakasznál ez fontosabb, mint egynél: itt már a
+    // szakaszok HATÁRA is vágás, ott is bekerülhet oda nem illő képkocka.
+    for (const [k, sz] of szakaszok.entries()) {
+      const jel = szakaszok.length > 1 ? `-${k + 1}` : '';
+      ff('-ss', String(sz.kezdet), '-i', be, '-frames:v', '1',
+         `${ELLENORZO}/${nev}${jel}-eleje.png`);
+      ff('-ss', String(Math.max(0, sz.veg - 0.5)), '-i', be, '-frames:v', '1',
+         `${ELLENORZO}/${nev}${jel}-vege.png`);
+    }
 
     // És egy kontaktlap a TELJES forrásról, 16 képkockán.
     //
@@ -186,8 +243,13 @@ for (const csempe of bemutatoCsempek) {
       console.log(`   kontaktlap: ${(lepes).toFixed(1)} mp-enként egy kocka`);
     }
 
+    nyilvantartas[nev] = ujjlenyomat;
     kesz += 1;
   }
+}
+
+if (kesz) {
+  writeFileSync(NYILVANTARTAS, `${JSON.stringify(nyilvantartas, null, 2)}\n`);
 }
 
 console.log(`\n${kesz} klip elkészült, ${kimaradt} kimaradt.`);
