@@ -262,10 +262,19 @@ export function VideoBand({
         {feliratok.title}
       </h2>
       {/* Teljes szélesség: ez a sáv szándékosan lép ki a lap max-w-6xl
-          kereteéből — a mozgókép akkor hat, ha nem dobozban ül. A kis
+          keretéből — a mozgókép akkor hat, ha nem dobozban ül. A kis
           oldalpárnázás csak azért van, hogy a lekerekített sarkok ne
-          ragadjanak a képernyő szélére. */}
-      <div className="grid gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3 lg:grid-cols-3">
+          ragadjanak a képernyő szélére.
+
+          A hasábok száma a csempék számához igazodik. Ez nem szépészeti
+          kérdés: a klipek egyesével érkeznek a gyártótól, és egy háromhasábos
+          rácsban az egyetlen meglévő csempe a bal harmadban állna, kétharmad
+          üres helyet hagyva maga mellett. */}
+      <div
+        className={`grid gap-2 px-2 py-2 sm:gap-3 sm:px-3 sm:py-3 ${
+          csempek.length >= 3 ? 'lg:grid-cols-3' : csempek.length === 2 ? 'lg:grid-cols-2' : ''
+        }`}
+      >
         {csempek.map((csempe) => {
           const index = aktiv[csempe.id] ?? 0;
           const klip = csempe.videok[index] ?? csempe.videok[0];
@@ -276,7 +285,12 @@ export function VideoBand({
           return (
             <div
               key={csempe.id}
-              className="group relative aspect-video overflow-hidden rounded-xl bg-ink/90"
+              // A `max-h` azért kell, mert kevés csempénél a 16:9 nagyon magas
+              // dobozt adna: egyetlen csempe 1440 képpont széles kijelzőn 800
+              // képpont magas volna — az már nem sáv, hanem fejléc. A felső
+              // korlát mellett a kép `object-cover`-rel vágódik, ami egy
+              // gépfelvételnél nem veszteség.
+              className="group relative aspect-video max-h-[420px] overflow-hidden rounded-xl bg-ink/90"
             >
               {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
               <video
