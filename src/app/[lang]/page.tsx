@@ -126,7 +126,12 @@ export default async function HomePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <section className="mx-auto max-w-6xl px-6 pt-24 pb-20 md:pt-36 md:pb-28">
+      {/* A függőleges térköz szándékosan a fele annak, ami eddig volt
+          (pt-24/pb-20, md-n pt-36/pb-28). A gömb köré tervezett bőséges
+          levegő akkor volt indokolt, amikor a hajtás alatt rögtön a szöveges
+          pillérek jöttek; mióta a videósáv is a nyitóképernyő közelébe került,
+          a nagy üres sávok csak kitolják lefelé. */}
+      <section className="mx-auto max-w-6xl px-6 pt-12 pb-10 md:pt-18 md:pb-14">
         {/* Egyenlő oszlopok: a gömbnek a nagyobb sugárral több hely kell,
             különben a csempék a szétválás árán zsugorodnának. A szövegoldal
             így is bőven elfér — a címsor és a bevezető saját maximumig ér. */}
