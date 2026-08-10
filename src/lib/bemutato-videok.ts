@@ -38,13 +38,19 @@ export interface BemutatoVideo {
    *
    * Nem takarékossági finomkodás, hanem mérés eredménye. A sáv csempéi a
    * lap keretén belül ~341 képpont szélesek, telefonon ~350; ehhez képest a
-   * 960×540-es kép több mint kétszeres túlmintavétel, a dekódolása viszont
-   * a teljes árat elkéri. Amikor mind a három klip egyszerre ment egy
-   * telefonon, a görgetés 60 kép/mp-ről 30-ra esett — pontosan az a fajta
-   * szaggatás, ami miatt a kezdőlapról egy díszítő effekt már kirepült.
+   * 960×540-es kép több mint kétszeres túlmintavétel. A kisebb változat a
+   * képpontok 44%-át tartalmazza, és a sáv súlyát is felezi: mérve asztali
+   * gépen 5,70 → 2,34 MB, telefonon 3,43 → 1,92 MB.
    *
-   * A kisebb változat a képpontok 44%-át tartalmazza, tehát a dekódolás
-   * nagyjából harmadába kerül. Nem kötelező: hiányában a nagy megy.
+   * Amit NEM tesz: a képfrissítésen nem javít. Először azért került ide,
+   * mert három egyszerre futó klip a fejlesztői homokozóban 60 kép/mp-ről
+   * 30-ra vitte a görgetést — a kisebb változattal viszont maradt 30. A
+   * mérés félrevezetett: abban a homokozóban egyáltalán nincs hardveres
+   * dekódolás (a VP9 csak szoftveresen megy, a H.264 sehogy), tehát a
+   * lassulás a szoftveres dekódolásé volt, nem a felbontásé. Valódi
+   * telefonon erre külön áramkör van. A szám tehát nem jóslat.
+   *
+   * Nem kötelező: hiányában a nagy megy.
    */
   kicsi?: { mp4: string; webm?: string };
   /** Álló előnézeti kép — ez látszik betöltés előtt és álló lejátszásnál. */

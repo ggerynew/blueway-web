@@ -225,10 +225,10 @@ for (const csempe of bemutatoCsempek) {
     // Kisebb, 360 képpont magas változat a keskeny csempéknek.
     //
     // A sáv csempéi ~341 képpont szélesek, telefonon ~350 — a 960×540-es
-    // kép ehhez képest túlmintavétel, a dekódolása viszont a teljes árat
-    // elkéri. Lemérve: három egyszerre futó nagy klip egy 4×-esére lassított
-    // processzoron 60 kép/mp-ről 30-ra vitte a görgetést. Ez a változat a
-    // képpontok 44%-át tartalmazza.
+    // kép ehhez képest túlmintavétel. Ez a változat a képpontok 44%-át
+    // tartalmazza, és a sáv súlyát felezi (5,70 → 2,34 MB asztali gépen).
+    // A képfrissítésen nem segít: azt a fejlesztői homokozóban a HIÁNYZÓ
+    // hardveres dekódolás fogta vissza, nem a felbontás.
     const kicsiMp4 = `${CEL_VIDEO}/${nev}-kicsi.mp4`;
     ff('-i', mp4, '-an', '-vf', 'scale=-2:360',
        '-c:v', 'libx264', '-profile:v', 'high', '-crf', '25', '-preset', 'slow',
