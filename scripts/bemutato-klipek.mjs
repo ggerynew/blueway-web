@@ -34,6 +34,7 @@ import { join } from 'node:path';
 import { bemutatoCsempek } from '../src/lib/bemutato-videok';
 
 const FF = process.env.FFMPEG ?? 'ffmpeg';
+const FFPROBE = process.env.FFPROBE ?? 'ffprobe';
 const CEL_VIDEO = 'public/videos/bemutato';
 const CEL_KEP = 'public/images/bemutato';
 const MUNKA = process.env.MUNKA_MAPPA ?? '/tmp/bemutato-forras';
@@ -49,13 +50,26 @@ function ff(...args) {
   execFileSync(FF, ['-hide_banner', '-loglevel', 'error', '-y', ...args], { stdio: 'inherit' });
 }
 
-/** A forrásfájl hossza másodpercben — ebből derül ki, ha más a vágás. */
+/**
+ * A forrásfájl hossza másodpercben — ebből derül ki, ha más a vágás.
+ *
+ * Szándékosan ffprobe, nem `ffmpeg -i`: az utóbbi kimeneti fájl nélkül
+ * 1-es kóddal lép ki („At least one output file must be specified”), amitől
+ * a szkript elhasal, pedig csak kérdezni akartunk. Ezen az első éles futás
+ * el is bukott.
+ */
 function hosszMasodpercben(fajl) {
-  const ki = execFileSync(FF, ['-hide_banner', '-i', fajl], {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
-  }).toString();
-  return ki;
+  try {
+    const ki = execFileSync(
+      FFPROBE,
+      ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', fajl],
+      { encoding: 'utf8' },
+    );
+    const mp = parseFloat(String(ki).trim());
+    return Number.isFinite(mp) ? mp : null;
+  } catch {
+    return null;
+  }
 }
 
 async function letolt(cim, cel) {
@@ -109,17 +123,18 @@ for (const csempe of bemutatoCsempek) {
 
     // A forrás teljes hossza — ha rövidebb, mint a kért szakasz vége, a
     // vágási pontok nem ehhez a vágáshoz készültek.
-    const infó = hosszMasodpercben(be);
-    const m = infó.match(/Duration: (\d+):(\d+):(\d+(?:\.\d+)?)/);
-    if (m) {
-      const teljes = +m[1] * 3600 + +m[2] * 60 + parseFloat(m[3]);
+    const teljes = hosszMasodpercben(be);
+    if (teljes !== null) {
       console.log(`   a forrás teljes hossza: ${teljes.toFixed(1)} mp`);
       if (teljes < forras.veg) {
         console.log(
-          `   FIGYELEM: a kért szakasz vége (${forras.veg} mp) TÚLNYÚLIK a forráson. ` +
-            'A vágási pontokat a YouTube-változaton mértük — ez a fájl más vágás lehet.',
+          `   FIGYELEM: a kért szakasz vége (${forras.veg} mp) TÚLNYÚLIK a forráson ` +
+            `(${teljes.toFixed(1)} mp). A vágási pontokat a YouTube-változaton mértük — ` +
+            'ez a fájl más vágás. A klip rövidebb lesz a kértnél.',
         );
       }
+    } else {
+      console.log('   a forrás hossza nem olvasható ki (ffprobe)');
     }
 
     const mp4 = `${CEL_VIDEO}/${nev}.mp4`;
