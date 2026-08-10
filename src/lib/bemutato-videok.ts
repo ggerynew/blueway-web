@@ -125,17 +125,20 @@ const forras: Sourced<BemutatoCsempe[]> = [
         mp4: '/videos/bemutato/lm-plus.mp4',
         webm: '/videos/bemutato/lm-plus.webm',
         poszter: '/images/bemutato/lm-plus.webp',
-        hossz: 53,
+        hossz: 48,
         forras: {
           // A gyártó fájlja MÁS VÁGÁS, mint a YouTube-változat: az utóbbi
           // több felvételből összeállított, két percnél hosszabb montázs,
           // ez viszont egyetlen, 58 másodperces jelenet. A 6→120 mp-es
-          // szakasz tehát ide nem értelmezhető — az egész felvételt
-          // használjuk, a végén lévő cab.de főcím nélkül, ami a hurokban
-          // minden körben felvillanna.
+          // szakasz tehát ide nem értelmezhető.
+          //
+          // A határokat kontaktlapon néztem meg: az elején cab-főcím áll
+          // (fekete címlap, a 4. másodpercre már a gép látszik), a végén
+          // szintén cab.de-főcím. Mindkettő felvillanna a hurok minden
+          // körében, ezért a szakasz a kettő közé esik.
           letoltes: 'https://www.cab.de/media/videos/lmplus02_robot_form_pad.mp4',
           videoId: 'Q7-qCKuZ708',
-          kezdet: 0,
+          kezdet: 5,
           veg: 53,
         },
       },
