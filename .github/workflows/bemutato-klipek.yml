@@ -26,6 +26,15 @@ jobs:
         with:
           node-version: 22
 
+      # A futtatóképben nincs ffmpeg (2026-ban kikerült belőle), ezért a
+      # disztribúció saját csomagjából tesszük fel. Szándékosan nem külső
+      # GitHub-akcióval: ez a munkafolyamat a repóba ír, tehát minél kevesebb
+      # idegen kód fusson benne.
+      - name: ffmpeg telepítése
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg
+
       - name: Van-e ffmpeg, és tudja-e a kell kodekeket?
         run: |
           ffmpeg -hide_banner -version | head -1
@@ -65,13 +74,14 @@ jobs:
 
       - name: A kész klipek beküldése az ágra
         run: |
-          if [ -z "$(git status --porcelain public/videos/bemutato public/images/bemutato)" ]; then
+          UTAK="public/videos/bemutato public/images/bemutato scripts/bemutato-vagas.json"
+          if [ -z "$(git status --porcelain $UTAK)" ]; then
             echo "Nincs új vagy változott klip — nincs mit beküldeni."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add public/videos/bemutato public/images/bemutato
+          git add $UTAK
           git commit -m "A bemutató klipek legyártva a gyártói forrásból
 
           A vágási pontok a src/lib/bemutato-videok.ts forras mezőiből jönnek,

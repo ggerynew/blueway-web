@@ -55,8 +55,16 @@ export interface BemutatoVideo {
     letoltes?: string;
     /** A nyilvános YouTube-változat azonosítója — a nyilvántartás miatt. */
     videoId?: string;
-    kezdet: number;
-    veg: number;
+    /**
+     * Egy vagy több szakasz, sorrendben egymás után fűzve.
+     *
+     * A többes szám nem elméleti: a gyártói felvételek jellemzően montázsok,
+     * amikben a gép működése két-három rövid ablakban látszik, közte pedig
+     * olyasmi, aminek a kezdőlapon nincs helye (gyári szerelés, főcím). Egy
+     * összefüggő szakasz ilyenkor vagy vág le használható részt, vagy benne
+     * hagyja a fölöslegeset.
+     */
+    szakaszok: Array<{ kezdet: number; veg: number }>;
   };
 }
 
@@ -91,26 +99,54 @@ const forras: Sourced<BemutatoCsempe[]> = [
         webm: '/videos/bemutato/hermes-q.webm',
         poszter: '/images/bemutato/hermes-q.webp',
         hossz: 30,
-        forras: { videoId: 'P-9HXQJ-Lds', kezdet: 8, veg: 38 },
+        forras: {
+          // A gyártó saját fájlja. A vágási pontok EGYELŐRE a YouTube-változat
+          // időtengelyéről valók — a kontaktlap fogja megmondani, hova esnek
+          // ebben a fájlban. Az LM+-nál kiderült, hogy a cab.de-fájlok külön
+          // vágások, főcímmel az elején és a végén.
+          letoltes: 'https://www.cab.de/media/videos/HERMESQ_4114_FormPad_720p.mp4',
+          videoId: 'P-9HXQJ-Lds',
+          szakaszok: [{ kezdet: 8, veg: 38 }],
+        },
       },
     ],
   },
   {
-    id: 'gyz6',
+    id: 'squix',
     cim: {
-      // A felvétel tartalmát a gyártói anyag megérkezésekor pontosítjuk — a
-      // videó azonosítója a katalógusban sehol nem szerepel, tehát találgatás
-      // helyett általános, de igaz cím áll itt.
-      hu: 'Ipari címkézés működés közben',
-      en: 'Industrial labelling in operation',
+      hu: 'CAB SQUIX — címkenyomtatás gyártósoron',
+      en: 'CAB SQUIX — label printing on the production line',
     },
     videok: [
       {
-        mp4: '/videos/bemutato/gyz6.mp4',
-        webm: '/videos/bemutato/gyz6.webm',
-        poszter: '/images/bemutato/gyz6.webp',
-        hossz: 61,
-        forras: { videoId: 'gyz6JmDsWIc', kezdet: 11, veg: 72 },
+        mp4: '/videos/bemutato/squix.mp4',
+        webm: '/videos/bemutato/squix.webm',
+        poszter: '/images/bemutato/squix.webp',
+        hossz: 24,
+        forras: {
+          // Ez a felvétel sokáig névtelen volt: a YouTube-azonosító a
+          // katalógusban sehol nem szerepelt, ezért „Ipari címkézés működés
+          // közben” általános cím állt itt. A gyártói fájl neve mondta meg,
+          // mit mutat — SQUIX.
+          //
+          // A forrás nem termékbemutató, hanem gyárlátogatás: a 72 percnyi…
+          // pontosabban 72 másodpercnyi anyag nagyobbik fele a nyomtató
+          // GYÁRTÁSA — marás hűtőfolyadékkal, szerelősor, panelbeültetés,
+          // vonalkódos végellenőrzés. A kezdőlapon a gépnek dolgoznia kell,
+          // nem készülnie, ezért csak a két működés-ablak marad:
+          //
+          //   15→29  a nyomtató a címketekerccsel, táblagépes távvezérlés
+          //   47→57  kifutó nyomtatott címkeszalag, kijelzőkezelés, adagolás
+          //
+          // A köztes 29→47 és a záró 57→ végig gyári munka. A két ablakot a
+          // vágószkript egymás után fűzi, így 24 másodperc lesz belőle.
+          letoltes: 'https://www.cab.de/media/videos/SQUIXINACTION_EN_1080p.mp4',
+          videoId: 'gyz6JmDsWIc',
+          szakaszok: [
+            { kezdet: 15, veg: 29 },
+            { kezdet: 47, veg: 57 },
+          ],
+        },
       },
     ],
   },
@@ -125,12 +161,20 @@ const forras: Sourced<BemutatoCsempe[]> = [
         mp4: '/videos/bemutato/lm-plus.mp4',
         webm: '/videos/bemutato/lm-plus.webm',
         poszter: '/images/bemutato/lm-plus.webp',
-        hossz: 114,
+        hossz: 48,
         forras: {
+          // A gyártó fájlja MÁS VÁGÁS, mint a YouTube-változat: az utóbbi
+          // több felvételből összeállított, két percnél hosszabb montázs,
+          // ez viszont egyetlen, 58 másodperces jelenet. A 6→120 mp-es
+          // szakasz tehát ide nem értelmezhető.
+          //
+          // A határokat kontaktlapon néztem meg: az elején cab-főcím áll
+          // (fekete címlap, a 4. másodpercre már a gép látszik), a végén
+          // szintén cab.de-főcím. Mindkettő felvillanna a hurok minden
+          // körében, ezért a szakasz a kettő közé esik.
           letoltes: 'https://www.cab.de/media/videos/lmplus02_robot_form_pad.mp4',
           videoId: 'Q7-qCKuZ708',
-          kezdet: 6,
-          veg: 120,
+          szakaszok: [{ kezdet: 5, veg: 53 }],
         },
       },
     ],
