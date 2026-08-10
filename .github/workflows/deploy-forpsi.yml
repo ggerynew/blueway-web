@@ -883,6 +883,37 @@ jobs:
           JSONV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT/ai/termekek.json" 2>/dev/null || echo 000)
           [ "$JSONV" = "200" ] && echo "  /ai/termekek.json -> 200" || echo "::warning::Az /ai/termekek.json nem érhető el ($JSONV)."
 
+          # ——— A kezdőlapi videósáv klipjei ————————————————————————
+          # Ezt a lépést egy néma hibamód indokolja: ha egy klip hiányzik vagy
+          # csonkán ér ki, a csempe nem panaszkodik — megfagyott poszterként
+          # áll ott, és ránézésre teljesen rendben van. Ezért nem elég a
+          # 200-as állapot: a típusnak videónak kell lennie, a méretnek pedig
+          # akkorának, ami egy fél percnyi felvételnél egyáltalán értelmes.
+          # A neveket a lap forrásából szedjük, nem kézzel — így ha egy új
+          # csempe jön, magától bekerül az ellenőrzésbe.
+          echo "— a kezdőlap videósávja —"
+          curl -sS -o /tmp/kezdolap.html --max-time 20 "https://$HOSZT/hu.html" 2>/dev/null || true
+          KLIPEK=$(grep -o '/videos/bemutato/[a-z0-9-]*\.\(mp4\|webm\)' /tmp/kezdolap.html 2>/dev/null | sort -u || true)
+          if [ -z "$KLIPEK" ]; then
+            echo "  a kezdőlapon nincs videósáv — nincs mit ellenőrizni"
+          else
+            for UT in $KLIPEK; do
+              VAL=$(curl -sSI --max-time 30 "https://$HOSZT$UT" 2>/dev/null || true)
+              ALL=$(printf '%s' "$VAL" | head -1 | tr -d '\r' | awk '{print $2}')
+              TIP=$(printf '%s' "$VAL" | grep -i '^content-type:' | tr -d '\r' | awk '{print $2}')
+              MER=$(printf '%s' "$VAL" | grep -i '^content-length:' | tr -d '\r' | awk '{print $2}')
+              if [ "$ALL" != "200" ]; then
+                echo "::warning::$UT -> ${ALL:-nincs válasz} — a csempe megfagyott poszterként fog állni."
+              elif ! printf '%s' "$TIP" | grep -qi '^video/'; then
+                echo "::warning::$UT -> 200, de a típusa '$TIP' — a böngésző nem videóként fogja kezelni."
+              elif [ "${MER:-0}" -lt 200000 ]; then
+                echo "::warning::$UT -> 200, de csak ${MER} bájt — ez csonka feltöltésre vall."
+              else
+                echo "  $UT -> 200 $TIP $((MER / 1024)) kB"
+              fi
+            done
+          fi
+
           echo "— a .htaccess érvényesülése —"
           FEJLEC=$(curl -sSIL --max-time 20 "http://$HOSZT/hu.html" 2>/dev/null |
                    grep -i '^cache-control:' | tail -1)
