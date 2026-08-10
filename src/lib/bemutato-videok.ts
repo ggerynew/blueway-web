@@ -105,21 +105,27 @@ const forras: Sourced<BemutatoCsempe[]> = [
     ],
   },
   {
-    id: 'gyz6',
+    id: 'squix',
     cim: {
-      // A felvétel tartalmát a gyártói anyag megérkezésekor pontosítjuk — a
-      // videó azonosítója a katalógusban sehol nem szerepel, tehát találgatás
-      // helyett általános, de igaz cím áll itt.
-      hu: 'Ipari címkézés működés közben',
-      en: 'Industrial labelling in operation',
+      hu: 'CAB SQUIX — címkenyomtatás gyártósoron',
+      en: 'CAB SQUIX — label printing on the production line',
     },
     videok: [
       {
-        mp4: '/videos/bemutato/gyz6.mp4',
-        webm: '/videos/bemutato/gyz6.webm',
-        poszter: '/images/bemutato/gyz6.webp',
+        mp4: '/videos/bemutato/squix.mp4',
+        webm: '/videos/bemutato/squix.webm',
+        poszter: '/images/bemutato/squix.webp',
         hossz: 61,
-        forras: { videoId: 'gyz6JmDsWIc', kezdet: 11, veg: 72 },
+        forras: {
+          // Ez a felvétel sokáig névtelen volt: a YouTube-azonosító a
+          // katalógusban sehol nem szerepelt, ezért „Ipari címkézés működés
+          // közben” általános cím állt itt. A gyártói fájl neve mondta meg,
+          // mit mutat — SQUIX.
+          letoltes: 'https://www.cab.de/media/videos/SQUIXINACTION_EN_1080p.mp4',
+          videoId: 'gyz6JmDsWIc',
+          kezdet: 11,
+          veg: 72,
+        },
       },
     ],
   },
