@@ -13,11 +13,14 @@
  *   - két formátumot ad: MP4/H.264 a Safarinak (kötelező) és WebM/VP9 a
  *     többieknek (azonos minőségnél harmadával kisebb);
  *   - poszterképet vág az első képkockából;
- *   - és kiír egy-egy ELLENŐRZŐ KÉPKOCKÁT a szakasz elejéről és végéről.
+ *   - kiír egy-egy ELLENŐRZŐ KÉPKOCKÁT a szakasz elejéről és végéről;
+ *   - és egy KONTAKTLAPOT a teljes forrásról, 16 képkockán.
  *
- * Az utolsó pont nem díszítés. Az időpontokat a YouTube-változaton mértük; ha
- * a gyártó saját fájlja más vágás, a szakasz máshová esik, és ezt látni kell,
- * mielőtt élesbe megy. A két képkocka a scratch mappába kerül, nem a repóba.
+ * Az utolsó két pont nem díszítés. Az időpontokat a YouTube-változaton mértük;
+ * ha a gyártó saját fájlja más vágás, a szakasz máshová esik, és ezt látni kell,
+ * mielőtt élesbe megy. A két végpont képe megmondja, hogy a mostani vágás jó-e;
+ * a kontaktlap azt, hogy hova kellene tenni, ha nem. Minden a scratch mappába
+ * kerül, nem a repóba.
  *
  * Használat:
  *   node --experimental-strip-types --import ./scripts/ts-betolto.mjs \
@@ -25,7 +28,7 @@
  *
  * A `--helyi` megadásakor a letöltés helyett abból a mappából vesz fájlt
  * `<id>.*` néven — ide kerülnek a kézzel kapott (FTP-vel, levélben érkezett)
- * forrásanyagok.
+ * forrásanyagok. A `--ujra` a már meglévő klipeket is újravágja.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
@@ -43,6 +46,7 @@ const ELLENORZO = process.env.ELLENORZO_MAPPA ?? '/tmp/bemutato-ellenorzes';
 
 const ervek = process.argv.slice(2);
 const helyiMappa = ervek.includes('--helyi') ? ervek[ervek.indexOf('--helyi') + 1] : null;
+const ujravagas = ervek.includes('--ujra');
 
 for (const mappa of [CEL_VIDEO, CEL_KEP, MUNKA, ELLENORZO]) mkdirSync(mappa, { recursive: true });
 
@@ -92,6 +96,19 @@ for (const csempe of bemutatoCsempek) {
     const forras = video.forras;
     if (!forras) {
       console.log(`${nev}: kimarad — nincs forrás-leírás`);
+      kimaradt += 1;
+      continue;
+    }
+
+    // Ami már megvan, azt békén hagyjuk.
+    //
+    // Nem sebességi kérdés: a kész klipek ELLENŐRZÖTT fájlok. A futtató
+    // ffmpeg-je más verzió, mint a fejlesztői gépé, tehát az újravágás
+    // bitre eltérő — de tartalmilag azonos — fájlt adna, ami a repóban
+    // értelmetlen, felülvizsgálhatatlan diffként jelenne meg. Aki tényleg
+    // újra akarja vágni, kéri: --ujra.
+    if (!ujravagas && existsSync(`${CEL_VIDEO}/${nev}.mp4`)) {
+      console.log(`${nev}: kimarad — már megvan (--ujra kényszeríti a újravágást)`);
       kimaradt += 1;
       continue;
     }
@@ -154,6 +171,20 @@ for (const csempe of bemutatoCsempek) {
        `${ELLENORZO}/${nev}-eleje.png`);
     ff('-ss', String(Math.max(0, forras.veg - 0.5)), '-i', be, '-frames:v', '1',
        `${ELLENORZO}/${nev}-vege.png`);
+
+    // És egy kontaktlap a TELJES forrásról, 16 képkockán.
+    //
+    // Ez azért van itt, mert a két végpont képe csak azt mondja meg, hogy a
+    // mostani vágás jó-e — azt nem, hogy hova KELLENE tenni, ha nem jó. Az
+    // LM+-nál emiatt kellett kétszer futtatni: az első kör után derült ki,
+    // hogy a fájl elején és végén is cab-főcím áll, és a helyes szakaszt egy
+    // külön kontaktlapról kellett kimérni. Egy futás, egy kép, kész.
+    if (teljes !== null && teljes > 0) {
+      const lepes = Math.max(teljes / 16, 0.1);
+      ff('-i', be, '-vf', `fps=1/${lepes.toFixed(3)},scale=320:-2,tile=4x4`,
+         '-frames:v', '1', `${ELLENORZO}/${nev}-kontakt.png`);
+      console.log(`   kontaktlap: ${(lepes).toFixed(1)} mp-enként egy kocka`);
+    }
 
     kesz += 1;
   }

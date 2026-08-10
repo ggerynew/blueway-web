@@ -91,7 +91,16 @@ const forras: Sourced<BemutatoCsempe[]> = [
         webm: '/videos/bemutato/hermes-q.webm',
         poszter: '/images/bemutato/hermes-q.webp',
         hossz: 30,
-        forras: { videoId: 'P-9HXQJ-Lds', kezdet: 8, veg: 38 },
+        forras: {
+          // A gyártó saját fájlja. A vágási pontok EGYELŐRE a YouTube-változat
+          // időtengelyéről valók — a kontaktlap fogja megmondani, hova esnek
+          // ebben a fájlban. Az LM+-nál kiderült, hogy a cab.de-fájlok külön
+          // vágások, főcímmel az elején és a végén.
+          letoltes: 'https://www.cab.de/media/videos/HERMESQ_4114_FormPad_720p.mp4',
+          videoId: 'P-9HXQJ-Lds',
+          kezdet: 8,
+          veg: 38,
+        },
       },
     ],
   },
