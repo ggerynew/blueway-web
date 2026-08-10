@@ -33,6 +33,26 @@ export interface BemutatoVideo {
    * mindenki az MP4-et kapja.
    */
   webm?: string;
+  /**
+   * Kisebb, 360 képpont magas változat — a keskeny csempéknek.
+   *
+   * Nem takarékossági finomkodás, hanem mérés eredménye. A sáv csempéi a
+   * lap keretén belül ~341 képpont szélesek, telefonon ~350; ehhez képest a
+   * 960×540-es kép több mint kétszeres túlmintavétel. A kisebb változat a
+   * képpontok 44%-át tartalmazza, és a sáv súlyát is felezi: mérve asztali
+   * gépen 5,70 → 2,34 MB, telefonon 3,43 → 1,92 MB.
+   *
+   * Amit NEM tesz: a képfrissítésen nem javít. Először azért került ide,
+   * mert három egyszerre futó klip a fejlesztői homokozóban 60 kép/mp-ről
+   * 30-ra vitte a görgetést — a kisebb változattal viszont maradt 30. A
+   * mérés félrevezetett: abban a homokozóban egyáltalán nincs hardveres
+   * dekódolás (a VP9 csak szoftveresen megy, a H.264 sehogy), tehát a
+   * lassulás a szoftveres dekódolásé volt, nem a felbontásé. Valódi
+   * telefonon erre külön áramkör van. A szám tehát nem jóslat.
+   *
+   * Nem kötelező: hiányában a nagy megy.
+   */
+  kicsi?: { mp4: string; webm?: string };
   /** Álló előnézeti kép — ez látszik betöltés előtt és álló lejátszásnál. */
   poszter: string;
   /** A klip hossza másodpercben. Csak tájékoztató: a jelzősáv haladását a
@@ -97,6 +117,10 @@ const forras: Sourced<BemutatoCsempe[]> = [
       {
         mp4: '/videos/bemutato/hermes-q.mp4',
         webm: '/videos/bemutato/hermes-q.webm',
+        kicsi: {
+          mp4: '/videos/bemutato/hermes-q-kicsi.mp4',
+          webm: '/videos/bemutato/hermes-q-kicsi.webm',
+        },
         poszter: '/images/bemutato/hermes-q.webp',
         hossz: 30,
         forras: {
@@ -121,6 +145,10 @@ const forras: Sourced<BemutatoCsempe[]> = [
       {
         mp4: '/videos/bemutato/squix.mp4',
         webm: '/videos/bemutato/squix.webm',
+        kicsi: {
+          mp4: '/videos/bemutato/squix-kicsi.mp4',
+          webm: '/videos/bemutato/squix-kicsi.webm',
+        },
         poszter: '/images/bemutato/squix.webp',
         hossz: 24,
         forras: {
@@ -160,6 +188,10 @@ const forras: Sourced<BemutatoCsempe[]> = [
       {
         mp4: '/videos/bemutato/lm-plus.mp4',
         webm: '/videos/bemutato/lm-plus.webm',
+        kicsi: {
+          mp4: '/videos/bemutato/lm-plus-kicsi.mp4',
+          webm: '/videos/bemutato/lm-plus-kicsi.webm',
+        },
         poszter: '/images/bemutato/lm-plus.webp',
         hossz: 48,
         forras: {

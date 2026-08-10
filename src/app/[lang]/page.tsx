@@ -75,6 +75,18 @@ export default async function HomePage({
           // gyorsítótáraztatja, tehát csere után enélkül a régi menne tovább.
           mp4: asset(kepVerzio(v.mp4)),
           webm: v.webm && publicFajlVan(v.webm) ? asset(kepVerzio(v.webm)) : undefined,
+          // A kis felbontású változat csak akkor kerül át, ha MINDKÉT
+          // formátuma megvan — félkészen többet ártana, mint használna.
+          kicsi:
+            v.kicsi && publicFajlVan(v.kicsi.mp4)
+              ? {
+                  mp4: asset(kepVerzio(v.kicsi.mp4)),
+                  webm:
+                    v.kicsi.webm && publicFajlVan(v.kicsi.webm)
+                      ? asset(kepVerzio(v.kicsi.webm))
+                      : undefined,
+                }
+              : undefined,
           poszter: asset(kepVerzio(v.poszter)),
           hossz: v.hossz,
           // A sorszámos tartaléknév CSAK ott kell, ahol van miből választani:
