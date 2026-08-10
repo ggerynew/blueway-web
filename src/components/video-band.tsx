@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export interface VideoBandKlip {
   mp4: string;
   webm?: string;
+  /** Kisebb változat a keskeny csempéknek — lásd `keskenyCsempe`. */
+  kicsi?: { mp4: string; webm?: string };
   poszter: string;
   hossz: number;
   cim?: string;
@@ -46,8 +48,9 @@ export interface VideoBandFeliratok {
  *     ez egy: ott korábban mind a három klip letöltődött, pedig egyszerre
  *     csak egy megy, és a különbség mobilneten több megabájt.
  *   - Lejátszani csak a láthatóak játszanak, és egyszerre legfeljebb annyi,
- *     amennyi indokolt: keskeny kijelzőn egy, szélesen három. A választás a
- *     láthatóság aránya szerint történik, tehát mindig az megy, amit néznek.
+ *     amennyi indokolt: ami elég nagy részben látszik, az megy, legfeljebb
+ *     háromig. A választás a láthatóság aránya szerint történik, tehát
+ *     mindig az megy, amit néznek — és ami a képernyőn van, az nem áll.
  *   - Háttérfülön (`visibilitychange`) mind megáll.
  *   - A haladásjelző NEM requestAnimationFrame-ből frissül, hanem a videó
  *     `timeupdate` eseményéből (~4/mp), és `transform: scaleX()`-re ír, ami a
@@ -69,15 +72,45 @@ export interface VideoBandFeliratok {
  * tudja; minden más válasz („maybe", „probably") elfogadható.
  */
 function valasztottForras(el: HTMLVideoElement): string | undefined {
-  const { mp4, webm } = el.dataset;
+  const kicsi = keskenyCsempe(el);
+  const { mp4, webm, kicsiMp4, kicsiWebm } = el.dataset;
+  if (kicsi && kicsiMp4) {
+    if (kicsiWebm && el.canPlayType('video/webm; codecs="vp9"') !== '') return kicsiWebm;
+    return kicsiMp4;
+  }
   if (webm && el.canPlayType('video/webm; codecs="vp9"') !== '') return webm;
   return mp4;
 }
 
 /** Ugyanez klip-adatból, a kézi váltáshoz. */
 function klipForras(el: HTMLVideoElement, klip: VideoBandKlip): string {
+  if (keskenyCsempe(el) && klip.kicsi) {
+    if (klip.kicsi.webm && el.canPlayType('video/webm; codecs="vp9"') !== '') return klip.kicsi.webm;
+    return klip.kicsi.mp4;
+  }
   if (klip.webm && el.canPlayType('video/webm; codecs="vp9"') !== '') return klip.webm;
   return klip.mp4;
+}
+
+/**
+ * Elég keskeny-e a csempe ahhoz, hogy a kis felbontású változat is bőven
+ * elég legyen.
+ *
+ * A döntés a csempe VALÓDI szélességére hallgat, nem a kijelzőére. Ez a
+ * különbség nem szőrszálhasogatás: a sáv hárompaneles rácsában egy 1920
+ * képpontos képernyőn is csak 341 képpont jut egy csempére — széles kijelző,
+ * keskeny doboz. A kijelzőre hallgató szabály itt a nagy klipet adná, holott
+ * a kicsi is kétszeres túlmintavétel.
+ *
+ * A képpontsűrűség szándékosan nincs beszámítva. Egy háromszoros sűrűségű
+ * telefonon a szorzás a nagy változatot kérné — épp azon az eszközön, ahol a
+ * dekódolás a legdrágább, és ahol a ~4 centis csempén a különbség mozgóképen
+ * úgysem látszik.
+ */
+function keskenyCsempe(el: HTMLVideoElement): boolean {
+  const szeles = el.getBoundingClientRect().width;
+  // A 0 az elrendezés előtti állapot: ilyenkor ne döntsünk elhamarkodottan.
+  return szeles > 0 && szeles <= 480;
 }
 
 /** Ennyivel a látótér előtt kezdjük tölteni a klipet. */
@@ -86,9 +119,22 @@ const TOLTES_ELOTT = '400px';
 const JATSZIK_FELETT = 0.4;
 /** Ez alatt megáll — a két küszöb közti sáv a billegést akadályozza meg. */
 const MEGALL_ALATT = 0.15;
-/** Egyszerre ennyi klip futhat: keskeny kijelzőn egy, szélesen az összes. */
-const EGYSZERRE_KESKENY = 1;
-const EGYSZERRE_SZELES = 3;
+/**
+ * Egyszerre ennyi klip futhat — felső korlát, nem előírás.
+ *
+ * Korábban ez kijelzőszélesség szerint ment: keskenyen egy, szélesen három.
+ * A „keskenyen egy" annak a feltevésnek volt a rövidítése, hogy telefonon
+ * úgyis csak egy csempe fér a képernyőre. Ez soha nem volt egészen igaz, és
+ * végleg megdőlt, amikor a sáv a lap keretére szűkült: a csempe azóta 192
+ * képpont magas, tehát egy 844 pontos telefonképernyőn MIND A HÁROM teljes
+ * egészében látszik — kettő mégis megfagyva állt, poszterrel. A látogató
+ * ezt joggal nézte hibának.
+ *
+ * A döntés ezért nem a kijelző szélességére hallgat, hanem arra, mi látszik:
+ * ami a képernyőn van, az megy. Ez a korlát csak azt zárja ki, hogy egy
+ * hosszabb sáv egyszerre túl sokat indítson.
+ */
+const EGYSZERRE_LEGFELJEBB = 3;
 
 export function VideoBand({
   csempek,
@@ -114,19 +160,26 @@ export function VideoBand({
 
   /** A pillanatnyi láthatóság alapján eldönti, minek kell mennie, és beállítja. */
   const ujraoszt = useCallback(() => {
-    const keret =
-      typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
-        ? EGYSZERRE_SZELES
-        : EGYSZERRE_KESKENY;
+    // Ami elég nagy részben látszik, az megy — legfeljebb a felső korlátig,
+    // a legláthatóbbtól visszafelé.
+    const sorrend = [...lathatosag.current.entries()]
+      .filter(([, arany]) => arany >= JATSZIK_FELETT)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, EGYSZERRE_LEGFELJEBB)
+      .map(([id]) => id);
+    const mehet = new Set(sorrend);
 
-    // Betöltésre az kerül, ami játszani IS fog: a látótér közelébe ért
-    // csempék közül a legláthatóbb `keret` darab. Enélkül telefonon mind a
-    // három klip letöltődött, pedig egyszerre csak egy játszik — mérve több
-    // megabájt fölösleges forgalom mobilneten.
+    // Betöltésre az kerül, ami játszani IS fog, plusz az, ami a látótér
+    // közelébe ért és még beleférne a korlátba — hogy a görgetés közben már
+    // kész legyen. Amire nem jut hely, azt nem is töltjük le: enélkül a
+    // képernyőn kívüli klipek is elvitték a maguk megabájtjait mobilneten.
     if (!onkentes) {
-      const jeloltek = [...kozel.current]
-        .sort((a, b) => (lathatosag.current.get(b) ?? 0) - (lathatosag.current.get(a) ?? 0))
-        .slice(0, keret);
+      const jeloltek = [
+        ...sorrend,
+        ...[...kozel.current]
+          .filter((id) => !mehet.has(id))
+          .sort((a, b) => (lathatosag.current.get(b) ?? 0) - (lathatosag.current.get(a) ?? 0)),
+      ].slice(0, EGYSZERRE_LEGFELJEBB);
       for (const id of jeloltek) {
         const el = elemek.current.get(id);
         if (!el || el.getAttribute('src')) continue;
@@ -140,13 +193,6 @@ export function VideoBand({
         el.load();
       }
     }
-
-    const sorrend = [...lathatosag.current.entries()]
-      .filter(([, arany]) => arany >= JATSZIK_FELETT)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, keret)
-      .map(([id]) => id);
-    const mehet = new Set(sorrend);
 
     for (const [id, el] of elemek.current) {
       const kell = mehet.has(id) && !kezzelAllitott.current.has(id) && !onkentes;
@@ -253,6 +299,14 @@ export function VideoBand({
     el.dataset.mp4 = klip.mp4;
     if (klip.webm) el.dataset.webm = klip.webm;
     else delete el.dataset.webm;
+    if (klip.kicsi) {
+      el.dataset.kicsiMp4 = klip.kicsi.mp4;
+      if (klip.kicsi.webm) el.dataset.kicsiWebm = klip.kicsi.webm;
+      else delete el.dataset.kicsiWebm;
+    } else {
+      delete el.dataset.kicsiMp4;
+      delete el.dataset.kicsiWebm;
+    }
     el.preload = 'auto';
     el.setAttribute('src', klipForras(el, klip));
     el.poster = klip.poszter;
@@ -307,9 +361,9 @@ export function VideoBand({
           üres helyet hagyva maga mellett.
 
           A hasábokra váltás `lg`-nél történik, nem `md`-nél, pedig a pillérek
-          alább már ott hármasával állnak. Nem elnézés: egyszerre legfeljebb
-          három klip futhat, és `lg` alatt csak egy — három hasáb ott két
-          megfagyott poszterrel járna. */}
+          alább már ott hármasával állnak. A szöveg 213 képpont széles
+          hasábban is olvasható; egy gépfelvétel ekkora dobozban — 213×120 —
+          már nem mutat semmit. Inkább legyen egymás alatt, nagyobban. */}
       <div
         className={`mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:gap-10 ${
           csempek.length >= 3 ? 'lg:grid-cols-3' : csempek.length === 2 ? 'lg:grid-cols-2' : ''
@@ -341,6 +395,8 @@ export function VideoBand({
                 data-csempe={csempe.id}
                 data-mp4={klip.mp4}
                 data-webm={klip.webm}
+                data-kicsi-mp4={klip.kicsi?.mp4}
+                data-kicsi-webm={klip.kicsi?.webm}
                 poster={klip.poszter}
                 preload="none"
                 muted

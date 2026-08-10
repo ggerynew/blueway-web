@@ -136,11 +136,18 @@ for (const csempe of bemutatoCsempek) {
     // újra akarja vágni, kéri: --ujra.
     //
     // A vágási pont MEGVÁLTOZÁSA viszont nem ilyen: ott az új fájl kell.
-    if (
-      !ujravagas &&
-      existsSync(`${CEL_VIDEO}/${nev}.mp4`) &&
-      nyilvantartas[nev] === ujjlenyomat
-    ) {
+    //
+    // A feltétel MINDEN kimenetet felsorol, nem csak az mp4-et. Így ha a
+    // szkript egy új változattal bővül — ahogy a kis felbontásúval bővült —,
+    // a hiányzó fájl magától újravágást kér, és nem kell rá emlékezni.
+    const kimenetek = [
+      `${CEL_VIDEO}/${nev}.mp4`,
+      `${CEL_VIDEO}/${nev}.webm`,
+      `${CEL_VIDEO}/${nev}-kicsi.mp4`,
+      `${CEL_VIDEO}/${nev}-kicsi.webm`,
+      `${CEL_KEP}/${nev}.webp`,
+    ];
+    if (!ujravagas && kimenetek.every((f) => existsSync(f)) && nyilvantartas[nev] === ujjlenyomat) {
       console.log(`${nev}: kimarad — már megvan, ugyanebből a vágásból`);
       kimaradt += 1;
       continue;
@@ -214,6 +221,21 @@ for (const csempe of bemutatoCsempek) {
 
     ff('-i', mp4, '-an', '-c:v', 'libvpx-vp9', '-crf', '34', '-b:v', '0',
        '-row-mt', '1', `${CEL_VIDEO}/${nev}.webm`);
+
+    // Kisebb, 360 képpont magas változat a keskeny csempéknek.
+    //
+    // A sáv csempéi ~341 képpont szélesek, telefonon ~350 — a 960×540-es
+    // kép ehhez képest túlmintavétel, a dekódolása viszont a teljes árat
+    // elkéri. Lemérve: három egyszerre futó nagy klip egy 4×-esére lassított
+    // processzoron 60 kép/mp-ről 30-ra vitte a görgetést. Ez a változat a
+    // képpontok 44%-át tartalmazza.
+    const kicsiMp4 = `${CEL_VIDEO}/${nev}-kicsi.mp4`;
+    ff('-i', mp4, '-an', '-vf', 'scale=-2:360',
+       '-c:v', 'libx264', '-profile:v', 'high', '-crf', '25', '-preset', 'slow',
+       '-pix_fmt', 'yuv420p', '-movflags', '+faststart', kicsiMp4);
+
+    ff('-i', kicsiMp4, '-an', '-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0',
+       '-row-mt', '1', `${CEL_VIDEO}/${nev}-kicsi.webm`);
 
     ff('-i', mp4, '-frames:v', '1', '-c:v', 'libwebp', '-q:v', '78',
        `${CEL_KEP}/${nev}.webp`);
