@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     images: [{ url: absUrl('images/og.png'), width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image' },
+  // A Search Console tulajdonjog-igazolása. Az ELSŐDLEGES hitelesítés a
+  // DNS TXT-rekord a blueway.hu zónájában (google-site-verification=…) —
+  // az tartós, semmilyen újratelepítés nem érinti. Ez a meta a MÁSODIK láb,
+  // és a nyoma a repóban: eddig a hitelesítés kizárólag a DNS-panelen élt,
+  // a kód semmit nem tudott róla. A token nem titok — pont az a dolga, hogy
+  // nyilvánosan olvasható legyen (a DNS-ben ma is az).
+  verification: { google: 'bcQPpyFgmUWm6PTQUMzQxrIg6zcIlsR1YtfOKgHP2BA' },
   // A `robots: { index: true, follow: true }` szándékosan nincs itt. Az
   // indexelés az alapértelmezés, tehát a címke a 889 rendes lapon semmit nem
   // mondott — a 404-en viszont ártott: a Next oda saját „noindex" címkét ír,
