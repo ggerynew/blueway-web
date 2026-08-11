@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { LinkedText } from '@/components/linked-text';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getCategory } from '@/lib/products';
-import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -38,18 +38,20 @@ export default async function FaqPage({
   const { faq } = dict;
 
   // FAQPage strukturált adat — a Google ebből építhet gazdag találatot
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  // A morzsa nem díszítés: a felső szintű szekciólapok közül eddig csak a
+  // kapcsolat és a fogalomtár kapott BreadcrumbList-et, a többi nem — a
+  // kétszintű lánc (Főoldal → szakasz) a keresőben is érvényes morzsa.
+  const jsonLd = graf([{
     '@type': 'FAQPage',
     '@id': absUrl(`${lang}/gyik`),
-    isPartOf: weblapRef,
+    isPartOf: weblapRef(lang),
     publisher: szervezetRef,
     mainEntity: faq.items.map((item) => ({
       '@type': 'Question',
       name: item.q,
       acceptedAnswer: { '@type': 'Answer', text: item.a },
     })),
-  };
+  }, morzsa(lang, [{ name: dict.faq.title, path: 'gyik' }])]);
 
   /**
    * A válasz alatti hivatkozás felirata azt mondja meg, HOVA visz.

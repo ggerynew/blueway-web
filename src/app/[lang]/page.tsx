@@ -12,7 +12,7 @@ import { getDictionary, isLocale } from '@/lib/i18n';
 import { industries } from '@/lib/iparagak';
 import { productName, products } from '@/lib/products';
 import { guides } from '@/lib/knowledge';
-import { graf, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
@@ -112,9 +112,9 @@ export default async function HomePage({
       '@id': absUrl(lang),
       name: dict.hero.title,
       description: dict.hero.lead,
-      inLanguage: lang,
+      inLanguage: nyelvKod(lang),
       url: absUrl(lang),
-      isPartOf: weblapRef,
+      isPartOf: weblapRef(lang),
       about: szervezetRef,
       primaryImageOfPage: absUrl('images/og.png'),
     },

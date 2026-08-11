@@ -9,7 +9,8 @@
  *   - letölti a forrásfájlt (ha van `letoltes` cím), különben helyi fájlt vár;
  *   - kivágja a megadott szakaszt;
  *   - TÖRLI a hangsávot: a sáv néma, a hang csak méret;
- *   - 540 képpont magasra kicsinyít — a csempe ~470 képpont széles;
+ *   - 540 képpont magasra kicsinyít (plusz 360-as kis változat — a
+ *     csempe a lap keretén belül ~341 képpont széles);
  *   - két formátumot ad: MP4/H.264 a Safarinak (kötelező) és WebM/VP9 a
  *     többieknek (azonos minőségnél harmadával kisebb);
  *   - poszterképet vág az első képkockából;
@@ -97,10 +98,10 @@ async function letolt(cim, cel) {
   writeFileSync(cel, Buffer.from(await valasz.arrayBuffer()));
 }
 
-/** A vágás azonosítója: ha ez változik, a klip újravágandó. */
-function vagasUjjlenyomat(forras) {
+/** A vágás azonosítója: ha a bemenet VAGY a szakaszok változnak, újravágandó. */
+function vagasUjjlenyomat(forras, beJel) {
   return JSON.stringify({
-    be: forras.letoltes ?? forras.videoId ?? null,
+    be: beJel,
     szakaszok: forras.szakaszok.map((sz) => [sz.kezdet, sz.veg]),
   });
 }
@@ -125,7 +126,25 @@ for (const csempe of bemutatoCsempek) {
       continue;
     }
 
-    const ujjlenyomat = vagasUjjlenyomat(forras);
+    // A bemenet KILÉTE az ujjlenyomat előtt dől el, mert bele is tartozik.
+    //
+    // Két hibát is ez zár ki. Egy: a letöltési gyorsítótár neve eddig a
+    // CSEMPE azonosítója volt — két különböző forrású klip ugyanazon a
+    // csempén a második videót némán az ELSŐ fájljából vágta volna ki. A név
+    // ezért a videóé (nev), nem a csempéé. Kettő: az ujjlenyomat eddig csak a
+    // letöltési címet ismerte — ha a klip a letöltött fájlból készült el, és
+    // utána megérkezik a kézzel kapott gyártói anyag (--helyi), a „már
+    // megvan" szabály átlépte volna. A bemenet fajtája így a lenyomat része:
+    // helyi fájl érkezésekor a klip újravágódik.
+    let helyiFajl = null;
+    if (helyiMappa) {
+      helyiFajl =
+        readdirSync(helyiMappa).find((f) => f.startsWith(`${nev}.`)) ??
+        readdirSync(helyiMappa).find((f) => f.startsWith(`${csempe.id}.`)) ??
+        null;
+    }
+    const beJel = helyiFajl ? `helyi:${helyiFajl}` : (forras.letoltes ?? forras.videoId ?? null);
+    const ujjlenyomat = vagasUjjlenyomat(forras, beJel);
 
     // Ami már megvan UGYANEBBŐL A VÁGÁSBÓL, azt békén hagyjuk.
     //
@@ -153,14 +172,13 @@ for (const csempe of bemutatoCsempek) {
       continue;
     }
 
-    // A bemenet: helyi mappából vagy letöltésből.
+    // A bemenet: a fent megtalált helyi fájl, vagy letöltés. A letöltési
+    // gyorsítótár neve a VIDEÓÉ (nev), nem a csempéé — egyvideós csempénél a
+    // kettő azonos, tehát a meglévő fájlok érvényben maradnak.
     let be = null;
-    if (helyiMappa) {
-      const talalt = readdirSync(helyiMappa).find((f) => f.startsWith(`${csempe.id}.`));
-      if (talalt) be = join(helyiMappa, talalt);
-    }
+    if (helyiFajl) be = join(helyiMappa, helyiFajl);
     if (!be && forras.letoltes) {
-      be = join(MUNKA, `${csempe.id}-forras.mp4`);
+      be = join(MUNKA, `${nev}-forras.mp4`);
       try {
         await letolt(forras.letoltes, be);
       } catch (hiba) {

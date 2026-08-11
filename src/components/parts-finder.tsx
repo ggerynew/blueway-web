@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { asset } from '@/lib/asset';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import type { Dictionary, Locale } from '@/lib/i18n';
 import { sendForm } from '@/lib/send-form';
 import {
   betoltIndex,
@@ -59,8 +59,20 @@ function engedelyezettTarolas(): boolean {
   return c?.allowed('preferences') ?? false;
 }
 
-export function PartsFinder({ lang }: { lang: Locale }) {
-  const t = getDictionary(lang).parts;
+export function PartsFinder({
+  lang,
+  feliratok: t,
+}: {
+  lang: Locale;
+  /**
+   * A kereső szótár-szelete, a KISZOLGÁLÓTÓL propként.
+   *
+   * Nem kényelmi kérdés: a getDictionary kliensoldali hívása a MIND A
+   * NYOLC nyelv teljes szótárát behúzta a kliens-csomagba — 71 kB gzip
+   * minden egyes lapon, aminek a 7/8-át soha senki nem használta.
+   */
+  feliratok: Dictionary['parts'];
+}) {
   const [nyitva, setNyitva] = useState(false);
   const [index, setIndex] = useState<AlkatreszIndex | null>(null);
   const [betoltes, setBetoltes] = useState(false);
@@ -88,7 +100,12 @@ export function PartsFinder({ lang }: { lang: Locale }) {
   );
 
   function hozzafuz(u: Omit<Uzenet, 'id'>) {
-    setUzenetek((elozo) => [...elozo, { ...u, id: (kovetkezoId.current += 1) }]);
+    // Az azonosító a frissítőfüggvényen KÍVÜL lép. A React az updatert
+    // tisztának várja el — StrictMode-ban kétszer hívja, konkurens
+    // renderelésnél újrajátszhatja —, egy benne ülő ref-léptetés tehát
+    // duplán számolt volna.
+    const id = (kovetkezoId.current += 1);
+    setUzenetek((elozo) => [...elozo, { ...u, id }]);
   }
 
   // ——— megnyitás: ilyenkor töltjük le az indexet, előbb nem ————————
@@ -130,7 +147,12 @@ export function PartsFinder({ lang }: { lang: Locale }) {
   useEffect(() => {
     if (nyitva) {
       also.current?.scrollIntoView({ block: 'end' });
-      mezo.current?.focus();
+      // Nyitott ajánlatkérő űrlapnál a csevegőmező NEM ránthatja magához a
+      // fókuszt: az űrlap megnyitásakor ez az effekt is lefut (az `urlap` a
+      // függőségek közt van a görgetés miatt), és a billentyűzetes látogató
+      // a kitöltendő mezőktől távol, a panel alján találta magát — majd
+      // minden új üzenet oda is rántotta vissza.
+      if (!urlap) mezo.current?.focus();
     }
   }, [nyitva, uzenetek, urlap]);
 
@@ -191,7 +213,7 @@ export function PartsFinder({ lang }: { lang: Locale }) {
     if (gep && gep !== valasztottGep) {
       setGepId(gep);
       const nev = index.gepek.find((g) => g.id === gep)?.nev;
-      if (nev) hozzafuz({ ki: 'gep', szoveg: t.machineSet(nev) });
+      if (nev) hozzafuz({ ki: 'gep', szoveg: t.machineSet.replace('{nev}', nev) });
     }
 
     const eredmeny = keres(index, kerdes, gep);
@@ -202,7 +224,7 @@ export function PartsFinder({ lang }: { lang: Locale }) {
 
     hozzafuz({
       ki: 'gep',
-      szoveg: t.resultsFor(eredmeny.talalatok.length),
+      szoveg: t.resultsFor.replace('{n}', String(eredmeny.talalatok.length)),
       talalatok: eredmeny.talalatok,
     });
 
@@ -237,7 +259,7 @@ export function PartsFinder({ lang }: { lang: Locale }) {
           const eredmeny = keres(i, szoveg, gepId);
           hozzafuz(
             eredmeny.talalatok.length
-              ? { ki: 'gep', szoveg: t.resultsFor(eredmeny.talalatok.length), talalatok: eredmeny.talalatok }
+              ? { ki: 'gep', szoveg: t.resultsFor.replace('{n}', String(eredmeny.talalatok.length)), talalatok: eredmeny.talalatok }
               : { ki: 'gep', szoveg: t.noResults },
           );
         })
@@ -420,7 +442,7 @@ export function PartsFinder({ lang }: { lang: Locale }) {
 
         {gepNev && (
           <div className="flex items-center justify-between gap-3 border-b border-line bg-brand-50 px-5 py-2 text-xs">
-            <span className="truncate font-medium text-brand-800">{t.machineSet(gepNev)}</span>
+            <span className="truncate font-medium text-brand-800">{t.machineSet.replace('{nev}', gepNev)}</span>
             <button
               type="button"
               onClick={() => {
@@ -471,7 +493,7 @@ export function PartsFinder({ lang }: { lang: Locale }) {
                           {t.assembly}: {x.egysegek[0]}
                         </p>
                       )}
-                      <p className="mt-0.5 text-xs text-ink-muted">{t.usedIn(x.gepek.length)}</p>
+                      <p className="mt-0.5 text-xs text-ink-muted">{t.usedIn.replace('{n}', String(x.gepek.length))}</p>
                       <button
                         type="button"
                         onClick={() => setUrlap({ cikkszam: x.cikkszam })}

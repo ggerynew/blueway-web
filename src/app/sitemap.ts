@@ -19,9 +19,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         changeFrequency: 'weekly',
         priority,
         alternates: {
-          languages: Object.fromEntries(
-            locales.map((l) => [HREFLANG[l], absUrl(`${l}${suffix}`)]),
-          ),
+          // Az x-default is itt van, nem csak a lapok fejlécében. A Google a
+          // hreflang-jelzések KONZISZTENCIÁJÁT kéri: ha a lap 9 bejegyzést
+          // mond (8 nyelv + x-default), a sitemap pedig csak 8-at, a két
+          // forrás nem ugyanazt a halmazt állítja, és a klaszterezés
+          // kiszámíthatatlanabb. Az alapértelmezett a magyar — ez a cég
+          // elsődleges piaca, és a lapok fejléce is ide mutat.
+          languages: {
+            ...Object.fromEntries(
+              locales.map((l) => [HREFLANG[l], absUrl(`${l}${suffix}`)]),
+            ),
+            'x-default': absUrl(`hu${suffix}`),
+          },
         },
       });
     }
@@ -50,10 +59,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const g of guides) add(`tudastar/${g.slug}`, 0.7);
   for (const i of industries) add(`iparagak/${i.slug}`, 0.8);
 
-  // Statikus jogi oldalak (nem nyelvi útvonalon)
-  for (const f of ['adatkezelesi-tajekoztato.html', 'altalanos-szerzodesi-feltetelek.html', 'privacy-policy.html']) {
-    entries.push({ url: absUrl(f), changeFrequency: 'yearly', priority: 0.3 });
+  // Statikus jogi oldalak (nem nyelvi útvonalon).
+  //
+  // Az adatkezelési tájékoztató és az angol párja a LAPJAIKON kölcsönös
+  // hreflang-párban állnak (hu + en + x-default) — a sitemap ugyanazt
+  // mondja, hogy a két jelzési forrás ne térjen el. Az ÁSZF-nek nincs
+  // nyelvi párja, ott nincs mit jelezni.
+  const jogiPar = {
+    hu: absUrl('adatkezelesi-tajekoztato.html'),
+    en: absUrl('privacy-policy.html'),
+    'x-default': absUrl('adatkezelesi-tajekoztato.html'),
+  };
+  for (const f of ['adatkezelesi-tajekoztato.html', 'privacy-policy.html']) {
+    entries.push({
+      url: absUrl(f),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+      alternates: { languages: jogiPar },
+    });
   }
+  entries.push({
+    url: absUrl('altalanos-szerzodesi-feltetelek.html'),
+    changeFrequency: 'yearly',
+    priority: 0.3,
+  });
 
   return entries;
 }

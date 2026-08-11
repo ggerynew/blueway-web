@@ -160,10 +160,19 @@ export function VideoBand({
 
   /** A pillanatnyi láthatóság alapján eldönti, minek kell mennie, és beállítja. */
   const ujraoszt = useCallback(() => {
-    // Ami elég nagy részben látszik, az megy — legfeljebb a felső korlátig,
-    // a legláthatóbbtól visszafelé.
+    // Két küszöb, két szerep — EZ a billegésgátló hiszterézis. INDULNI csak
+    // az indulási küszöb (0,4) fölött lehet, de ami már MEGY, az a megállási
+    // küszöbig (0,15) játszhat tovább. A revízió mutatta ki, hogy a korábbi
+    // változatban a második fele hiányzott: a jelölt-halmaz csak a 0,4
+    // fölöttieket tartalmazta, tehát a 0,4 alá csúszó futó videó azonnal
+    // megállt — a 0,15-ös küszöb és a kommentben megígért köztes sáv halott
+    // kód volt, és a 0,4 körül görgetve a klip meg-megállt.
     const sorrend = [...lathatosag.current.entries()]
-      .filter(([, arany]) => arany >= JATSZIK_FELETT)
+      .filter(([id, arany]) => {
+        const el = elemek.current.get(id);
+        const megy = el && !el.paused;
+        return arany >= (megy ? MEGALL_ALATT : JATSZIK_FELETT);
+      })
       .sort((a, b) => b[1] - a[1])
       .slice(0, EGYSZERRE_LEGFELJEBB)
       .map(([id]) => id);
@@ -213,6 +222,10 @@ export function VideoBand({
         }
       } else if (!el.paused && (arany < MEGALL_ALATT || !mehet.has(id))) {
         el.pause();
+        // A gomb kövesse a valóságot: az imént megállított videón álljon
+        // indítás-ikon, ne szünet. Enélkül a felgörgetett, álló csempe gombja
+        // „szüneteltetést" kínált egy már álló videón.
+        setAllo((e) => (e[id] ? e : { ...e, [id]: true }));
       }
     }
   }, [onkentes]);
@@ -312,9 +325,20 @@ export function VideoBand({
     el.poster = klip.poszter;
     el.load();
     kezzelAllitott.current.delete(csempeId);
-    setAllo((e) => ({ ...e, [csempeId]: false }));
+    // A haladásjelzőket az onTimeUpdate imperatívan írja, a React pedig a
+    // változatlan style-propot nem írja felül — klipváltáskor tehát nekünk
+    // kell az ÖSSZES sávot nullára húzni, különben az előző klipé az utolsó
+    // állásán fagyva maradna, és több sáv látszana részben kitöltve.
+    for (const [kulcs, sav] of jelolo.current) {
+      if (kulcs.startsWith(`${csempeId}:`)) sav.style.transform = 'scaleX(0)';
+    }
     el.muted = true;
-    void el.play().catch(() => {});
+    // A hibát itt sem nyeljük el (lásd az ujraoszt megjegyzését): ha az új
+    // klip nem indul el, a gomb mutasson indítást, ne hazudjon lejátszást.
+    void el.play().then(
+      () => setAllo((e) => ({ ...e, [csempeId]: false })),
+      () => setAllo((e) => ({ ...e, [csempeId]: true })),
+    );
   };
 
   /** Kézi indítás/megállítás. A kézzel megállítottat a görgetés nem indítja. */
@@ -330,8 +354,10 @@ export function VideoBand({
         el.load();
       }
       el.muted = true;
-      void el.play().catch(() => {});
-      setAllo((e) => ({ ...e, [csempeId]: false }));
+      void el.play().then(
+        () => setAllo((e) => ({ ...e, [csempeId]: false })),
+        () => setAllo((e) => ({ ...e, [csempeId]: true })),
+      );
     } else {
       kezzelAllitott.current.add(csempeId);
       el.pause();
@@ -463,7 +489,11 @@ export function VideoBand({
                             else jelolo.current.delete(`${csempe.id}:${i}`);
                           }}
                           className="block h-full origin-left bg-white"
-                          style={{ transform: i === index ? 'scaleX(0)' : 'scaleX(0)' }}
+                          // Induló állás. A kitöltést az onTimeUpdate írja
+                          // közvetlenül a DOM-ba; klipváltáskor a valt()
+                          // húzza vissza nullára — a React ezt a propot
+                          // változatlannak látja, tehát nem nyúl hozzá.
+                          style={{ transform: 'scaleX(0)' }}
                         />
                       </span>
                     </button>

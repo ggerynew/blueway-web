@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { FileField } from '@/components/file-field';
+import { FileField, type FajlFeliratok } from '@/components/file-field';
 import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import type { Dictionary, Locale } from '@/lib/i18n';
@@ -21,6 +21,7 @@ export function ContactForm({
   recipient,
   lang,
   honeypotLabel,
+  fajlFeliratok,
 }: {
   labels: FormLabels;
   recipient: string;
@@ -28,6 +29,7 @@ export function ContactForm({
   lang: Locale;
   /** A rejtett csapdamező felirata a lap nyelvén. */
   honeypotLabel: string;
+  fajlFeliratok: FajlFeliratok;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -183,6 +185,7 @@ export function ContactForm({
       </div>
 
       <FileField
+        feliratok={fajlFeliratok}
         id="attachments"
         name="attachments"
         label={labels.attach}

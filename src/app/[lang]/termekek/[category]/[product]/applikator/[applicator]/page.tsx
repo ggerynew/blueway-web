@@ -68,10 +68,16 @@ export default async function ApplicatorPage({
         name: `${applicator.name[lang]} — ${productName(product, lang)}`,
         description: applicator.description[lang],
         brand: { '@type': 'Brand', name: product.brand },
+        // A szülőtermék-csonk is teljes Product: a Google minden felismert
+        // Product-entitást külön értékel, és a csak név+url mezős csonkra
+        // lapról lapra „missing field image/brand" figyelmeztetést adott. A
+        // szülő adatai itt vannak kéznél — nincs ok visszatartani őket.
         isAccessoryOrSparePartFor: {
           '@type': 'Product',
           name: productName(product, lang),
           url: absUrl(`${lang}/termekek/${category}/${product.slug}`),
+          brand: { '@type': 'Brand', name: product.brand },
+          ...(product.image ? { image: absUrl(product.image.replace(/^\//, '')) } : {}),
         },
         url: appUrl,
         ...(applicator.image ? { image: absUrl(applicator.image.replace(/^\//, '')) } : {}),
@@ -224,6 +230,11 @@ export default async function ApplicatorPage({
           <p className="mt-2 max-w-xl text-ink-muted">{dict.products.inquiry.lead}</p>
           <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
             <ProductInquiry
+              fajlFeliratok={{
+                fileChoose: dict.ui.fileChoose,
+                fileRemove: dict.ui.fileRemove,
+                fileTotal: dict.ui.fileTotal,
+              }}
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
               productName={`${productName(product, lang)} — ${applicator.name[lang]}`}

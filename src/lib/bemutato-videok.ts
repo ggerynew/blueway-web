@@ -19,7 +19,7 @@ import { localize, type LocalizedText, type Sourced } from '@/lib/products';
  *
  * A `forras` mező azért van itt, hogy a klip eredete ne vesszen el: melyik
  * felvételből, melyik másodperctől meddig vágtuk. A vágás a repón kívül,
- * ffmpeg-gel történik (lásd scripts/bemutato-klipek.sh).
+ * ffmpeg-gel történik (lásd scripts/bemutato-klipek.mjs).
  */
 export interface BemutatoVideo {
   /**

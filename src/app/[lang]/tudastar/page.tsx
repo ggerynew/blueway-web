@@ -5,7 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { terms } from '@/lib/fogalomtar';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { guides } from '@/lib/knowledge';
-import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -36,15 +36,17 @@ export default async function KnowledgePage({
   const dict = getDictionary(lang);
 
   // Útmutató-lista strukturált adatként (CollectionPage + ItemList)
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  // A morzsa nem díszítés: a felső szintű szekciólapok közül eddig csak a
+  // kapcsolat és a fogalomtár kapott BreadcrumbList-et, a többi nem — a
+  // kétszintű lánc (Főoldal → szakasz) a keresőben is érvényes morzsa.
+  const jsonLd = graf([{
     '@type': 'CollectionPage',
     '@id': absUrl(`${lang}/tudastar`),
     name: dict.knowledge.title,
     description: dict.knowledge.lead,
-    inLanguage: lang,
+    inLanguage: nyelvKod(lang),
     url: absUrl(`${lang}/tudastar`),
-    isPartOf: weblapRef,
+    isPartOf: weblapRef(lang),
     publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
@@ -55,7 +57,7 @@ export default async function KnowledgePage({
         url: absUrl(`${lang}/tudastar/${g.slug}`),
       })),
     },
-  };
+  }, morzsa(lang, [{ name: dict.knowledge.title, path: 'tudastar' }])]);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">

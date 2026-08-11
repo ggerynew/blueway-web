@@ -26,11 +26,14 @@ const siteUrl = (
   `https://ggerynew.github.io${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}`
 ).replace(/\/$/, '');
 
-const files = (await readdir(OUT)).filter((f) => f.endsWith('.html'));
+// Rekurzívan, nem csak a gyökérszinten. Ma mindhárom jelölős fájl a
+// gyökérben áll, de ha egy újabb kézzel írt HTML almappába kerülne (pl.
+// dokumentumok/ alá), a csak-gyökér lista némán átlépné, és a lap a
+// __SITE_URL__ jelölővel a szövegében menne élesbe.
+const files = await htmlFajlok(OUT);
 let touched = 0;
 
-for (const file of files) {
-  const path = join(OUT, file);
+for (const path of files) {
   const html = await readFile(path, 'utf8');
   if (!html.includes(TOKEN)) continue;
   await writeFile(path, html.replaceAll(TOKEN, siteUrl));
@@ -103,10 +106,16 @@ const IRASMOD = [
   ['centred', 'centered'], ['aluminium', 'aluminum'], ['catalogue', 'catalog'],
   ['organisation', 'organization'], ['optimise', 'optimize'],
   ['specialised', 'specialized'], ['centralised', 'centralized'],
-  ['analyse', 'analyze'], ['behaviour', 'behavior'], ['licence', 'license'],
+  ['analyse', 'analyze'], ['behaviour', 'behavior'],
   ['siliconised', 'siliconized'], ['motorised', 'motorized'],
   ['anodised', 'anodized'], ['customisation', 'customization'],
-  ['recognise', 'recognize'], ['utilise', 'utilize'], ['metre', 'meter'],
+  ['recognise', 'recognize'], ['utilise', 'utilize'],
+  // A „metre/meter" és a „licence/license" pár SZÁNDÉKOSAN nincs itt, pedig
+  // az átíró szótár (products.ts) kezeli őket. Ez az őrszem kétélű szavaknál
+  // hamisan riaszt: a mérőműszer neve BRIT szövegben is „meter" (flow meter),
+  // és a „license" igeként brit helyesírással is így írandó — egy szabályos
+  // brit mondat buktatta volna el a buildet. Az átírónak jók (brit főnév →
+  // amerikai alak iránya egyértelmű), őrszemnek nem.
 ];
 
 /** A látható szöveg — a beágyazott szkriptek ugyanezt még egyszer tartalmaznák. */

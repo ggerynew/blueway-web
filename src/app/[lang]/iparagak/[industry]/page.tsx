@@ -8,7 +8,7 @@ import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getIndustry, industries } from '@/lib/iparagak';
 import { getGuide } from '@/lib/knowledge';
 import { categories, products } from '@/lib/products';
-import { morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -69,9 +69,9 @@ export default async function IndustryPage({
         '@id': absUrl(`${lang}/iparagak/${ind.slug}`),
         name: ind.name[lang],
         description: ind.short[lang],
-        inLanguage: lang,
+        inLanguage: nyelvKod(lang),
         url: absUrl(`${lang}/iparagak/${ind.slug}`),
-        isPartOf: weblapRef,
+        isPartOf: weblapRef(lang),
         publisher: szervezetRef,
         // Miről szól a lap: maga az iparág. A szakaszcímek a lapon belüli
         // konkrét feladatokat nevezik meg — ezek a keresett kifejezések.

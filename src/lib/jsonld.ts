@@ -1,6 +1,17 @@
-import { getDictionary, type Locale } from '@/lib/i18n';
+import { getDictionary, HREFLANG, type Locale } from '@/lib/i18n';
 import { categories, manufacturers } from '@/lib/products';
 import { SITE_NAME, SITE_URL, absUrl } from '@/lib/site';
+
+/**
+ * A nyelv BCP-47 kódja a strukturált adatokba.
+ *
+ * A mappanév NEM nyelvkód: az „us" országkód, nyelvként érvénytelen — a
+ * revízió ki is mutatta, hogy mind a 137 amerikai lap `inLanguage: "us"`-t
+ * állított magáról, miközben ugyanazon lap `<html lang="en-US">`-t. A helyes
+ * leképezés a hreflangnál már régen megvan (i18n.ts), ez ugyanazt adja a
+ * JSON-LD-nek.
+ */
+export const nyelvKod = (lang: Locale): string => HREFLANG[lang];
 
 /**
  * A weblap entitásgráfja — a strukturált adat gerince.
@@ -20,11 +31,22 @@ import { SITE_NAME, SITE_URL, absUrl } from '@/lib/site';
  */
 
 export const SZERVEZET_ID = `${SITE_URL}/#szervezet`;
-export const WEBLAP_ID = `${SITE_URL}/#weblap`;
+
+/**
+ * A weblap azonosítója NYELVENKÉNT külön.
+ *
+ * Nem mindig volt így: sokáig egyetlen #weblap azonosító élt, amit mind a
+ * 888 lap definiált — de nyelvenként MÁS tartalommal (url, inLanguage). Az
+ * @id definíció szerint globális entitás-azonosító; a kereső a gráfok
+ * egyesítésekor nyolc egymásnak ellentmondó definíciót kapott ugyanarra a
+ * dologra, aminek az url-je egyszerre volt /hu, /us és /de. A cég egy — a
+ * #szervezet közös marad —, de a nyelvi weboldalváltozat nyolc.
+ */
+export const weblapId = (lang: Locale) => `${SITE_URL}/#weblap-${lang}`;
 
 /** Hivatkozás a szervezetre — ez megy minden „publisher", „seller" mezőbe. */
 export const szervezetRef = { '@id': SZERVEZET_ID } as const;
-export const weblapRef = { '@id': WEBLAP_ID } as const;
+export const weblapRef = (lang: Locale) => ({ '@id': weblapId(lang) }) as const;
 
 /** A telephely — a számlázási cím szándékosan nem ez, az nem nyilvános hely. */
 export const CIM = {
@@ -88,7 +110,10 @@ export function szervezetNode(lang: Locale) {
     // A rövid hívónév, ahogy a vevők emlegetik — a kereső így is összeköti.
     alternateName: 'Blueway',
     legalName: 'Blueway Trade Korlátolt Felelősségű Társaság',
-    url: absUrl(lang),
+    // A cég url-je a GYÖKÉR, nem a nyelvi változat: a #szervezet azonosító
+    // közös mind a 888 lapon, tehát a mezőinek is lapfüggetlennek kell
+    // lenniük, különben a kereső nyolcféle url-t kapna ugyanarra a cégre.
+    url: SITE_URL,
     logo: {
       '@type': 'ImageObject',
       url: absUrl('images/brand/blueway-logo-still.png'),
@@ -169,10 +194,10 @@ export function szervezetNode(lang: Locale) {
 export function weblapNode(lang: Locale) {
   return {
     '@type': 'WebSite',
-    '@id': WEBLAP_ID,
+    '@id': weblapId(lang),
     name: SITE_NAME,
     url: absUrl(lang),
-    inLanguage: lang,
+    inLanguage: nyelvKod(lang),
     publisher: szervezetRef,
   };
 }

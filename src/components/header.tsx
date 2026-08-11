@@ -88,7 +88,11 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <LangSwitcher lang={lang} compact />
         </div>
 
-        <MobileNav lang={lang} items={nav} />
+        <MobileNav
+          lang={lang}
+          items={nav}
+          feliratok={{ openMenu: dict.ui.openMenu, closeMenu: dict.ui.closeMenu }}
+        />
       </div>
 
       {/* A kereső saját sorban: a fejléc-sorban a nyolc zászló, a menü és az

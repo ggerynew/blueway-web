@@ -100,11 +100,16 @@ RewriteRule ^us-atmeneti/ - [R=404,L]
 # is mutathat rá — 301-gyel átvisszük az újra, hogy ne 404-re fusson, és hogy
 # az oldal eddig összegyűlt megítélése ne veszjen el.
 # A ([a-z]{2}) a nyelvi előtag: egyetlen szabály kezeli mind a hét nyelvet.
-RewriteRule ^([a-z]{2})/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6014/?$ /$1/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6114 [R=301,L]
+#
+# A cél teljes cím, kimondott https-sel — ugyanazért, amiért lentebb az
+# index.php-é: a puszta útvonalból az Apache a tárhely SSL-lezárása mögött
+# http://-s abszolút címet állít össze (élesben mérve), tehát a látogató egy
+# pillanatra titkosítatlanra esne vissza, plusz egy fölösleges ugrás.
+RewriteRule ^([a-z]{2})/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6014/?$ https://%{HTTP_HOST}/$1/termekek/cimkezo-gepek/cab-hermes-q/applikator/hq-6114 [R=301,L]
 
 # A CAB AF5 elszívó átkerült a lézer gravírozók közül a füst- és
 # porelszívókhoz, mert oda tartozik. Az addig kiadott cím ne fusson 404-re.
-RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-es-porelszivok/cab-af5 [R=301,L]
+RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ https://%{HTTP_HOST}/$1/termekek/fust-es-porelszivok/cab-af5 [R=301,L]
 
 # ——— A régi weblap belépési pontjai ———————————————————————————————
 # A régi weblap PHP-alapú rendszer volt (index.php, index2.php, protected/),
@@ -123,7 +128,7 @@ RewriteRule ^([a-z]{2})/termekek/lezer-gravirozok/cab-af5/?$ /$1/termekek/fust-e
 # http://-t érzékel — élesben mérve 301 http://blueway.hu/ jött, tehát a régi
 # cím egy pillanatra titkosítatlanra esett vissza, és egy fölösleges ugrást is
 # jelentett. A %{HTTP_HOST} megtartja a megszólított gépnevet.
-RewriteRule ^index2?\.php$ https://%{HTTP_HOST}/ [R=301,L]
+RewriteRule ^index2?\.php$ https://%{HTTP_HOST}/ [R=301,L,QSD]
 
 # ——— A régi weblap címei ——————————————————————————————————————————
 # A régi weblap Yii-alkalmazás volt, és a címeit az adatbázisból állította
@@ -139,99 +144,106 @@ RewriteRule ^index2?\.php$ https://%{HTTP_HOST}/ [R=301,L]
 #
 # A keresőből ezek a címek már kikoptak (a site:blueway.hu csak az újakat
 # adja), a könyvjelzőkből, e-mail aláírásokból és nyomtatott anyagokból nem.
+#
+# A QSD (query string discard) minden régi-weblapos szabályon rajta van. A
+# Yii-címek jellemzően lekérdezőrészt hordoztak (?r=site/contact és társai);
+# enélkül az Apache a régi paramétereket HOZZÁFŰZI az új címhez, és a
+# /hu/termekek?r=... alakú, paraméteres duplikátum-címek keletkeznek — a
+# kanonikus hivatkozás miatt a kereső végül összevonja őket, de fölösleges
+# feltérképezési zajt adnak. Az új címeken a paramétereknek jelentése nincs.
 
 # Termékoldalak. A régi cím záró száma a termék azonosítója — a szöveges rész
 # csak dísz volt, a régi rendszer is kizárólag a számot nézte. Ezért a minta
 # is arra illeszkedik: az elgépelt vagy időközben átírt szöveg sem téveszti meg.
-RewriteRule ^termek/[^/]*-1/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-4 [R=301,L]
-RewriteRule ^termek/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L]
-RewriteRule ^termek/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos2 [R=301,L]
-RewriteRule ^termek/[^/]*-6/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L]
-RewriteRule ^termek/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^termek/[^/]*-9/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^termek/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L]
-RewriteRule ^termek/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-2 [R=301,L]
-RewriteRule ^termek/[^/]*-13/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos5 [R=301,L]
-RewriteRule ^termek/[^/]*-14/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach1 [R=301,L]
-RewriteRule ^termek/[^/]*-15/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach2 [R=301,L]
-RewriteRule ^termek/[^/]*-16/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach4s [R=301,L]
-RewriteRule ^termek/[^/]*-18/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc4 [R=301,L]
-RewriteRule ^termek/[^/]*-19/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc6 [R=301,L]
-RewriteRule ^termek/[^/]*-20/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^termek/[^/]*-21/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-q [R=301,L]
-RewriteRule ^termek/[^/]*-22/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-c [R=301,L]
-RewriteRule ^termek/[^/]*-26/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^termek/[^/]*-27/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
-RewriteRule ^termek/[^/]*-28/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
-RewriteRule ^termek/[^/]*-29/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-vs [R=301,L]
-RewriteRule ^termek/[^/]*-30/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L]
-RewriteRule ^termek/[^/]*-31/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L]
-RewriteRule ^termek/[^/]*-33/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L]
-RewriteRule ^termek/[^/]*-34/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-lm-plus [R=301,L]
-RewriteRule ^termek/[^/]*-35/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L]
-RewriteRule ^termek/[^/]*-37/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L]
-RewriteRule ^termek/[^/]*-38/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-tda080 [R=301,L]
-RewriteRule ^product/[^/]*-1/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-4 [R=301,L]
-RewriteRule ^product/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L]
-RewriteRule ^product/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos2 [R=301,L]
-RewriteRule ^product/[^/]*-6/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L]
-RewriteRule ^product/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^product/[^/]*-9/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^product/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L]
-RewriteRule ^product/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-2 [R=301,L]
-RewriteRule ^product/[^/]*-13/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos5 [R=301,L]
-RewriteRule ^product/[^/]*-14/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach1 [R=301,L]
-RewriteRule ^product/[^/]*-15/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach2 [R=301,L]
-RewriteRule ^product/[^/]*-16/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach4s [R=301,L]
-RewriteRule ^product/[^/]*-18/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc4 [R=301,L]
-RewriteRule ^product/[^/]*-19/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc6 [R=301,L]
-RewriteRule ^product/[^/]*-20/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^product/[^/]*-21/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-q [R=301,L]
-RewriteRule ^product/[^/]*-22/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-c [R=301,L]
-RewriteRule ^product/[^/]*-26/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^product/[^/]*-27/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
-RewriteRule ^product/[^/]*-28/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L]
-RewriteRule ^product/[^/]*-29/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-vs [R=301,L]
-RewriteRule ^product/[^/]*-30/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L]
-RewriteRule ^product/[^/]*-31/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L]
-RewriteRule ^product/[^/]*-33/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L]
-RewriteRule ^product/[^/]*-34/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-lm-plus [R=301,L]
-RewriteRule ^product/[^/]*-35/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L]
-RewriteRule ^product/[^/]*-37/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L]
-RewriteRule ^product/[^/]*-38/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-tda080 [R=301,L]
+RewriteRule ^termek/[^/]*-1/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-4 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos2 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-6/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-9/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-squix-2 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-13/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-eos5 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-14/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach1 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-15/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach2 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-16/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-mach4s [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-18/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc4 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-19/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok/cab-xc6 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-20/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-21/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-q [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-22/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek/cab-hermes-c [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-26/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-27/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-28/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-hs [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-29/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek/cab-vs [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-30/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-31/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-33/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-34/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok/cab-lm-plus [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-35/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-37/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L,QSD]
+RewriteRule ^termek/[^/]*-38/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok/start-tda080 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-1/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-4 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L,QSD]
+RewriteRule ^product/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos2 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-6/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L,QSD]
+RewriteRule ^product/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^product/[^/]*-9/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^product/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/tykma-minilase-xl [R=301,L,QSD]
+RewriteRule ^product/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-squix-2 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-13/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-eos5 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-14/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach1 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-15/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach2 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-16/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-mach4s [R=301,L,QSD]
+RewriteRule ^product/[^/]*-18/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc4 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-19/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok/cab-xc6 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-20/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^product/[^/]*-21/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-q [R=301,L,QSD]
+RewriteRule ^product/[^/]*-22/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek/cab-hermes-c [R=301,L,QSD]
+RewriteRule ^product/[^/]*-26/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^product/[^/]*-27/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L,QSD]
+RewriteRule ^product/[^/]*-28/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-hs [R=301,L,QSD]
+RewriteRule ^product/[^/]*-29/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek/cab-vs [R=301,L,QSD]
+RewriteRule ^product/[^/]*-30/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-1 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-31/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-3 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-33/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-xeno-4 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-34/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok/cab-lm-plus [R=301,L,QSD]
+RewriteRule ^product/[^/]*-35/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L,QSD]
+RewriteRule ^product/[^/]*-37/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-zcm1000 [R=301,L,QSD]
+RewriteRule ^product/[^/]*-38/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok/start-tda080 [R=301,L,QSD]
 
 # Kategórialapok.
-RewriteRule ^termekek/kategoriak/[^/]*-1/?$ https://%{HTTP_HOST}/hu/szolgaltatasok [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-3/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-7/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek [R=301,L]
-RewriteRule ^termekek/kategoriak/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok [R=301,L]
-RewriteRule ^products/categories/[^/]*-1/?$ https://%{HTTP_HOST}/en/szolgaltatasok [R=301,L]
-RewriteRule ^products/categories/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^products/categories/[^/]*-3/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L]
-RewriteRule ^products/categories/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L]
-RewriteRule ^products/categories/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L]
-RewriteRule ^products/categories/[^/]*-7/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek [R=301,L]
-RewriteRule ^products/categories/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L]
-RewriteRule ^products/categories/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek [R=301,L]
-RewriteRule ^products/categories/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok [R=301,L]
+RewriteRule ^termekek/kategoriak/[^/]*-1/?$ https://%{HTTP_HOST}/hu/szolgaltatasok [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-2/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-3/?$ https://%{HTTP_HOST}/hu/termekek/lezer-gravirozok [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-5/?$ https://%{HTTP_HOST}/hu/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-7/?$ https://%{HTTP_HOST}/hu/termekek/cimkezo-gepek [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-8/?$ https://%{HTTP_HOST}/hu/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-10/?$ https://%{HTTP_HOST}/hu/termekek/cimke-adagolo-gepek [R=301,L,QSD]
+RewriteRule ^termekek/kategoriak/[^/]*-11/?$ https://%{HTTP_HOST}/hu/termekek/ragaszto-adagolok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-1/?$ https://%{HTTP_HOST}/en/szolgaltatasok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-2/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-3/?$ https://%{HTTP_HOST}/en/termekek/lezer-gravirozok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-5/?$ https://%{HTTP_HOST}/en/termekek/cimkek-es-festekszalagok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-7/?$ https://%{HTTP_HOST}/en/termekek/cimkezo-gepek [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-8/?$ https://%{HTTP_HOST}/en/termekek/cimkenyomtatok [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/cimke-adagolo-gepek [R=301,L,QSD]
+RewriteRule ^products/categories/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok [R=301,L,QSD]
 
 # Gyártói lapok.
 RewriteRule ^termekek/gyartok/[^/]*-3/?$ https://%{HTTP_HOST}/hu/gyartok/cab [R=301,L]
 RewriteRule ^termekek/gyartok/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L]
 RewriteRule ^termekek/gyartok/[^/]*-5/?$ https://%{HTTP_HOST}/hu/gyartok/tykma-electrox [R=301,L]
 RewriteRule ^termekek/gyartok/[^/]*-12/?$ https://%{HTTP_HOST}/hu/gyartok/start-international [R=301,L]
-RewriteRule ^products/brands/[^/]*-3/?$ https://%{HTTP_HOST}/en/gyartok/cab [R=301,L]
-RewriteRule ^products/brands/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L]
-RewriteRule ^products/brands/[^/]*-5/?$ https://%{HTTP_HOST}/en/gyartok/tykma-electrox [R=301,L]
-RewriteRule ^products/brands/[^/]*-12/?$ https://%{HTTP_HOST}/en/gyartok/start-international [R=301,L]
+RewriteRule ^products/brands/[^/]*-3/?$ https://%{HTTP_HOST}/en/gyartok/cab [R=301,L,QSD]
+RewriteRule ^products/brands/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L,QSD]
+RewriteRule ^products/brands/[^/]*-5/?$ https://%{HTTP_HOST}/en/gyartok/tykma-electrox [R=301,L,QSD]
+RewriteRule ^products/brands/[^/]*-12/?$ https://%{HTTP_HOST}/en/gyartok/start-international [R=301,L,QSD]
 
 # Állandó lapok és a nyelvváltó.
-RewriteRule ^partnereink/?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L]
+RewriteRule ^partnereink/?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L,QSD]
 RewriteRule ^partners/?$ https://%{HTTP_HOST}/en/gyartok [R=301,L]
 RewriteRule ^kapcsolat/?$ https://%{HTTP_HOST}/hu/kapcsolat [R=301,L]
 RewriteRule ^contact/?$ https://%{HTTP_HOST}/en/kapcsolat [R=301,L]
@@ -247,7 +259,7 @@ RewriteRule ^lang/en/?$ https://%{HTTP_HOST}/en [R=301,L]
 RewriteRule ^termek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
 RewriteRule ^product(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
 RewriteRule ^termekek/gyartok(/.*)?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L]
-RewriteRule ^products/brands(/.*)?$ https://%{HTTP_HOST}/en/gyartok [R=301,L]
+RewriteRule ^products/brands(/.*)?$ https://%{HTTP_HOST}/en/gyartok [R=301,L,QSD]
 RewriteRule ^termekek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
 RewriteRule ^products(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
 
@@ -436,6 +448,14 @@ ErrorDocument 404 /404.html
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
   <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # Az AI-olvasóknak szánt fájlok címe állandó, a tartalmuk viszont minden
+  # építéssel változik — akárcsak a HTML-é, és ugyanazt a szabályt is kapják.
+  # Explicit fejléc nélkül a közbenső gyorsítótárak a Last-Modified-ből
+  # heurisztikával számolnak érvényességet, és egy frissítés után napokig a
+  # régi katalógust adhatnák egy AI-keresőnek.
+  <FilesMatch "^(llms\.txt|llms-full\.txt|termekek\.json)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 

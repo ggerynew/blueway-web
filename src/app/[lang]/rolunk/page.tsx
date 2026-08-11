@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { DnbCertificate } from '@/components/dnb-certificate';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { getCategory, products } from '@/lib/products';
 import { SITE_URL, absUrl, pageMetadata } from '@/lib/site';
 
@@ -54,16 +54,18 @@ export default async function AboutPage({
   const { about } = dict;
 
   // AboutPage + a cégadatok — a keresők így a bemutatkozást is a céghez kötik.
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  // A morzsa nem díszítés: a felső szintű szekciólapok közül eddig csak a
+  // kapcsolat és a fogalomtár kapott BreadcrumbList-et, a többi nem — a
+  // kétszintű lánc (Főoldal → szakasz) a keresőben is érvényes morzsa.
+  const jsonLd = graf([{
     '@type': 'AboutPage',
     name: `${about.title} — Blueway Trade Kft.`,
     description: about.lead,
     url: absUrl(`${lang}/rolunk`),
-    inLanguage: lang,
-    isPartOf: weblapRef,
+    inLanguage: nyelvKod(lang),
+    isPartOf: weblapRef(lang),
     mainEntity: szervezetRef,
-  };
+  }, morzsa(lang, [{ name: about.title, path: 'rolunk' }])]);
 
   // A szótár és a hivatkozáslista együtt mozog. Ha valaki hatodik pontot ír
   // a „Mit kínálunk” listába, itt derül ki, a buildben — nem a látogatónál,
