@@ -5,6 +5,7 @@ import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { graf, morzsa } from '@/lib/jsonld';
 import { getProduct, productName } from '@/lib/products';
 import { pageMetadata } from '@/lib/site';
 
@@ -37,8 +38,17 @@ export default async function ServicesPage({
   const { services } = dict;
   const software = getProduct('szoftverek', 'egyedi-szoftverfejlesztes');
 
+  // Ez a lap eddig semmilyen strukturált adatot nem adott. A morzsa a
+  // legkisebb értelmes egység: a kereső ebből tudja, hogy a lap a
+  // főoldal alatti szekció, és morzsa-rich-resultot is kaphat.
+  const jsonLd = graf([morzsa(lang, [{ name: dict.services.title, path: 'szolgaltatasok' }])]);
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Reveal>
         <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           {services.title}

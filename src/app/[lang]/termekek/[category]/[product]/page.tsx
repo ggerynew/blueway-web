@@ -379,6 +379,11 @@ export default async function ProductPage({
           <p className="mt-2 max-w-xl text-ink-muted">{dict.products.inquiry.lead}</p>
           <div className="mt-6 rounded-2xl border border-line bg-white p-6 md:p-8">
             <ProductInquiry
+              fajlFeliratok={{
+                fileChoose: dict.ui.fileChoose,
+                fileRemove: dict.ui.fileRemove,
+                fileTotal: dict.ui.fileTotal,
+              }}
               labels={dict.products.inquiry}
               recipient={dict.contact.email}
               productName={productName(product, lang)}

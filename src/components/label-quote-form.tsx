@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
 import { asset } from '@/lib/asset';
-import { FileField } from '@/components/file-field';
+import { FileField, type FajlFeliratok } from '@/components/file-field';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
@@ -50,12 +50,14 @@ export function LabelQuoteForm({
   recipient,
   lang,
   honeypotLabel,
+  fajlFeliratok,
 }: {
   labels: Labels;
   recipient: string;
   lang: Locale;
   /** A rejtett csapdamező felirata a lap nyelvén. */
   honeypotLabel: string;
+  fajlFeliratok: FajlFeliratok;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -236,6 +238,7 @@ export function LabelQuoteForm({
         </div>
         <div className="mt-4">
           <FileField
+        feliratok={fajlFeliratok}
             id="attachments"
             name="attachments"
             label={labels.attach}

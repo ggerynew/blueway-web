@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type Tile = { src: string; alt: string; href: string };
 
@@ -54,7 +54,15 @@ const BILLENES_HATAR = 22;
 export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
   const kulsoRef = useRef<HTMLDivElement>(null);
   const gombRef = useRef<HTMLDivElement>(null);
-  const [meret, setMeret] = useState(TERV);
+  /**
+   * A skálázó elem — a méretet KÖZVETLENÜL a style-jába írjuk, nem state-be.
+   *
+   * A méret egyetlen helyen szerepel: ebben a transformban. State-ként minden
+   * ResizeObserver-jelzés — ablakméretezés, mobilon a címsáv ki-be csúszása —
+   * az összes (~50) termékcsempét újrarendereltette, miközben a DOM-ban egy
+   * betű nem sok, annyi sem változott volna a transformon kívül.
+   */
+  const skalaRef = useRef<HTMLDivElement>(null);
 
   const szog = useRef({ x: -6, y: 0 });
   const sebesseg = useRef({ x: 0, y: 0.09 });
@@ -72,7 +80,8 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
     const el = kulsoRef.current;
     if (!el) return;
     const figyelo = new ResizeObserver(([bejegyzes]) => {
-      setMeret(bejegyzes.contentRect.width || TERV);
+      const meret = bejegyzes.contentRect.width || TERV;
+      if (skalaRef.current) skalaRef.current.style.transform = `scale(${meret / TERV})`;
     });
     figyelo.observe(el);
     return () => figyelo.disconnect();
@@ -114,8 +123,24 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
 
     let raf = 0;
     const kepkocka = () => {
-      const all = huzas.current || felette.current;
-      if (!all) {
+      if (huzas.current) {
+        // Húzás közben a szöget a mutató írja, a ciklusnak nincs dolga.
+      } else if (felette.current) {
+        // A mutató a felületen áll: az automata forgás áll, de az elengedett
+        // húzás LENDÜLETE kifut — ezt ígéri a fejkomment is, és eddig nem
+        // volt igaz: egérrel az elengedés után a kurzor szükségképpen a
+        // felületen marad, tehát a lendület sosem látszott. A cél itt a
+        // nulla, nem az automata sebesség — csillapodó kifutás.
+        sebesseg.current.x *= 0.95;
+        sebesseg.current.y *= 0.95;
+        if (Math.abs(sebesseg.current.x) + Math.abs(sebesseg.current.y) > 0.01) {
+          szog.current.x = Math.max(
+            -60,
+            Math.min(60, szog.current.x + sebesseg.current.x),
+          );
+          szog.current.y += sebesseg.current.y;
+        }
+      } else {
         // Lágy ráállás a célsebességre — így az irányváltás nem rándulás.
         sebesseg.current.x += (celSebesseg.current.x - sebesseg.current.x) * 0.02;
         sebesseg.current.y += (celSebesseg.current.y - sebesseg.current.y) * 0.02;
@@ -214,9 +239,12 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
         style={{ transformStyle: 'preserve-3d' }}
       >
         <div
+          ref={skalaRef}
           style={{
             transformStyle: 'preserve-3d',
-            transform: `scale(${meret / TERV})`,
+            // Induló érték; a valódit a ResizeObserver írja be még az első
+            // kirajzolás előtt (a jelzése a lefektetés után, festés előtt fut).
+            transform: 'scale(1)',
             width: TERV,
             height: TERV,
             display: 'flex',

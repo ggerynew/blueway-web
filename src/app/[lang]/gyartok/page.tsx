@@ -6,7 +6,7 @@ import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { manufacturers, getProductsByBrand } from '@/lib/products';
-import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -36,15 +36,17 @@ export default async function ManufacturersPage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  // A morzsa nem díszítés: a felső szintű szekciólapok közül eddig csak a
+  // kapcsolat és a fogalomtár kapott BreadcrumbList-et, a többi nem — a
+  // kétszintű lánc (Főoldal → szakasz) a keresőben is érvényes morzsa.
+  const jsonLd = graf([{
     '@type': 'CollectionPage',
     '@id': absUrl(`${lang}/gyartok`),
     name: dict.manufacturers.title,
     description: dict.manufacturers.lead,
-    inLanguage: lang,
+    inLanguage: nyelvKod(lang),
     url: absUrl(`${lang}/gyartok`),
-    isPartOf: weblapRef,
+    isPartOf: weblapRef(lang),
     publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
@@ -55,7 +57,7 @@ export default async function ManufacturersPage({
         url: absUrl(`${lang}/gyartok/${mf.slug}`),
       })),
     },
-  };
+  }, morzsa(lang, [{ name: dict.manufacturers.title, path: 'gyartok' }])]);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">

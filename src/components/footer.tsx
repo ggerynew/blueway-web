@@ -45,7 +45,16 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
         <nav className="flex flex-col gap-2" aria-label={dict.footer.company}>
           {links.map((item) => (
-            <Link key={item.href} href={item.href} className="w-fit transition-colors hover:text-ink">
+            <Link
+              key={item.href}
+              href={item.href}
+              // A lábléc minden lapon látszik, tehát az előtöltése minden
+              // lapon fut — mérve ~1,5 MB adatcsomag ment el olyan lapokra
+              // (fogalomtár: 273 kB), amiket a látogató jó eséllyel meg sem
+              // nyit. Kattintásra tölt, egy kis várakozásért cserébe.
+              prefetch={false}
+              className="w-fit transition-colors hover:text-ink"
+            >
               {item.label}
             </Link>
           ))}

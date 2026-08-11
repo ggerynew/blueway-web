@@ -47,25 +47,29 @@ export function Logo({
       className={`flex items-center ${className ?? ''}`}
     >
       {ATLATSZO ? (
-        <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={`logo-video ${mediaClassName}`}
-            src={`${asset(`/${ANIM}`)}?v=${ANIM_V}`}
-            alt=""
-            aria-hidden="true"
-            width={504}
-            height={144}
+        // Egyetlen <picture>, két külön <img> helyett. A különbség nem
+        // stílus, hanem forgalom: a két img változatban MINDKÉT fájl
+        // letöltődött minden látogatónak — az animált 922 kB-ja a
+        // csökkentett mozgást kérőknek is, akiknél CSS rejtette el. A
+        // <picture> a kiválasztást a betöltés ELÉ hozza: a böngésző csak a
+        // média-feltételnek megfelelő forrást kéri le, és a beállítás
+        // megváltozásakor magától átvált.
+        <picture>
+          <source
+            media="(prefers-reduced-motion: no-preference)"
+            srcSet={`${asset(`/${ANIM}`)}?v=${ANIM_V}`}
+            width={336}
+            height={96}
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className={`logo-still ${mediaClassName}`}
+            className={mediaClassName}
             src={`${asset(`/${ALLO}`)}?v=${ALLO_V}`}
             alt="Blueway Trade"
             width={504}
             height={144}
           />
-        </>
+        </picture>
       ) : (
         <>
           <video

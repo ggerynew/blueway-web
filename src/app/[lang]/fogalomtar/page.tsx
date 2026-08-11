@@ -5,7 +5,7 @@ import { LinkedText } from '@/components/linked-text';
 import { Reveal } from '@/components/reveal';
 import { terms, termsByTheme } from '@/lib/fogalomtar';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { getGuide } from '@/lib/knowledge';
 import { getCategory, getProduct, productName, products } from '@/lib/products';
 import { absUrl, pageMetadata } from '@/lib/site';
@@ -47,7 +47,7 @@ export default async function GlossaryPage({
       '@id': `${lapUrl}#fogalomtar`,
       name: dict.glossary.title,
       description: dict.glossary.lead,
-      inLanguage: lang,
+      inLanguage: nyelvKod(lang),
       url: lapUrl,
       publisher: szervezetRef,
       // Minden fogalom saját horgonnyal — így egy kereső vagy AI-válaszmotor
@@ -66,9 +66,9 @@ export default async function GlossaryPage({
       '@id': lapUrl,
       name: dict.glossary.title,
       description: dict.glossary.lead,
-      inLanguage: lang,
+      inLanguage: nyelvKod(lang),
       url: lapUrl,
-      isPartOf: weblapRef,
+      isPartOf: weblapRef(lang),
       mainEntity: { '@id': `${lapUrl}#fogalomtar` },
     },
     morzsa(lang, [{ name: dict.glossary.title, path: 'fogalomtar' }]),

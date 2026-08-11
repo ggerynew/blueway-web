@@ -49,6 +49,11 @@ const BRIT_AMERIKAI: Record<string, string> = {
   behaviour: 'behavior', behaviours: 'behaviors',
   recognise: 'recognize', recognised: 'recognized',
   utilise: 'utilize', utilised: 'utilized',
+  // A build-őrszem (finalize-static) ellenőrzi ezt a párt is — a szótárból
+  // viszont hiányzott, tehát egy brit szövegbe leírt „centralised" a us
+  // lapokra változatlanul ment volna át, és a build az őrszemnél hasal el:
+  // a rendszer a saját maga állította csapdába lépett volna bele.
+  centralise: 'centralize', centralised: 'centralized',
   grey: 'gray', metre: 'meter', metres: 'meters', litre: 'liter', litres: 'liters',
   sulphur: 'sulfur', mould: 'mold', moulded: 'molded', moulding: 'molding',
   modelling: 'modeling', modelled: 'modeled', levelling: 'leveling',

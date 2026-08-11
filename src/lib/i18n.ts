@@ -57,7 +57,7 @@ export const dictionaries = {
       privacyLabel: 'Adatkezelési tájékoztatót',
       fileChoose: 'Fájlok kiválasztása',
       fileRemove: 'Eltávolítás',
-      fileTotal: (m: string) => `Összesen: ${m}`,
+      fileTotal: 'Összesen: {m}',
       fileNone: 'Nincs kiválasztott fájl',
       certificateAlt: 'Dun & Bradstreet tanúsítvány — naponta frissülő hitelképességi minősítés',
       certificateTooltip:
@@ -525,15 +525,15 @@ export const dictionaries = {
       whereIsType:
         'A géptípus a gép hátulján lévő adattáblán olvasható, vagy a gép kijelzőjén a menüben az „Info" pontnál.',
       machineFilter: 'Géptípus keresése…',
-      machineSet: (nev: string) => `Gép: ${nev}`,
+      machineSet: 'Gép: {nev}',
       machineReady: 'Rendben. Írja be, milyen alkatrészt keres ehhez a géphez.',
       changeMachine: 'Másik gép',
-      resultsFor: (n: number) => `${n} találat a gyári jegyzékben:`,
+      resultsFor: '{n} találat a gyári jegyzékben:',
       noResults:
         'Erre nem találtam alkatrészt a gyári jegyzékben. Próbálja más szóval, vagy kérje kollégáink segítségét.',
       noResultsMachine:
         'Ehhez a géphez nem találtam ilyen alkatrészt. Próbálja más szóval, vagy váltson géptípust.',
-      usedIn: (n: number) => `${n} géptípusban fordul elő`,
+      usedIn: '{n} géptípusban fordul elő',
       assembly: 'Szerelési egység',
       sprLabel: 'cab',
       sprHint:
@@ -662,7 +662,7 @@ export const dictionaries = {
       privacyLabel: 'Privacy Policy',
       fileChoose: 'Choose files',
       fileRemove: 'Remove',
-      fileTotal: (m: string) => `Total: ${m}`,
+      fileTotal: 'Total: {m}',
       fileNone: 'No file selected',
       certificateAlt: 'Dun & Bradstreet certificate — creditworthiness rating, updated daily',
       certificateTooltip:
@@ -1130,15 +1130,15 @@ export const dictionaries = {
       whereIsType:
         'The machine type is on the rating plate at the back of the machine, or on the machine display under the “Info” menu item.',
       machineFilter: 'Search machine type…',
-      machineSet: (nev: string) => `Machine: ${nev}`,
+      machineSet: 'Machine: {nev}',
       machineReady: 'Good. Now tell me which part you need for this machine.',
       changeMachine: 'Change machine',
-      resultsFor: (n: number) => `${n} match(es) in the factory list:`,
+      resultsFor: '{n} match(es) in the factory list:',
       noResults:
         'I could not find that part in the factory list. Try another word, or ask our colleagues for help.',
       noResultsMachine:
         'I could not find that part for this machine. Try another word, or change the machine type.',
-      usedIn: (n: number) => `used in ${n} machine type(s)`,
+      usedIn: 'used in {n} machine type(s)',
       assembly: 'Assembly',
       sprLabel: 'cab',
       sprHint:
@@ -1266,7 +1266,7 @@ export const dictionaries = {
       privacyLabel: 'Privacy Policy',
       fileChoose: 'Choose files',
       fileRemove: 'Remove',
-      fileTotal: (m: string) => `Total: ${m}`,
+      fileTotal: 'Total: {m}',
       fileNone: 'No file selected',
       certificateAlt: 'Dun & Bradstreet certificate — creditworthiness rating, updated daily',
       certificateTooltip:
@@ -1734,15 +1734,15 @@ export const dictionaries = {
       whereIsType:
         'The machine type is on the nameplate at the back of the machine, or on the machine display under the “Info” menu item.',
       machineFilter: 'Search machine type…',
-      machineSet: (nev: string) => `Machine: ${nev}`,
+      machineSet: 'Machine: {nev}',
       machineReady: 'Good. Now tell me which part you need for this machine.',
       changeMachine: 'Change machine',
-      resultsFor: (n: number) => `${n} match(es) in the factory list:`,
+      resultsFor: '{n} match(es) in the factory list:',
       noResults:
         'I could not find that part in the factory list. Try another word, or ask our team for help.',
       noResultsMachine:
         'I could not find that part for this machine. Try another word, or change the machine type.',
-      usedIn: (n: number) => `used in ${n} machine type(s)`,
+      usedIn: 'used in {n} machine type(s)',
       assembly: 'Assembly',
       sprLabel: 'cab',
       sprHint:
@@ -1870,7 +1870,7 @@ export const dictionaries = {
       privacyLabel: 'Datenschutzerklärung',
       fileChoose: 'Dateien auswählen',
       fileRemove: 'Entfernen',
-      fileTotal: (m: string) => `Gesamt: ${m}`,
+      fileTotal: 'Gesamt: {m}',
       fileNone: 'Keine Datei ausgewählt',
       certificateAlt: 'Dun & Bradstreet Zertifikat — täglich aktualisierte Bonitätsbewertung',
       certificateTooltip:
@@ -2337,15 +2337,15 @@ export const dictionaries = {
       whereIsType:
         'Der Gerätetyp steht auf dem Typenschild an der Rückseite des Geräts oder im Display unter dem Menüpunkt „Info“.',
       machineFilter: 'Gerätetyp suchen…',
-      machineSet: (nev: string) => `Gerät: ${nev}`,
+      machineSet: 'Gerät: {nev}',
       machineReady: 'Gut. Sagen Sie mir jetzt, welches Teil Sie für dieses Gerät brauchen.',
       changeMachine: 'Anderes Gerät',
-      resultsFor: (n: number) => `${n} Treffer in der Werksliste:`,
+      resultsFor: '{n} Treffer in der Werksliste:',
       noResults:
         'Dazu habe ich in der Werksliste kein Teil gefunden. Versuchen Sie es mit einem anderen Wort, oder bitten Sie unsere Kollegen um Hilfe.',
       noResultsMachine:
         'Für dieses Gerät habe ich kein solches Teil gefunden. Versuchen Sie ein anderes Wort oder wechseln Sie den Gerätetyp.',
-      usedIn: (n: number) => `kommt in ${n} Gerätetyp(en) vor`,
+      usedIn: 'kommt in {n} Gerätetyp(en) vor',
       assembly: 'Baugruppe',
       sprLabel: 'cab',
       sprHint:
@@ -2473,7 +2473,7 @@ export const dictionaries = {
       privacyLabel: 'Informativa sulla privacy',
       fileChoose: 'Seleziona i file',
       fileRemove: 'Rimuovi',
-      fileTotal: (m: string) => `Totale: ${m}`,
+      fileTotal: 'Totale: {m}',
       fileNone: 'Nessun file selezionato',
       certificateAlt: 'Certificato Dun & Bradstreet — valutazione del merito creditizio, aggiornata quotidianamente',
       certificateTooltip:
@@ -2941,15 +2941,15 @@ export const dictionaries = {
       whereIsType:
         'Il tipo di macchina è indicato sulla targhetta sul retro della macchina, oppure sul display alla voce di menu «Info».',
       machineFilter: 'Cerca il tipo di macchina…',
-      machineSet: (nev: string) => `Macchina: ${nev}`,
+      machineSet: 'Macchina: {nev}',
       machineReady: 'Bene. Ora mi dica quale ricambio le serve per questa macchina.',
       changeMachine: 'Cambia macchina',
-      resultsFor: (n: number) => `${n} risultati nella lista originale:`,
+      resultsFor: '{n} risultati nella lista originale:',
       noResults:
         'Non ho trovato questo ricambio nella lista originale. Provi con un altro termine oppure chieda aiuto ai nostri colleghi.',
       noResultsMachine:
         'Per questa macchina non ho trovato un ricambio simile. Provi con un altro termine o cambi tipo di macchina.',
-      usedIn: (n: number) => `presente in ${n} tipi di macchina`,
+      usedIn: 'presente in {n} tipi di macchina',
       assembly: 'Gruppo',
       sprLabel: 'cab',
       sprHint:
@@ -3077,7 +3077,7 @@ export const dictionaries = {
       privacyLabel: 'Política de privacidad',
       fileChoose: 'Seleccionar archivos',
       fileRemove: 'Quitar',
-      fileTotal: (m: string) => `Total: ${m}`,
+      fileTotal: 'Total: {m}',
       fileNone: 'Ningún archivo seleccionado',
       certificateAlt: 'Certificado Dun & Bradstreet — calificación de solvencia, actualizada a diario',
       certificateTooltip:
@@ -3545,15 +3545,15 @@ export const dictionaries = {
       whereIsType:
         'El tipo de equipo figura en la placa de características de la parte trasera, o en la pantalla del equipo en el menú «Info».',
       machineFilter: 'Buscar tipo de equipo…',
-      machineSet: (nev: string) => `Equipo: ${nev}`,
+      machineSet: 'Equipo: {nev}',
       machineReady: 'Bien. Dígame ahora qué repuesto necesita para este equipo.',
       changeMachine: 'Cambiar de equipo',
-      resultsFor: (n: number) => `${n} resultados en la lista de fábrica:`,
+      resultsFor: '{n} resultados en la lista de fábrica:',
       noResults:
         'No he encontrado ese repuesto en la lista de fábrica. Pruebe con otra palabra o pida ayuda a nuestros compañeros.',
       noResultsMachine:
         'Para este equipo no he encontrado ese repuesto. Pruebe con otra palabra o cambie el tipo de equipo.',
-      usedIn: (n: number) => `aparece en ${n} tipos de equipo`,
+      usedIn: 'aparece en {n} tipos de equipo',
       assembly: 'Conjunto',
       sprLabel: 'cab',
       sprHint:
@@ -3681,7 +3681,7 @@ export const dictionaries = {
       privacyLabel: '개인정보 처리방침',
       fileChoose: '파일 선택',
       fileRemove: '제거',
-      fileTotal: (m: string) => `합계: ${m}`,
+      fileTotal: '합계: {m}',
       fileNone: '선택된 파일 없음',
       certificateAlt: 'Dun & Bradstreet 인증서 — 매일 갱신되는 신용등급',
       certificateTooltip:
@@ -4148,15 +4148,15 @@ export const dictionaries = {
       whereIsType:
         '장비 유형은 장비 뒷면의 명판에 표시되어 있으며, 장비 화면의 메뉴에서 “Info” 항목에서도 확인할 수 있습니다.',
       machineFilter: '장비 유형 검색…',
-      machineSet: (nev: string) => `장비: ${nev}`,
+      machineSet: '장비: {nev}',
       machineReady: '좋습니다. 이 장비에 필요한 부품을 알려 주세요.',
       changeMachine: '장비 변경',
-      resultsFor: (n: number) => `제조사 목록에서 ${n}건 검색됨:`,
+      resultsFor: '제조사 목록에서 {n}건 검색됨:',
       noResults:
         '제조사 목록에서 해당 부품을 찾지 못했습니다. 다른 단어로 시도하시거나 담당자의 도움을 요청해 주세요.',
       noResultsMachine:
         '이 장비에서는 해당 부품을 찾지 못했습니다. 다른 단어로 시도하시거나 장비 유형을 바꿔 주세요.',
-      usedIn: (n: number) => `${n}개 장비 유형에 사용됨`,
+      usedIn: '{n}개 장비 유형에 사용됨',
       assembly: '조립 단위',
       sprLabel: 'cab',
       sprHint: 'cab 재고 권장 등급: A 등급이 재고 보유 권장도가 가장 높고 D 등급이 가장 낮습니다.',
@@ -4283,7 +4283,7 @@ export const dictionaries = {
       privacyLabel: '隐私政策',
       fileChoose: '选择文件',
       fileRemove: '移除',
-      fileTotal: (m: string) => `合计: ${m}`,
+      fileTotal: '合计: {m}',
       fileNone: '未选择文件',
       certificateAlt: 'Dun & Bradstreet 证书 — 每日更新的信用评级',
       certificateTooltip:
@@ -4748,13 +4748,13 @@ export const dictionaries = {
       askMachine: '该备件涉及多种机型。您是为哪一种设备查找？',
       whereIsType: '机型标注在设备背面的铭牌上，也可以在设备显示屏菜单的“Info”项中查看。',
       machineFilter: '搜索机型…',
-      machineSet: (nev: string) => `设备：${nev}`,
+      machineSet: '设备：{nev}',
       machineReady: '好的。请告诉我这台设备需要哪个备件。',
       changeMachine: '更换设备',
-      resultsFor: (n: number) => `原厂清单中找到 ${n} 条：`,
+      resultsFor: '原厂清单中找到 {n} 条：',
       noResults: '原厂清单中没有找到该备件。请换个说法，或请我们的同事协助。',
       noResultsMachine: '这台设备上没有找到该备件。请换个说法，或更换机型。',
-      usedIn: (n: number) => `用于 ${n} 种机型`,
+      usedIn: '用于 {n} 种机型',
       assembly: '组件',
       sprLabel: 'cab',
       sprHint: 'cab 的备货建议：A 类最值得备货，D 类最不需要。',

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Honeypot } from '@/components/honeypot';
 import { sendForm } from '@/lib/send-form';
-import { FileField } from '@/components/file-field';
+import { FileField, type FajlFeliratok } from '@/components/file-field';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
@@ -20,6 +20,7 @@ export function ProductInquiry({
   productName,
   lang,
   honeypotLabel,
+  fajlFeliratok,
 }: {
   labels: Labels;
   recipient: string;
@@ -27,6 +28,7 @@ export function ProductInquiry({
   lang: Locale;
   /** A rejtett csapdamező felirata a lap nyelvén. */
   honeypotLabel: string;
+  fajlFeliratok: FajlFeliratok;
 }) {
   const [sending, setSending] = useState(false);
 
@@ -121,6 +123,7 @@ export function ProductInquiry({
       </div>
 
       <FileField
+        feliratok={fajlFeliratok}
         id="pi-attachments"
         name="attachments"
         label={labels.attach}

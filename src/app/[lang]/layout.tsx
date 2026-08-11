@@ -76,7 +76,7 @@ export default async function LangLayout({
       {/* Alkatrészkereső — jobbról nyíló fül. Minden oldalról elérhető, mert
           az alkatrész gyakran nem a termékoldalról indulva jut eszébe a
           vevőnek: a szervizhívás közben nyitja ki. */}
-      {ALKATRESZKERESO && <PartsFinder lang={lang} />}
+      {ALKATRESZKERESO && <PartsFinder lang={lang} feliratok={dict.parts} />}
       <Toaster position="bottom-right" richColors />
       {/* Süti-hozzájárulás kezelő (consent banner) — minden oldalon.
           A cím végén a fájl tartalmi lenyomata: enélkül a böngésző az

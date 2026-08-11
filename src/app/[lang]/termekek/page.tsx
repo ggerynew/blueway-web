@@ -4,7 +4,7 @@ import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale } from '@/lib/i18n';
 import { categories, getProductsByCategory } from '@/lib/products';
 import type { Metadata } from 'next';
-import { szervezetRef, weblapRef } from '@/lib/jsonld';
+import { graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export async function generateMetadata({
@@ -30,15 +30,17 @@ export default async function ProductsPage({
   if (!isLocale(lang)) notFound();
   const dict = getDictionary(lang);
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
+  // A morzsa nem díszítés: a felső szintű szekciólapok közül eddig csak a
+  // kapcsolat és a fogalomtár kapott BreadcrumbList-et, a többi nem — a
+  // kétszintű lánc (Főoldal → szakasz) a keresőben is érvényes morzsa.
+  const jsonLd = graf([{
     '@type': 'CollectionPage',
     '@id': absUrl(`${lang}/termekek`),
     name: dict.products.title,
     description: dict.products.lead,
-    inLanguage: lang,
+    inLanguage: nyelvKod(lang),
     url: absUrl(`${lang}/termekek`),
-    isPartOf: weblapRef,
+    isPartOf: weblapRef(lang),
     publisher: szervezetRef,
     mainEntity: {
       '@type': 'ItemList',
@@ -49,7 +51,7 @@ export default async function ProductsPage({
         url: absUrl(`${lang}/termekek/${c.slug}`),
       })),
     },
-  };
+  }, morzsa(lang, [{ name: dict.products.title, path: 'termekek' }])]);
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">

@@ -294,6 +294,18 @@ function katalogus() {
       languages: locales,
     },
     generated_from: 'a weblap forrásadataiból, a builddel együtt frissül',
+    // Az adatállapot dátuma. Az llms.txt-ben eddig is volt, itt nem — pedig
+    // aki CSAK a JSON-t olvassa be, annak enélkül nincs mire hivatkoznia,
+    // amikor az adat frissességét kell megítélnie vagy megadnia.
+    generated_at: new Date().toISOString().slice(0, 10),
+    // Az url mezők hu+en párt adnak; a többi hat nyelvi változat az előtag
+    // cseréjével áll elő. Ez eddig csak az llms.txt-ben volt leírva — a
+    // JSON-t önmagában feldolgozó ügynök nem tudta a német vagy koreai
+    // látogatónak a saját nyelvű lapot linkelni.
+    url_note:
+      'Product/industry URLs are given for hu and en. The other language ' +
+      'versions (us, de, it, es, ko, zh) use the same path with the ' +
+      'language prefix swapped, e.g. /hu/termekek/... -> /de/termekek/...',
     industries: industries.map((i) => ({
       slug: i.slug,
       name: { hu: i.name.hu, en: i.name.en },

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export interface SearchItem {
   name: string;
@@ -37,6 +38,7 @@ export function ProductSearch({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const results = useMemo(() => {
     const q = norm(query.trim());
@@ -79,7 +81,11 @@ export function ProductSearch({
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const target = results[Math.min(active, results.length - 1)];
-      if (target) window.location.href = target.href;
+      // router.push, nem window.location: az utóbbi a basePath-t NEM teszi
+      // hozzá (basePath-os buildben 404-re vitt volna), és teljes
+      // újratöltéssel járt — a listában kattintott <Link> mindkettőt jól
+      // csinálta, az Enter nem. Most ugyanazt az utat járja mindkettő.
+      if (target) router.push(target.href);
     } else if (e.key === 'Escape') {
       setOpen(false);
     }

@@ -4,7 +4,7 @@ import { ContactForm } from '@/components/contact-form';
 import { LegalNotice } from '@/components/legal-notice';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
-import { NAVIGACIO, TERKEP_URL, graf, morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { NAVIGACIO, TERKEP_URL, graf, morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -44,9 +44,9 @@ export default async function ContactPage({
       '@id': absUrl(`${lang}/kapcsolat`),
       name: dict.contact.title,
       description: dict.contact.lead,
-      inLanguage: lang,
+      inLanguage: nyelvKod(lang),
       url: absUrl(`${lang}/kapcsolat`),
-      isPartOf: weblapRef,
+      isPartOf: weblapRef(lang),
       about: szervezetRef,
       mainEntity: szervezetRef,
       significantLink: TERKEP_URL,
@@ -119,6 +119,11 @@ export default async function ContactPage({
         <Reveal delay={0.18}>
           <div className="rounded-2xl border border-line bg-white p-6 md:p-8">
             <ContactForm
+              fajlFeliratok={{
+                fileChoose: dict.ui.fileChoose,
+                fileRemove: dict.ui.fileRemove,
+                fileTotal: dict.ui.fileTotal,
+              }}
               labels={contact.form}
               recipient={contact.email}
               lang={lang}

@@ -163,6 +163,11 @@ export default async function ServicePage({
           <p className="mt-3 max-w-2xl text-ink-muted">{t.formLead}</p>
           <div className="mt-8 rounded-2xl border border-line bg-white p-6 md:p-8">
             <ServiceRequestForm
+              fajlFeliratok={{
+                fileChoose: dict.ui.fileChoose,
+                fileRemove: dict.ui.fileRemove,
+                fileTotal: dict.ui.fileTotal,
+              }}
               labels={t.form}
               recipient={email}
               lang={lang}

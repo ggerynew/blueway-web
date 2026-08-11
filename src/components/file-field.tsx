@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import type { Locale } from '@/lib/i18n';
 import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
 
@@ -27,6 +27,16 @@ function meret(bajt: number, lang: string): string {
  * olvasható, tehát a látogató a méretkorlát átlépése után nem tudna mit tenni
  * azon kívül, hogy elölről kezdi a kiválasztást.
  */
+/** A mező saját feliratai — a kiszolgálótól, propként. A getDictionary
+ *  kliensoldali hívása a teljes nyolcnyelvű szótárat húzta be a kliens-
+ *  csomagba (~71 kB gzip minden lapon) három feliratért. */
+export interface FajlFeliratok {
+  fileChoose: string;
+  fileRemove: string;
+  /** Sablon: az „{m}" helyére kerül a méret. */
+  fileTotal: string;
+}
+
 export function FileField({
   id,
   name,
@@ -35,6 +45,7 @@ export function FileField({
   lang,
   accept,
   tooLarge,
+  feliratok: t,
 }: {
   id: string;
   name: string;
@@ -44,8 +55,8 @@ export function FileField({
   accept: string;
   /** A méretkorlát átlépésekor megjelenő üzenet (az űrlap szótárából). */
   tooLarge?: string;
+  feliratok: FajlFeliratok;
 }) {
-  const t = getDictionary(lang).ui;
   const inputRef = useRef<HTMLInputElement>(null);
   const [fajlok, setFajlok] = useState<File[]>([]);
 
@@ -157,7 +168,7 @@ export function FileField({
 
       {fajlok.length > 0 && (
         <p className={`mt-1.5 text-xs ${tulNagy ? 'font-medium text-red-600' : 'text-ink-muted'}`}>
-          {t.fileTotal(meret(ossz, lang))}
+          {t.fileTotal.replace('{m}', meret(ossz, lang))}
           {tulNagy && tooLarge ? ` — ${tooLarge}` : null}
         </p>
       )}

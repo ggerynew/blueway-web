@@ -3,18 +3,21 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { LangSwitcher } from '@/components/lang-switcher';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import type { Locale } from '@/lib/i18n';
 
 export function MobileNav({
   lang,
   items,
+  feliratok: t,
 }: {
   lang: Locale;
   items: { href: string; label: string }[];
+  /** A két gombfelirat a kiszolgálótól — a getDictionary kliensoldali
+   *  hívása a teljes nyolcnyelvű szótárat húzta volna be ezért a kettőért. */
+  feliratok: { openMenu: string; closeMenu: string };
 }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
-  const t = getDictionary(lang).ui;
 
   return (
     <div className="lg:hidden">

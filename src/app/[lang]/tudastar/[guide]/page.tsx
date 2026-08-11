@@ -8,7 +8,7 @@ import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
-import { morzsa, szervezetRef, weblapRef } from '@/lib/jsonld';
+import { morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
 /** A tudástár-cikkek első publikálásának dátuma (strukturált adathoz). */
@@ -52,13 +52,13 @@ export default async function GuidePage({
         '@type': 'Article',
         headline: guide.title[lang],
         description: guide.short[lang],
-        inLanguage: lang,
+        inLanguage: nyelvKod(lang),
         image: absUrl('images/og.png'),
         datePublished: PUBLISHED,
         dateModified: PUBLISHED,
         author: szervezetRef,
         publisher: szervezetRef,
-        isPartOf: weblapRef,
+        isPartOf: weblapRef(lang),
         mainEntityOfPage: absUrl(`${lang}/tudastar/${guide.slug}`),
       },
       morzsa(lang, [
