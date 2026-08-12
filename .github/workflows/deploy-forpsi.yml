@@ -997,6 +997,51 @@ jobs:
             fi
           done
 
+          # ——— Megújul-e a tanúsítvány, és megmarad-e minden név? ————
+          #
+          # A tárhely a tanúsítványt automatikusan hosszabbítja, egyetlen
+          # feltétellel: a domain A rekordja folyamatosan a tárhelyre
+          # mutasson. Ez a lépés nem hisz a feltételnek, hanem az EREDMÉNYT
+          # méri — mennyi van hátra a lejáratig.
+          #
+          # A Let's Encrypt 90 napra állít ki, és jóval a lejárat előtt újít.
+          # Ha 21 napon belülre csúszik a lejárat, a megújítás elakadt: ilyenkor
+          # még két-három hét van cselekedni, mielőtt a látogatók böngésző-
+          # riasztást kapnának.
+          #
+          # A nevek listája ugyanilyen fontos. A tanúsítvány a fődomain MELLETT
+          # az aliaszt (bluewaytrade.us) is fedi — de az aliasz DNS-e máshol
+          # van kezelve, mint a fődomainé, tehát külön elromolhat. Ha egy
+          # megújításból csak az aliasz esik ki, a blueway.hu tökéletesen
+          # működik tovább, és a hiba észrevétlen marad, amíg valaki meg nem
+          # nyitja a .us címet.
+          echo "— a tanúsítvány élettartama és névlistája —"
+          if TANU=$(echo | timeout 20 openssl s_client -connect "$HOSZT:443" -servername "$HOSZT" 2>/dev/null |
+                    openssl x509 -noout -enddate -ext subjectAltName 2>/dev/null); then
+            LEJAR=$(printf '%s' "$TANU" | sed -n 's/^notAfter=//p')
+            MOST=$(date +%s)
+            VEGE=$(date -d "$LEJAR" +%s 2>/dev/null || echo 0)
+            if [ "$VEGE" -gt 0 ]; then
+              NAP=$(( (VEGE - MOST) / 86400 ))
+              if [ "$NAP" -lt 0 ]; then
+                echo "::error::A tanúsítvány LEJÁRT ($LEJAR). Minden látogató böngésző-riasztást kap."
+              elif [ "$NAP" -lt 21 ]; then
+                echo "::warning::A tanúsítvány $NAP nap múlva lejár ($LEJAR), és még nem újult meg. A Let's Encrypt jóval korábban szokott — nézd meg a tárhely SSL-oldalát és a domain A rekordját."
+              else
+                echo "  $NAP nap van hátra ($LEJAR) — a megújítás rendben halad"
+              fi
+            fi
+            for NEV in "$HOSZT" "www.$HOSZT" bluewaytrade.us www.bluewaytrade.us; do
+              if printf '%s' "$TANU" | grep -q "DNS:$NEV\b"; then
+                echo "  ✓ $NEV"
+              else
+                echo "::warning::A tanúsítványból hiányzik: $NEV — erre a névre a látogató böngésző-riasztást kap."
+              fi
+            done
+          else
+            echo "::warning::A tanúsítvány nem olvasható ki — a lejárat és a névlista nem ellenőrizhető."
+          fi
+
       # ——— Az SSH hibája, a napló legvégén ————————————————————————
       # Az SSH-lépés diagnosztikája a build ezer sora és az ellenőrző lépés
       # közé szorul, a napló végét pedig ez utóbbi tölti ki — a hiba oka
