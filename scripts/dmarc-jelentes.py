@@ -21,16 +21,22 @@ Ez a szkript ezt a beszámolót fordítja le egyetlen kérdésre:
 MIT KELL TUDNI A VÁLASZ ÉRTELMEZÉSÉHEZ
 
 A DMARC akkor teljesül, ha az SPF VAGY a DKIM megfelel — és a levél
-feladója egyezik a borítékon szereplővel („igazodás"). A blueway.hu-nak ma
-NINCS DKIM-kulcsa: tizennégy szokásos szelektort megpróbáltunk, egyik sem
-válaszolt. Vagyis minden a puszta SPF-en múlik, az pedig TOVÁBBÍTÁSKOR
-ELROMLIK: ha valaki a levelünket átirányítja egy másik postafiókba, a
-továbbító kiszolgáló IP-je nem szerepel az SPF-ünkben, és a levél elbukik.
-Ez ma nem baj (p=none), quarantine mellett viszont az ilyen levelek a
-szemétmappában landolnának.
+feladója egyezik a borítékon szereplővel („igazodás"). A kettő közül a DKIM
+a fontosabb, mert TOVÁBBÍTÁST IS TÚLÉL: az SPF elromlik, ha valaki a
+levelünket átirányítja egy másik postafiókba (a továbbító gép IP-je nincs az
+SPF-ünkben), a DKIM-aláírás viszont a levélben utazik. p=none mellett ez
+mindegy, quarantine mellett viszont a különbség az, hogy a továbbított
+levél megérkezik-e vagy a szemétmappába kerül.
 
-Ezért a szkript nem csak százalékot mond, hanem külön kiemeli, ha a
-megfelelés csak SPF-en áll — mert akkor a szigorítás előtt DKIM kell.
+Ezért a szkript külön kiemeli, ha a megfelelés CSAK SPF-en áll — akkor a
+szigorítás előtt DKIM kell.
+
+Egy tanulság az első éles futásból: a DKIM meglétét NE a DNS-ből próbáld
+kitalálni. A szelektor nevét visszafelé nem lehet lekérdezni, csak
+tippelni — tizennégy szokásos nevet próbáltunk, egyik sem válaszolt, és
+ebből tévesen arra jutottunk, hogy nincs is aláírás. A jelentések aztán
+megmutatták, hogy minden levél DKIM-mel megy. A mérés tudta, a találgatás
+nem: azóta a szkript a szelektorok nevét is kiírja.
 
 HASZNÁLAT
 
@@ -216,6 +222,7 @@ class Osszesites:
             lambda: {'db': 0, 'megfelel': 0, 'spf': 0, 'dkim': 0, 'fejlec': set()},
         )
         self.hazirendek = collections.Counter()
+        self.szelektorok = collections.Counter()  # (tartomány, szelektor, eredmény) → db
         self.kezdet = None
         self.veg = None
 
@@ -286,6 +293,22 @@ class Osszesites:
                 fejlec = szoveg(azon, 'header_from')
                 if fejlec:
                     f['fejlec'].add(fejlec)
+
+            # A DKIM-SZELEKTOR neve. Nem díszítés: a szelektor az egyetlen
+            # hely, ahol a nevünkben aláíró rendszer megnevezi magát. A
+            # DNS-ből visszafelé nem kereshető ki — csak találgatni lehet, mi
+            # a neve (tizennégy szokásos nevet próbáltunk, egyik sem volt jó,
+            # és ebből tévesen arra jutottunk, hogy nincs is aláírás). A
+            # jelentés viszont MEGMONDJA. Ha egyszer idegen szelektor jelenik
+            # meg, az azt jelenti, hogy más is aláír a nevünkben.
+            hitel = rekord.find('auth_results')
+            if hitel is not None:
+                for d in hitel.findall('dkim'):
+                    szel = szoveg(d, 'selector')
+                    tart = szoveg(d, 'domain')
+                    eredm = szoveg(d, 'result', '?')
+                    if szel or tart:
+                        self.szelektorok[(tart, szel or '(névtelen)', eredm)] += db
         return True
 
 
@@ -366,6 +389,16 @@ def main() -> int:
         ki(f'  {jel} {ip:<16}{cimke}'.rstrip())
         ki(f'      {adat["db"]} levél, ebből {bukott} nem felel meg '
               f'(SPF {adat["spf"]}, DKIM {adat["dkim"]}) — feladó: {fejlecek}')
+
+    # ——— Ki ír alá a nevünkben ————————————————————————————
+    if ossz.szelektorok:
+        ki()
+        ki(DISZ['egyes'] * 3 + ' DKIM-aláírások ' + DISZ['egyes'] * 44)
+        ki('  Ezek a rendszerek írták alá a leveleinket. Idegen név itt azt')
+        ki('  jelenti, hogy más is aláír a blueway.hu nevében.')
+        for (tart, szel, eredm), db in ossz.szelektorok.most_common():
+            jel = DISZ['ok'] if eredm.lower() == 'pass' else DISZ['bukott']
+            ki(f'  {jel} {tart} — szelektor: {szel} ({eredm}, {db} levél)')
 
     # ——— A tényleges kérdés ————————————————————————————————
     ki()
