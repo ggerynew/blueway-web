@@ -45,6 +45,13 @@ Például:
     python3 scripts/dmarc-jelentes.py ~/Letoltesek/dmarc/
     python3 scripts/dmarc-jelentes.py jelentes1.xml.gz jelentes2.zip
 
+Windowson, a parancssorból (a `py` a Python indítója, nem a `python`):
+
+    py dmarc-jelentes.py D:\PING\BWDMARC
+
+A szkript nem igényel telepítést: csak a Python alapkészletét használja,
+tehát önmagában, egyetlen fájlként is lefut bárhol.
+
 Mindhárom szokásos formátumot érti (.xml, .gz, .zip) — a szolgáltatók
 ugyanis nem egyformán csomagolnak: a Google zip-et küld, mások gzip-et.
 
@@ -65,6 +72,50 @@ import sys
 import zipfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+
+# ——— Kiírás Windows-parancssorban is ————————————————————————————
+#
+# A magyar Windows konzolkódlapja (cp852, cp1250) nem ismeri a pipát, az
+# iksz-jelet és a dobozrajzoló vonalakat — a szkript kiírás közben hasalna
+# el UnicodeEncodeError-ral, mielőtt bármi hasznosat mondana. Ugyanez a baj
+# akkor is, ha a kimenetet fájlba irányítják (`> jelentes.txt`), mert olyankor
+# a Python a rendszer kódlapját használja, nem a konzol Unicode-felületét.
+#
+# Két lépésben védekezünk: megkérjük a kimenetet, hogy pótolja a
+# kiírhatatlan jeleket kérdőjellel (így semmiképp nem áll el), és a
+# díszítést ahhoz igazítjuk, amit a kódlap TÉNYLEG tud.
+try:
+    sys.stdout.reconfigure(errors='replace')
+except Exception:
+    pass
+
+
+def _kiirhato(jelek: str) -> bool:
+    kod = getattr(sys.stdout, 'encoding', None) or 'ascii'
+    try:
+        jelek.encode(kod)
+        return True
+    except (UnicodeEncodeError, LookupError):
+        return False
+
+
+if _kiirhato('═─✓✗•'):
+    DISZ = {'kettos': '═', 'egyes': '─', 'ok': '✓', 'bukott': '✗', 'pont': '•'}
+else:
+    DISZ = {'kettos': '=', 'egyes': '-', 'ok': '[ok]', 'bukott': '[!!]', 'pont': '*'}
+
+# A tipográfiai jelek (gondolatjel, nyíl, idézőjel) is hiányoznak a régi
+# kódlapokból. Kérdőjellé váltva félreérthetők — a „p=none → quarantine"
+# sorból „p=none ? quarantine" lenne —, ezért inkább ASCII-párra cseréljük
+# őket, ha a kimenet nem bírja el az eredetit.
+_TIPO_OK = _kiirhato('—→„"…')
+_POTLAS = str.maketrans({'—': '-', '–': '-', '→': '->', '„': '"', '"': '"', '…': '...'})
+
+
+def ki(szoveg: str = '') -> None:
+    """Kiírás úgy, hogy bármelyik konzolon olvasható maradjon."""
+    print(szoveg if _TIPO_OK else szoveg.translate(_POTLAS))
+
 
 # ——— Küszöbök a döntéshez ——————————————————————————————————————
 #
@@ -288,37 +339,37 @@ def main() -> int:
     arany = (megfelel / osszes * 100) if osszes else 0.0
     napok = ((ossz.veg - ossz.kezdet) / 86400) if (ossz.kezdet and ossz.veg) else 0
 
-    print()
-    print('═══ DMARC-jelentés ══════════════════════════════════════════')
-    print(f'  {beolvasva} jelentés {len({o for o, _, _ in ossz.jelentesek.values()})} '
+    ki()
+    ki(DISZ['kettos'] * 3 + ' DMARC-jelentés ' + DISZ['kettos'] * 44)
+    ki(f'  {beolvasva} jelentés {len({o for o, _, _ in ossz.jelentesek.values()})} '
           f'szolgáltatótól: '
           f'{", ".join(sorted({o for o, _, _ in ossz.jelentesek.values()}))}')
-    print(f'  Időszak: {nap(ossz.kezdet)} — {nap(ossz.veg)} ({napok:.0f} nap)')
+    ki(f'  Időszak: {nap(ossz.kezdet)} — {nap(ossz.veg)} ({napok:.0f} nap)')
     for hr, db in ossz.hazirendek.most_common():
-        print(f'  Közzétett házirend: {hr}  ({db} jelentésben)')
-    print()
-    print(f'  Levelek száma:      {osszes}')
-    print(f'  DMARC-nak megfelel: {megfelel} ({arany:.1f}%)')
-    print(f'  Ebből DKIM-mel is:  {dkim_van}')
-    print(f'  Csak SPF-en múlik:  {csak_spf}')
+        ki(f'  Közzétett házirend: {hr}  ({db} jelentésben)')
+    ki()
+    ki(f'  Levelek száma:      {osszes}')
+    ki(f'  DMARC-nak megfelel: {megfelel} ({arany:.1f}%)')
+    ki(f'  Ebből DKIM-mel is:  {dkim_van}')
+    ki(f'  Csak SPF-en múlik:  {csak_spf}')
 
     # ——— Feladók, a legtöbbet küldővel kezdve ————————————————
-    print()
-    print('─── Feladó gépek ────────────────────────────────────────────')
+    ki()
+    ki(DISZ['egyes'] * 3 + ' Feladó gépek ' + DISZ['egyes'] * 46)
     rendezett = sorted(ossz.forrasok.items(), key=lambda x: -x[1]['db'])
     for ip, adat in rendezett:
         bukott = adat['db'] - adat['megfelel']
-        jel = '✓' if bukott == 0 else '✗'
+        jel = DISZ['ok'] if bukott == 0 else DISZ['bukott']
         nev = '' if ervek.nincs_nevfeloldas else (ptr_nev(ip) or '')
         cimke = f' [{nev}]' if nev else ''
         fejlecek = ', '.join(sorted(adat['fejlec'])) or '?'
-        print(f'  {jel} {ip:<16}{cimke}'.rstrip())
-        print(f'      {adat["db"]} levél, ebből {bukott} nem felel meg '
+        ki(f'  {jel} {ip:<16}{cimke}'.rstrip())
+        ki(f'      {adat["db"]} levél, ebből {bukott} nem felel meg '
               f'(SPF {adat["spf"]}, DKIM {adat["dkim"]}) — feladó: {fejlecek}')
 
     # ——— A tényleges kérdés ————————————————————————————————
-    print()
-    print('─── Szigoríthatunk? ─────────────────────────────────────────')
+    ki()
+    ki(DISZ['egyes'] * 3 + ' Szigoríthatunk? ' + DISZ['egyes'] * 43)
     akadalyok = []
     if osszes < ELEG_LEVEL:
         akadalyok.append(f'kevés a minta ({osszes} levél, legalább {ELEG_LEVEL} kellene)')
@@ -330,26 +381,26 @@ def main() -> int:
         akadalyok.append('NINCS DKIM: a megfelelés csak SPF-en áll, ami továbbításkor elromlik')
 
     if not akadalyok:
-        print('  IGEN — a minta elég nagy, elég hosszú, és a levelek gyakorlatilag')
-        print('  mind megfelelnek. A következő lépés: p=none → p=quarantine, pct=25')
-        print('  kezdéssel, majd fokozatosan 100-ig. A rekord:')
-        print('    v=DMARC1; p=quarantine; pct=25; rua=mailto:dmarc@blueway.hu')
+        ki('  IGEN — a minta elég nagy, elég hosszú, és a levelek gyakorlatilag')
+        ki('  mind megfelelnek. A következő lépés: p=none → p=quarantine, pct=25')
+        ki('  kezdéssel, majd fokozatosan 100-ig. A rekord:')
+        ki('    v=DMARC1; p=quarantine; pct=25; rua=mailto:dmarc@blueway.hu')
     else:
-        print('  MÉG NEM. Ami hiányzik:')
+        ki('  MÉG NEM. Ami hiányzik:')
         for a in akadalyok:
-            print(f'    • {a}')
+            ki(f"    {DISZ['pont']} {a}")
         if dkim_van == 0:
-            print()
-            print('  A DKIM a legfontosabb: kérd a tárhelyszolgáltatótól a bekapcsolását')
-            print('  a blueway.hu-ra. Nélküle egy továbbított levelünk quarantine')
-            print('  mellett a szemétmappába kerülne, és a vevő nem tudná meg.')
+            ki()
+            ki('  A DKIM a legfontosabb: kérd a tárhelyszolgáltatótól a bekapcsolását')
+            ki('  a blueway.hu-ra. Nélküle egy továbbított levelünk quarantine')
+            ki('  mellett a szemétmappába kerülne, és a vevő nem tudná meg.')
         bukok = [(ip, a) for ip, a in rendezett if a['db'] - a['megfelel'] > 0]
         if bukok:
-            print()
-            print('  A nem megfelelő feladókat egyenként el kell dönteni:')
-            print('  a MIÉNK-et javítani kell (SPF-be felvenni), az IDEGEN pedig')
-            print('  éppen a hamisítás, ami ellen a szigorítás véd.')
-    print()
+            ki()
+            ki('  A nem megfelelő feladókat egyenként el kell dönteni:')
+            ki('  a MIÉNK-et javítani kell (SPF-be felvenni), az IDEGEN pedig')
+            ki('  éppen a hamisítás, ami ellen a szigorítás véd.')
+    ki()
     return 0
 
 
