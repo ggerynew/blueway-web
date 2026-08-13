@@ -1,10 +1,13 @@
 {
-  // Külön beállítás, mert ez a program NEM a weblap része: Node alatt fut,
-  // nem böngészőben. A gyökér tsconfig DOM-ot és bundler-feloldást ír elő —
-  // az itteni kódra egyik sem igaz.
+  // A program NEM a weblap része: Node és Electron alatt fut, nem böngészőben.
   //
-  // A `noEmit` szándékos: fordítás nincs, a Node a típusokat futáskor
-  // levetkőzi (--experimental-strip-types). A tsc itt csak ellenőriz.
+  // Miért fordítunk, holott a parancssori változat futásidejű
+  // típuslevetkőzéssel is elmenne: az Electron a fő folyamatot nem tudja
+  // futásidőben levetkőztetni, a telepítőbe pedig kész JavaScript kell.
+  // Egyetlen modell van tehát: a forrás TypeScript, a kimenet a dist/ alatt.
+  //
+  // Ezért hivatkoznak az importok .js-re, holott a fájl .ts — ez az ESM
+  // szabvány útja: az import a KIMENETI fájlnevet nevezi meg.
   "compilerOptions": {
     "target": "ES2023",
     "lib": ["ES2023"],
@@ -19,14 +22,11 @@
     "exactOptionalPropertyTypes": false,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "noEmit": true,
-    // A típuslevetkőztetés futásidőben nem tud átírni semmit, ezért a
-    // forráskódnak már önmagában futtathatónak kell lennie: az importokban
-    // ott a .ts kiterjesztés, a típusimportok pedig `import type`-ok.
-    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "erasableSyntaxOnly": true,
-    "isolatedModules": true
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "."
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "asztali/**/*.ts"]
 }

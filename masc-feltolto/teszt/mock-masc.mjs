@@ -30,6 +30,14 @@ const SUTI_NEV = 'MASCSESSID';
 const ERVENYES_SUTI = 'teszt-munkamenet-123';
 const CSRF_JEGY = 'csrf-abc123';
 
+// A második lépcső — a cég saját belépője. Szándékosan MÁS a mezőneve, MÁS a
+// jegye, és MÁSHOVÁ posztol, mint az első: a valódi MASC-on sincs okunk
+// feltételezni, hogy a két űrlap egyforma. Ha a kliens ezt is végigviszi,
+// akkor tényleg olvassa a lapot, nem a szerencsére hagyatkozik.
+const CEG_SUTI_NEV = 'CEGSESSID';
+const CEG_ERVENYES_SUTI = 'teszt-ceg-456';
+const CEG_CSRF_JEGY = 'csrf-ceg-789';
+
 /** Az elFinder útvonal-kódolása. */
 export function hashol(kotetId, relativUt) {
   const ut = relativUt === '' ? '/' : relativUt;
@@ -66,6 +74,11 @@ export function mockIndit(beallitas) {
     },
   };
   for (const kotet of Object.values(kotetek)) mkdirSync(kotet.mappa, { recursive: true });
+
+  // Szándékos hibaokozás: ezzel próbálható ki, hogy az elakadt bizonylat a
+  // következő futásnál magától újra sorra kerül-e. Enélkül az
+  // újrapróbálkozást csak feltételezni tudnánk.
+  let feltoltesHiba = false;
 
   /** Egy lemezbeli elem leírása elFinder-alakban. */
   function elemLeiras(kotetId, relativUt) {
@@ -115,9 +128,36 @@ export function mockIndit(beallitas) {
       <button type="submit">Belépés</button>
     </form></body></html>`;
 
+  // A cégválasztó lapon KÉT űrlap van: egy kereső és a belépés. A kliensnek a
+  // jelszómezőről kell felismernie, melyik az igazi — ez a valódi portálokon
+  // is így van, és pont ezen szokott elhasalni a találgatás.
+  const cegBelepesiLap = `<!doctype html><html lang="hu"><body>
+    <h1>Válasszon céget</h1>
+    <form method="get" action="/kereses">
+      <input type="text" name="q" placeholder="keresés">
+    </form>
+    <form method="post" action="/ceg-belepes/ellenoriz">
+      <input type="hidden" name="csrf2" value="${CEG_CSRF_JEGY}">
+      <input type="text" name="ceg_user">
+      <input type="password" name="ceg_pass">
+      <button type="submit">Tovább</button>
+    </form></body></html>`;
+
+  /** Az első lépcső megvan-e. */
+  function portalonBent(keres) {
+    return (keres.headers.cookie ?? '').includes(`${SUTI_NEV}=${ERVENYES_SUTI}`);
+  }
+
+  /**
+   * Beengedjük-e a konnektorhoz.
+   *
+   * Kétlépcsős üzemben MINDKÉT süti kell: a portálra belépve még nem látjuk a
+   * cég mappáit. Ez a lényege annak, amit a program megtanult.
+   */
   function bejelentkezett(keres) {
-    const suti = keres.headers.cookie ?? '';
-    return suti.includes(`${SUTI_NEV}=${ERVENYES_SUTI}`);
+    if (!portalonBent(keres)) return false;
+    if (beallitas.lepcsok !== 2) return true;
+    return (keres.headers.cookie ?? '').includes(`${CEG_SUTI_NEV}=${CEG_ERVENYES_SUTI}`);
   }
 
   function jsonValasz(valasz, adat, kod = 200) {
@@ -152,6 +192,42 @@ export function mockIndit(beallitas) {
       }
       valasz.writeHead(302, {
         'set-cookie': `${SUTI_NEV}=${ERVENYES_SUTI}; Path=/; HttpOnly`,
+        // Kétlépcsős üzemben a portál AZONNAL a cég belépőjére dob át. A
+        // kliensnek nem kell tudnia ennek a lapnak a címét — onnan folytatja,
+        // ahová az átirányítás vitte.
+        location: beallitas.lepcsok === 2 ? '/ceg-belepes' : '/',
+      });
+      valasz.end();
+      return;
+    }
+
+    // — Második lépcső: a cég belépője —
+    if (url.pathname === '/ceg-belepes' || url.pathname === '/ceg-belepes/ellenoriz') {
+      if (!portalonBent(keres)) {
+        // A portál nélkül ide nem lehet bejutni: a lap a belépőt adja vissza.
+        valasz.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+        valasz.end(belepesiLap);
+        return;
+      }
+      if (keres.method === 'GET') {
+        valasz.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+        valasz.end(cegBelepesiLap);
+        return;
+      }
+      const darabok = [];
+      for await (const d of keres) darabok.push(d);
+      const urlap = new URLSearchParams(Buffer.concat(darabok).toString('utf8'));
+      const jo =
+        urlap.get('csrf2') === CEG_CSRF_JEGY &&
+        urlap.get('ceg_user') === 'trade' &&
+        urlap.get('ceg_pass') === 'trade-titok';
+      if (!jo) {
+        valasz.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+        valasz.end(cegBelepesiLap);
+        return;
+      }
+      valasz.writeHead(302, {
+        'set-cookie': `${CEG_SUTI_NEV}=${CEG_ERVENYES_SUTI}; Path=/; HttpOnly`,
         location: '/',
       });
       valasz.end();
@@ -228,6 +304,7 @@ export function mockIndit(beallitas) {
       }
 
       if (parancs === 'upload') {
+        if (feltoltesHiba) return jsonValasz(valasz, { error: 'errUploadTransfer' });
         if (!urlapAdat) return jsonValasz(valasz, { error: 'errUploadNoFiles' });
         const cel = urlapAdat.get('target');
         const { kotetId, relativUt } = kibont(String(cel));
@@ -274,7 +351,24 @@ export function mockIndit(beallitas) {
         konnektor: `http://127.0.0.1:${cim.port}/connector.php`,
         belepesUrl: `http://127.0.0.1:${cim.port}/belepes`,
         suti: `${SUTI_NEV}=${ERVENYES_SUTI}`,
+        // Kétlépcsős üzemben mindkét süti kell a konnektorhoz.
+        mindketSuti: `${SUTI_NEV}=${ERVENYES_SUTI}; ${CEG_SUTI_NEV}=${CEG_ERVENYES_SUTI}`,
+        /** A helyes belépési lépcsők — a próbák ezt adják a programnak. */
+        lepesek: [
+          {
+            cimke: 'MASC portál',
+            url: `http://127.0.0.1:${cim.port}/belepes`,
+            felhasznalo: 'blueway',
+            jelszo: 'titok',
+          },
+          // Cím NÉLKÜL: onnan folytatjuk, ahová az első lépcső átdobott.
+          { cimke: 'Blueway Trade', url: '', felhasznalo: 'trade', jelszo: 'trade-titok' },
+        ],
         kotetek,
+        /** A feltöltés szándékos elbuktatása, illetve visszaengedése. */
+        feltoltestElbuktat: (be) => {
+          feltoltesHiba = be;
+        },
         leallit: () => new Promise((k) => kiszolgalo.close(k)),
       });
     });

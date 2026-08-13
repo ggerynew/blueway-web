@@ -11,11 +11,19 @@
  * tartomány- és útvonalszabályt nem néz — egyetlen kiszolgálóval beszélünk,
  * egyetlen futás erejéig, ott ezeknek nincs szerepük.
  */
-import type { Naplo } from './naplo.ts';
+import type { Naplo } from './naplo.js';
 
 export class SutisKeres {
   private sutik = new Map<string, string>();
   private naplo: Naplo;
+  /**
+   * Hol kötöttünk ki a legutóbbi kérés után, az átirányításokat követve.
+   *
+   * A lépcsős belépéshez kell: a MASC portálra belépve a szerver átdob a
+   * cégválasztó/második belépési lapra, és a következő lépés űrlapja ott van.
+   * Enélkül a második lépés címét kézzel kellene kitalálni.
+   */
+  vegsoUrl = '';
 
   constructor(naplo: Naplo) {
     this.naplo = naplo;
@@ -100,7 +108,10 @@ export class SutisKeres {
 
       const atiranyit = valasz.status >= 300 && valasz.status < 400;
       const cel = valasz.headers.get('location');
-      if (!atiranyit || !cel) return valasz;
+      if (!atiranyit || !cel) {
+        this.vegsoUrl = jelenlegiUrl;
+        return valasz;
+      }
 
       if (lepes === maxAtiranyitas) {
         throw new Error(`Túl sok átirányítás (${maxAtiranyitas}) — utolsó cél: ${cel}`);

@@ -19,12 +19,12 @@ import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 
 import { mockIndit, fajlokatOsszeszed } from './mock-masc.mjs';
-import { Naplo } from '../src/naplo.ts';
-import { SutisKeres } from '../src/sutis-keres.ts';
-import { belep, gyokeretValaszt } from '../src/bejelentkezes.ts';
-import { feltoltesLefuttat } from '../src/feltolto.ts';
-import { bizonylatokatGyujt, honapotErtelmez, datumbolHonap } from '../src/bizonylatok.ts';
-import { beallitasokatBetolt, BeallitasHiba } from '../src/beallitasok.ts';
+import { Naplo } from '../dist/src/naplo.js';
+import { SutisKeres } from '../dist/src/sutis-keres.js';
+import { belep, gyokeretValaszt } from '../dist/src/bejelentkezes.js';
+import { feltoltesLefuttat } from '../dist/src/feltolto.js';
+import { bizonylatokatGyujt, honapotErtelmez, datumbolHonap } from '../dist/src/bizonylatok.js';
+import { beallitasokatBetolt, BeallitasHiba } from '../dist/src/beallitasok.js';
 
 /** Ideiglenes munkamappa egy próbához. */
 function munkamappa() {
@@ -451,7 +451,7 @@ describe('feltöltés', () => {
 });
 
 describe('parancssori felület', () => {
-  const BELEPESI_PONT = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'index.ts');
+  const BELEPESI_PONT = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist', 'src', 'index.js');
 
   /**
    * A programot úgy indítjuk, ahogy a felhasználó tenné: külön folyamatban.
@@ -468,9 +468,16 @@ describe('parancssori felület', () => {
     for (const kulcs of Object.keys(kornyezet)) {
       if (kulcs.startsWith('MASC_')) delete kornyezet[kulcs];
     }
+    // A tesztfuttató a saját gyerekfolyamataival egy belső protokollon beszél,
+    // amit ezek a változók kapcsolnak be. Ha a MI gyerekünk is örökli őket,
+    // beleszól ebbe a párbeszédbe, és a futtató érthetetlen adatra panaszkodik
+    // („Unable to deserialize cloned data"). A programunknak semmi köze hozzá.
+    delete kornyezet.NODE_TEST_CONTEXT;
+    delete kornyezet.NODE_OPTIONS;
+
     const gyerek = spawn(
       process.execPath,
-      ['--experimental-strip-types', BELEPESI_PONT, ...ervek, '--beallitas', konfigUt],
+      [BELEPESI_PONT, ...ervek, '--beallitas', konfigUt],
       { env: kornyezet },
     );
 

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      Szigorú tartalomszabályzat: az ablak nem tölthet be semmit kívülről, és
+      nem futtathat beágyazott szkriptet. A program bizonylatokkal és
+      jelszavakkal dolgozik — itt nincs helye idegen kódnak.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:"
+    />
+    <title>MASC bizonylat-feltöltő</title>
+    <link rel="stylesheet" href="stilus.css" />
+  </head>
+  <body>
+    <header class="fejlec">
+      <h1>MASC bizonylat-feltöltő</h1>
+      <span class="fejlec-alcim" id="alcim"></span>
+      <span class="kitolto"></span>
+      <button id="mind-szinkron">Összes szinkronizálása</button>
+      <button id="uj-ceg" class="elsodleges">Új cég</button>
+    </header>
+
+    <main class="torzs">
+      <div id="jelszo-figyelmeztetes" class="figyelmeztetes" hidden>
+        Ezen a gépen nem érhető el a jelszavak védett tárolása, ezért a
+        jelszavakat nem írjuk lemezre — a program bezárása után újra meg kell
+        adni őket. (Windowson ez a védelem rendszerint működik.)
+      </div>
+
+      <div id="ceg-lista" class="ceg-lista"></div>
+
+      <div id="ures" class="ures" hidden>
+        <p>Még nincs felvéve egyetlen cég sem.</p>
+        <p>
+          Vegyél fel egyet: add meg a MASC-portál és a cég belépési adatait,
+          valamint azokat a mappákat, ahonnan a bizonylatok jönnek.
+        </p>
+        <button id="ures-uj-ceg" class="elsodleges">Első cég felvétele</button>
+      </div>
+    </main>
+
+    <!-- Cég felvétele és szerkesztése -->
+    <dialog id="ceg-parbeszed">
+      <form method="dialog" class="urlap" id="ceg-urlap">
+        <div class="parbeszed-fej">
+          <h1 id="parbeszed-cim">Új cég</h1>
+        </div>
+
+        <div class="parbeszed-torzs">
+          <div id="urlap-hibak" class="hibalista" hidden></div>
+
+          <section class="szakasz">
+            <h2>A cég</h2>
+            <label>
+              <span>Cégnév</span>
+              <input type="text" id="mezo-nev" placeholder="Blueway Trade Kft." />
+              <span class="sugo">Ez látszik a főképernyőn és az ablak címsorában.</span>
+            </label>
+
+            <label>
+              <span>Konnektor URL</span>
+              <input
+                type="url"
+                id="mezo-konnektor"
+                placeholder="https://masc.hu/elfinder/php/connector.php"
+              />
+              <span class="sugo">
+                A böngészőben F12 → Hálózat fül, kattints egy mappára a fán: a
+                megjelenő „cmd=open" kérés címe kell, a ? jel előtti részig.
+              </span>
+            </label>
+
+            <label>
+              <span>Feltöltési kötet neve</span>
+              <input type="text" id="mezo-gyoker" placeholder="Feltöltés" />
+              <span class="sugo">
+                Elég egy jellemző részlet. A „Blueway Trade Kft - Feltöltés"
+                kötethez a „Feltöltés" megfelel.
+              </span>
+            </label>
+          </section>
+
+          <section class="szakasz">
+            <h2>Belépés</h2>
+            <p class="sugo sugo-blokk">
+              A MASC két lépcsőben léptet be: előbb a MASC Kft. portáljára,
+              majd onnan a cég saját felületére. A lépcsők sorrendben futnak le.
+            </p>
+            <div id="lepcsok"></div>
+            <button type="button" id="lepcso-hozzaad" class="apro">+ További lépcső</button>
+          </section>
+
+          <section class="szakasz">
+            <h2>Figyelt mappák</h2>
+            <p class="sugo sugo-blokk">
+              Ezekbe a mappákba kerülnek a bizonylatok ezen a gépen. A program
+              a tartalmukat tölti fel, és jegyzi, mi ment már fel.
+            </p>
+            <ul class="mappa-lista" id="mappa-lista"></ul>
+            <button type="button" id="mappa-hozzaad" class="apro">+ Mappa tallózása</button>
+          </section>
+
+          <section class="szakasz">
+            <h2>Működés</h2>
+            <label class="pipa">
+              <input type="checkbox" id="mezo-automata" />
+              <span>
+                Induláskor csatlakozzon és szinkronizáljon magától
+                <span class="sugo">
+                  Ilyenkor a korábban elakadt bizonylatokat is újrapróbálja.
+                </span>
+              </span>
+            </label>
+            <label class="pipa">
+              <input type="checkbox" id="mezo-rekurziv" />
+              <span>
+                Az almappákat is nézze
+                <span class="sugo">Enélkül csak a megadott mappa saját fájljai kerülnek fel.</span>
+              </span>
+            </label>
+            <label class="pipa">
+              <input type="checkbox" id="mezo-fajldatum" />
+              <span>
+                Minden bizonylat a saját dátuma szerinti hónapba
+                <span class="sugo">
+                  Enélkül minden az aktuális hónap mappájába kerül.
+                </span>
+              </span>
+            </label>
+            <details class="reszletek">
+              <summary>Elfogadott kiterjesztések</summary>
+              <label>
+                <span>Kiterjesztések vesszővel</span>
+                <input type="text" id="mezo-kiterjesztesek" placeholder="pdf, jpg, xml" />
+                <span class="sugo">
+                  Üresen hagyva az alapértelmezett lista érvényes (pdf, jpg,
+                  jpeg, png, tif, tiff, xml, csv, xls, xlsx, doc, docx).
+                </span>
+              </label>
+            </details>
+          </section>
+        </div>
+
+        <div class="parbeszed-lab">
+          <button type="button" id="urlap-megse">Mégse</button>
+          <button type="button" id="urlap-ment" class="elsodleges">Mentés</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="fo.js"></script>
+  </body>
+</html>

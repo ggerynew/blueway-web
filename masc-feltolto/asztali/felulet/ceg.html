@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:"
+    />
+    <title>Cég</title>
+    <link rel="stylesheet" href="stilus.css" />
+  </head>
+  <body>
+    <header class="fejlec">
+      <h1 id="ceg-nev">…</h1>
+      <span class="allapot" id="allapot">Nincs csatlakozva</span>
+      <span class="kitolto"></span>
+      <button id="kapcsolo" class="elsodleges">Csatlakozás</button>
+      <button id="szinkron">Szinkronizálás</button>
+      <button id="atvizsgal">Mappák átnézése</button>
+    </header>
+
+    <main class="torzs">
+      <p class="ceg-uzenet" id="uzenet"></p>
+
+      <section class="szakasz">
+        <h2>Figyelt mappák</h2>
+        <ul class="mappa-lista" id="mappak"></ul>
+      </section>
+
+      <section class="szakasz">
+        <h2>Bizonylatok</h2>
+        <div class="szuro" id="szuro">
+          <button data-szuro="mind" class="aktiv">Mind</button>
+          <button data-szuro="varakozik">Feltöltésre vár</button>
+          <button data-szuro="hibas">Hibás</button>
+          <button data-szuro="feltoltve">Feltöltve</button>
+        </div>
+        <div id="fajl-doboz"></div>
+      </section>
+
+      <section class="szakasz">
+        <h2>Napló</h2>
+        <div class="naplo" id="naplo"></div>
+      </section>
+    </main>
+
+    <script src="ceg.js"></script>
+  </body>
+</html>

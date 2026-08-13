@@ -6,3 +6,10 @@ masc.*.env
 # Naplófájlok a --naplo kapcsolótól.
 *.naplo
 naplo/
+
+# Függőségek és fordítási kimenet.
+node_modules/
+dist/
+
+# Az elkészült Windows-telepítő (electron-builder kimenete).
+kiadas/

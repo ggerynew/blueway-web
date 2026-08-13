@@ -3,14 +3,14 @@ name: MASC feltöltő ellenőrzése
 # A bizonylat-feltöltő próbái. Csak akkor fut, ha a program tényleg változott —
 # a weblap szerkesztése ne indítson fölösleges futásokat.
 #
-# Miért van rá szükség: ez a program KÖNYVELÉSI ANYAGGAL dolgozik. Ha elromlik,
-# az nem egy elcsúszott gomb, hanem hiányzó vagy duplán feltöltött bizonylat.
-# A tesztek pontosan ezt a hármat őrzik: felmegy-e, nem megy-e fel kétszer, és
-# nem írunk-e felül magunktól semmit.
+# Miért van rá szükség: ez a program KÖNYVELÉSI ANYAGGAL dolgozik, immár több
+# cégével. Ha elromlik, az nem egy elcsúszott gomb, hanem hiányzó vagy duplán
+# feltöltött bizonylat — esetleg a rossz cég mappájában.
 #
 # A masc.hu-hoz NEM nyúl: a próbák egy helyben futó, elFinder-utánzó
-# teszt-konnektor ellen mennek (masc-feltolto/teszt/mock-masc.mjs). Éles
-# hozzáférés így nem is kell, és nem is kerülhet a repóba.
+# teszt-konnektor ellen mennek (masc-feltolto/teszt/mock-masc.mjs), amely a
+# kétlépcsős belépést is utánozza. Éles hozzáférés így nem is kell, és nem is
+# kerülhet a repóba.
 on:
   push:
     branches: [main]
@@ -26,35 +26,57 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    # A feltöltő önálló projekt, saját függőségekkel: az Electron nem terhelheti
+    # a weblap telepítését, és a weblap kiadását nem lassíthatja egy asztali
+    # program csomagolója.
+    working-directory: masc-feltolto
+
 jobs:
   ellenorzes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # A --experimental-strip-types Node 22-től van meg. A program build
-      # nélkül fut: a típusokat a Node veti le futáskor.
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: masc-feltolto/package-lock.json
 
       - run: npm ci
 
       - name: Típusellenőrzés
-        run: npm run masc:ellenoriz
+        run: npm run ellenoriz
 
       - name: Próbák a teszt-konnektor ellen
-        run: npm run masc:teszt
+        run: npm run teszt
+
+      # A felület próbáihoz böngészőmotor kell: ugyanaz a HTML és JavaScript
+      # fut benne, mint az Electron ablakaiban. Ez fogta meg például, hogy a
+      # fájllista táblázata néma kivétellel elmaradt.
+      - name: Böngészőmotor a felület próbáihoz
+        run: npx playwright install --with-deps chromium
+
+      - name: A felület próbái
+        run: npm run teszt:felulet
 
       # A beállításfájlban jelszó és munkamenet-süti van. A .gitignore kizárja,
       # de a hálót itt is kifeszítjük: ha valaki mégis beküldi, itt kiderül,
       # és nem hetekkel később.
       - name: Nem került-e be titok a repóba?
+        working-directory: .
         run: |
-          if git ls-files --error-unmatch masc-feltolto/masc.env >/dev/null 2>&1; then
-            echo "::error::A masc-feltolto/masc.env bekerült a repóba — ebben jelszó és süti van."
-            echo "Vedd ki (git rm --cached masc-feltolto/masc.env), és CSERÉLD LE a jelszót."
+          BAJ=0
+          for FAJL in masc-feltolto/masc.env masc-feltolto/cegek.json; do
+            if git ls-files --error-unmatch "$FAJL" >/dev/null 2>&1; then
+              echo "::error::A $FAJL bekerült a repóba — ebben jelszó és süti van."
+              BAJ=1
+            fi
+          done
+          if [ "$BAJ" = "1" ]; then
+            echo "Vedd ki (git rm --cached <fájl>), és CSERÉLD LE a jelszavakat."
             exit 1
           fi
           echo "✓ nincs beküldött beállításfájl"

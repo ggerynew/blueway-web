@@ -14,10 +14,10 @@
 import { copyFileSync, mkdirSync, readFileSync, renameSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
-import type { Bizonylat, Honap } from './bizonylatok.ts';
-import { datumbolHonap, honapotFormaz } from './bizonylatok.ts';
-import type { ElfinderFajl, ElfinderKliens, FeltoltendoFajl } from './elfinder.ts';
-import type { Naplo } from './naplo.ts';
+import type { Bizonylat, Honap } from './bizonylatok.js';
+import { datumbolHonap, honapotFormaz } from './bizonylatok.js';
+import type { ElfinderFajl, ElfinderKliens, FeltoltendoFajl } from './elfinder.js';
+import type { Naplo } from './naplo.js';
 
 export interface FeltoltesOpciok {
   /** Rögzített célhónap. Ha nincs megadva, a mai hónap (vagy a fájl dátuma). */
@@ -30,6 +30,15 @@ export interface FeltoltesOpciok {
   felulir: boolean;
   /** Sikeres feltöltés után ide mozgatjuk a helyi fájlt. */
   archivum?: string;
+  /**
+   * Fájlonkénti visszajelzés — az asztali felület ebből tudja, mit írjon a
+   * listába, és mit kell a következő indításkor újrapróbálni.
+   *
+   * Azért visszahívás, és nem visszatérési érték: a felületnek MENET KÖZBEN
+   * kell frissülnie. Egy százfájlos hónapnál a végén érkező összesítés
+   * használhatatlan — a felhasználó addig azt hiszi, megállt a program.
+   */
+  jelentes?: (ut: string, allapot: 'feltoltve' | 'hibas', uzenet?: string) => void;
 }
 
 export interface Osszegzes {
@@ -135,7 +144,9 @@ export async function feltoltesLefuttat(
         naplo.info(`  (próba) létrehozná a(z) „${kulcs}" mappát`);
       }
     } catch (hiba) {
-      naplo.hiba(`A(z) ${kulcs} célmappa nem készült el: ${(hiba as Error).message}`);
+      const uzenet = `A célmappa nem készült el: ${(hiba as Error).message}`;
+      naplo.hiba(`A(z) ${kulcs} ${uzenet}`);
+      for (const t of tetelek) opciok.jelentes?.(t.utvonal, 'hibas', uzenet);
       osszegzes.hibas += tetelek.length;
       continue;
     }
@@ -148,7 +159,9 @@ export async function feltoltesLefuttat(
           if (elem.mime !== 'directory') meglevok.set(elem.name, elem.size ?? -1);
         }
       } catch (hiba) {
-        naplo.hiba(`A(z) ${kulcs} mappa tartalma nem olvasható: ${(hiba as Error).message}`);
+        const uzenet = `A célmappa tartalma nem olvasható: ${(hiba as Error).message}`;
+        naplo.hiba(`A(z) ${kulcs} ${uzenet}`);
+        for (const t of tetelek) opciok.jelentes?.(t.utvonal, 'hibas', uzenet);
         osszegzes.hibas += tetelek.length;
         continue;
       }
@@ -162,12 +175,16 @@ export async function feltoltesLefuttat(
       if (meglevoMeret !== undefined && !opciok.felulir) {
         if (meglevoMeret === bizonylat.meret) {
           naplo.kihagy(`${bizonylat.nev} — már fent van, azonos méretben`);
+          // A felület szemszögéből ez elintézett: a bizonylat fent van. Ha
+          // „várakozik" maradna, minden induláskor újra nekifutna hiába.
+          opciok.jelentes?.(bizonylat.utvonal, 'feltoltve');
         } else {
-          naplo.figyelem(
-            `${bizonylat.nev} — KIHAGYVA: fent már van ilyen nevű fájl, de más méretű ` +
-              `(fent ${meglevoMeret} bájt, itt ${bizonylat.meret} bájt). ` +
-              'Ha a helyi példány a jó, futtasd újra a --felulir kapcsolóval.',
-          );
+          const uzenet =
+            `Fent már van ilyen nevű fájl, de más méretű (fent ${meglevoMeret} bájt, ` +
+            `itt ${bizonylat.meret} bájt). Döntsd el, melyik a jó: felülírás vagy átnevezés.`;
+          naplo.figyelem(`${bizonylat.nev} — KIHAGYVA: ${uzenet}`);
+          // Ez emberi döntést kíván, ezért nem tüntetjük el a listából.
+          opciok.jelentes?.(bizonylat.utvonal, 'hibas', uzenet);
         }
         osszegzes.kihagyva++;
         continue;
@@ -190,7 +207,9 @@ export async function feltoltesLefuttat(
           },
         });
       } catch (hiba) {
-        naplo.hiba(`${bizonylat.nev} — nem olvasható: ${(hiba as Error).message}`);
+        const uzenet = `A helyi fájl nem olvasható: ${(hiba as Error).message}`;
+        naplo.hiba(`${bizonylat.nev} — ${uzenet}`);
+        opciok.jelentes?.(bizonylat.utvonal, 'hibas', uzenet);
         osszegzes.hibas++;
       }
     }
@@ -210,11 +229,14 @@ export async function feltoltesLefuttat(
         // ezért a saját néven kívül azt is elfogadjuk, ha csak egy fájl ment.
         const sikeres = felmentNevek.has(bizonylat.nev) || felment.length === kuldendok.length;
         if (!sikeres) {
-          naplo.hiba(`${bizonylat.nev} — a kiszolgáló nem igazolta vissza`);
+          const uzenet = 'A kiszolgáló nem igazolta vissza a feltöltést.';
+          naplo.hiba(`${bizonylat.nev} — ${uzenet}`);
+          opciok.jelentes?.(bizonylat.utvonal, 'hibas', uzenet);
           osszegzes.hibas++;
           continue;
         }
         naplo.siker(`${bizonylat.nev} — feltöltve (${bizonylat.meret} bájt)`);
+        opciok.jelentes?.(bizonylat.utvonal, 'feltoltve');
         osszegzes.feltoltve++;
 
         if (opciok.archivum) {
@@ -229,7 +251,9 @@ export async function feltoltesLefuttat(
         }
       }
     } catch (hiba) {
-      naplo.hiba(`A(z) ${kulcs} hónap feltöltése megszakadt: ${(hiba as Error).message}`);
+      const uzenet = `A feltöltés megszakadt: ${(hiba as Error).message}`;
+      naplo.hiba(`A(z) ${kulcs} hónap — ${uzenet}`);
+      for (const k of kuldendok) opciok.jelentes?.(k.bizonylat.utvonal, 'hibas', uzenet);
       osszegzes.hibas += kuldendok.length;
     }
   }

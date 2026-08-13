@@ -25,8 +25,8 @@
  * gyökeret, NÉV szerint megkeressük a mappát, és a szervertől kapott hash-t
  * használjuk. A név stabil, a hash nem.
  */
-import type { Naplo } from './naplo.ts';
-import type { SutisKeres } from './sutis-keres.ts';
+import type { Naplo } from './naplo.js';
+import type { SutisKeres } from './sutis-keres.js';
 
 export interface ElfinderFajl {
   hash: string;

@@ -15,8 +15,8 @@ import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { BeallitasHiba, beallitasokatBetolt, titkok } from './beallitasok.ts';
-import { belep, gyokeretValaszt } from './bejelentkezes.ts';
+import { BeallitasHiba, beallitasokatBetolt, titkok } from './beallitasok.js';
+import { belep, gyokeretValaszt } from './bejelentkezes.js';
 import {
   ALAP_KITERJESZTESEK,
   bizonylatokatGyujt,
@@ -24,11 +24,11 @@ import {
   honapotErtelmez,
   honapotFormaz,
   type Honap,
-} from './bizonylatok.ts';
-import type { ElfinderFajl, ElfinderKliens } from './elfinder.ts';
-import { feltoltesLefuttat, type FeltoltesOpciok } from './feltolto.ts';
-import { Naplo } from './naplo.ts';
-import { SutisKeres } from './sutis-keres.ts';
+} from './bizonylatok.js';
+import type { ElfinderFajl, ElfinderKliens } from './elfinder.js';
+import { feltoltesLefuttat, type FeltoltesOpciok } from './feltolto.js';
+import { Naplo } from './naplo.js';
+import { SutisKeres } from './sutis-keres.js';
 
 const PROJEKT_MAPPA = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ALAP_KONFIG = join(PROJEKT_MAPPA, 'masc.env');

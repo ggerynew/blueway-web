@@ -19,16 +19,28 @@ export interface NaploBeallitas {
   fajl?: string;
   /** Ezek a szövegrészletek soha nem jelenhetnek meg (süti, jelszó). */
   titkok?: string[];
+  /**
+   * Minden sor átadása egy figyelőnek — az asztali felület ezzel mutatja a
+   * futás naplóját az ablakban. A titkok itt is ki vannak takarva: a figyelő
+   * ugyanazt a rejtett szöveget kapja, mint a képernyő.
+   */
+  figyelo?: (jel: string, uzenet: string) => void;
+  /** Ne írjunk a képernyőre — csak a figyelőnek és a fájlnak. */
+  nemaKepernyo?: boolean;
 }
 
 export class Naplo {
   private bobeszedu: boolean;
   private fajl?: string;
   private titkok: string[];
+  private figyelo?: (jel: string, uzenet: string) => void;
+  private nemaKepernyo: boolean;
 
   constructor(beallitas: NaploBeallitas = {}) {
     this.bobeszedu = beallitas.bobeszedu ?? false;
     this.fajl = beallitas.fajl;
+    this.figyelo = beallitas.figyelo;
+    this.nemaKepernyo = beallitas.nemaKepernyo ?? false;
     // Az üres füzért ki kell szűrni, különben minden karakterhatárra illeszkedne.
     this.titkok = (beallitas.titkok ?? []).filter((t) => t.length > 3);
   }
@@ -44,7 +56,14 @@ export class Naplo {
 
   private ir(jel: string, uzenet: string): void {
     const tiszta = this.rejt(uzenet);
-    console.log(`${jel} ${tiszta}`);
+    if (!this.nemaKepernyo) console.log(`${jel} ${tiszta}`);
+    if (this.figyelo) {
+      try {
+        this.figyelo(jel, tiszta);
+      } catch {
+        // A felület hibája ne állítsa meg a feltöltést.
+      }
+    }
     if (this.fajl) {
       const ido = new Date().toISOString();
       try {
