@@ -1,0 +1,32 @@
+{
+  // Külön beállítás, mert ez a program NEM a weblap része: Node alatt fut,
+  // nem böngészőben. A gyökér tsconfig DOM-ot és bundler-feloldást ír elő —
+  // az itteni kódra egyik sem igaz.
+  //
+  // A `noEmit` szándékos: fordítás nincs, a Node a típusokat futáskor
+  // levetkőzi (--experimental-strip-types). A tsc itt csak ellenőriz.
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    // A típuslevetkőztetés futásidőben nem tud átírni semmit, ezért a
+    // forráskódnak már önmagában futtathatónak kell lennie: az importokban
+    // ott a .ts kiterjesztés, a típusimportok pedig `import type`-ok.
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true
+  },
+  "include": ["src/**/*.ts"]
+}

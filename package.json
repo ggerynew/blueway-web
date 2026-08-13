@@ -7,7 +7,11 @@
     "build": "next build && node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/finalize-static.mjs && node --experimental-strip-types --import ./scripts/ts-betolto.mjs scripts/ai-kivonat.ts",
     "start": "next start",
     "lint": "next lint",
-    "build:live": "STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://blueway.hu} NEXT_PUBLIC_FORM_ENDPOINT=${NEXT_PUBLIC_FORM_ENDPOINT:-https://blueway.hu/send.php} NEXT_PUBLIC_GOATCOUNTER_CODE=${NEXT_PUBLIC_GOATCOUNTER_CODE:-blueway} npm run build"
+    "build:live": "STATIC_EXPORT=1 NEXT_PUBLIC_BASE_PATH= NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://blueway.hu} NEXT_PUBLIC_FORM_ENDPOINT=${NEXT_PUBLIC_FORM_ENDPOINT:-https://blueway.hu/send.php} NEXT_PUBLIC_GOATCOUNTER_CODE=${NEXT_PUBLIC_GOATCOUNTER_CODE:-blueway} npm run build",
+    "masc:felderit": "node --experimental-strip-types masc-feltolto/src/index.ts felderit",
+    "masc:feltolt": "node --experimental-strip-types masc-feltolto/src/index.ts feltolt",
+    "masc:teszt": "node --experimental-strip-types --test masc-feltolto/teszt/feltolto.teszt.mjs",
+    "masc:ellenoriz": "tsc -p masc-feltolto/tsconfig.json"
   },
   "dependencies": {
     "@google/model-viewer": "^4.3.1",

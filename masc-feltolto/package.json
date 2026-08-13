@@ -1,0 +1,16 @@
+{
+  "name": "masc-feltolto",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bizonylatok feltöltése a MASC (masc.hu) elFinder fájlkezelőjébe, ÉV/HÓ mappaszerkezet szerint.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "felderit": "node --experimental-strip-types src/index.ts felderit",
+    "feltolt": "node --experimental-strip-types src/index.ts feltolt",
+    "teszt": "node --experimental-strip-types --test teszt/feltolto.teszt.mjs",
+    "ellenoriz": "tsc -p tsconfig.json"
+  }
+}

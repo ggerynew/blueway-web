@@ -1,0 +1,60 @@
+name: MASC feltöltő ellenőrzése
+
+# A bizonylat-feltöltő próbái. Csak akkor fut, ha a program tényleg változott —
+# a weblap szerkesztése ne indítson fölösleges futásokat.
+#
+# Miért van rá szükség: ez a program KÖNYVELÉSI ANYAGGAL dolgozik. Ha elromlik,
+# az nem egy elcsúszott gomb, hanem hiányzó vagy duplán feltöltött bizonylat.
+# A tesztek pontosan ezt a hármat őrzik: felmegy-e, nem megy-e fel kétszer, és
+# nem írunk-e felül magunktól semmit.
+#
+# A masc.hu-hoz NEM nyúl: a próbák egy helyben futó, elFinder-utánzó
+# teszt-konnektor ellen mennek (masc-feltolto/teszt/mock-masc.mjs). Éles
+# hozzáférés így nem is kell, és nem is kerülhet a repóba.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'masc-feltolto/**'
+      - '.github/workflows/masc-feltolto.yml'
+  pull_request:
+    paths:
+      - 'masc-feltolto/**'
+      - '.github/workflows/masc-feltolto.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ellenorzes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # A --experimental-strip-types Node 22-től van meg. A program build
+      # nélkül fut: a típusokat a Node veti le futáskor.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Típusellenőrzés
+        run: npm run masc:ellenoriz
+
+      - name: Próbák a teszt-konnektor ellen
+        run: npm run masc:teszt
+
+      # A beállításfájlban jelszó és munkamenet-süti van. A .gitignore kizárja,
+      # de a hálót itt is kifeszítjük: ha valaki mégis beküldi, itt kiderül,
+      # és nem hetekkel később.
+      - name: Nem került-e be titok a repóba?
+        run: |
+          if git ls-files --error-unmatch masc-feltolto/masc.env >/dev/null 2>&1; then
+            echo "::error::A masc-feltolto/masc.env bekerült a repóba — ebben jelszó és süti van."
+            echo "Vedd ki (git rm --cached masc-feltolto/masc.env), és CSERÉLD LE a jelszót."
+            exit 1
+          fi
+          echo "✓ nincs beküldött beállításfájl"

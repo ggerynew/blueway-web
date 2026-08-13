@@ -23,5 +23,9 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  // A masc-feltolto nem a weblap része: Node alatt fut, nem böngészőben, és
+  // saját tsconfig.json-ja van (ESM, node típusok, .ts kiterjesztésű importok).
+  // Az itteni DOM/bundler beállításokkal ellenőrizve hamis hibákat adna.
+  // Ellenőrzése: npm run masc:ellenoriz
+  "exclude": ["node_modules", "masc-feltolto"]
 }
