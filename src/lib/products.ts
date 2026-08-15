@@ -314,7 +314,7 @@ const manufacturersSource: Sourced<Manufacturer[]> = [
     slug: 'armor-iimak',
     brand: 'ARMOR-IIMAK',
     name: 'ARMOR-IIMAK',
-    logo: '/images/brand/armor-iimak-logo.png',
+    logo: '/images/brand/armor-iimak-logo.webp',
     description: {
       hu: 'Termotranszfer festékszalagok flat-head és near-edge nyomtatókhoz — wax, wax/resin és resin családok.',
       en: 'Thermal transfer ribbons for flat-head and near-edge printers — wax, wax/resin and resin families.', it: 'Ribbon a trasferimento termico per stampanti flat-head e near-edge — famiglie Wax, Wax-Resin e Resin.', es: 'Ribbons de transferencia térmica para impresoras flat-head y near-edge — familias Wax, Wax-Resin y Resin.', de: 'Thermotransfer-Farbbänder für Flat-Head- und Near-Edge-Drucker — Wax-, Wax-Resin- und Resin-Familien.', ko: '플랫 헤드 및 니어 엣지 프린터용 열전사 리본 — Wax, Wax/Resin 및 Resin 제품군.', zh: '适用于平压式与近端式打印机的热转印碳带——蜡基、混合基与树脂基系列。',
@@ -2010,7 +2010,7 @@ const productsSource: Sourced<Product[]> = [
     name: 'ARMOR-IIMAK festékszalagok',
     displayName: { hu: 'ARMOR-IIMAK festékszalagok', en: 'ARMOR-IIMAK thermal transfer ribbons', de: 'ARMOR-IIMAK Farbbänder', it: 'Ribbon ARMOR-IIMAK', es: 'Ribbons ARMOR-IIMAK', ko: 'ARMOR-IIMAK 열전사 리본', zh: 'ARMOR-IIMAK 碳带' },
     brand: 'ARMOR-IIMAK',
-    image: '/images/brand/armor-iimak-logo.png',
+    image: '/images/brand/armor-iimak-logo.webp',
     datasheet: '/datasheets/armor-iimak-ribbons-overview.pdf',
     short: {
       hu: 'Termotranszfer festékszalagok flat-head és near-edge nyomtatókhoz.',

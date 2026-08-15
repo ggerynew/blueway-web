@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 

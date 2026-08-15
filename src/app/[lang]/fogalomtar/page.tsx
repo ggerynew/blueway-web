@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { notFound } from 'next/navigation';
 import { LinkedText } from '@/components/linked-text';
 import { Reveal } from '@/components/reveal';

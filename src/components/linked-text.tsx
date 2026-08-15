@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import type { Locale } from '@/lib/i18n';
 import { manufacturers, products } from '@/lib/products';
 

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { CookieSettingsLink } from '@/components/cookie-settings-link';
 import { DnbCertificate } from '@/components/dnb-certificate';
 import { asset } from '@/lib/asset';

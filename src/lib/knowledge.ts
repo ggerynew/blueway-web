@@ -1103,7 +1103,7 @@ const guidesSource: Sourced<Guide[]> = [
     slug: 'cimkezo-rendszer-tervezese',
     title: {
       hu: 'Automata címkézés tervezése: milyen adatokat kérünk?',
-      en: 'Planning an automatic labelling system: what data we need', it: 'Progettare un sistema di etichettatura automatica: i dati che ci servono', es: 'Planificar un sistema de etiquetado automático: qué datos necesitamos', de: 'Planung einer automatischen Etikettieranlage: welche Daten wir benötigen', ko: '자동 라벨링 시스템 기획: 어떤 데이터가 필요한가', zh: '规划自动贴标系统：我们需要哪些数据',
+      en: 'Planning an automatic labelling system: what data we need', it: 'Progettare l’etichettatura automatica: i dati che ci servono', es: 'Planificar el etiquetado automático: qué datos necesitamos', de: 'Planung einer automatischen Etikettieranlage: welche Daten wir benötigen', ko: '자동 라벨링 시스템 기획: 어떤 데이터가 필요한가', zh: '规划自动贴标系统：我们需要哪些数据',
     },
     short: {
       hu: 'Címkéző gép kiválasztásához a címke, a termék és a folyamat adatai kellenek — végigvezetjük a teljes listán.',
@@ -1648,7 +1648,7 @@ const guidesSource: Sourced<Guide[]> = [
     slug: 'ragaszto-adagolok',
     title: {
       hu: 'Szalag- és címkeadagolók: mikor éri meg?',
-      en: 'Tape and label dispensers: when do they pay off?', it: 'Dispenser per nastro adesivo e spellicolatori di etichette: quando conviene?', es: 'Dispensadores de cinta adhesiva y de etiquetas: ¿cuándo salen a cuenta?', de: 'Band- und Etikettenspender: Wann lohnen sie sich?', ko: '테이프 및 라벨 디스펜서: 언제 도입할 가치가 있을까요?', zh: '胶带与标签剥离机：何时值得投入？',
+      en: 'Tape and label dispensers: when do they pay off?', it: 'Dispenser per nastro ed etichette: quando conviene?', es: 'Dispensadores de cinta y etiquetas: ¿cuándo salen a cuenta?', de: 'Band- und Etikettenspender: Wann lohnen sie sich?', ko: '테이프 및 라벨 디스펜서: 언제 도입할 가치가 있을까요?', zh: '胶带与标签剥离机：何时值得投入？',
     },
     short: {
       hu: 'Kézi vágás helyett pontos, ismételhető darabolás — röviden arról, mit érdemes tudni az adagolókról.',

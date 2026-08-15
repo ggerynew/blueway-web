@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { asset } from '@/lib/asset';
 import { HREFLANG, locales } from '@/lib/i18n';
 import { absUrl } from '@/lib/site';

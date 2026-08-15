@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { getDictionary, isLocale } from '@/lib/i18n';

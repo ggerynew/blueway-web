@@ -492,9 +492,21 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 # ——— Tömörítés ————————————————————————————————————————————————————
+# A `text/javascript` NEM elírás az `application/javascript` mellett: a kettő
+# ugyanaz a fájl, csak más néven. Az Apache a 2.4.55 óta a .js kiterjesztéshez
+# `text/javascript`-et rendel (ez lett a szabványos alak), a régebbi kiadások
+# `application/javascript`-et. Ha csak az egyik szerepel a listán, a másikat
+# használó szerveren a JavaScript TÖMÖRÍTETLENÜL megy ki — lapunként kb. 600 kB
+# helyett 180 kB helyett a teljes 600. Mivel a szerver beállítását nem látjuk,
+# mindkét nevet felsoroljuk; amelyik nem fordul elő, az nem csinál semmit.
+#
+# Ugyanez az oka a többi párnak is: application/xml + text/xml, és a
+# .webmanifest, amely szintén szöveg.
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
-    application/javascript application/json application/xml image/svg+xml
+    text/javascript application/javascript application/x-javascript \
+    application/json application/ld+json application/xml \
+    application/manifest+json image/svg+xml
 </IfModule>
 
 # ——— Karakterkódolás ——————————————————————————————————————————————

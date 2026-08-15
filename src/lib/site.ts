@@ -52,6 +52,35 @@ const OG_LOCALE: Record<Locale, string> = {
 };
 
 /**
+ * Szöveg SZÉLESSÉGE a találati listában, latin karakterre vetítve.
+ *
+ * A keresők a címet és a leírást nem karakterszámra vágják, hanem képpontra.
+ * A latin írásnál a kettő elég jól együtt mozog, a koreainál és a kínainál
+ * viszont nem: ott egy jegy nagyjából két latin karakter széles. Ha a hosszt
+ * puszta `.length`-szel mérnénk, a CJK-lapok leírását a KÓD töltené fel a
+ * kétszeresére — a jellemzőket addig fűzné hozzá, amíg 95 JEGY össze nem jön,
+ * ami már 190 karakternyi szélesség. Mérve is így volt: a koreai lapok leírása
+ * 247 egységnél tartott a 165-ös keret helyett.
+ */
+function szelesseg(szoveg: string): number {
+  let sz = 0;
+  for (const jel of szoveg) sz += (jel.codePointAt(0) ?? 0) > 0x2e80 ? 2 : 1;
+  return sz;
+}
+
+/** Az első olyan pozíció, ahonnan a szöveg szélessége meghaladja a keretet. */
+function vagasHatar(szoveg: string, keret: number): number {
+  let sz = 0;
+  let i = 0;
+  for (const jel of szoveg) {
+    sz += (jel.codePointAt(0) ?? 0) > 0x2e80 ? 2 : 1;
+    if (sz > keret) return i;
+    i += jel.length;
+  }
+  return szoveg.length;
+}
+
+/**
  * A találati listában a cím kb. 60-62 karakternél elvágódik. A cégnév-utótagot
  * a gyökér-elrendezés fűzi hozzá (`%s | Blueway Trade Kft.`), tehát az oldalnak
  * ennyivel kevesebb marad.
@@ -69,14 +98,24 @@ const CIM_TARTALEK = CIM_HATAR - ' | Blueway Trade Kft.'.length;
  * inkább hosszú marad: a csonka cím rosszabb, mint a hosszú.
  */
 function rovidCim(cim: string): string {
-  if (cim.length <= CIM_TARTALEK) return cim;
-  for (const jel of [': ', ' — ', ' – ', ' - ']) {
+  if (szelesseg(cim) <= CIM_TARTALEK) return cim;
+  // A kínai és a japán a teljes szélességű kettőspontot használja (：), szóköz
+  // nélkül — enélkül a kínai címeknél nem volt vágáspont, és a kétrészes cím
+  // teljes hosszában ment ki a találati listába.
+  for (const jel of [': ', '：', ' — ', ' – ', ' - ']) {
     const i = cim.indexOf(jel);
     // A vágás akkor is megéri, ha a maradék még mindig hosszabb a keretnél:
     // a keresők a cím VÉGÉT vágják le, tehát minden lespórolt karakter azt
     // segíti, hogy a lényeg és a cégnév kiférjen. Csak azt kötjük ki, hogy a
-    // megmaradó rész önmagában is értelmes legyen.
-    if (i >= 12) return cim.slice(0, i);
+    // megmaradó rész önmagában is értelmes legyen — és ezt SZÉLESSÉGBEN mérjük,
+    // nem karakterben: a koreai „라벨 소재와 접착제" kilenc jegy, de tizennyolc
+    // karakternyi széles és teljes értékű cím. Karakterre mérve elbukott a
+    // tizenkettes korláton, és a lap a teljes, kétrészes címmel ment ki.
+    // Az `i >= 0` nem formaság: nem talált elválasztóra az indexOf −1-et ad,
+    // és a `slice(0, -1)` a cím UTOLSÓ BETŰJÉT vágná le — pontosan ez történt,
+    // amíg a szélességi mérés kiszorította a régi `i >= 12` feltételt, amely
+    // mellékesen a −1-et is kizárta.
+    if (i >= 0 && szelesseg(cim.slice(0, i)) >= 12) return cim.slice(0, i);
   }
   return cim;
 }
@@ -120,13 +159,13 @@ function ujatMond(meglevo: string, uj: string): boolean {
 function leirasOsszeall(alap: string, tovabbi: readonly string[] = []): string {
   let d = alap.trim();
   for (const x of tovabbi) {
-    if (d.length >= LEIRAS_CEL) break;
+    if (szelesseg(d) >= LEIRAS_CEL) break;
     const t = (x ?? '').trim();
     if (!t || d.includes(t) || !ujatMond(d, t)) continue;
     d = `${d} ${/[.!?]$/.test(t) ? t : `${t}.`}`;
   }
-  if (d.length <= LEIRAS_MAX) return d;
-  const vagott = d.slice(0, LEIRAS_MAX);
+  if (szelesseg(d) <= LEIRAS_MAX) return d;
+  const vagott = d.slice(0, vagasHatar(d, LEIRAS_MAX));
   const szohatar = vagott.lastIndexOf(' ');
   // A vágás után maradó kötőszó vagy névelő („— a…") csúnyán néz ki a
   // találati listában, ezért a végéről a rövid töredékszavakat is levesszük.
