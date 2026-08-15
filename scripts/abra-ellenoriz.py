@@ -12,7 +12,7 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
-MAPPAK = ['public/images/rfid', 'public/images/vonalkod']
+MAPPAK = ['public/images/rfid', 'public/images/vonalkod', 'public/images/lezer']
 
 
 def main() -> int:

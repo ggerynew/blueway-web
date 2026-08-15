@@ -186,6 +186,27 @@ export interface Product {
     title: LocalizedText;
     text: LocalizedText;
   };
+  /**
+   * Magyarázó műszaki ábra a terméklapon, teljes szélességben.
+   *
+   * Nem ugyanaz, mint az `orientation`: az egy fotó a szöveg mellett,
+   * kétoszlopos rácsban. Egy méretarányos rajz ott elveszne — a XENO 4S
+   * fókuszábráján hat méretvonal és hat felirat van, félszélességű képen
+   * olvashatatlan. Ezért itt a szöveg a rajz FÖLÖTT áll, a rajz pedig a
+   * teljes szélességet megkapja.
+   *
+   * Az `image` útvonalában szerepelhet `{lang}` — az ábra nyelvenkénti
+   * változatát az `abraUt()` választja ki (lásd a src/lib/i18n.ts-t).
+   */
+  figure?: {
+    image: string;
+    title: LocalizedText;
+    text: LocalizedText;
+    /** Képaláírás a rajz alatt: mit kell rajta észrevenni. */
+    caption?: LocalizedText;
+    /** Kapcsolódó tudástár-cikk útvonala, nyelvi előtag nélkül. */
+    link?: { href: string; label: LocalizedText };
+  };
 }
 
 export interface ApplicatorParam {
@@ -1505,6 +1526,28 @@ const productsSource: Sourced<Product[]> = [
     ],
     image: '/images/products/cab-xeno-4.jpg',
     datasheet: '/datasheets/cab-laser-xeno.pdf',
+    figure: {
+      image: '/images/lezer/fokusz-eltolas-{lang}.svg',
+      title: {
+        hu: 'Mit jelent a ±35 és a ±70 mm?',
+        en: 'What do ±35 and ±70 mm mean?', de: 'Was bedeuten ±35 und ±70 mm?', it: 'Che cosa significano ±35 e ±70 mm?', es: '¿Qué significan ±35 y ±70 mm?', ko: '±35 mm와 ±70 mm는 무엇을 뜻하는가', zh: '±35 与 ±70 mm 是什么意思？',
+      },
+      text: {
+        hu: 'A fókuszeltolás nem szoftveres trükk: a szkennerfej optikája mozdul el, és ezzel együtt mozdul a jelölési sík. A gép ugyanaz marad, a munkatávolság viszont három (valójában tetszőleges közbenső) értéket vehet fel. Mivel a nyaláb kúpban tágul, a távolabbi síkon nagyobb, a közelebbin kisebb a jelölőmező — ezt a vezérlő automatikusan kiszámolja, és a rajzolatot a síkhoz méretezi, tehát a jelölés minden szinten ugyanakkora lesz.',
+        en: 'The focus shift is not a software trick: the optics inside the scan head move, and the marking plane moves with them. The machine stays the same, but the operation distance can take three values — in fact any value in between. Since the beam spreads out in a cone, the marking field is larger on the far plane and smaller on the near one. The control unit works this out automatically and scales the layout to the plane, so the marking comes out the same size on every level.', de: 'Die Fokusverschiebung ist kein Softwaretrick: Die Optik im Scankopf verschiebt sich, und mit ihr die Markierebene. Das Gerät bleibt dasselbe, der Arbeitsabstand kann aber drei Werte annehmen — genauer gesagt jeden Wert dazwischen. Da sich der Strahl kegelförmig ausbreitet, ist das Markierfeld auf der ferneren Ebene größer und auf der näheren kleiner. Die Steuereinheit berechnet das selbsttätig und skaliert das Layout auf die Ebene, sodass die Markierung auf jeder Höhe gleich groß ausfällt.', it: 'Lo spostamento del fuoco non è un trucco software: si muove l’ottica dentro la testa di scansione e con essa il piano di marcatura. La macchina resta la stessa, ma la distanza di lavoro può assumere tre valori — in realtà qualsiasi valore intermedio. Poiché il fascio si allarga a cono, il campo di marcatura è più grande sul piano lontano e più piccolo su quello vicino. L’unità di controllo lo calcola da sola e scala il layout sul piano, così la marcatura risulta della stessa dimensione a ogni livello.', es: 'El desplazamiento del foco no es un truco de software: se mueve la óptica dentro del cabezal y con ella el plano de marcaje. La máquina sigue siendo la misma, pero la distancia de trabajo puede tomar tres valores, en realidad cualquiera intermedio. Como el haz se abre en cono, el campo de marcaje es mayor en el plano lejano y menor en el cercano. La unidad de control lo calcula sola y escala el diseño al plano, de modo que el marcaje sale del mismo tamaño en todos los niveles.', ko: '초점 이동은 소프트웨어 기법이 아닙니다. 스캔 헤드 내부의 광학계가 실제로 움직이고, 마킹 평면도 함께 움직입니다. 장비는 그대로지만 작업 거리는 세 가지 값을 — 실제로는 그 사이의 어떤 값이든 — 가질 수 있습니다. 빔이 원뿔 모양으로 퍼지므로 먼 평면에서는 마킹 필드가 크고 가까운 평면에서는 작습니다. 컨트롤 유닛이 이를 자동으로 계산해 평면에 맞춰 레이아웃 배율을 조정하므로, 마킹은 모든 단에서 같은 크기로 나옵니다.', zh: '焦点位移不是软件把戏：扫描头内部的光学组件真的会移动，打标平面随之移动。设备本身不变，但工作距离可以取三个值——实际上是其间的任意值。由于光束呈锥形扩散，远处平面的打标范围更大，近处更小。控制单元会自动算出这一点并按平面缩放图案，所以每个层面上的打标尺寸都一样。',
+      },
+      caption: {
+        hu: 'A 254.2-es objektívvel a két szélső sík között 140 mm a magasságkülönbség — ennyit hidal át a gép anélkül, hogy a munkadarabot vagy a fejet meg kellene mozgatni.',
+        en: 'With the 254.2 lens the two outer planes are 140 mm apart in height — that is what the machine bridges without moving either the workpiece or the head.', de: 'Mit der Linse 254.2 liegen die beiden äußeren Ebenen 140 mm auseinander — so viel überbrückt das Gerät, ohne Werkstück oder Kopf zu bewegen.', it: 'Con la lente 254.2 i due piani estremi distano 140 mm in altezza: è quanto la macchina copre senza muovere né il pezzo né la testa.', es: 'Con la lente 254.2 los dos planos extremos distan 140 mm en altura: eso es lo que la máquina salva sin mover ni la pieza ni el cabezal.', ko: '254.2 렌즈에서는 양 끝 평면의 높이 차가 140 mm입니다. 공작물도 헤드도 움직이지 않고 이만큼을 커버합니다.', zh: '使用 254.2 透镜时，两个极限平面的高度差为 140 mm——设备无需移动工件或扫描头即可覆盖这个范围。',
+      },
+      link: {
+        href: 'tudastar/lezer-fokusztavolsag',
+        label: {
+          hu: 'Fókusztávolság és jelölőmező — a Tudástárban',
+          en: 'Focal distance and marking field — in the Knowledge base', de: 'Fokusabstand und Markierfeld — in der Wissensdatenbank', it: 'Distanza focale e campo di marcatura — nella Knowledge base', es: 'Distancia focal y campo de marcaje — en la Base de conocimiento', ko: '초점 거리와 마킹 필드 — 지식 자료실', zh: '焦距与打标范围 — 知识库',
+        },
+      },
+    },
   },
   {
     slug: 'cab-xeno-1',
