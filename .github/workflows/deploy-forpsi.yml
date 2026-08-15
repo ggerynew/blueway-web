@@ -883,6 +883,36 @@ jobs:
           JSONV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT/ai/termekek.json" 2>/dev/null || echo 000)
           [ "$JSONV" = "200" ] && echo "  /ai/termekek.json -> 200" || echo "::warning::Az /ai/termekek.json nem érhető el ($JSONV)."
 
+          # ——— Tömörítés: megy-e ki gzip-pel a szöveg és a JavaScript ————
+          # Ezt a lépést egy olyan hiba indokolja, amit innen NEM lehetett
+          # megnézni: a .htaccess DEFLATE-listája sokáig csak az
+          # `application/javascript`-et sorolta fel, az Apache viszont a
+          # 2.4.55 óta a .js-hez `text/javascript`-et rendel. Ha a szerver a
+          # modern nevet használja, a laponkénti ~590 kB JavaScript
+          # tömörítetlenül megy ki — a látogatónak lassú, nekünk forgalom, és
+          # SEMMI nem jelzi. A lista azóta mindkét nevet tartalmazza; ez a
+          # próba azt őrzi, hogy tényleg érvényesül is.
+          #
+          # A JS-fájl nevét a lap forrásából szedjük: a Next a csomagok nevébe
+          # lenyomatot ír, tehát kézzel beírt név egy build után elavulna.
+          echo "— tömörítés —"
+          curl -sS -o /tmp/tomorit.html --max-time 20 "https://$HOSZT/hu" 2>/dev/null || true
+          JSUT=$(grep -o '/_next/static/chunks/[A-Za-z0-9._-]*\.js' /tmp/tomorit.html 2>/dev/null | head -1 || true)
+          TOM_BAJ=0
+          for UT in /hu /sitemap.xml /llms.txt $JSUT; do
+            KOD=$(curl -sS -o /dev/null --max-time 20 -H 'Accept-Encoding: gzip' \
+                  -w '%{content_type}|%{size_download}' "https://$HOSZT$UT" 2>/dev/null || echo '?|0')
+            ENC=$(curl -sSI --max-time 20 -H 'Accept-Encoding: gzip' "https://$HOSZT$UT" 2>/dev/null \
+                  | tr -d '\r' | awk 'tolower($1)=="content-encoding:"{print tolower($2)}')
+            if [ "$ENC" = "gzip" ] || [ "$ENC" = "br" ]; then
+              echo "  $UT -> $ENC (${KOD})"
+            else
+              echo "::warning::A $UT tömörítés nélkül megy ki (Content-Encoding: ${ENC:-nincs}, típus/méret: $KOD)."
+              TOM_BAJ=$((TOM_BAJ + 1))
+            fi
+          done
+          [ "$TOM_BAJ" -eq 0 ] && echo "  minden próbált fájl tömörítve érkezik"
+
           # ——— A kezdőlapi videósáv klipjei ————————————————————————
           # Ezt a lépést egy néma hibamód indokolja: ha egy klip hiányzik vagy
           # csonkán ér ki, a csempe nem panaszkodik — megfagyott poszterként
