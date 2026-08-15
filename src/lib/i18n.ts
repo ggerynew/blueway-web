@@ -27,6 +27,36 @@ export const HREFLANG: Record<Locale, string> = {
   zh: 'zh',
 };
 
+/**
+ * Az ábrafájlok nyelvi utótagja, és a `{lang}` helyettesítése az útvonalban.
+ *
+ * A tudástár korábbi ábrái (vonalkód, RFID) egyetlen, magyar feliratú SVG-k,
+ * és minden nyelven ugyanaz látszik. Ott ez megvédhető: a rajz a cikk szövege
+ * mellett áll, a képaláírás pedig lefordítva magyarázza el. A fókuszábra
+ * viszont TERMÉKLAPRA is kikerül — a XENO 4S lapját a német és a koreai vevő
+ * is olvassa, ott nincs mellette magyarázó cikk, és egy magyar feliratú
+ * műszaki rajz ott semmit nem ér. Ezért ez az ábra nyelvenként készül el
+ * (scripts/lezer-fokusz-abrak.py), és az útvonalban egy `{lang}` jelölő áll.
+ *
+ * A `us` szándékosan az angol ábrát kapja: a feliratokban nincs olyan szó,
+ * amelyet a brit és az amerikai angol másképp ír, tehát a külön fájl csak
+ * megkettőzné ugyanazt a tartalmat.
+ */
+export const ABRA_NYELV: Record<Locale, string> = {
+  hu: 'hu',
+  en: 'en',
+  us: 'en',
+  de: 'de',
+  it: 'it',
+  es: 'es',
+  ko: 'ko',
+  zh: 'zh',
+};
+
+export function abraUt(src: string, lang: Locale): string {
+  return src.replace('{lang}', ABRA_NYELV[lang]);
+}
+
 export const dictionaries = {
   hu: {
     nav: {

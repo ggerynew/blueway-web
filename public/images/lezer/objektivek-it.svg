@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" role="img">
+<rect width="800" height="320" fill="#ffffff"/>
+<defs><marker id="ny" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#64748b"/></marker><marker id="nyv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#64748b" transform="rotate(180 5 5)"/></marker></defs>
+<text x="24" y="32" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="16" fill="#0f172a" font-weight="700" text-anchor="start">Lente, distanza di lavoro, campo di marcatura e risoluzione</text>
+<text x="36" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="start">Lente</text>
+<text x="232" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="end">Distanza di lavoro</text>
+<text x="382" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="end">Campo di marcatura</text>
+<text x="502" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="end">Diametro dello spot</text>
+<text x="612" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="end">Risoluzione</text>
+<text x="764" y="70" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="10" fill="#64748b" font-weight="700" text-anchor="end">Spostamento del fuoco</text>
+<line x1="24" y1="78" x2="776" y2="78" stroke="#cbd5e1" stroke-width="1"/>
+<rect x="24" y="90" width="752" height="34" rx="5" fill="#f8fafc"/>
+<text x="36" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">100.2</text>
+<text x="232" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">149 ± 4 mm</text>
+<text x="382" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">69 × 69 mm</text>
+<text x="502" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">~25 µm</text>
+<text x="612" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">1000 dpi</text>
+<text x="764" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#64748b" font-weight="normal" text-anchor="end">assente</text>
+<rect x="24" y="130" width="752" height="34" rx="5" fill="#eff6ff"/>
+<text x="36" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">160.2</text>
+<text x="232" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">210 ± 8 mm</text>
+<text x="382" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">112 × 112 mm</text>
+<text x="502" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">~35 µm</text>
+<text x="612" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">725 dpi</text>
+<text x="764" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#1d4ed8" font-weight="700" text-anchor="end">±35 mm</text>
+<rect x="24" y="170" width="752" height="34" rx="5" fill="#eff6ff"/>
+<text x="36" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">254.2</text>
+<text x="232" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">310 ± 8 mm</text>
+<text x="382" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">180 × 180 mm</text>
+<text x="502" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">~50 µm</text>
+<text x="612" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">500 dpi</text>
+<text x="764" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#1d4ed8" font-weight="700" text-anchor="end">±70 mm</text>
+<rect x="24" y="210" width="752" height="34" rx="5" fill="#f8fafc"/>
+<text x="36" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#0f172a" font-weight="700" text-anchor="start">420.2</text>
+<text x="232" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">549 ± 20 mm</text>
+<text x="382" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">290 × 290 mm</text>
+<text x="502" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">~85 µm</text>
+<text x="612" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#0f172a" font-weight="normal" text-anchor="end">300 dpi</text>
+<text x="764" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#64748b" font-weight="normal" text-anchor="end">assente</text>
+<text x="24" y="274" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">Campo più grande significa spot più grande, quindi minore risoluzione e minore densità di potenza. La scelta è sempre questo scambio.</text>
+<text x="24" y="296" font-family="ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="11" fill="#64748b" font-weight="normal" text-anchor="start">Fonte: scheda tecnica cab XENO, «Technical data».</text>
+</svg>

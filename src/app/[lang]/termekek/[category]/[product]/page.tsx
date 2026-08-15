@@ -9,7 +9,7 @@ import { ProductInquiry } from '@/components/product-inquiry';
 import { Reveal } from '@/components/reveal';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
-import { getDictionary, isLocale } from '@/lib/i18n';
+import { abraUt, getDictionary, isLocale } from '@/lib/i18n';
 import { industriesForProduct } from '@/lib/iparagak';
 import { getBrandLogo, getCategory, getProduct, getProductsByCategory, products , productName, manufacturers } from '@/lib/products';
 import { morzsa, szervezetRef } from '@/lib/jsonld';
@@ -276,6 +276,49 @@ export default async function ProductPage({
                 <p className="mt-3 text-ink-muted">{product.orientation.text[lang]}</p>
               </div>
             </div>
+          </section>
+        </Reveal>
+      )}
+
+      {/* Magyarázó műszaki ábra. Teljes szélességben, a szöveg fölötte: a
+          méretvonalas rajz félszélességű képen olvashatatlan lenne. Az ábra
+          nyelvenként külön fájl — a `{lang}` jelölőt az abraUt() cseréli. */}
+      {product.figure && (
+        <Reveal delay={0.05}>
+          <section className="mt-20 border-t border-line pt-10">
+            <h2 className="text-xl font-semibold tracking-tight">
+              {product.figure.title[lang]}
+            </h2>
+            <p className="mt-3 max-w-3xl text-ink-muted">{product.figure.text[lang]}</p>
+            {/* Telefonon az ábra a saját keretén belül görgethető oldalra. A
+                nagyítható kép itt nem segítene: a nagyított nézet a képernyő
+                92%-áig nő, ami 390 képpontos kijelzőn ugyanaz a méret. A
+                méretvonalak és a hat felirat viszont csak teljes méretben
+                olvasható, ezért görgetés kell, nem nagyítás. */}
+            <figure className="mt-8 min-w-0">
+              <div className="rounded-2xl border border-line bg-white p-4 overflow-x-auto sm:overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={asset(kepVerzio(abraUt(product.figure.image, lang)))}
+                  alt={product.figure.title[lang]}
+                  loading="lazy"
+                  className="mx-auto h-auto w-[820px] max-w-none sm:w-full sm:max-w-full"
+                />
+              </div>
+              {product.figure.caption && (
+                <figcaption className="mt-3 text-sm text-ink-muted">
+                  {product.figure.caption[lang]}
+                </figcaption>
+              )}
+            </figure>
+            {product.figure.link && (
+              <Link
+                href={`/${lang}/${product.figure.link.href}`}
+                className="mt-6 inline-block rounded-full bg-brand-700 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-800"
+              >
+                {product.figure.link.label[lang]} →
+              </Link>
+            )}
           </section>
         </Reveal>
       )}

@@ -6,7 +6,7 @@ import { RibbonSpectrum } from '@/components/ribbon-spectrum';
 import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
-import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { abraUt, getDictionary, isLocale, locales } from '@/lib/i18n';
 import { getGuide, guides } from '@/lib/knowledge';
 import { morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
@@ -128,17 +128,38 @@ export default async function GuidePage({
                   }`}
                 >
                   {section.images.map((kep) => (
-                    <figure key={kep.src} className={kep.wide ? 'sm:col-span-2' : undefined}>
+                    // A `min-w-0` nem díszítés: rácselemként a figure alapból a
+                    // tartalma legkisebb szélességére nő, tehát a 820 képpontos
+                    // ábra magát a LAPOT tolná szélesebbre a telefonon. Ezzel a
+                    // görgetés a kép keretén belül marad.
+                    <figure
+                      key={kep.src}
+                      className={`min-w-0 ${kep.wide ? 'sm:col-span-2' : ''}`}
+                    >
                       {/* A fehér háttér nem díszítés: a vonalkód csak sötét-világos
                           kontraszttal olvasható le, tehát a kép alatt akkor is
                           fehérnek kell lennie, ha a lap háttere más. */}
-                      <div className="overflow-hidden rounded-xl border border-line bg-white p-4">
+                      {/* A nagy ábrák (wide) telefonon oldalt görgethetők. Enélkül a
+                          900 képpont széles rajz 390-re zsugorodik, és a 11 pontos
+                          felirat 5 pont alá esik — a fókuszábrán hat méretvonal és
+                          hat felirat van, ott ez olvashatatlan. A vízszintes görgetés
+                          a kép SAJÁT keretén belül marad, a lap maga nem csúszik el.
+                          A kis szimbólumok (QR, EAN) nem kapják meg: azok kicsik. */}
+                      <div
+                        className={`rounded-xl border border-line bg-white p-4 ${
+                          kep.wide ? 'overflow-x-auto sm:overflow-hidden' : 'overflow-hidden'
+                        }`}
+                      >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={asset(kepVerzio(kep.src))}
+                          src={asset(kepVerzio(abraUt(kep.src, lang)))}
                           alt={kep.alt[lang]}
                           loading="lazy"
-                          className="mx-auto h-auto w-full max-w-full"
+                          className={
+                            kep.wide
+                              ? 'mx-auto h-auto w-[820px] max-w-none sm:w-full sm:max-w-full'
+                              : 'mx-auto h-auto w-full max-w-full'
+                          }
                         />
                       </div>
                       <figcaption className="mt-2 text-sm text-ink-muted">
