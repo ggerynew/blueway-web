@@ -39,6 +39,17 @@ const url = (ut: string) => `${BAZIS}/${ut.replace(/^\/+/, '')}`;
 const hu = getDictionary('hu');
 const en = getDictionary('en');
 
+/**
+ * Az alkatrészindex fejléce a jegyzékhez — csak a darabszámok kellenek belőle.
+ * Ha a fájl nincs meg (mert az alkatresz-index.py még nem futott), a sor
+ * kimarad: jobb hiányozni, mint rossz számot állítani.
+ */
+const alkatreszek: { gepek: unknown[]; csoportok: unknown[] } | null = existsSync(
+  'public/alkatreszek.json',
+)
+  ? JSON.parse(readFileSync('public/alkatreszek.json', 'utf8'))
+  : null;
+
 const kategoriaNev = (slug: string, lang: Locale) =>
   categories.find((c) => c.slug === slug)?.name[lang] ?? slug;
 
@@ -80,6 +91,19 @@ function llms(): string {
   s.push('');
   s.push(`- [Teljes tartalom egy fájlban / full content](${url('llms-full.txt')}): minden termék és útmutató, HU + EN`);
   s.push(`- [Termékkatalógus JSON](${url('ai/termekek.json')}): ${products.length} termék szerkezetes adatként`);
+  // Az alkatrészindex eddig kimaradt innen, pedig ez a weblap egyetlen olyan
+  // adata, amit máshonnan nem lehet megszerezni: a gyári cab alkatrészlistákból
+  // épült gép–csoport–cikkszám kereszttábla. Épp az a fajta kérdés, amivel egy
+  // gépkezelő egy válaszmotorhoz fordul („milyen cikkszámú a SQUIX 4 nyomtatófeje").
+  //
+  // A kereső FELÜLETE egyelőre ki van kapcsolva (lásd ALKATRESZKERESO a
+  // [lang]/layout.tsx-ben), ezért csak az adatfájlra hivatkozunk — nem
+  // létező lapra mutató sor nem kerülhet a jegyzékbe.
+  if (alkatreszek) {
+    s.push(`- [Alkatrészindex JSON](${url('alkatreszek.json')}): ` +
+      `${alkatreszek.gepek.length} gép, ${alkatreszek.csoportok.length} alkatrészcsoport — ` +
+      'a gyári cab alkatrészlistákból');
+  }
   s.push(`- [Sitemap](${url('sitemap.xml')})`);
   s.push('');
   s.push('## Termékkategóriák / Categories');

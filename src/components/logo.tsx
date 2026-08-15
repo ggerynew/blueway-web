@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { asset } from '@/lib/asset';
 import { fajlLenyomat } from '@/lib/fajl-lenyomat';
 import type { Locale } from '@/lib/i18n';
@@ -27,8 +27,10 @@ const ATLATSZO = true;
  * leírását: a javítás kint volt a szerveren, mégsem érvényesült.)
  */
 const ANIM = 'images/brand/blueway-logo-anim.webp';
+const ANIM_1X = 'images/brand/blueway-logo-anim-1x.webp';
 const ALLO = 'images/brand/blueway-logo-still-atlatszo.png';
 const ANIM_V = fajlLenyomat(ANIM);
+const ANIM_1X_V = fajlLenyomat(ANIM_1X);
 const ALLO_V = fajlLenyomat(ALLO);
 
 export function Logo({
@@ -55,9 +57,19 @@ export function Logo({
         // média-feltételnek megfelelő forrást kéri le, és a beállítás
         // megváltozásakor magától átvált.
         <picture>
+          {/* Két képpontsűrűség. A fejléc a logót 168×48 CSS-képponton mutatja;
+              a 336-os fájl retina kijelzőre való, közönséges irodai monitoron
+              viszont a böngésző a képpontok felét eldobja — 585 kB-ot töltve le
+              260 kB-nyi információért. A sűrűségjelzős srcset megkérdezés
+              nélkül eldönti: 1x kijelzőn a kisebb fájl jön le, 2x-en a nagyobb.
+              A vessző a srcset elválasztója, ezért fontos, hogy a lenyomat
+              (?v=…) hexadecimális — vessző soha nincs benne. */}
           <source
             media="(prefers-reduced-motion: no-preference)"
-            srcSet={`${asset(`/${ANIM}`)}?v=${ANIM_V}`}
+            srcSet={
+              `${asset(`/${ANIM_1X}`)}?v=${ANIM_1X_V} 1x, ` +
+              `${asset(`/${ANIM}`)}?v=${ANIM_V} 2x`
+            }
             width={336}
             height={96}
           />

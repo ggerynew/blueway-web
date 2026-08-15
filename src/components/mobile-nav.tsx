@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { LangSwitcher } from '@/components/lang-switcher';
 import type { Locale } from '@/lib/i18n';
 

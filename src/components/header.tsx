@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import type { Dictionary, Locale } from '@/lib/i18n';
 import { MobileNav } from '@/components/mobile-nav';
 import { LangSwitcher } from '@/components/lang-switcher';

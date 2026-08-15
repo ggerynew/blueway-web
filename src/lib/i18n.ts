@@ -1911,7 +1911,7 @@ export const dictionaries = {
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
-      title: 'Maßgeschneiderte Lösungen für die Produktkennzeichnung',
+      title: 'Produktkennzeichnung nach Maß',
       lead: 'Etikettendruck, Lasermarkierung, Ersatzteilversorgung und Service — von der einfachsten Aufgabe bis zum komplexen Unternehmenssystem.',
       ctaPrimary: 'Angebot anfordern',
       ctaSecondary: 'Unsere Produkte',
@@ -2514,7 +2514,7 @@ export const dictionaries = {
     },
     hero: {
       eyebrow: 'Blueway Trade Kft.',
-      title: 'Soluzioni su misura per la marcatura dei prodotti',
+      title: 'Marcatura dei prodotti su misura',
       lead: 'Stampa di etichette, marcatura laser, ricambi e assistenza — dall’applicazione più semplice ai sistemi aziendali complessi.',
       ctaPrimary: 'Richiedi un preventivo',
       ctaSecondary: 'I nostri prodotti',

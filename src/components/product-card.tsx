@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { Reveal } from '@/components/reveal';
 import { ProductThumb } from '@/components/product-thumb';
 import { kepVerzio } from '@/lib/kep-verzio';

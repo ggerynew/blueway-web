@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useEffect, useRef } from 'react';
 
 type Tile = { src: string; alt: string; href: string };
