@@ -3,6 +3,7 @@ import { Link } from '@/components/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
 import { ProductCard } from '@/components/product-card';
+import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale } from '@/lib/i18n';
@@ -96,6 +97,15 @@ export default async function CategoryPage({
           {cat.name[lang]}
         </h1>
         <p className="mt-4 max-w-xl text-lg text-ink-muted">{cat.description[lang]}</p>
+        {cat.intro && (
+          <div className="mt-6 max-w-3xl space-y-4">
+            {cat.intro.map((p) => (
+              <p key={p[lang].slice(0, 32)} className="leading-relaxed text-ink-muted">
+                <LinkedText text={p[lang]} lang={lang} />
+              </p>
+            ))}
+          </div>
+        )}
       </Reveal>
 
       {items.length === 0 ? (

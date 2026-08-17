@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Link } from '@/components/link';
 import { notFound } from 'next/navigation';
 import { Reveal } from '@/components/reveal';
+import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
@@ -56,6 +57,18 @@ export default async function ServicesPage({
       </Reveal>
       <Reveal delay={0.08}>
         <p className="mt-4 max-w-2xl text-lg text-ink-muted">{services.lead}</p>
+        {/* A lap sokáig két csempéből és egy mondatból állt — összesen 64 saját
+            szó, a többi fejléc és lábléc. A Google 2026 augusztusában emiatt
+            sorolta a „Feltérképezve – jelenleg nincs indexelve" rekeszbe.
+            Nem az indexelés kedvéért került ide szöveg, hanem mert az a három
+            kérdés, amit a vevő úgyis feltesz, eddig sehol nem volt megválaszolva. */}
+        <div className="mt-6 max-w-3xl space-y-4">
+          {services.intro.map((p) => (
+            <p key={p.slice(0, 32)} className="leading-relaxed text-ink-muted">
+              <LinkedText text={p} lang={lang} />
+            </p>
+          ))}
+        </div>
       </Reveal>
 
       <div className="mt-12 grid items-stretch gap-4 md:grid-cols-2">

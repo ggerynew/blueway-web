@@ -199,6 +199,11 @@ export const dictionaries = {
     services: {
       title: 'Szolgáltatások',
       lead: 'Szerviz és egyedi szoftverfejlesztés — az általunk forgalmazott gépekhez és az Ön munkafolyamataihoz.',
+      intro: [
+        'A gép megvétele nem a történet vége, hanem az eleje: a címkéző és jelölő berendezés kopó alkatrészekből áll, és a nyomtatófej, a vágó, a szűrő vagy a védőüveg előbb-utóbb cserét kíván. Ezt a részt is mi visszük — az általunk forgalmazott CAB, POSTEK, TYKMA Electrox és START International gépekhez a telepítéstől a gyári alkatrészellátásig.',
+        'A szerviznek három útja van, és nem mindegy, melyiket választja. Ha a gép gyártósorba van építve vagy nem mozdítható, kiszállunk. Ha mozdítható, beküldheti a nagytarcsai telephelyünkre. Sok fennakadás viszont néhány perc alatt megoldható telefonon — érdemes azzal kezdeni.',
+        'Ami pedig nem a gépen múlik, hanem a folyamaton: az egyedi szoftverfejlesztés arra való, hogy a címke adata onnan jöjjön, ahol amúgy is megvan — a gyártásirányítóból, az ERP-ből, egy adatbázisból —, ne pedig kézzel kelljen újra begépelni.',
+      ],
       service: {
         title: 'Szerviz',
         body: 'Az általunk forgalmazott címke- és jelölőgépek telepítését, beüzemelését, karbantartását és javítását vállaljuk, gyári alkatrészellátással.',
@@ -804,6 +809,11 @@ export const dictionaries = {
     services: {
       title: 'Services',
       lead: 'Service and custom software development — for the machines we distribute and for your workflows.',
+      intro: [
+        'Buying the machine is not the end of the story but the beginning: labelling and marking equipment is built from wearing parts, and the printhead, the cutter, the filter or the protective glass will eventually need replacing. We carry that part too — from installation to original spare parts, for the CAB, POSTEK, TYKMA Electrox and START International machines we distribute.',
+        'Service has three routes, and it matters which one you pick. If the machine is built into a production line or cannot be moved, we come to you. If it can be moved, you can send it in to our site in Nagytarcsa. But many hold-ups are solved in a few minutes on the phone — it is worth starting there.',
+        'And for what does not depend on the machine but on the process: custom software development exists so that the data on the label comes from where it already lives — the production system, the ERP, a database — instead of being typed in again by hand.',
+      ],
       service: {
         title: 'Service',
         body: 'We handle installation, commissioning, maintenance and repair of the label and marking machines we distribute, with original spare parts.',
@@ -1408,6 +1418,11 @@ export const dictionaries = {
     services: {
       title: 'Services',
       lead: 'Service and custom software development — for the machines we distribute and for your workflows.',
+      intro: [
+        'Buying the machine is not the end of the story but the beginning: labeling and marking equipment is built from wearing parts, and the printhead, the cutter, the filter or the protective glass will eventually need replacing. We carry that part too — from installation to original spare parts, for the CAB, POSTEK, TYKMA Electrox and START International machines we distribute.',
+        'Service has three routes, and it matters which one you pick. If the machine is built into a production line or cannot be moved, we come to you. If it can be moved, you can send it in to our site in Nagytarcsa. But many hold-ups are solved in a few minutes on the phone — it is worth starting there.',
+        'And for what does not depend on the machine but on the process: custom software development exists so that the data on the label comes from where it already lives — the production system, the ERP, a database — instead of being typed in again by hand.',
+      ],
       service: {
         title: 'Service',
         body: 'We handle installation, commissioning, maintenance and repair of the label and marking machines we distribute, with original spare parts.',
@@ -2011,6 +2026,11 @@ export const dictionaries = {
     services: {
       title: 'Dienstleistungen',
       lead: 'Service und individuelle Softwareentwicklung — für die von uns vertriebenen Maschinen und Ihre Arbeitsabläufe.',
+      intro: [
+        'Der Kauf des Geräts ist nicht das Ende der Geschichte, sondern der Anfang: Etikettier- und Markiertechnik besteht aus Verschleißteilen, und Druckkopf, Messer, Filter oder Schutzglas verlangen früher oder später einen Wechsel. Auch diesen Teil übernehmen wir — von der Installation bis zum Original-Ersatzteil, für die von uns vertriebenen Geräte von CAB, POSTEK, TYKMA Electrox und START International.',
+        'Der Service hat drei Wege, und es ist nicht gleichgültig, welchen Sie wählen. Ist das Gerät in eine Fertigungslinie eingebaut oder nicht bewegbar, kommen wir zu Ihnen. Lässt es sich bewegen, können Sie es an unseren Standort in Nagytarcsa senden. Viele Störungen lassen sich aber in wenigen Minuten am Telefon lösen — damit sollte man beginnen.',
+        'Und für das, was nicht am Gerät, sondern am Prozess hängt: Die individuelle Softwareentwicklung sorgt dafür, dass die Daten des Etiketts von dort kommen, wo sie ohnehin liegen — aus dem Fertigungssystem, dem ERP, einer Datenbank —, statt erneut von Hand eingetippt zu werden.',
+      ],
       service: {
         title: 'Service',
         body: 'Wir übernehmen Installation, Inbetriebnahme, Wartung und Reparatur der von uns vertriebenen Etikettier- und Kennzeichnungsmaschinen — mit Original-Ersatzteilversorgung.',
@@ -2615,6 +2635,11 @@ export const dictionaries = {
     services: {
       title: 'Servizi',
       lead: 'Assistenza e sviluppo software su misura — per le macchine che distribuiamo e per i Suoi processi.',
+      intro: [
+        'L’acquisto della macchina non è la fine della storia ma l’inizio: le apparecchiature di etichettatura e marcatura sono fatte di parti soggette a usura, e testina, taglierina, filtro o vetro di protezione prima o poi vanno sostituiti. Anche questa parte la seguiamo noi: dall’installazione ai ricambi originali, per le macchine CAB, POSTEK, TYKMA Electrox e START International che distribuiamo.',
+        'L’assistenza ha tre strade, e non è indifferente quale scegliere. Se la macchina è integrata in una linea o non è spostabile, veniamo noi. Se è spostabile, può inviarla alla nostra sede di Nagytarcsa. Molti fermi però si risolvono in pochi minuti al telefono: conviene partire da lì.',
+        'E per ciò che non dipende dalla macchina ma dal processo: lo sviluppo software su misura serve perché i dati dell’etichetta arrivino da dove già si trovano — dal sistema di produzione, dall’ERP, da un database — invece di essere ridigitati a mano.',
+      ],
       service: {
         title: 'Assistenza',
         body: 'Ci occupiamo dell’installazione, della messa in servizio, della manutenzione e della riparazione delle macchine per etichettatura e marcatura che distribuiamo, con ricambi originali.',
@@ -3219,6 +3244,11 @@ export const dictionaries = {
     services: {
       title: 'Servicios',
       lead: 'Servicio técnico y desarrollo de software a medida — para las máquinas que distribuimos y para sus procesos de trabajo.',
+      intro: [
+        'Comprar la máquina no es el final de la historia sino el principio: los equipos de etiquetado y marcaje están hechos de piezas de desgaste, y el cabezal, la cuchilla, el filtro o el cristal protector acabarán pidiendo recambio. Esa parte también la llevamos nosotros: desde la instalación hasta el repuesto original, para las máquinas CAB, POSTEK, TYKMA Electrox y START International que distribuimos.',
+        'El servicio tiene tres caminos, y no da igual cuál se elija. Si la máquina está integrada en una línea o no se puede mover, vamos nosotros. Si se puede mover, puede enviarla a nuestras instalaciones de Nagytarcsa. Ahora bien, muchas incidencias se resuelven en unos minutos por teléfono: conviene empezar por ahí.',
+        'Y para lo que no depende de la máquina sino del proceso: el desarrollo de software a medida existe para que los datos de la etiqueta vengan de donde ya están —del sistema de producción, del ERP, de una base de datos— en lugar de teclearse otra vez a mano.',
+      ],
       service: {
         title: 'Servicio técnico',
         body: 'Nos encargamos de la instalación, la puesta en marcha, el mantenimiento y la reparación de las máquinas de etiquetado y marcaje que distribuimos, con repuestos originales.',
@@ -3822,6 +3852,11 @@ export const dictionaries = {
     services: {
       title: '서비스',
       lead: '서비스 및 맞춤형 소프트웨어 개발 — 당사가 공급하는 장비와 귀사의 업무 흐름을 위해.',
+      intro: [
+        '장비를 사는 것은 이야기의 끝이 아니라 시작입니다. 라벨링·마킹 장비는 소모 부품으로 이루어져 있고, 프린트헤드, 커터, 필터, 보호 유리는 언젠가 교체를 요구합니다. 그 부분도 저희가 맡습니다. 저희가 공급하는 CAB, POSTEK, TYKMA Electrox, START International 장비에 대해 설치부터 정품 부품 공급까지 담당합니다.',
+        '서비스에는 세 가지 경로가 있고, 어느 것을 고르는지가 중요합니다. 장비가 생산 라인에 통합되어 있거나 옮길 수 없다면 저희가 방문합니다. 옮길 수 있다면 너지터르처(Nagytarcsa)의 저희 사업장으로 보내실 수 있습니다. 다만 많은 문제는 전화로 몇 분 만에 해결됩니다. 거기서 시작하는 편이 좋습니다.',
+        '장비가 아니라 공정에 달린 문제라면, 맞춤 소프트웨어 개발이 답입니다. 라벨의 데이터가 이미 존재하는 곳 — 생산 관리 시스템, ERP, 데이터베이스 — 에서 오도록 하여, 사람이 다시 입력하지 않게 만드는 것이 그 목적입니다.',
+      ],
       service: {
         title: '서비스',
         body: '당사가 공급하는 라벨링 및 마킹 장비의 설치, 시운전, 유지보수 및 수리를 정품 부품 공급과 함께 수행합니다.',
@@ -4424,6 +4459,11 @@ export const dictionaries = {
     services: {
       title: '服务',
       lead: '维修服务与定制软件开发 — 服务于我们销售的设备和您的业务流程。',
+      intro: [
+        '买下设备不是故事的结束，而是开始：贴标和打标设备由易损件构成，打印头、切刀、滤芯或保护镜片迟早都需要更换。这部分同样由我们负责——针对我们代理的 CAB、POSTEK、TYKMA Electrox 和 START International 设备，从安装到原厂备件。',
+        '维修有三条路，选哪条并非无所谓。如果设备已集成到产线上或无法移动，我们上门。如果可以移动，您可以寄到我们位于 Nagytarcsa 的场地。不过很多故障在电话里几分钟就能解决——不妨先从这里开始。',
+        '至于不取决于设备、而取决于流程的部分：定制软件开发的意义在于让标签上的数据来自它本来就在的地方——生产管理系统、ERP、数据库——而不是再靠人手敲一遍。',
+      ],
       service: {
         title: '维修服务',
         body: '我们负责所售贴标和标识设备的安装、调试、保养和维修，并提供原厂备件。',
