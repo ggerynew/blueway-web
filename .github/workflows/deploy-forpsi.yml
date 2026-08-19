@@ -651,6 +651,39 @@ jobs:
             echo "A sitemap-beli címek átirányítás nélkül felelnek."
           fi
 
+          # ——— A perjeles alak: kiszolgálás igen, átirányítás nem ————————
+          # A másik irány. A fenti próba azt őrzi, hogy a perjel NÉLKÜLI címhez
+          # ne fűzzön perjelet a szerver; ez azt, hogy a perjeles alak
+          # (…/it/termekek/) továbbra is kiszolgálja a tartalmat, és a benne
+          # lévő kanonikus hivatkozás a perjel nélkülire mutasson.
+          #
+          # Miért külön lépés: a Google 2026 augusztusában feltérképezte az
+          # /it/termekek/ címet — régi könyvjelzőből vagy külső hivatkozásból
+          # ilyen alakok a jövőben is érkeznek. A visszairányítás itt TILOS:
+          # amíg a mod_dir hozzáfűzte a perjelet, a levágó szabállyal együtt
+          # végtelen kör lett belőle („Maximum (50) redirects followed"),
+          # élesben. A helyes állapot tehát: 200, és a kanonikus a perjel
+          # nélküli címre mutat — ezt a kettőt együtt kell őrizni.
+          echo "— a perjeles alak —"
+          PJ_BAJ=0
+          for ut in /hu/termekek /it/termekek /us; do
+            KOD=$(curl -sS -o /tmp/perjel.html --max-time 25 -w '%{http_code}|%{num_redirects}' \
+                  "https://$HOSZT$ut/" 2>/dev/null || echo '000|0')
+            KAN=$(grep -o '<link rel="canonical" href="[^"]*"' /tmp/perjel.html 2>/dev/null \
+                  | head -1 | sed 's/.*href="//; s/"//')
+            case "$KOD" in
+              200\|0) ;;
+              *) echo "::warning::A $ut/ nem 200-zal, átirányítás nélkül felelt ($KOD)."; PJ_BAJ=$((PJ_BAJ + 1)); continue ;;
+            esac
+            if [ "$KAN" = "https://$HOSZT$ut" ] || [ "$KAN" = "${SITE_URL%/}$ut" ]; then
+              echo "  $ut/ -> 200, kanonikus: $KAN"
+            else
+              echo "::warning::A $ut/ kanonikus hivatkozása $KAN — a perjel nélküli címre kellene mutatnia."
+              PJ_BAJ=$((PJ_BAJ + 1))
+            fi
+          done
+          [ "$PJ_BAJ" -eq 0 ] && echo "  a perjeles alak kiszolgálja a tartalmat, és a kanonikus a perjel nélkülire mutat"
+
           # ——— A bluewaytrade.us átmeneti lapja ————————————————————
           # Ez a domain még nem biztos, hogy erre a tárhelyre mutat, ezért a
           # próba SOHA nem bukhat el — csak tájékoztat. Két dolgot néz:
