@@ -92,7 +92,10 @@ RewriteRule ^ /us-atmeneti/index.html [L]
 # a blueway.hu 404-et adna az amerikai angol változat mind a 110 lapjára,
 # miközben a sitemap beküldi és minden lap hreflangje odamutat.
 RewriteCond %{HTTP_HOST} !^bluewaytrade\.us$ [NC]
-RewriteRule ^us-atmeneti/ - [R=404,L]
+# A (/|$) nem díszítés: a csak perjelre horgonyzott minta a PERJEL NÉLKÜLI
+# /us-atmeneti alakot átengedte — az egyetlen szabályra sem illeszkedett, és
+# a DirectorySlash Off mellett a mappa tartalma kiszolgálható maradt.
+RewriteRule ^us-atmeneti(/|$) - [R=404,L]
 
 # ——— Átnevezett oldalak ——————————————————————————————————————————
 # A 6014-es applikátorból új változat jött ki 6114 néven, ezért az oldal címe
@@ -376,7 +379,12 @@ ErrorDocument 404 /404.html
   ExpiresActive On
   ExpiresByType text/html "access plus 0 seconds"
   ExpiresByType text/css "access plus 1 year"
+  # Mindkét MIME-név, ugyanazért, amiért a DEFLATE-listában (lásd lent): az
+  # Apache 2.4.55 óta a .js-hez text/javascript-et rendel. Ma a lenti
+  # FilesMatch immutable szabálya úgyis felülírja ezt, de ha az valaha
+  # kikerül, a JS gyorsítótárazása ne vesszen el némán.
   ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
   ExpiresByType image/webp "access plus 6 months"
   ExpiresByType image/png "access plus 6 months"
   ExpiresByType image/jpeg "access plus 6 months"

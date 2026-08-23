@@ -1,4 +1,5 @@
 import { Link } from '@/components/link';
+import { Ev } from '@/components/ev';
 import { CookieSettingsLink } from '@/components/cookie-settings-link';
 import { DnbCertificate } from '@/components/dnb-certificate';
 import { asset } from '@/lib/asset';
@@ -114,7 +115,7 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
 
       <div className="border-t border-line">
         <p className="mx-auto max-w-6xl px-6 py-6 text-xs text-ink-muted">
-          © {new Date().getFullYear()} {dict.footer.company} {dict.footer.rights}
+          © <Ev buildEv={new Date().getFullYear()} /> {dict.footer.company} {dict.footer.rights}
         </p>
       </div>
     </footer>

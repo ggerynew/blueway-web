@@ -478,7 +478,10 @@ export function VideoBand({
                       key={v.mp4}
                       type="button"
                       onClick={() => valt(csempe.id, i, v)}
-                      aria-label={v.cim}
+                      // A klip címe opcionális — cím nélkül a gombnak nem maradna
+                      // akadálmentesítési neve (a belseje két dekoratív span). A
+                      // tartalék a sorszám: „Videó választása — 2".
+                      aria-label={v.cim ?? `${feliratok.pickVideo} — ${i + 1}`}
                       aria-current={i === index}
                       className="h-4 flex-1 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                     >

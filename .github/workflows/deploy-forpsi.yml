@@ -105,6 +105,14 @@ jobs:
           NEXT_PUBLIC_FORM_ENDPOINT: ${{ secrets.FORM_ENDPOINT || '/send.php' }}
           NEXT_PUBLIC_GOATCOUNTER_CODE: ${{ secrets.GOATCOUNTER_CODE || 'blueway' }}
 
+      - name: Ellenőrzés — a kimenet átvizsgálása (weblap-audit)
+        if: steps.gate.outputs.go == 'true'
+        # Az auditor kapuőrnek készült (hibánál 1-gyel lép ki), de eddig
+        # egyetlen munkafolyamat sem futtatta: egy hiányzó célra mutató
+        # hivatkozás vagy egy elveszett canonical akadálytalanul élesedett
+        # volna. Mostantól a hibás kimenet fel sem töltődik.
+        run: node scripts/weblap-audit.mjs
+
       - name: A szerveroldali fájlok a feltöltendő mappába
         if: steps.gate.outputs.go == 'true'
         run: |
@@ -930,7 +938,13 @@ jobs:
           # lenyomatot ír, tehát kézzel beírt név egy build után elavulna.
           echo "— tömörítés —"
           curl -sS -o /tmp/tomorit.html --max-time 20 "https://$HOSZT/hu" 2>/dev/null || true
-          JSUT=$(grep -o '/_next/static/chunks/[A-Za-z0-9._-]*\.js' /tmp/tomorit.html 2>/dev/null | head -1 || true)
+          # A minta almappát és URL-kódolt szakaszt is enged (chunks/app/%5Blang%5D/…):
+          # a csak lapos nevekre írt első változat egy Next-frissítés után némán
+          # üresre futott volna, és a lépés zölden jelentett volna ellenőrizetlenül.
+          JSUT=$(grep -o '/_next/static/chunks/[A-Za-z0-9._%/-]*\.js' /tmp/tomorit.html 2>/dev/null | head -1 || true)
+          if [ -z "$JSUT" ]; then
+            echo "::warning::Nem találtam JS-csomagot a kezdőlap forrásában — a tömörítés a JavaScriptre ellenőrizetlen maradt."
+          fi
           TOM_BAJ=0
           for UT in /hu /sitemap.xml /llms.txt $JSUT; do
             KOD=$(curl -sS -o /dev/null --max-time 20 -H 'Accept-Encoding: gzip' \
