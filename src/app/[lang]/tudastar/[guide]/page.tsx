@@ -11,7 +11,7 @@ import { getGuide, guides } from '@/lib/knowledge';
 import { morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
 
-/** A tudástár-cikkek első publikálásának dátuma (strukturált adathoz). */
+/** A tudástár első köre ezen a napon jelent meg — az e nélküli cikkek dátuma. */
 const PUBLISHED = '2026-07-26';
 
 export function generateStaticParams() {
@@ -54,8 +54,8 @@ export default async function GuidePage({
         description: guide.short[lang],
         inLanguage: nyelvKod(lang),
         image: absUrl('images/og.png'),
-        datePublished: PUBLISHED,
-        dateModified: PUBLISHED,
+        datePublished: guide.kiadva ?? PUBLISHED,
+        dateModified: guide.modositva ?? guide.kiadva ?? PUBLISHED,
         author: szervezetRef,
         publisher: szervezetRef,
         isPartOf: weblapRef(lang),
