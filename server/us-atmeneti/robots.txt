@@ -1,0 +1,9 @@
+# bluewaytrade.us — under construction.
+# Until the US site goes live, the full catalogue is at https://blueway.hu/
+# (British English: /en/, American English: /us/).
+#
+# Machine-readable map for AI readers: https://blueway.hu/llms.txt
+# Full content in one file (HU + EN):  https://blueway.hu/llms-full.txt
+
+User-Agent: *
+Allow: /
