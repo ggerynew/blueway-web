@@ -1,17 +1,26 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { Locale } from '@/lib/i18n';
+import { HREFLANG, type Locale } from '@/lib/i18n';
 import { MAX_CSATOLMANY } from '@/lib/csatolmany';
 
 
 
-/** „1,4 MB” — a nyelv szerinti tizedesjellel. */
-function meret(bajt: number, lang: string): string {
+/**
+ * „1,4 MB” — a nyelv szerinti tizedesjellel.
+ *
+ * A mappanév NEM nyelvkód: az `us` országkód, az Intl nyelvként nem ismeri,
+ * és hibajelzés helyett némán a böngésző alapnyelvére esik vissza — egy német
+ * böngészőben az amerikai lap „1,4 MB"-ot mutatott volna „1.4 MB" helyett.
+ * A HREFLANG térkép (en-US) pontosan erre a leképezésre való; a jsonld.ts
+ * ugyanezt az utat járja.
+ */
+function meret(bajt: number, lang: Locale): string {
+  const nyelv = HREFLANG[lang];
   const mb = bajt / (1024 * 1024);
-  if (mb >= 1) return `${mb.toLocaleString(lang, { maximumFractionDigits: 1 })} MB`;
+  if (mb >= 1) return `${mb.toLocaleString(nyelv, { maximumFractionDigits: 1 })} MB`;
   const kb = bajt / 1024;
-  return `${kb.toLocaleString(lang, { maximumFractionDigits: 0 })} kB`;
+  return `${kb.toLocaleString(nyelv, { maximumFractionDigits: 0 })} kB`;
 }
 
 /**

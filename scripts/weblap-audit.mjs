@@ -22,7 +22,7 @@
  *   node scripts/weblap-audit.mjs
  */
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { join } from 'node:path';
 
 const OUT = 'out';
 const CIM = 'https://blueway.hu';
@@ -101,10 +101,18 @@ for (const ut of lapok) {
   sulyok.push([lap, Buffer.byteLength(html)]);
 
   // — hivatkozott helyi fájlok
+  // A videósáv klipjei NEM <source src>-ban élnek, hanem data-* attribútumban
+  // (a forrásválasztást a kliens végzi csempeszélesség szerint), a állókép
+  // pedig poster attribútumban. Az első változat egyiket sem nézte, tehát egy
+  // elgépelt klipnév az auditon átcsúszott, és a csempe élesben megfagyott
+  // poszterként állt volna — pont a néma hibamód, amit a telepítés
+  // videoellenőrzése miatt már egyszer megtanultunk.
   const hivatkozasok = [
     ...[...html.matchAll(/<(?:img|source|script)[^>]*\ssrc="([^"]+)"/gi)].map((m) => m[1]),
     ...[...html.matchAll(/<link[^>]*\shref="([^"]+)"/gi)].map((m) => m[1]),
     ...[...html.matchAll(/<a[^>]*\shref="([^"]+)"/gi)].map((m) => m[1]),
+    ...[...html.matchAll(/\sposter="([^"]+)"/gi)].map((m) => m[1]),
+    ...[...html.matchAll(/\sdata-(?:kicsi-)?(?:mp4|webm)="([^"]+)"/gi)].map((m) => m[1]),
   ];
   for (const nyers of hivatkozasok) {
     if (!nyers.startsWith('/')) continue;                 // külső vagy horgony
@@ -230,7 +238,13 @@ for (const ut of lapok) {
 // ——————————————————————————————————————————————————————————————
 // Sitemap és robots
 // ——————————————————————————————————————————————————————————————
-const sitemap = readFileSync(join(OUT, 'sitemap.xml'), 'utf8');
+// A sitemap és a robots hiánya nem kivétel, hanem lelet: a hiányukat is
+// hibaként kell jelenteni, nem összeomlással.
+if (!existsSync(join(OUT, 'sitemap.xml'))) baj('sitemap.xml', 'a fájl HIÁNYZIK a kimenetből');
+if (!existsSync(join(OUT, 'robots.txt'))) baj('robots.txt', 'a fájl HIÁNYZIK a kimenetből');
+const sitemap = existsSync(join(OUT, 'sitemap.xml'))
+  ? readFileSync(join(OUT, 'sitemap.xml'), 'utf8')
+  : '';
 const smCimek = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 const smHalmaz = new Set(smCimek);
 for (const c of smCimek) {
@@ -247,7 +261,9 @@ for (const ut of lapok) {
   const gyoker = cim.replace(/\/index$/, '');
   if (![nyers, cim, gyoker].some((c) => smHalmaz.has(c))) figyelem('sitemap.xml', `hiányzó lap: ${lap}`);
 }
-const robots = readFileSync(join(OUT, 'robots.txt'), 'utf8');
+const robots = existsSync(join(OUT, 'robots.txt'))
+  ? readFileSync(join(OUT, 'robots.txt'), 'utf8')
+  : '';
 if (!robots.includes('Sitemap:')) baj('robots.txt', 'nincs Sitemap sor');
 if (/^Disallow:\s*\/\s*$/m.test(robots)) baj('robots.txt', 'a teljes weblap tiltva van');
 
