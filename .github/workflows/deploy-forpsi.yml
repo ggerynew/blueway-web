@@ -719,6 +719,15 @@ jobs:
                 200\ *)       echo "::error::A bluewaytrade.us logója 200-zal jön, de NEM kép ($LOGOV) — az átíró szabály a HTML-t adja vissza a kép helyett, a lap logó nélkül jelenik meg." ;;
                 *)            echo "::warning::A bluewaytrade.us logója nem érhető el ($LOGOV) — a lap logó nélkül jelenik meg." ;;
               esac
+              # A robots.txt ugyanabba a csapdába eshet, mint a logó: a
+              # mindent-átíró szabály HTML-t adna vissza helyette. Egy robot
+              # ezt érvénytelen robots-fájlnak látja.
+              USROB=$(curl -sSL -o /dev/null --max-time 20 -w '%{http_code} %{content_type}' "http://bluewaytrade.us/robots.txt" || echo "000 -")
+              echo "  GET /robots.txt -> $USROB"
+              case "$USROB" in
+                200\ text/plain*) echo "  a robots.txt szövegként érkezik" ;;
+                *)                echo "::warning::A bluewaytrade.us robots.txt-je nem szöveges fájlként jön ($USROB)." ;;
+              esac
             elif [ "$USV" = "200" ]; then
               echo "::warning::A bluewaytrade.us válaszol, de nem az átmeneti lapot adja — vagy külön dokumentumgyökere van (ekkor a FORPSI_US_WEB_ROOT titkot kell beállítani), vagy máshová mutat a DNS."
             else

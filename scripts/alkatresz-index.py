@@ -283,6 +283,20 @@ def tomorit(gepek: list[dict], alkatreszek: list[dict]) -> dict:
 
     return {
         'forras': 'cab Produkttechnik — gyári alkatrészlisták',
+        # A sémaleírás a gépi olvasónak szól. A t sorai pozicionálisak — egy
+        # ['3300911.001', 'Cable RFID', [39], [123], ''] alakú sorból kívülről
+        # semmi nem derül ki. Az llms.txt erre a fájlra hivatkozik, tehát egy
+        # AI-ügynök leírás nélkül csak találgatni tudna.
+        'sema': {
+            'hu': 't sorai: [cikkszám, megnevezés, gép-sorszámok a gepek '
+                  'tömbbe, szerelésiegység-sorszámok a csoportok tömbbe '
+                  '(páronként a gép-sorszámhoz tartoznak; -1 = nincs megadva), '
+                  'SPR osztály]. A gepek[].k a géphez tartozó keresőkulcsok.',
+            'en': 'rows of t: [part number, name, machine indices into gepek, '
+                  'assembly-group indices into csoportok (paired with the '
+                  'machine index; -1 = not stated), SPR class]. gepek[].k are '
+                  'search keys for the machine.',
+        },
         'gepek': [{'id': g['id'], 'nev': g['nev'], 'k': g['kulcsok']} for g in gepek],
         'csoportok': csoportok,
         't': sorok,

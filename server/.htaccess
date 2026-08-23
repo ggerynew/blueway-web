@@ -73,10 +73,14 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 # Azért nevesítve, és nem kiterjesztés szerint: a gyökérben a magyar weblap
 # képei is ott vannak, azokhoz nem szabad hozzányúlni.
 #
+# A robots.txt is a listán: enélkül a mindent-átíró szabály a robotoknak is a
+# HTML-lapot adta vissza a robots.txt helyett — egy AI-robot érvénytelen
+# robots-fájlt kapott, és a .us saját szabályai kimondhatatlanok voltak.
+#
 # A relatív hivatkozás szándékos: ha a .us saját webgyökeret kap, ugyanezek a
 # fájlok ott a gyökérben állnak, és ez a szabály eleve nem is fut le.
 RewriteCond %{HTTP_HOST} ^bluewaytrade\.us$ [NC]
-RewriteRule ^(blueway-logo-anim\.webp|blueway-logo-still\.png|favicon\.ico)$ /us-atmeneti/$1 [L]
+RewriteRule ^(blueway-logo-anim\.webp|blueway-logo-still\.png|favicon\.ico|robots\.txt)$ /us-atmeneti/$1 [L]
 
 # Minden más kérés a lapot kapja. Az /us-atmeneti/ alattiak kimaradnak,
 # különben a fenti átírás után végtelen körbe futnánk.
@@ -497,6 +501,18 @@ ErrorDocument 404 /404.html
   <Files "llms-full.txt">
     Header unset X-Robots-Tag
   </Files>
+</IfModule>
+
+# ——— CORS a gépi fájlokra ————————————————————————————————————————
+# Az llms.txt, a teljes kivonat és a JSON-katalógusok kimondottan gépi
+# olvasóknak készülnek. Egy böngészőben futó ügynök (RAG-felület, ChatGPT/
+# Claude eszközhívás webnézetben) másik eredetről kéri őket, és a CORS-fejléc
+# nélkül a böngésző eldobja a választ — a robot 200-at lát, az ügynök semmit.
+# Csak erre a négy fájlnévre áll, a weblap többi részére nem.
+<IfModule mod_headers.c>
+  <FilesMatch "^(llms\.txt|llms-full\.txt|termekek\.json|alkatreszek\.json)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
 </IfModule>
 
 # ——— Tömörítés ————————————————————————————————————————————————————
