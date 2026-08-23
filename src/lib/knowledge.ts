@@ -34,6 +34,15 @@ export interface Guide {
   title: LocalizedText;
   short: LocalizedText;
   lead: LocalizedText;
+  /**
+   * Kiadás és utolsó érdemi módosítás napja (ISO). A strukturált adat
+   * datePublished/dateModified mezője ebből él. Korábban egyetlen közös
+   * állandó volt mind a kilenc cikkre — a lézeres cikk három héttel a
+   * „közös" dátum után született, tehát a lap hamisat állított. A dátumot
+   * a tartalmi változás viszi előre, a fordításjavítás nem.
+   */
+  kiadva?: string;
+  modositva?: string;
   sections: GuideSection[];
 }
 
@@ -1101,6 +1110,7 @@ const guidesSource: Sourced<Guide[]> = [
   },
   {
     slug: 'cimkezo-rendszer-tervezese',
+    modositva: '2026-08-15',
     title: {
       hu: 'Automata címkézés tervezése: milyen adatokat kérünk?',
       en: 'Planning an automatic labelling system: what data we need', it: 'Progettare l’etichettatura automatica: i dati che ci servono', es: 'Planificar el etiquetado automático: qué datos necesitamos', de: 'Planung einer automatischen Etikettieranlage: welche Daten wir benötigen', ko: '자동 라벨링 시스템 기획: 어떤 데이터가 필요한가', zh: '规划自动贴标系统：我们需要哪些数据',
@@ -1257,6 +1267,7 @@ const guidesSource: Sourced<Guide[]> = [
   },
   {
     slug: 'lezeres-jeloles',
+    modositva: '2026-08-15',
     title: {
       hu: 'Lézeres jelölés: melyik gép való a feladathoz?',
       en: 'Laser marking: which machine fits the job?', it: 'Marcatura laser: quale macchina è adatta al lavoro?', es: 'Marcaje láser: ¿qué máquina se adapta al trabajo?', de: 'Lasermarkierung: Welche Maschine passt zur Aufgabe?', ko: '레이저 마킹: 어떤 장비가 작업에 적합합니까?', zh: '激光打标：哪种设备适合您的作业？',
@@ -1646,6 +1657,7 @@ const guidesSource: Sourced<Guide[]> = [
   },
   {
     slug: 'ragaszto-adagolok',
+    modositva: '2026-08-15',
     title: {
       hu: 'Szalag- és címkeadagolók: mikor éri meg?',
       en: 'Tape and label dispensers: when do they pay off?', it: 'Dispenser per nastro ed etichette: quando conviene?', es: 'Dispensadores de cinta y etiquetas: ¿cuándo salen a cuenta?', de: 'Band- und Etikettenspender: Wann lohnen sie sich?', ko: '테이프 및 라벨 디스펜서: 언제 도입할 가치가 있을까요?', zh: '胶带与标签剥离机：何时值得投入？',
@@ -1703,6 +1715,7 @@ const guidesSource: Sourced<Guide[]> = [
   },
   {
     slug: 'lezer-fokusztavolsag',
+    kiadva: '2026-08-15',
     title: {
       hu: 'Fókusztávolság a jelölőlézerben: objektív, jelölőmező és a mozgatható fókusz',
       en: 'Focal distance in a marking laser: lens, marking field and the movable focus', de: 'Fokusabstand beim Markierlaser: Linse, Markierfeld und der bewegliche Fokus', it: 'Distanza focale nel laser di marcatura: lente, campo di marcatura e fuoco mobile', es: 'Distancia focal en el láser de marcaje: lente, campo de marcaje y foco móvil', ko: '마킹 레이저의 초점 거리: 렌즈, 마킹 필드, 그리고 움직이는 초점', zh: '打标激光器的焦距：透镜、打标范围与可移动的焦点',

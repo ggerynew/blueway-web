@@ -199,6 +199,14 @@ function termekBlokk(p: Product, lang: Locale): string {
       s.push(`- ${v.name} — ${v.purpose[lang]}${par ? ` (${par})` : ''}`);
     }
   }
+  // A magyarázó ábra szövege a lap érdemi része (a XENO 4S-nél ez mondja el,
+  // mit jelent a ±35/±70 mm) — a gépi olvasó a rajzot nem látja, a szövegét
+  // viszont megkapja.
+  if (p.figure) {
+    s.push('');
+    s.push(`**${p.figure.title[lang]}** — ${p.figure.text[lang]}`);
+    if (p.figure.caption) s.push(p.figure.caption[lang]);
+  }
   if (p.applicators?.length) {
     s.push('');
     s.push(lang === 'hu' ? 'Applikátorok:' : 'Applicators:');
@@ -229,6 +237,13 @@ function llmsFull(): string {
       s.push('');
       s.push(c.description[lang]);
       s.push('');
+      // A kategória-bevezető a „mikor melyiket" tudást hordozza — pont az a
+      // szövegtípus, amit egy válaszmotor idéz. A lapra 2026 augusztusában
+      // került fel; a kivonatból addig hiányzott.
+      if (c.intro) {
+        for (const par of c.intro) s.push(par[lang] + '\n');
+        s.push('');
+      }
       for (const p of lista) s.push(termekBlokk(p, lang));
     }
     s.push(lang === 'hu' ? '## Iparágak' : '## Industries');
@@ -261,6 +276,25 @@ function llmsFull(): string {
       }
       s.push('');
     }
+    s.push(lang === 'hu' ? '## Gyártók' : '## Manufacturers');
+    s.push('');
+    for (const m of manufacturers) {
+      s.push(`### ${m.name}`);
+      s.push('');
+      s.push(`URL: ${url(`${lang}/gyartok/${m.slug}`)}`);
+      s.push('');
+      s.push(m.description[lang]);
+      s.push('');
+      // Az alkalmazási területek válaszolnak arra, amit a vevő ténylegesen
+      // kérdez („melyik szalag való vegyszeres címkére") — a kivonat eddig a
+      // gyártókról csak egy-egy mondatot adott.
+      if (m.industries?.length) {
+        for (const ind of m.industries) {
+          s.push(`**${ind.name[lang]}** — ${ind.text[lang]}`);
+          s.push('');
+        }
+      }
+    }
     s.push(lang === 'hu' ? '## Tudástár' : '## Knowledge base');
     s.push('');
     for (const g of guides) {
@@ -275,6 +309,14 @@ function llmsFull(): string {
         s.push('');
         for (const par of sec.paragraphs) s.push(par[lang] + '\n');
         if (sec.bullets) for (const b of sec.bullets) s.push(`- ${b[lang]}`);
+        // A képaláírások nem díszek: a fókuszmélység-ábráé mondja ki például a
+        // Rayleigh-hossz gyakorlati jelentését. A rajz a gépi olvasónak nem
+        // mond semmit — a felirata annál többet.
+        if (sec.images) {
+          for (const kep of sec.images) {
+            s.push(`${lang === 'hu' ? 'Ábra' : 'Figure'}: ${kep.caption[lang]}`);
+          }
+        }
         s.push('');
       }
     }
