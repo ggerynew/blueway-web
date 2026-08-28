@@ -11,66 +11,83 @@ a cégadatokból, és milyen dokumentumok kellenek egy amerikai weblaphoz.
 
 ---
 
-## 1. A cégadatokat nem sikerült hitelesen lekérni
+## 1. A cégadatok — a CSC-kivonatból megerősítve (2026-08-28)
 
-Megpróbáltam, és három forrás is zárva van ebből a környezetből:
+Gáspár átadta a CSC (Corporation Service Company) nyilvántartásának
+Entity Summary lapját. Ez a korábbi feltevések egy részét megerősíti, egy
+lényeges ponton viszont **felülírja: a cég nem pennsylvaniai, hanem
+Delaware-i LLC.**
 
-| forrás | eredmény |
+| adat | érték (a CSC-kivonatból) |
 |---|---|
-| Pennsylvania Department of State cégkereső (`file.dos.pa.gov`) | a kimenő forgalom szűrője blokkolja |
-| OpenCorporates | blokkolva |
-| `bluewaytrade.us` közvetlen lekérése | blokkolva |
+| Bejegyzett név | **Blueway Trade, LLC** (vesszővel) |
+| Bejegyzés állama | **Delaware** |
+| Alapítás dátuma | 2022. január 20. |
+| Cégforma | Limited Liability Company |
+| FEIN (szövetségi adószám) | 88-0880046 |
+| Üzleti év vége | december 31. |
+| Tevékenység | „solutions for label printing, laser marking, spares support and services" |
+| Nyilvántartó / kapcsolt szolgáltató | CSC (a kivonat az ő entity-management portáljukról való — feltehetően ők a delaware-i registered agent is, ezt érdemes megerősíteni) |
 
-A webkeresés visszaadott egy címet — 206 Hickory Lane, Douglassville, PA, egy
-`+1 310-957-1497` telefonszámot és egy `bluewaytradeus@gmail.com` címet —, a
-`bluewaytrade.us/contact` lapra hivatkozva. **Ezt nem írtam sehova, mert három
-dolog nem stimmel benne:**
+A webkeresés közben megerősítette, hogy a régi `bluewaytrade.us` kapcsolat
+oldala a **206 Hickory Lane, Douglassville, PA 19468** címet, a
+`+1 310-957-1497` telefonszámot és a `bluewaytradeus@gmail.com` címet
+hirdette. Vagyis az adat a cég saját, korábbi honlapjáról származik, nem a
+kereső tévedése. Két dolog továbbra is tisztázandó, mielőtt közzétesszük:
 
-1. A mi átmeneti lapunk (`server/us-atmeneti/index.html`) egyetlen fájl, és nem
-   tartalmaz sem címet, sem telefonszámot — csak az `info@blueway.hu`-t. Vagyis
-   ez vagy egy régebbi, a domainen korábban élt lap gyorsítótárazott
-   maradványa, vagy a kereső összefoglalójának tévedése.
-2. Az irányítószám nem illik a településhez: Douglassville 19518, a 19468
-   Royersford/Collegeville.
-3. **Douglassville nem Philadelphia** — negyven mérföldre északnyugatra van,
-   Berks megyében. Ez nem szőrszálhasogatás: a philadelphiai városi engedély és
-   a városi nyereségadó CSAK akkor jár, ha a tevékenység a városban van (lásd a
-   3. pontot). Pénzben mérhető a különbség.
+1. **Az irányítószám**: Douglassville irányítószáma 19518, a 19468
+   Royersford környéke. Valamelyik elem hibás volt a régi lapon is — a
+   pontos, postailag helyes címet Gáspárnak kell megerősítenie.
+2. **Douglassville nem Philadelphia** — negyven mérföldre északnyugatra van,
+   Berks megyében. A korábbi „Philadelphia" iránymutatás és a tényleges cím
+   ellentmond egymásnak, és ez pénzre fordul: a philadelphiai városi engedély
+   és a városi nyereségadó CSAK városbeli tevékenységre jár (lásd a 3. pontot).
 
-### Amit kérek tőled, hogy a weblapra kerülhessen
+### Ami még hiányzik a weblaphoz
 
-A hiteles forrás a PA Department of State cégkeresője (ingyenes,
-`file.dos.pa.gov/search/business`) — ott a cég neve alapján kijön a lap, és le
-lehet tölteni a bejegyző okiratot. Ami a weblaphoz kell:
-
-- a cég **pontos bejegyzett neve** (Blueway Trade LLC?)
-- **PA entity number** (a cégkeresőben látszik)
-- **bejegyzett székhely (registered office)** Pennsylvaniában — ez nyilvános adat
-- a **közzéteendő üzleti cím**: Philadelphia vagy Douglassville?
-- **EIN** (szövetségi adószám)
-- amerikai **telefonszám** és **e-mail cím** (a gmail.com nem szerencsés egy
-  ipari beszállítónál — érdemes `@bluewaytrade.us` címet csinálni)
-- pennsylvaniai LLC-e, vagy máshol (Delaware, Wyoming) bejegyzett cég, amely PA-ban
-  külföldiként regisztrált
+- a **Delaware file number** (a CSC-kivonat saját azonosítója — CSC Entity ID
+  4308651 — nem azonos vele; a state file number a `icis.corp.delaware.gov`
+  keresőben vagy a CSC-portálon látszik)
+- a **közzéteendő üzleti cím** megerősítve, helyes irányítószámmal
+- **regisztrált-e a cég Pennsylvaniában külföldi (foreign) LLC-ként?** Ha a
+  telephely PA-ban van, ez kötelező (lásd a 2. pontot)
+- amerikai **telefonszám** és **e-mail cím** véglegesen (a gmail.com nem
+  szerencsés egy ipari beszállítónál — érdemes `@bluewaytrade.us` címet
+  csinálni; a +1 310-es Los Angeles-i körzetszám egy PA-beli cégnél szintén
+  kérdés)
 - **PA sales tax license** száma, ha már megvan
-- **Philadelphia Commercial Activity License** száma, ha a város érintett
+- Az **EIN-t nem tesszük ki a weblapra** — az USA-ban nincs impresszum-
+  kötelezettség, az adószámot csak W-9-en, számlán, vámpapíron kell megadni.
 
 ---
 
-## 2. Cégszintű teendők — Pennsylvania
+## 2. Cégszintű teendők — Delaware az anyaállam, Pennsylvania a telephely
+
+A cég Delaware-ben van bejegyezve, a tevékenység viszont (a cím alapján)
+Pennsylvaniában zajlik. Ez két államban ad éves teendőt:
+
+### Delaware (a bejegyzés állama)
 
 | teendő | részletek |
 |---|---|
-| Certificate of Organization | DSCB:15-8821 nyomtatvány, PA Department of State |
-| Bejegyzett iroda | PA-beli cím kell, vagy szolgáltató (CROP) |
-| **Éves jelentés (Annual Report)** | **minden év szeptember 30.**, 7 USD |
-| EIN | IRS SS-4 — bankszámlához, vámhoz, adózáshoz kell |
-| PA sales tax license | tárgyi eszköz értékesítéséhez |
+| **Éves LLC-adó (annual tax)** | **300 USD átalány, minden év június 1.** Nem függ a forgalomtól; késedelemnél 200 USD bírság + havi 1,5% kamat. LLC-nek éves jelentést Delaware-ben NEM kell beadnia — csak ezt az adót fizetni. |
+| Registered agent | Delaware-i megbízott kötelező — a kivonat alapján ez a CSC, aminek éves díja van. |
+| Certificate of Good Standing | ha bank, vevő vagy másik állam kéri, a CSC-n vagy a Division of Corporationsnél lekérhető. |
 
-**Az éves jelentés új és fontos:** a 2022. évi 122. törvény váltotta le a
+### Pennsylvania (a telephely állama)
+
+| teendő | részletek |
+|---|---|
+| **Foreign registration** | Ha a tényleges telephely PA-ban van, a delaware-i LLC-nek PA-ban külföldi társaságként regisztrálnia kell (Foreign Registration Statement, DSCB:15-412, 250 USD egyszeri díj). **Tisztázandó, megtörtént-e.** |
+| **Éves jelentés (Annual Report)** | **minden év szeptember 30.**, 7 USD — a PA-ban regisztrált külföldi LLC-kre is vonatkozik |
+| PA sales tax license | tárgyi eszköz PA-beli értékesítéséhez |
+
+**A PA éves jelentés új és fontos:** a 2022. évi 122. törvény váltotta le a
 tízévenkénti bejelentést, 2025-től érvényes. A hivatal 2026-ig nem szab ki
 késedelmi bírságot, **2027-től viszont** a határidő utáni hat hónapon belüli
-mulasztás **hivatalból való megszüntetéssel** jár. Ezt naptárba kell tenni.
+mulasztás a regisztráció **hivatalból való megszüntetésével** jár. A naptárba
+tehát két dátum kell: **június 1. (Delaware, 300 USD)** és — ha a PA-regisztráció
+él — **szeptember 30. (Pennsylvania, 7 USD)**.
 
 ### FinCEN tényleges tulajdonosi bejelentés (BOI): NEM kell
 
@@ -80,9 +97,10 @@ Transparency Act szerinti bejelentési kötelezettséget minden **Egyesült
 Államokban alapított** társaságra — az LLC-kre is —, és a korábban beadott
 adatokat törli az adatbázisból.
 
-Egy dolgot érdemes tudni: a mentesség az **amerikai alapítású** cégeké. Ha a
-`bluewaytrade.us` mögé nem új amerikai LLC kerülne, hanem a magyar Kft.
-regisztrálna külföldi vállalkozásként, az más elbírálás alá esik.
+A CSC-kivonat ezt le is zárja: a Blueway Trade, LLC **delaware-i, tehát
+amerikai alapítású** cég, vagyis a mentesség rá vonatkozik — FinCEN BOI-
+bejelentés nem kell. (A kivonat CTA Classification és FinCEN ID mezője üres,
+ami ezzel összhangban van.)
 
 ---
 
@@ -102,7 +120,10 @@ korábban a küszöb alatt volt, annak az első bevallásnál nem kell előleget
 fizetnie, de a bevallás kötelező.
 
 Ez az a pont, ahol a Douglassville / Philadelphia kérdés pénzre fordul. Ha a
-tevékenység nem a városban zajlik, a fenti négy sorból egy sem jár.
+tevékenység nem a városban zajlik, a fenti négy sorból egy sem jár. A most
+megerősített cím (Douglassville, Berks megye) alapján ez a szakasz
+**valószínűleg nem érinti a céget** — csak akkor válik élővé, ha ténylegesen
+Philadelphiában is folyik tevékenység.
 
 ---
 
@@ -228,7 +249,8 @@ változattal — a különbség csak a brit és az amerikai írásmód. A fenti 
 viszont pont az, amitől az amerikai lapok **tartalmilag** különböznének:
 
 - saját Terms of Sale és Privacy Policy (nem fordítás)
-- amerikai elérhetőség, cégadatok, EIN a láblécben
+- amerikai elérhetőség és cégadatok a láblécben: „Blueway Trade, LLC",
+  a megerősített cím, telefonszám, e-mail (az EIN nem oda való)
 - hüvelyk és láb a metrikus adatok mellett
 - FDA-, FCC- és NRTL-vonatkozások a lézerlapokon
 - amerikai lézerbiztonsági (ANSI Z136.1) tudástár-cikk
@@ -241,6 +263,10 @@ amerikai tartalom elkészül, a párhuzamos-oldal jelzés magától megszűnik.
 ## Források
 
 - FinCEN BOI végleges rendelet: [Treasury sajtóközlemény](https://home.treasury.gov/news/press-releases/sb0603) · [Sidley Austin elemzés](https://www.sidley.com/en/insights/newsupdates/2026/08/us-fincen-issues-final-rule-ending-beneficial-ownership-reporting-requirement) · [FinCEN BOI](https://www.fincen.gov/boi)
+- Cégadatok: CSC Entity Summary kivonat, Gáspártól (2026-08-28) — Blueway
+  Trade, LLC, Delaware, alapítva 2022-01-20, FEIN 88-0880046
+- Delaware LLC éves adó: [Division of Corporations — Annual Report and Tax Instructions](https://corp.delaware.gov/paytaxes/) (300 USD, június 1., LLC-nek éves jelentés nincs)
+- PA foreign registration: [PA Department of State — Foreign Associations](https://www.pa.gov/agencies/dos/programs/business/registration-forms) (DSCB:15-412)
 - PA éves jelentés: [PA Department of State](https://www.pa.gov/agencies/dos/programs/business/types-of-filings-and-registrations/annual-reports)
 - Philadelphia engedély és BIRT: [Commercial Activity License](https://www.phila.gov/services/permits-violations-licenses/get-a-license/business-licenses/activity/get-a-commercial-activity-license/) · [BIRT](https://www.phila.gov/services/payments-assistance-taxes/taxes/business-taxes/business-taxes-by-type/business-income-receipts-tax-birt/) · [a mentesség megszűnése](https://www.phila.gov/2025-08-05-city-of-philadelphia-clarifies-business-income-receipts-tax-birt-policy-to-ease-transition-for-businesses-impacted-by-the-exemption-change/)
 - FDA lézer: [Importing Radiation-Emitting Electronic Products](https://www.fda.gov/industry/importing-fda-regulated-products/importing-radiation-emitting-electronic-products) · [Form FDA 2877](https://www.fda.gov/media/72236/download) · [Getting a Radiation Emitting Product to Market](https://www.fda.gov/radiation-emitting-products/electronic-product-radiation-control-program/getting-radiation-emitting-product-market-frequently-asked-questions)
