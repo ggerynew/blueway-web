@@ -190,9 +190,9 @@ export const dictionaries = {
       title: 'Gyártók',
       lead: 'Piacvezető gyártók termékjelölési megoldásait forgalmazzuk — böngésszen gyártó szerint.',
       viewProducts: 'Termékek megtekintése',
-      industriesTitle: 'Alkalmazási területek',
-      industriesLead:
-        'Hol és mire használják ezeket a gépeket — és hogy melyik folyamat milyen szennyezőt termel.',
+      relatedIndustriesTitle: 'Kapcsolódó iparágak',
+      relatedIndustriesLead:
+        'Iparági oldalaink, ahol a gyártó gépeit ajánljuk — a feladattal, az előírásokkal és a melléjük való többi géppel.',
       backToManufacturers: 'Gyártók',
       productsFrom: (name: string) => `${name} termékek`,
     },
@@ -800,9 +800,9 @@ export const dictionaries = {
       title: 'Manufacturers',
       lead: 'We distribute the product marking solutions of market-leading manufacturers — browse by manufacturer.',
       viewProducts: 'View products',
-      industriesTitle: 'Applications',
-      industriesLead:
-        'Where and for what these machines are used — and what contaminant each process produces.',
+      relatedIndustriesTitle: 'Related industries',
+      relatedIndustriesLead:
+        'Our industry pages where we recommend this manufacturer’s machines — with the task, the regulations and the equipment that goes with them.',
       backToManufacturers: 'Manufacturers',
       productsFrom: (name: string) => `${name} products`,
     },
@@ -1409,9 +1409,9 @@ export const dictionaries = {
       title: 'Manufacturers',
       lead: 'We distribute the product marking solutions of market-leading manufacturers — browse by manufacturer.',
       viewProducts: 'View products',
-      industriesTitle: 'Applications',
-      industriesLead:
-        'Where and for what these machines are used — and what contaminant each process produces.',
+      relatedIndustriesTitle: 'Related industries',
+      relatedIndustriesLead:
+        'Our industry pages where we recommend this manufacturer’s machines — with the task, the regulations and the equipment that goes with them.',
       backToManufacturers: 'Manufacturers',
       productsFrom: (name: string) => `${name} products`,
     },
@@ -2017,9 +2017,9 @@ export const dictionaries = {
       title: 'Hersteller',
       lead: 'Wir vertreiben die Kennzeichnungslösungen marktführender Hersteller — stöbern Sie nach Hersteller.',
       viewProducts: 'Produkte ansehen',
-      industriesTitle: 'Anwendungsbereiche',
-      industriesLead:
-        'Wo und wofür diese Maschinen eingesetzt werden — und welche Schadstoffe der jeweilige Prozess erzeugt.',
+      relatedIndustriesTitle: 'Verwandte Branchen',
+      relatedIndustriesLead:
+        'Unsere Branchenseiten, auf denen wir die Maschinen dieses Herstellers empfehlen — mit der Aufgabe, den Vorschriften und den passenden weiteren Geräten.',
       backToManufacturers: 'Hersteller',
       productsFrom: (name: string) => `Produkte von ${name}`,
     },
@@ -2626,9 +2626,9 @@ export const dictionaries = {
       title: 'Produttori',
       lead: 'Distribuiamo le soluzioni di marcatura dei prodotti dei produttori leader di mercato — sfogli per produttore.',
       viewProducts: 'Vedi i prodotti',
-      industriesTitle: 'Ambiti di applicazione',
-      industriesLead:
-        'Dove e per cosa si usano queste macchine — e quale contaminante genera ciascun processo.',
+      relatedIndustriesTitle: 'Settori correlati',
+      relatedIndustriesLead:
+        'Le nostre pagine di settore in cui consigliamo le macchine di questo produttore — con il compito, le normative e le altre attrezzature adatte.',
       backToManufacturers: 'Produttori',
       productsFrom: (name: string) => `Prodotti ${name}`,
     },
@@ -3235,9 +3235,9 @@ export const dictionaries = {
       title: 'Fabricantes',
       lead: 'Distribuimos las soluciones de marcaje de productos de fabricantes líderes del mercado — explore por fabricante.',
       viewProducts: 'Ver productos',
-      industriesTitle: 'Ámbitos de aplicación',
-      industriesLead:
-        'Dónde y para qué se utilizan estas máquinas, y qué contaminante genera cada proceso.',
+      relatedIndustriesTitle: 'Sectores relacionados',
+      relatedIndustriesLead:
+        'Nuestras páginas sectoriales donde recomendamos las máquinas de este fabricante — con la tarea, la normativa y los demás equipos adecuados.',
       backToManufacturers: 'Fabricantes',
       productsFrom: (name: string) => `Productos ${name}`,
     },
@@ -3843,9 +3843,9 @@ export const dictionaries = {
       title: '제조사',
       lead: '시장을 선도하는 제조사들의 제품 마킹 솔루션을 공급합니다 — 제조사별로 살펴보세요.',
       viewProducts: '제품 보기',
-      industriesTitle: '적용 분야',
-      industriesLead:
-        '이 장비들이 어디에 어떤 용도로 쓰이는지, 그리고 각 공정이 어떤 오염물질을 만들어 내는지 정리했습니다.',
+      relatedIndustriesTitle: '관련 산업 분야',
+      relatedIndustriesLead:
+        '이 제조사의 장비를 추천하는 산업 분야 페이지 — 과제와 규정, 함께 쓰는 다른 장비까지 정리했습니다.',
       backToManufacturers: '제조사',
       productsFrom: (name: string) => `${name} 제품`,
     },
@@ -4450,9 +4450,9 @@ export const dictionaries = {
       title: '制造商',
       lead: '我们代理市场领先制造商的产品标识解决方案 — 按制造商浏览。',
       viewProducts: '查看产品',
-      industriesTitle: '应用领域',
-      industriesLead:
-        '这些设备用于何处、用来做什么，以及各道工艺分别产生哪些污染物。',
+      relatedIndustriesTitle: '相关行业',
+      relatedIndustriesLead:
+        '我们在这些行业页面中推荐该制造商的设备——包括任务、法规以及配套的其他设备。',
       backToManufacturers: '制造商',
       productsFrom: (name: string) => `${name} 产品`,
     },

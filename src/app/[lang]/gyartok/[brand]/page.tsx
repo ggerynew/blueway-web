@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/product-card';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { getDictionary, isLocale, locales } from '@/lib/i18n';
+import { industries } from '@/lib/iparagak';
 import { categories, manufacturers, getManufacturer, getProductsByBrand , productName } from '@/lib/products';
 import { morzsa } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
@@ -67,6 +68,15 @@ export default async function ManufacturerPage({
     // A sort stabil, tehát az azonos rangúak megtartják a globális sorrendjüket.
     .sort((a, b) => rang(a.category.slug) - rang(b.category.slug));
 
+  // Kapcsolódó iparágak — az iparági lapok ajánlásaiból levezetve, nem külön
+  // karbantartott listából: az az iparág kapcsolódik, amelyik a gyártó
+  // legalább egy termékét ajánlja. Így a szakasz minden gyártónál magától
+  // megjelenik, és sosem hivatkozik olyan iparágra, ahol a márka nem szerepel.
+  const markaSlugok = new Set(items.map((p) => p.slug));
+  const kapcsolodoIparagak = industries.filter((i) =>
+    i.products.some((ip) => markaSlugok.has(ip.slug)),
+  );
+
   // Morzsamenü + terméklista strukturált adatként
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -124,31 +134,6 @@ export default async function ManufacturerPage({
         </p>
       </Reveal>
 
-      {/* Alkalmazási területek — iparáganként, mert a gép kiválasztását nem a
-          műszaki adatok döntik el, hanem az, milyen szennyezőt termel a
-          folyamat. A termékek listája ez alatt jön. */}
-      {manufacturer.industries && manufacturer.industries.length > 0 && (
-        <Reveal delay={0.08}>
-          <section className="mt-14 border-t border-line pt-10">
-            <h2 className="text-xl font-semibold tracking-tight">
-              {dict.manufacturers.industriesTitle}
-            </h2>
-            <p className="mt-2 max-w-2xl text-ink-muted">{dict.manufacturers.industriesLead}</p>
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {manufacturer.industries.map((ind) => (
-                <div
-                  key={ind.name[lang]}
-                  className="h-full rounded-2xl border border-line bg-white p-6"
-                >
-                  <h3 className="font-semibold tracking-tight">{ind.name[lang]}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{ind.text[lang]}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        </Reveal>
-      )}
-
       <div className="mt-12 space-y-14">
         {categoryGroups.map((group) => (
           <section key={group.category.slug}>
@@ -171,6 +156,37 @@ export default async function ManufacturerPage({
           </section>
         ))}
       </div>
+
+      {/* Kapcsolódó iparágak — a lap alján, minden gyártónál. Korábban ez
+          „Alkalmazási területek" néven, kézzel írt szöveggel, csak néhány
+          gyártónál jelent meg a lap tetején; most az iparági ajánlásokból
+          áll össze, és a csempék a részletes iparági lapokra visznek. */}
+      {kapcsolodoIparagak.length > 0 && (
+        <Reveal delay={0.05}>
+          <section className="mt-20 border-t border-line pt-10">
+            <h2 className="text-xl font-semibold tracking-tight">
+              {dict.manufacturers.relatedIndustriesTitle}
+            </h2>
+            <p className="mt-2 max-w-2xl text-ink-muted">
+              {dict.manufacturers.relatedIndustriesLead}
+            </p>
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {kapcsolodoIparagak.map((ind) => (
+                <Link
+                  key={ind.slug}
+                  href={`/${lang}/iparagak/${ind.slug}`}
+                  className="group h-full rounded-2xl border border-line bg-white p-6 transition-colors hover:border-brand-300"
+                >
+                  <h3 className="font-semibold tracking-tight transition-colors group-hover:text-brand-700">
+                    {ind.name[lang]}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{ind.short[lang]}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </Reveal>
+      )}
     </div>
   );
 }

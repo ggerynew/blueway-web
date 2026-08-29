@@ -264,9 +264,11 @@ export interface Manufacturer {
   /**
    * Alkalmazási területek: hol és mire használják a gyártó gépeit.
    *
-   * Elszívóknál ez a legfontosabb kérdés — nem a gép adatai döntenek, hanem
-   * hogy milyen folyamat milyen szennyezőt termel. Ezért iparáganként külön
-   * bekezdés, nem egyetlen felsorolás.
+   * A weblapon már NEM önálló szakasz — a gyártói lap alján a kapcsolódó
+   * iparágak állnak, az iparági ajánlásokból (iparagak.ts) levezetve. Ez a
+   * kézzel írt szöveg a GEO-rétegé maradt: az llms-full.txt gyártói szakasza
+   * adja oda az AI-olvasóknak, mert ott a folyamat–szennyező összefüggés
+   * (különösen az elszívóknál) többet mond, mint egy linklista.
    */
   industries?: { name: LocalizedText; text: LocalizedText }[];
   /**
