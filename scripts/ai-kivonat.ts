@@ -294,6 +294,23 @@ function llmsFull(): string {
           s.push('');
         }
       }
+      // A gyártói lap alján kapcsolódó iparágak állnak, az iparági ajánlásokból
+      // levezetve — ugyanaz a levezetés ide is, hogy a kivonat kövesse a lapot.
+      const markaSlugok = new Set(
+        products.filter((p) => p.brand === m.brand).map((p) => p.slug),
+      );
+      const kapcsolodo = industries.filter((i) =>
+        i.products.some((ip) => markaSlugok.has(ip.slug)),
+      );
+      if (kapcsolodo.length) {
+        s.push(
+          (lang === 'hu' ? 'Kapcsolódó iparágak: ' : 'Related industries: ') +
+            kapcsolodo
+              .map((i) => `[${i.name[lang]}](${url(`${lang}/iparagak/${i.slug}`)})`)
+              .join(', '),
+        );
+        s.push('');
+      }
     }
     s.push(lang === 'hu' ? '## Tudástár' : '## Knowledge base');
     s.push('');
