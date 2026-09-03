@@ -42,6 +42,11 @@ on:
         type: choice
         default: kihagy
         options: [kihagy, probafutas, vegrehajt]
+      takaritas:
+        description: 'A régi weblap maradékának TÖRLÉSE (leltár → próbafutás → végrehajt)'
+        type: choice
+        default: kihagy
+        options: [kihagy, leltar, probafutas, vegrehajt]
       levelproba:
         description: 'Valódi próbalevelek küldése 7 és 8 MB csatolmánnyal az info@ címre'
         type: choice
@@ -157,6 +162,7 @@ jobs:
           SSH_PORT: ${{ secrets.FORPSI_SSH_PORT }}
           WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
           DELETE_EXTRA: ${{ inputs.delete_extra }}
+          TAKARITAS: ${{ inputs.takaritas }}
           # Csak a hibakereséshez: ha az SSH-gazdanév nem válaszol, kiderül,
           # hogy az FTP-é válaszol-e helyette. Magát a nevet nem írjuk ki.
           FTP_HOST_OSSZEVETES: ${{ secrets.FORPSI_FTP_HOST }}
@@ -337,6 +343,20 @@ jobs:
             sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
             rm -f ~/.ssh/id_deploy; exit 1
           fi
+
+          # ——— A régi weblap maradékának eltávolítása ————————————————
+          # Kézzel indítva, a „takaritas" beállítással. Azért ITT van, és nem
+          # az FTP-s ágban a régi archiválóval együtt: az az ág kimarad,
+          # valahányszor az SSH sikerül — tehát gyakorlatilag soha nem futott
+          # le, és a régi weblap fájljai ezért maradtak a webgyökérben.
+          #
+          # A feltöltés UTÁN fut: ha a takarítás bármit elrontana, a friss
+          # weblap már fent van, nem a törlés utáni állapotra kell építeni.
+          if [ "${TAKARITAS:-kihagy}" != "kihagy" ]; then
+            bash scripts/szerver-takaritas.sh "$TAKARITAS" "$CEL" "$PORT" "$SSH_USER@$HOST" || \
+              JEGYZET "::warning::A takarítás nem futott végig — a fenti sorok megmondják, hol állt meg."
+          fi
+
           rm -f ~/.ssh/id_deploy
 
           # A megváltozott lapok listája az IndexNow-nak. A „deleting …"
