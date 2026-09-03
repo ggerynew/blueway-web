@@ -143,6 +143,18 @@ for (const ut of lapok) {
     (leirasok.get(kl) ?? leirasok.set(kl, []).get(kl)).push(lap);
   }
 
+  // — meta refresh: soha ne kerüljön vissza
+  //
+  // A gyökérlapon évekig ott állt egy <noscript><meta http-equiv="refresh">,
+  // és a Bing Site Scan 2026 szeptemberében ki is fogadta. Az átirányításnak
+  // a kanonikus cím és a hivatkozások a helye; a meta refresh ennek gyengébb,
+  // elavult formája, ráadásul a szkript nélküli látogatót akkor is elviszi,
+  // ha épp választani szeretne. Egy sor a lapon, tíz perc keresés, ha
+  // valamikor észrevétlenül visszakerül — ezért inkább hiba, nem intés.
+  if (/<meta[^>]+http-equiv=["']?refresh/i.test(html)) {
+    baj(lap, 'meta refresh átirányítás van a lapon');
+  }
+
   // — kanonikus cím
   const kanon = cimkek(html, 'link')
     .filter((c) => attr(c, 'rel') === 'canonical')
