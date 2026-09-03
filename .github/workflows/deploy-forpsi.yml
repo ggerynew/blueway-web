@@ -619,7 +619,10 @@ jobs:
           # 404-elte ezt az útvonalat (akkor az átmeneti lap lakott ott). Ha
           # valaki visszateszi, az amerikai angol változat mind a 110 lapja
           # némán eltűnik, miközben a sitemap és a hreflang odamutat.
-          for ut in /robots.txt / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz \
+          # A /BingSiteAuth.xml a Bing Webmaster Tools tulajdonjog-igazolása:
+          # a Bing időről időre újra lekéri, és ha eltűnne, a tulajdonjog is
+          # elveszne vele — a sitemap-beküldés és a jelentések is.
+          for ut in /robots.txt /BingSiteAuth.xml / /hu /hu/rolunk /hu/kapcsolat /hu/szolgaltatasok/szerviz \
                     /hu/iparagak /hu/iparagak/gyogyszeripar /us /us/kapcsolat; do
             V=$(curl -sSL -o /dev/null --max-time 25 \
                  -w '%{http_code} vegallomas=%{url_effective} meret=%{size_download}' \
