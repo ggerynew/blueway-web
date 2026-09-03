@@ -122,8 +122,22 @@ function rovidCim(cim: string): string {
 
 /** A leírás a keresőben kb. 155-160 karakterig látszik. */
 const LEIRAS_MAX = 158;
-/** Ennél rövidebb leírás kihasználatlanul hagyja a helyet. */
-const LEIRAS_CEL = 95;
+/**
+ * Ennél rövidebb leírás kihasználatlanul hagyja a helyet.
+ *
+ * 2026 szeptemberéig 95 volt. A Bing Webmaster Tools „túl rövid meta
+ * leírás" jelzésére végigmérve kiderült, hogy ez korán leállítja a
+ * kiegészítést: a 95-öt átlépve a leírás jellemzően 112 egység szélesen áll
+ * meg, holott a keresőben 158-ig van hely. A cab XENO 3 angol lapja például
+ * pont ezen bukott el: a táblaméret — a lap egyetlen igazi megkülönböztető
+ * adata — kimaradt, mert a leírás előbb elérte a küszöböt.
+ *
+ * 110-re emelve az átlagos szélesség 112-ről 128-ra nő, és mindössze 11 lap
+ * végződik „…"-tal a mai 3 helyett. Ez a hozzáfűzés HATÁRA, nem cél: csak
+ * tényszerű, lapról lapra eltérő adat kerül be (jellemzők, paraméterek),
+ * töltelék soha, és a LEIRAS_MAX továbbra is 158-nál vág.
+ */
+const LEIRAS_CEL = 110;
 
 /**
  * A leírás összeállítása: a rövidet a termék SAJÁT adataival egészítjük ki

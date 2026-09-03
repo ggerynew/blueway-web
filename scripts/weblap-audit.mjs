@@ -81,6 +81,30 @@ const cimkek = (html, nev) => html.match(new RegExp(`<${nev}\\b[^>]*>`, 'gi')) ?
  */
 const hosszSuly = (t) => [...t].reduce((s, j) => s + (j.codePointAt(0) > 0x2E80 ? 2 : 1), 0);
 
+/**
+ * HTML-entitások visszafejtése a MÉRÉS előtt.
+ *
+ * Enélkül a mérés hamis: a `&quot;` hat karakternek számít egy helyett, a
+ * `&amp;` ötnek. A cab XD Q leírása így 187-nek látszott a valódi 157
+ * helyett, és „túl hosszú" figyelmeztetést kapott, holott a vágás rendesen
+ * elvégezte a dolgát. Fordítva is tévedett: a koreai XC4 lap leírását 49-nek
+ * mérte a valódi 44 helyett, tehát a rövid leírásokat is elnézte.
+ *
+ * A keresőtalálatban a látogató a FELOLDOTT szöveget látja — azt kell mérni.
+ */
+const dekod = (t) =>
+  t
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    // Az &amp; MINDIG utolsó: ha előbb futna, a „&amp;quot;" alakból
+    // „&quot;" lenne, amit a fenti szabály másodszor is feloldana.
+    .replace(/&amp;/g, '&');
+
 const szoveg = (html, nev) => {
   const m = html.match(new RegExp(`<${nev}[^>]*>([\\s\\S]*?)</${nev}>`, 'i'));
   return m ? m[1].replace(/<[^>]*>/g, '').trim() : null;
@@ -124,7 +148,7 @@ for (const ut of lapok) {
   if (negyszaznegy) continue;                             // a 404-re a többi nem áll
 
   // — cím és leírás
-  const cim = szoveg(html, 'title');
+  const cim = szoveg(html, 'title') && dekod(szoveg(html, 'title'));
   if (!cim) baj(lap, 'nincs <title>');
   else {
     if (hosszSuly(cim) > 65) figyelem(lap, `hosszú cím (${hosszSuly(cim)}): ${cim}`);
@@ -132,9 +156,10 @@ for (const ut of lapok) {
     const k = `${nyelv}\u0000${cim}`;
     (cimek.get(k) ?? cimek.set(k, []).get(k)).push(lap);
   }
-  const leiras = cimkek(html, 'meta')
+  const nyersLeiras = cimkek(html, 'meta')
     .filter((c) => attr(c, 'name') === 'description')
     .map((c) => attr(c, 'content'))[0];
+  const leiras = nyersLeiras && dekod(nyersLeiras);
   if (!leiras) baj(lap, 'nincs meta description');
   else {
     if (hosszSuly(leiras) > 165) figyelem(lap, `hosszú leírás (${hosszSuly(leiras)})`);

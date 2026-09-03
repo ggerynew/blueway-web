@@ -26,6 +26,12 @@ export async function generateMetadata({
     path: 'gyartok',
     title: dict.manufacturers.title,
     description: dict.manufacturers.lead,
+    // A gyártók nevei — ez a lap saját, tényszerű tartalma, és épp ezekre a
+    // márkanevekre keresnek rá. Eddig ez volt az EGYETLEN listaoldal, amely
+    // nem adott át kiegészítést (az iparágak lapja igen), ezért a leírása
+    // sosem egészült ki: magyarul 87 karakteren állt meg, és a kínai
+    // változata a weblap második legkeskenyebb leírása volt.
+    extra: [manufacturers.map((m) => m.name).join(', ')],
   });
 }
 
