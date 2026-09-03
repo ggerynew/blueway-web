@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { HREFLANG, locales } from '@/lib/i18n';
 import { categories, manufacturers, products } from '@/lib/products';
-import { guides } from '@/lib/knowledge';
+import { guideModositva, guides } from '@/lib/knowledge';
 import { industries } from '@/lib/iparagak';
 import { absUrl } from '@/lib/site';
 
@@ -11,11 +11,16 @@ export const dynamic = 'force-static';
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
-  const add = (path: string, priority: number) => {
+  // A lastmod csak ott szerepel, ahol VALÓDI dátumunk van — a tudástár
+  // cikkeinél. A többi lapnál nincs: a build napját beírni mindenhová azt
+  // üzenné, hogy 900 lap változott, és a kereső a jelzést ezután egyáltalán
+  // nem venné komolyan. A hiányzó lastmod nem hiba; a hamis az.
+  const add = (path: string, priority: number, lastModified?: string) => {
     for (const lang of locales) {
       const suffix = path ? `/${path}` : '';
       entries.push({
         url: absUrl(`${lang}${suffix}`),
+        ...(lastModified ? { lastModified } : {}),
         changeFrequency: 'weekly',
         priority,
         alternates: {
@@ -56,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
   for (const m of manufacturers) add(`gyartok/${m.slug}`, 0.7);
-  for (const g of guides) add(`tudastar/${g.slug}`, 0.7);
+  for (const g of guides) add(`tudastar/${g.slug}`, 0.7, guideModositva(g));
   for (const i of industries) add(`iparagak/${i.slug}`, 0.8);
 
   // Statikus jogi oldalak (nem nyelvi útvonalon).

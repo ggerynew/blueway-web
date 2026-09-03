@@ -34,6 +34,9 @@ const AI_ROBOTOK = [
   'Amazonbot',
   'Bytespider',
   'cohere-ai',
+  'MistralAI-User',
+  'DuckAssistBot',
+  'meta-externalfetcher',
 ];
 
 export default function robots(): MetadataRoute.Robots {

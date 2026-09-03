@@ -218,7 +218,11 @@ export function pageMetadata({
       siteName: SITE_NAME,
       locale: OG_LOCALE[lang],
       type: 'website',
-      images: [{ url: ogImage, width: 1200, height: 630 }],
+      // A méret csak a saját OG-képre igaz. A termékfotók más arányúak és
+      // más felbontásúak; az 1200×630 ott hamis adat lenne, és a megosztás-
+      // előnézet ez alapján vágná meg a képet. Méret nélkül a szolgáltatás a
+      // képből olvassa ki.
+      images: [image ? { url: ogImage } : { url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
