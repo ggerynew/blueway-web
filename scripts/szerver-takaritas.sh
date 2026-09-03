@@ -72,10 +72,22 @@ if [ "$DB" -eq 0 ]; then
 fi
 echo "a webgyökérben $DB bejegyzés van"
 
-# A szülőkönyvtár is érdekes: ide került volna a régi ARCHIVE mappa, és itt
+# A szülőkönyvtár is érdekes: ide került a régi weblap ARCHIVE mappája, és itt
 # lakik a szolgáltató mentése is — látni akarjuk, mi van ott.
 echo "— a szülőkönyvtár ($SZULO) —"
 TAV "ls -la '$SZULO'" | sed 's/^/  /' || echo "  (nem listázható)"
+
+# A szülőkönyvtár bejegyzéseinek MÉRETE és tartalma. Enélkül vakon döntenénk
+# arról, mi tűnjön el: a nevekből nem derül ki, hogy a `stat` a tárhely
+# látogatottsági statisztikája-e vagy a régi weblap hagyatéka. Csak olvasunk.
+echo "— a szülőkönyvtár bejegyzéseinek mérete és tartalma —"
+TAV "cd '$SZULO' && for n in *; do
+  [ \"\$n\" = 'www' ] && continue
+  [ \"\$n\" = 'backups-forpsi' ] && continue
+  m=\$(du -sh \"\$n\" 2>/dev/null | cut -f1)
+  echo \"  \$n  (\$m)\"
+  ls -A \"\$n\" 2>/dev/null | head -6 | sed 's/^/       /'
+done" || echo "  (nem listázható)"
 
 # ——— Mi tűnik el, mi marad ——————————————————————————————————————
 TORLENDO=()
