@@ -24,6 +24,13 @@ export async function generateMetadata({
     path: 'kapcsolat',
     title: dict.contact.title,
     description: dict.contact.lead,
+    // Aki a cég kapcsolati lapját keresi, jellemzően a nyitvatartásra és a
+    // telephelyre kíváncsi — ezek tényadatok, és épp ezt keresi a találati
+    // listában. A hozzáfűzés magától megáll, ha a bevezető már elég hosszú.
+    extra: [
+      `${dict.contact.hoursLabel}: ${dict.contact.hours}`,
+      `${dict.contact.siteLabel}: ${dict.contact.site}`,
+    ],
   });
 }
 

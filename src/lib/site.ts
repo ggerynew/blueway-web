@@ -133,12 +133,28 @@ const LEIRAS_CEL = 95;
  * ugyanaz lenne, tehát semmit nem mondana a keresőnek arról, miben más ez az
  * oldal. A jellemzők viszont termékenként eltérnek, és tényszerűek.
  */
-/** Érdemi szavak a mondatból — az egyezés vizsgálatához. */
+/**
+ * Érdemi szavak a mondatból — az egyezés vizsgálatához.
+ *
+ * A rostálás SZÉLESSÉG szerint megy, nem karakterszám szerint. Ez nem
+ * finomkodás: a korábbi `x.length >= 4` a koreai és a kínai lapokon
+ * gyakorlatilag mindent kidobott, mert ott egy értelmes szó 1-3 jel
+ * („헤드를", „인쇄"). Üres szólistával az `ujatMond` hamisat ad, tehát a
+ * rendszer minden jellemzőről azt hitte, hogy nem mond újat — és a CJK
+ * leírásokhoz SOHA nem fűzött hozzá semmit. A magyar lapok leírása így
+ * 118 jel hosszú lett, a kínaiaké 65-nél megállt. A Bing Webmaster Tools
+ * ezt „túl rövid meta leírás" néven jelentette; a mi ellenőrzőnk viszont
+ * elnézte, mert ő súlyozott szélességgel mér, és a 65 kínai jel 130
+ * egységnek számít.
+ *
+ * Négy egység a küszöb: két CJK-jel (2×2) épp annyit mond, mint egy
+ * négybetűs latin szó.
+ */
 function szavak(s: string): string[] {
   return s
     .toLowerCase()
     .split(/[^\p{L}\p{N}]+/u)
-    .filter((x) => x.length >= 4);
+    .filter((x) => szelesseg(x) >= 4);
 }
 
 /**

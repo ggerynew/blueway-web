@@ -317,18 +317,33 @@ jobs:
           esac
           JEGYZET "  a feltöltés célja: $CEL"
 
-          FLAGS="-rlvz --checksum --omit-dir-times --no-perms"
+          # Az --out-format=%n minden ÁTVITT tétel nevét kiírja, egy sorban,
+          # díszítés nélkül. Ez nem naplózási szépészet: ebből tudjuk meg,
+          # mely lapok változtak, és ezt jelentjük be az IndexNow-nak — a
+          # Bing ugyanis kifogásolta, hogy minden telepítéskor mind a 907
+          # címet bejelentjük. A --checksum miatt a lista TARTALOM szerint
+          # pontos, nem a fájlidő szerint (a futtató mindig frissen épít,
+          # tehát minden fájl ideje új lenne).
+          FLAGS="-rlz --checksum --omit-dir-times --no-perms --out-format=%n"
           if [ "$DELETE_EXTRA" = "true" ]; then FLAGS="$FLAGS --delete"; fi
           # A hibacsatorna külön fájlba is megy: az rsync panasza egyetlen sor
           # a kétezer átmásolt fájlnév között, és a napló végét úgyis az
           # ellenőrző lépés tölti ki — a záró összefoglaló ebből dolgozik.
-          if ! rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
-                 out/ "$SSH_USER@$HOST:$CEL/" 2>/tmp/rsync-hiba.txt; then
+          rsync $FLAGS -e "ssh -i ~/.ssh/id_deploy -p $PORT -o StrictHostKeyChecking=yes" \
+                 out/ "$SSH_USER@$HOST:$CEL/" >/tmp/rsync-kimenet.txt 2>/tmp/rsync-hiba.txt \
+            && RSYNC_ALLAPOT=0 || RSYNC_ALLAPOT=$?
+          if [ "$RSYNC_ALLAPOT" -ne 0 ]; then
             JEGYZET "::error::Az rsync nem futott le rendben."
             sed 's/^/  rsync: /' /tmp/rsync-hiba.txt || true
             rm -f ~/.ssh/id_deploy; exit 1
           fi
           rm -f ~/.ssh/id_deploy
+
+          # A megváltozott lapok listája az IndexNow-nak. A „deleting …"
+          # sorokat kihagyjuk: azok törlésről szólnak, nem új tartalomról.
+          grep -v '^deleting ' /tmp/rsync-kimenet.txt | grep '\.html$' \
+            > /tmp/valtozott-lapok.txt || true
+          JEGYZET "  átvitt tételek: $(wc -l < /tmp/rsync-kimenet.txt), ebből HTML lap: $(wc -l < /tmp/valtozott-lapok.txt)"
 
       # ——— FTP ———————————————————————————————————————————————————
       # Akkor is fut, ha az SSH be van állítva, de elhasalt — így egy elrontott
@@ -1189,22 +1204,33 @@ jobs:
         run: |
           KULCS=cfa63a7a5424886667a90eea8c9ef2e4
           HOSZT=$(printf '%s' "$SITE_URL" | sed 's#^https\?://##; s#/.*##')
-          grep -o '<loc>[^<]*</loc>' out/sitemap.xml | sed 's#</\?loc>##g' > /tmp/cimek.txt
-          DB=$(wc -l < /tmp/cimek.txt)
-          python3 -c "
-          import json, sys
-          hoszt, kulcs = sys.argv[1], sys.argv[2]
-          cimek = [x.strip() for x in open('/tmp/cimek.txt') if x.strip()]
-          json.dump({'host': hoszt, 'key': kulcs,
-                     'keyLocation': f'https://{hoszt}/{kulcs}.txt',
-                     'urlList': cimek}, open('/tmp/indexnow.json', 'w'))
-          " "$HOSZT" "$KULCS"
+          # Csak a MEGVÁLTOZOTT lapokat jelentjük be. A Bing Webmaster Tools
+          # 2026 szeptemberében ezt kifogásolta („Avoid IndexNow Batch Mode"):
+          # ha minden telepítéskor mind a 907 címet beküldjük, a jelzés nem
+          # mond semmit, és a feltérképezés is késhet. A teljes lista amúgy is
+          # ki van adva a sitemapben — az IndexNow arra való, hogy mi ÚJ.
+          # A szkript maga dönt, honnan tudja a változást (rsync-lista az
+          # SSH-ágon, stage mappa az FTP-ágon), és ha egyiket sem találja,
+          # a teljes listára esik vissza — inkább egy fölösleges teljes
+          # bejelentés, mint egy elmaradt új lap.
+          python3 scripts/indexnow-cimek.py \
+            --sitemap out/sitemap.xml --hoszt "$HOSZT" --kulcs "$KULCS" \
+            --kimenet /tmp/indexnow.json \
+            --lista /tmp/valtozott-lapok.txt --stage /tmp/feltoltendo \
+            > /tmp/indexnow-mod.txt
+          MOD=$(sed -n 's/^MOD=//p' /tmp/indexnow-mod.txt)
+          DB=$(sed -n 's/^DB=//p' /tmp/indexnow-mod.txt)
+          OSSZES=$(sed -n 's/^OSSZES=//p' /tmp/indexnow-mod.txt)
+          if [ "${DB:-0}" -eq 0 ]; then
+            echo "IndexNow: egyetlen lap sem változott — nincs mit bejelenteni ($OSSZES cím van a sitemapben)."
+            exit 0
+          fi
           V=$(curl -sS -o /tmp/indexnow-valasz.txt -w '%{http_code}' \
               -X POST 'https://api.indexnow.org/indexnow' \
               -H 'Content-Type: application/json; charset=utf-8' \
               --data-binary @/tmp/indexnow.json --max-time 30 || echo 000)
           case "$V" in
-            200|202) echo "IndexNow: $DB cím bejelentve ($V) — a Bing/Naver/Yandex értesítve." ;;
+            200|202) echo "IndexNow: $DB cím bejelentve ($V, mód: $MOD, a sitemapben $OSSZES) — a Bing/Naver/Yandex értesítve." ;;
             *) echo "::warning::Az IndexNow-értesítés nem sikerült ($V): $(head -c 300 /tmp/indexnow-valasz.txt 2>/dev/null)" ;;
           esac
 

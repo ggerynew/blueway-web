@@ -25,6 +25,11 @@ export async function generateMetadata({
     path: 'tudastar',
     title: dict.knowledge.title,
     description: dict.knowledge.lead,
+    // A cikkek címei tényszerűek, és épp azt mondják el, mi található a
+    // lapon. A hozzáfűzés magától megáll, amint a leírás eléri a hasznos
+    // hosszt — a bővebb nyelvek leírása tehát változatlan marad, és csak
+    // ott egészül ki, ahol a bevezető rövid (kínaiul a fele a magyarnak).
+    extra: guides.map((g) => g.title[lang]),
   });
 }
 
