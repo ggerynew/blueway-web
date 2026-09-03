@@ -1930,6 +1930,23 @@ const guidesSource: Sourced<Guide[]> = [
 ];
 export const guides: Guide[] = localize<Guide[]>(guidesSource);
 
+/** A tudástár első köre ezen a napon jelent meg — az e nélküli cikkek dátuma. */
+export const TUDASTAR_INDULAS = '2026-07-26';
+
+/** A cikk megjelenésének napja (Article datePublished). */
+export function guideKiadva(g: Guide): string {
+  return g.kiadva ?? TUDASTAR_INDULAS;
+}
+
+/**
+ * A cikk utolsó tartalmi változásának napja. Egyetlen forrás két helyre: az
+ * Article dateModified és a sitemap lastmod ugyanezt mondja — ha a kettő
+ * eltérne, a kereső egyiket sem hinné el.
+ */
+export function guideModositva(g: Guide): string {
+  return g.modositva ?? g.kiadva ?? TUDASTAR_INDULAS;
+}
+
 export function getGuide(slug: string) {
   return guides.find((g) => g.slug === slug);
 }

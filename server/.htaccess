@@ -467,7 +467,7 @@ ErrorDocument 404 /404.html
   # Explicit fejléc nélkül a közbenső gyorsítótárak a Last-Modified-ből
   # heurisztikával számolnak érvényességet, és egy frissítés után napokig a
   # régi katalógust adhatnák egy AI-keresőnek.
-  <FilesMatch "^(llms\.txt|llms-full\.txt|termekek\.json)$">
+  <FilesMatch "^(llms\.txt|llms-full\.txt|termekek\.json|alkatreszek\.json)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
 

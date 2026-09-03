@@ -7,12 +7,9 @@ import { LinkedText } from '@/components/linked-text';
 import { asset } from '@/lib/asset';
 import { kepVerzio } from '@/lib/kep-verzio';
 import { abraUt, getDictionary, isLocale, locales } from '@/lib/i18n';
-import { getGuide, guides } from '@/lib/knowledge';
+import { getGuide, guideKiadva, guideModositva, guides } from '@/lib/knowledge';
 import { morzsa, nyelvKod, szervezetRef, weblapRef } from '@/lib/jsonld';
 import { absUrl, pageMetadata } from '@/lib/site';
-
-/** A tudástár első köre ezen a napon jelent meg — az e nélküli cikkek dátuma. */
-const PUBLISHED = '2026-07-26';
 
 export function generateStaticParams() {
   return locales.flatMap((lang) => guides.map((g) => ({ lang, guide: g.slug })));
@@ -54,8 +51,8 @@ export default async function GuidePage({
         description: guide.short[lang],
         inLanguage: nyelvKod(lang),
         image: absUrl('images/og.png'),
-        datePublished: guide.kiadva ?? PUBLISHED,
-        dateModified: guide.modositva ?? guide.kiadva ?? PUBLISHED,
+        datePublished: guideKiadva(guide),
+        dateModified: guideModositva(guide),
         author: szervezetRef,
         publisher: szervezetRef,
         isPartOf: weblapRef(lang),

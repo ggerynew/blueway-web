@@ -275,6 +275,33 @@ for (const f of ['llms.txt', 'llms-full.txt', 'ai/termekek.json', 'alkatreszek.j
 }
 const llms = existsSync(join(OUT, 'llms.txt')) ? readFileSync(join(OUT, 'llms.txt'), 'utf8') : '';
 
+// Az AI-fájlok minden saját hivatkozása élő lapra mutasson. Ezeket a linkeket
+// nem a böngésző követi, hanem egy válaszmotor idézi a felhasználónak — egy
+// halott hivatkozás ott nem 404-es lap, hanem hamis állítás a nevünkben. A
+// gazdanév a sitemapből jön, hogy a próba- és az éles build egyaránt működjön.
+const gazda = smCimek[0]?.match(/^https?:\/\/[^/]+\//)?.[0];
+if (gazda) {
+  for (const f of ['llms.txt', 'llms-full.txt', 'ai/termekek.json']) {
+    if (!existsSync(join(OUT, f))) continue;
+    const szoveg = readFileSync(join(OUT, f), 'utf8');
+    const minta = new RegExp(gazda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^\\s)\\]"<>]+', 'g');
+    const cimek = new Set([...szoveg.matchAll(minta)].map((m) => m[0]));
+    let halott = 0;
+    for (const c of cimek) {
+      const ut = c.slice(gazda.length).split('#')[0];
+      if (!ut) continue;
+      const van = [ut, `${ut}.html`, `${ut.replace(/\/$/, '')}/index.html`].some((j) =>
+        existsSync(join(OUT, j)),
+      );
+      if (!van) {
+        halott++;
+        if (halott <= 5) baj(f, `halott hivatkozás: ${c}`);
+      }
+    }
+    if (halott > 5) baj(f, `… és még ${halott - 5} halott hivatkozás`);
+  }
+}
+
 // ——————————————————————————————————————————————————————————————
 // Súly: a legnehezebb lapok, és a hivatkozott eszközök mérete
 // ——————————————————————————————————————————————————————————————
