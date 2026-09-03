@@ -282,9 +282,18 @@ export function HeroTileWall({ tiles }: { tiles: Tile[] }) {
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {/* Az alt itt SZÁNDÉKOSAN a géptípus neve, nem üres.
+                      Régen alt="" volt, ami szabályos HTML: a képet
+                      körülvevő hivatkozás visel aria-labelt (feljebb), az
+                      pedig felülírja a link tartalmát, tehát a felolvasó
+                      amúgy sem mondja ki kétszer a nevet. Két dolog miatt
+                      írjuk ki mégis: a képkeresőnek csak az alt adja meg,
+                      mit ábrázol a kép, a Bing ellenőrzője pedig az üres
+                      altot „nincs megadva"-ként számolja, és ezt hibaként
+                      jelentette a nyolc nyelvi nyitóoldalra. */}
                   <img
                     src={t.src}
-                    alt=""
+                    alt={t.alt}
                     className="pointer-events-none max-h-full max-w-full object-contain"
                     loading="lazy"
                     draggable={false}

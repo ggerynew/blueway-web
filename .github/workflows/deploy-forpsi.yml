@@ -891,7 +891,10 @@ jobs:
             "/termekek/kategoriak/cimkezo-gepek-7|/hu/termekek/cimkezo-gepek" \
             "/products/brands/cab-3|/en/gyartok/cab" \
             "/partnereink|/hu/gyartok" \
-            "/termek/nincs-ilyen-999|/hu/termekek"; do
+            "/termek/nincs-ilyen-999|/hu/termekek" \
+            "/contact|/en/kapcsolat" \
+            "/termekek|/hu/termekek" \
+            "/termekek/gyartok/cab-3|/hu/gyartok/cab"; do
             BE="${PAR%%|*}"; VART="${PAR##*|}"
             EREDMENY=$(curl -sSL -o /dev/null --max-time 25 \
                        -w '%{http_code} %{url_effective}' "https://$HOSZT$BE" 2>/dev/null || echo "000 -")

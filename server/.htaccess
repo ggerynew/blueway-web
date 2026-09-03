@@ -36,11 +36,25 @@ RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
 # ——— HTTPS ————————————————————————————————————————————————————————
-# Kapcsold be (vedd le a # jeleket), MIUTÁN a tanúsítvány kiállt és a
-# https://blueway.hu betölt. Előbb bekapcsolva minden látogató hibaoldalt
-# kapna. Fontos: ennek a két sornak minden más szabály ELŐTT kell állnia,
-# különben a lenti átírások [L] jelzője miatt vagy le sem futna, vagy a
-# .html-re átírt címre irányítana át.
+# EZ A KETTŐ SZÁNDÉKOSAN KIKAPCSOLVA MARAD. NE VEDD LE A # JELEKET.
+#
+# A http→https terelést a TÁRHELY PANELJE végzi („SSL redirect", a költözés
+# 7. lépésében bekapcsolva). Élesben mérve működik: a telepítés ellenőrzése
+# minden futásban kiírja, hogy a http://blueway.hu/ EGY ugrással a
+# https://blueway.hu/ címen áll meg, és a sitemap-beli címek http-s
+# lekérése is https-en végződik.
+#
+# Ha ezt a két sort mégis bekapcsolnád, a panel szabályával együtt két
+# forrásból jönne ugyanaz az átirányítás — a legjobb esetben egy fölösleges
+# ugrás, a legrosszabbban végtelen kör, ugyanaz a csapda, mint a WWW
+# kapcsolónál feljebb. Egy vizsgálat 2026 szeptemberében „hiányzó HTTPS-
+# terelésnek" olvasta ezt a kikommentezést; a mérés megdöntötte.
+#
+# Ha valaha mégis kellenének (például a panel kapcsolója eltűnik), előbb a
+# panelben kapcsold KI az SSL redirectet, és csak utána vedd le a # jeleket.
+# Ennek a két sornak minden más szabály ELŐTT kell állnia, különben a lenti
+# átírások [L] jelzője miatt vagy le sem futna, vagy a .html-re átírt címre
+# irányítana át.
 # RewriteCond %{HTTPS} !=on
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
@@ -240,10 +254,10 @@ RewriteRule ^products/categories/[^/]*-10/?$ https://%{HTTP_HOST}/en/termekek/ci
 RewriteRule ^products/categories/[^/]*-11/?$ https://%{HTTP_HOST}/en/termekek/ragaszto-adagolok [R=301,L,QSD]
 
 # Gyártói lapok.
-RewriteRule ^termekek/gyartok/[^/]*-3/?$ https://%{HTTP_HOST}/hu/gyartok/cab [R=301,L]
-RewriteRule ^termekek/gyartok/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L]
-RewriteRule ^termekek/gyartok/[^/]*-5/?$ https://%{HTTP_HOST}/hu/gyartok/tykma-electrox [R=301,L]
-RewriteRule ^termekek/gyartok/[^/]*-12/?$ https://%{HTTP_HOST}/hu/gyartok/start-international [R=301,L]
+RewriteRule ^termekek/gyartok/[^/]*-3/?$ https://%{HTTP_HOST}/hu/gyartok/cab [R=301,L,QSD]
+RewriteRule ^termekek/gyartok/[^/]*-4/?$ https://%{HTTP_HOST}/hu/termekek/szoftverek/nicelabel [R=301,L,QSD]
+RewriteRule ^termekek/gyartok/[^/]*-5/?$ https://%{HTTP_HOST}/hu/gyartok/tykma-electrox [R=301,L,QSD]
+RewriteRule ^termekek/gyartok/[^/]*-12/?$ https://%{HTTP_HOST}/hu/gyartok/start-international [R=301,L,QSD]
 RewriteRule ^products/brands/[^/]*-3/?$ https://%{HTTP_HOST}/en/gyartok/cab [R=301,L,QSD]
 RewriteRule ^products/brands/[^/]*-4/?$ https://%{HTTP_HOST}/en/termekek/szoftverek/nicelabel [R=301,L,QSD]
 RewriteRule ^products/brands/[^/]*-5/?$ https://%{HTTP_HOST}/en/gyartok/tykma-electrox [R=301,L,QSD]
@@ -253,7 +267,7 @@ RewriteRule ^products/brands/[^/]*-12/?$ https://%{HTTP_HOST}/en/gyartok/start-i
 RewriteRule ^partnereink/?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L,QSD]
 RewriteRule ^partners/?$ https://%{HTTP_HOST}/en/gyartok [R=301,L]
 RewriteRule ^kapcsolat/?$ https://%{HTTP_HOST}/hu/kapcsolat [R=301,L]
-RewriteRule ^contact/?$ https://%{HTTP_HOST}/en/kapcsolat [R=301,L]
+RewriteRule ^contact/?$ https://%{HTTP_HOST}/en/kapcsolat [R=301,L,QSD]
 RewriteRule ^szolgaltatasok(-\d+)?/?$ https://%{HTTP_HOST}/hu/szolgaltatasok [R=301,L]
 RewriteRule ^services(-\d+)?/?$ https://%{HTTP_HOST}/en/szolgaltatasok [R=301,L]
 RewriteRule ^lang/hu/?$ https://%{HTTP_HOST}/hu [R=301,L]
@@ -263,12 +277,12 @@ RewriteRule ^lang/en/?$ https://%{HTTP_HOST}/en [R=301,L]
 # azonosítói, és a naplókból csak 29 került elő — a többiről nem tudjuk, mi volt.
 # Ezek a gyűjtőszabályok a megfelelő listaoldalra viszik őket 404 helyett.
 # Csak a fenti pontos szabályok UTÁN futhatnak.
-RewriteRule ^termek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
-RewriteRule ^product(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
-RewriteRule ^termekek/gyartok(/.*)?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L]
+RewriteRule ^termek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L,QSD]
+RewriteRule ^product(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L,QSD]
+RewriteRule ^termekek/gyartok(/.*)?$ https://%{HTTP_HOST}/hu/gyartok [R=301,L,QSD]
 RewriteRule ^products/brands(/.*)?$ https://%{HTTP_HOST}/en/gyartok [R=301,L,QSD]
-RewriteRule ^termekek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L]
-RewriteRule ^products(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L]
+RewriteRule ^termekek(/.*)?$ https://%{HTTP_HOST}/hu/termekek [R=301,L,QSD]
+RewriteRule ^products(/.*)?$ https://%{HTTP_HOST}/en/termekek [R=301,L,QSD]
 
 # ——— Ami nem való a nyilvánosság elé ——————————————————————————————
 # A régi weblap hagyatékából mentések maradtak a webgyökérben — például egy

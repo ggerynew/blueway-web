@@ -20,6 +20,17 @@ sorrendjét** írja le; a magyarázatok a lépések alatt vannak.
 | SSL redirect | letiltva — a 7. lépésben kapcsoljuk be |
 | Dynamic cache | letiltva — maradjon így |
 
+> **Ez a táblázat a költözés ELŐTTI állapotot rögzíti**, nem a mait. Két
+> kapcsoló azóta megfordult, és ez a mai működés szempontjából döntő:
+>
+> - **WWW redirect: LETILTVA.** A panel kapcsolója fordítva működött
+>   (blueway.hu → www), a weblap viszont a www nélküli alakra hivatkozik
+>   mindenhol. A terelést a `server/.htaccess` végzi; ha a panelban valaki
+>   visszakapcsolja, a kettő végtelen körben dobálja egymásnak a látogatót.
+> - **SSL redirect: BEKAPCSOLVA** (a 7. lépésben). Ezért kell a
+>   `server/.htaccess` http→https szabálypárjának kikommentezve maradnia —
+>   a magyarázat ott, a „HTTPS" szakaszban áll.
+
 ## Előfeltétel: nagyobb csomag
 
 **A mostani 100 MB kevés.** A legenerált weblap 141 MB:
