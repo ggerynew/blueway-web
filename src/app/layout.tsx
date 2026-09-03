@@ -28,7 +28,19 @@ export const metadata: Metadata = {
   // és a nyoma a repóban: eddig a hitelesítés kizárólag a DNS-panelen élt,
   // a kód semmit nem tudott róla. A token nem titok — pont az a dolga, hogy
   // nyilvánosan olvasható legyen (a DNS-ben ma is az).
-  verification: { google: 'bcQPpyFgmUWm6PTQUMzQxrIg6zcIlsR1YtfOKgHP2BA' },
+  // A Bing (msvalidate.01) azért META, és nem csak a gyökérben lévő
+  // BingSiteAuth.xml: a Bing ellenőrzője az XML fájlt többszöri próbálkozásra
+  // sem érte el, pedig a szerver bizonyítottan kiadja (a telepítés naplója a
+  // fájl TARTALMÁT is ellenőrzi). A meta más úton megy — a nyitólap HTML-jét
+  // a Bing amúgy is letölti —, ezért ez a második láb. A fájl marad, a kettő
+  // nem üti egymást; ugyanaz az azonosító áll bennük.
+  //
+  // A Bing figyelmeztetése szerint a meta az igazolás UTÁN sem törölhető,
+  // különben a tulajdonjog elvész. Ezért van a kódban, nem kézzel beszúrva.
+  verification: {
+    google: 'bcQPpyFgmUWm6PTQUMzQxrIg6zcIlsR1YtfOKgHP2BA',
+    other: { 'msvalidate.01': 'C4F55583E8DBFC9FE58807D7CD3FCC45' },
+  },
   // A `robots: { index: true, follow: true }` szándékosan nincs itt. Az
   // indexelés az alapértelmezés, tehát a címke a 889 rendes lapon semmit nem
   // mondott — a 404-en viszont ártott: a Next oda saját „noindex" címkét ír,
