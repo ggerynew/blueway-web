@@ -55,8 +55,30 @@ JELOLTEK=(
   favicon-16x16.png favicon-32x32.png favicon-96x96.png
 )
 
-# Ezekhez soha, semmilyen körülmények között.
-TILTOTT=(.well-known backups-forpsi .ftpquota . ..)
+# A SZÜLŐKÖNYVTÁRBAN lévő maradék. A 2026-09-03-i leltár alapján derült ki,
+# mi micsoda — a nevekből nem lett volna kitalálható, ezért mértük meg:
+#
+#   ARCHIVE   394 MB  a mi archiválásunk 2026-07-29-ről: _blueway_old.rar
+#                     (a régi weblap teljes mentése), admin, css, faviconok
+#   www_      207 MB  a régi webgyökér: app.php, app_dev.php, assets
+#   vendor    155 MB  a régi alkalmazás Composer-függőségei
+#   app        29 MB  AppKernel.php, AppCache.php — Symfony alkalmazásmag
+#   src       336 kB  AppBundle, Application — a régi alkalmazás forrása
+#   data        4 kB  egy régi .htpasswd
+#   teszt.txt     0   a költözéskor keletkezett próbafájl
+#
+# Amihez SZÁNDÉKOSAN nem nyúlunk, pedig szintén ott van:
+#   www            az élő weblap gyökere
+#   backups-forpsi a SZOLGÁLTATÓ mentései
+#   .ftpquota      a tárhelyszámláló
+#   stat, tmp      üres, a tárhely sajátja
+#   softaculous    a tárhely automata telepítője
+#   .htaccess      a szülőkönyvtáré, 168 bájt — nem tudjuk, mit szolgál ki
+SZULO_JELOLTEK=(ARCHIVE www_ vendor app src data teszt.txt)
+
+# Ezekhez soha, semmilyen körülmények között. A `www` a legfontosabb: az az
+# élő weblap gyökere, és a szülőkönyvtárban áll a törlendők mellett.
+TILTOTT=(.well-known backups-forpsi .ftpquota www stat tmp softaculous .htaccess . ..)
 
 SZULO="$(dirname "$WEB_ROOT")"
 
@@ -124,17 +146,44 @@ printf '%s\n' "$LISTA" | while read -r nev; do
   echo "  $nev$jel"
 done
 
+# ——— A szülőkönyvtárban lévő maradék ————————————————————————————
+# A régi weblap java része NEM a webgyökérben van, hanem egy szinttel
+# feljebb: részben a mi 2026-07-29-i archiválásunk tette oda, részben a
+# költözés előttről maradt ott. Ezért kezeljük külön.
+SZULO_LISTA=$(TAV "ls -A '$SZULO'" | sed '/^$/d')
+SZULO_TORLENDO=()
+echo "— a szülőkönyvtárból törlendő —"
+for nev in "${SZULO_JELOLTEK[@]}"; do
+  printf '%s\n' "$SZULO_LISTA" | grep -qxF -- "$nev" || continue
+  kihagy=""
+  for t in "${TILTOTT[@]}"; do
+    [ "$nev" = "$t" ] && kihagy="tiltólistán"
+  done
+  # Öv és nadrágtartó: a webgyökér nevéhez soha nem nyúlunk, akkor sem, ha
+  # valaki tévedésből felvenné a jelöltek közé.
+  [ "$SZULO/$nev" = "$WEB_ROOT" ] && kihagy="ez maga a webgyökér"
+  if [ -n "$kihagy" ]; then
+    echo "  kihagyva:  $nev  ($kihagy)"
+  else
+    MERET=$(TAV "du -sh '$SZULO/$nev' 2>/dev/null | cut -f1" || echo '?')
+    echo "  törlendő:  $nev  (${MERET:-?})"
+    SZULO_TORLENDO+=("$nev")
+  fi
+done
+[ ${#SZULO_TORLENDO[@]} -eq 0 ] && echo "  (nincs ilyen bejegyzés)"
+
 if [ "$MOD" = "leltar" ]; then
   echo "Leltár volt — a szerveren semmi nem változott."
   exit 0
 fi
 
-if [ ${#TORLENDO[@]} -eq 0 ]; then
-  echo "Nincs mit törölni: a listából egyetlen bejegyzés sincs a webgyökérben."
+OSSZES=$(( ${#TORLENDO[@]} + ${#SZULO_TORLENDO[@]} ))
+if [ "$OSSZES" -eq 0 ]; then
+  echo "Nincs mit törölni: a listából egyetlen bejegyzés sincs a szerveren."
   exit 0
 fi
 
-echo "összesen ${#TORLENDO[@]} bejegyzés törlendő"
+echo "összesen $OSSZES bejegyzés törlendő (${#TORLENDO[@]} a webgyökérből, ${#SZULO_TORLENDO[@]} a szülőkönyvtárból)"
 
 if [ "$MOD" != "vegrehajt" ]; then
   echo "Próbafutás volt — a szerveren semmi nem változott."
@@ -147,6 +196,28 @@ fi
 for nev in "${TORLENDO[@]}"; do
   TAV "rm -rf '$WEB_ROOT/$nev'"
 done
+for nev in "${SZULO_TORLENDO[@]}"; do
+  TAV "rm -rf '$SZULO/$nev'"
+done
+
+# A szülőkönyvtár eredménye — szintén a maradékból olvasva.
+SZULO_MARADT=$(TAV "ls -A '$SZULO'" | sed '/^$/d')
+for nev in "${SZULO_TORLENDO[@]}"; do
+  if printf '%s\n' "$SZULO_MARADT" | grep -qxF -- "$nev"; then
+    echo "::warning::Nem sikerült törölni a szülőkönyvtárból: $nev"
+  else
+    echo "  törölve: $SZULO/$nev"
+  fi
+done
+# A legfontosabb ellenőrzés: megvan-e még az élő weblap gyökere.
+if printf '%s\n' "$SZULO_MARADT" | grep -qxF -- "$(basename "$WEB_ROOT")"; then
+  echo "  a webgyökér a helyén van"
+else
+  echo "::error::A WEBGYÖKÉR ELTŰNT a szülőkönyvtárból. Azonnali teendő: telepíts újra."
+  exit 1
+fi
+echo "— a szülőkönyvtár szabad helye a takarítás után —"
+TAV "df -h '$SZULO' | tail -2" | sed 's/^/  /' || true
 
 # ——— Az eredmény a MARADÉKBÓL, nem a parancs kimenetéből ——————————
 MARADT=$(TAV "ls -A '$WEB_ROOT'" | sed '/^$/d')
