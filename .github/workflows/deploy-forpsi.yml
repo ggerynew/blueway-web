@@ -936,6 +936,26 @@ jobs:
           JSONV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT/ai/termekek.json" 2>/dev/null || echo 000)
           [ "$JSONV" = "200" ] && echo "  /ai/termekek.json -> 200" || echo "::warning::Az /ai/termekek.json nem érhető el ($JSONV)."
 
+          # ——— A Bing tulajdonjog-igazoló fájlja: a TARTALMA is stimmeljen ——
+          # A 200-as állapot és a méret nem elég. A Bing a fájlban lévő
+          # azonosítót keresi; ha oda bármi más kerülne — csonka feltöltés,
+          # hibaoldal, más fiók kulcsa —, a Bing „nem érem el a fájlt"
+          # hibát ad, a naplónk pedig ugyanúgy zölden jelentene.
+          # A várt azonosítót a most épített fájlból vesszük, nem kézzel
+          # beírva: így a próba akkor is helyes marad, ha a kulcs cserélődik.
+          echo "— a Bing igazolófájlja —"
+          BINGVART=$(grep -o '<user>[^<]*</user>' out/BingSiteAuth.xml 2>/dev/null | head -1)
+          if [ -z "$BINGVART" ]; then
+            echo "::warning::Az out/BingSiteAuth.xml hiányzik vagy üres — a Bing tulajdonjog-igazolása elveszhet."
+          else
+            BINGELO=$(curl -sSL --max-time 20 "https://$HOSZT/BingSiteAuth.xml" 2>/dev/null || true)
+            if printf '%s' "$BINGELO" | grep -qF "$BINGVART"; then
+              echo "  /BingSiteAuth.xml -> az azonosító szó szerint megvan az élesen kiszolgált fájlban"
+            else
+              echo "::warning::A /BingSiteAuth.xml tartalma nem a várt. Vártuk: $BINGVART — kaptunk: $(printf '%s' "$BINGELO" | tr -d '\n' | head -c 160)"
+            fi
+          fi
+
           # ——— Tömörítés: megy-e ki gzip-pel a szöveg és a JavaScript ————
           # Ezt a lépést egy olyan hiba indokolja, amit innen NEM lehetett
           # megnézni: a .htaccess DEFLATE-listája sokáig csak az
