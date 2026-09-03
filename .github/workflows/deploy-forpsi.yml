@@ -943,7 +943,7 @@ jobs:
           # hibát ad, a naplónk pedig ugyanúgy zölden jelentene.
           # A várt azonosítót a most épített fájlból vesszük, nem kézzel
           # beírva: így a próba akkor is helyes marad, ha a kulcs cserélődik.
-          echo "— a Bing igazolófájlja —"
+          echo "— a Bing igazolása —"
           BINGVART=$(grep -o '<user>[^<]*</user>' out/BingSiteAuth.xml 2>/dev/null | head -1)
           if [ -z "$BINGVART" ]; then
             echo "::warning::Az out/BingSiteAuth.xml hiányzik vagy üres — a Bing tulajdonjog-igazolása elveszhet."
@@ -953,6 +953,19 @@ jobs:
               echo "  /BingSiteAuth.xml -> az azonosító szó szerint megvan az élesen kiszolgált fájlban"
             else
               echo "::warning::A /BingSiteAuth.xml tartalma nem a várt. Vártuk: $BINGVART — kaptunk: $(printf '%s' "$BINGELO" | tr -d '\n' | head -c 160)"
+            fi
+          fi
+          # A meta a tulajdonjog MÁSODIK lába, és a Bing szerint az igazolás
+          # után sem törölhető. A nyitólapot nézzük, mert a Bing is azt kéri —
+          # az azonosítót itt is a buildből vesszük, nem kézzel beírva.
+          METAVART=$(grep -o 'name="msvalidate.01" content="[^"]*"' out/index.html 2>/dev/null | head -1)
+          if [ -z "$METAVART" ]; then
+            echo "::warning::A nyitólap buildjéből hiányzik az msvalidate.01 meta — a Bing tulajdonjoga elveszhet."
+          else
+            if curl -sSL --max-time 20 "https://$HOSZT/" 2>/dev/null | grep -qF "$METAVART"; then
+              echo "  / -> az msvalidate.01 meta kint van a nyitólapon"
+            else
+              echo "::warning::A nyitólapon élesben nincs ott az msvalidate.01 meta (vártuk: $METAVART)."
             fi
           fi
 
