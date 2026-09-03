@@ -64,16 +64,24 @@ export default function RootPage() {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: NYELVVALASZTO }} />
-      {/* Szkript nélküli böngészőknek (és a keresőknek) marad a magyar változat. */}
-      <noscript>
-        <meta httpEquiv="refresh" content={`0;url=${asset('/hu')}`} />
-      </noscript>
       {/*
+        Itt ÁLLT egy <noscript><meta http-equiv="refresh" …> — 2026
+        szeptemberében kivettük, a Bing Site Scan jelzésére. Két okból:
+
+        1. Nem mondott semmit, amit a lap fejléce ne mondana el jobban. A
+           kanonikus cím a /hu-ra mutat, és mind a nyolc nyelvi változat
+           hreflang-gal és hivatkozással is szerepel. A keresőnek ennyi
+           elég; a meta refresh csak egy gyengébb, elavult jelzés ugyanarról.
+        2. A szkript nélküli látogatónak ÁRTOTT. A német vagy a koreai
+           érdeklődőt is a magyar változatra dobta, holott alatta ott a
+           nyelvválasztó. Most azt kapja, amiért jött: választhat.
+
+        A sütire épülő átirányítás megmarad — az fut a látogatók
+        gyakorlatilag mindegyikénél, és az visz a saját nyelvre.
+
         Ami a szkript nélkül marad: valódi nyelvválasztó, nem üres oldal.
-        A látogató ezt gyakorlatilag sosem látja — a fenti szkript még az első
-        kirajzolás előtt továbbviszi —, de a keresőrobotnak és a szkript nélküli
-        böngészőnek ez az egyetlen fogódzó. Mind a hét nyelvi változat innen
-        elérhető egy hivatkozással, és van rendes H1 is.
+        Mind a nyolc nyelvi változat elérhető innen egy hivatkozással, és
+        van rendes H1 is.
       */}
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">Blueway Trade Kft.</h1>
