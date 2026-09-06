@@ -40,10 +40,76 @@ echo "— AI-robotok látogatásai —"
 # A tárhely nem dokumentálja, hol tartja a hozzáférési naplót, ezért
 # megkeressük. Csak a fiók saját fájlrendszerében nézünk, két szint mélyen —
 # a rendszerszintű /var/log úgysem olvasható megosztott tárhelyen.
-NAPLOK=$(TAV "find '$SZULO' -maxdepth 2 \\( -name '*access*log*' -o -name '*.log' \\) -type f -size +0 2>/dev/null | head -20")
+#
+# A NÉV NEM ELÉG. Az első futásnál a keresés a saját send-errors.log-unkat
+# találta meg, a szkript naplónak vette, és üres táblázatot írt ki — mintha
+# megmértük volna, hogy egyetlen robot sem járt itt. Ez rosszabb, mint a
+# semmi: hamis megnyugvás. Ezért minden jelöltbe BELE IS NÉZÜNK, és csak azt
+# fogadjuk el, amiben tényleges HTTP-kéréssorok vannak. A saját naplónkat
+# külön is kizárjuk, hogy a szándék a kódból is látsszon.
+JELOLTEK=$(TAV "find '$SZULO' -maxdepth 2 \\( -name '*access*log*' -o -name '*.log' \\) -type f -size +0 2>/dev/null | head -40")
+NAPLOK=$(TAV "for f in \$(find '$SZULO' -maxdepth 2 \\( -name '*access*log*' -o -name '*.log' \\) -type f -size +0 2>/dev/null | head -40); do
+  case \"\$f\" in */send-errors.log) continue ;; esac
+  head -c 200000 \"\$f\" 2>/dev/null | grep -qaE '\\\"(GET|HEAD|POST) ' && echo \"\$f\"
+done")
 
 if [ -z "$NAPLOK" ]; then
+  if [ -n "$JELOLTEK" ]; then
+    echo "  Találtam naplónak látszó fájlokat, de egyik sem hozzáférési napló"
+    echo "  (nincs bennük HTTP-kéréssor):"
+    printf '%s\n' "$JELOLTEK" | sed 's/^/    /'
+    echo
+  fi
   echo "  A tárhelyen nem találtam hozzáférési naplót."
+  echo
+
+  # ——— Második út: a szolgáltató kimutatása ————————————————————
+  # Megosztott tárhelyen a nyers napló gyakran nem érhető el, viszont a
+  # szolgáltató készít belőle AWStats-kimutatást, és annak VAN külön
+  # robot-szakasza. Az adatfájl szöveges (awstats<HH><ÉÉÉÉ>.<hely>.txt),
+  # és a BEGIN_ROBOT … END_ROBOT blokkban soronként ez áll:
+  #   robot-azonosító  kérés  forgalom  utolsó-látogatás  robots.txt-kérés
+  # Ez pontosan az, amit keresünk — csak nem mi számoltuk össze.
+  AWSTATS=$(TAV "find '$SZULO' -maxdepth 3 -name 'awstats*.txt' -type f -size +0 2>/dev/null | sort | tail -6")
+
+  if [ -n "$AWSTATS" ]; then
+    echo "  Van viszont AWStats-kimutatás — abban a szolgáltató maga számolta"
+    echo "  össze a robotokat. A legutóbbi hónapok fájljai:"
+    printf '%s\n' "$AWSTATS" | sed 's/^/    /'
+    echo
+    echo "  robot (az AWStats saját elnevezésével)   kérés   utoljára"
+    AWFAJLOK=$(printf '%s\n' "$AWSTATS" | tr '\n' ' ')
+    TAV "cat $AWFAJLOK 2>/dev/null | awk '
+      /^BEGIN_ROBOT/ { b = 1; next }
+      /^END_ROBOT/   { b = 0 }
+      b && NF >= 4 {
+        db[\$1] += \$2
+        if (\$4 > u[\$1]) u[\$1] = \$4
+      }
+      END {
+        for (k in db)
+          printf \"    %-38s %6d   %s\n\", k, db[k],
+                 substr(u[k],1,4) \"-\" substr(u[k],5,2) \"-\" substr(u[k],7,2)
+      }' | sort -k2 -rn | head -25" || echo "    (a kimutatás nem olvasható)"
+    echo
+    echo "  Megjegyzés: az AWStats a saját robotlistája szerint sorol be, ami"
+    echo "  nem azonos a mi huszonegy nevünkkel — egy ismeretlen új AI-robot"
+    echo "  könnyen a „névtelen” sorba kerülhet nála."
+    exit 0
+  fi
+
+  # ——— Harmadik út: legalább derítsük fel, mihez nyúlhatnánk ————
+  # Ha kimutatás sincs, ne csak annyit mondjunk, hogy „nem megy”. Nézzük
+  # meg, milyen statisztika-mappa létezik egyáltalán a fiókban, hogy a
+  # következő körben legyen mit megnyitni.
+  STATOK=$(TAV "find '$SZULO' -maxdepth 1 -type d \\( -name 'stat*' -o -iname '*webalizer*' -o -iname '*awstats*' \\) 2>/dev/null")
+  if [ -n "$STATOK" ]; then
+    echo "  Statisztika-mappa viszont van, csak nem ismerem a formátumát:"
+    printf '%s\n' "$STATOK" | sed 's/^/    /'
+    TAV "ls -1 $(printf '%s\n' "$STATOK" | tr '\n' ' ') 2>/dev/null | head -15" | sed 's/^/      /'
+    echo
+  fi
+
   echo "  Ez megosztott tárhelyen szokásos: a naplót gyakran csak a szolgáltató"
   echo "  vezérlőpultja mutatja meg, fájlként nem érhető el. Ilyenkor az"
   echo "  AI-robotok látogatását innen nem tudjuk mérni — a vezérlőpult"
@@ -53,7 +119,7 @@ if [ -z "$NAPLOK" ]; then
   exit 0
 fi
 
-echo "  megtalált naplófájlok:"
+echo "  hozzáférési naplók:"
 printf '%s\n' "$NAPLOK" | sed 's/^/    /'
 
 # ——— A robotok, akiket keresünk ————————————————————————————————
