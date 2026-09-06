@@ -484,6 +484,12 @@ ErrorDocument 404 /404.html
   <FilesMatch "^(llms\.txt|llms-full\.txt|termekek\.json|alkatreszek\.json)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+  # Az ügynök-végpont válasza sosem gyorsítótárazható: a keresés paraméterei
+  # a címben vannak, az ajánlatkérés pedig írás. Egy közbenső gyorsítótár
+  # a legrosszabb esetben egy MÁSIK vevő találatát adná vissza.
+  <FilesMatch "^agent\.php$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
 
   # ——— A lapozás adatcsomagjai ne kerüljenek a keresőbe ———————————
   # A Next.js minden oldalhoz legyárt egy azonos nevű .txt fájlt is: ez a

@@ -321,14 +321,25 @@ if (gazda) {
   for (const f of ['llms.txt', 'llms-full.txt', 'ai/termekek.json']) {
     if (!existsSync(join(OUT, f))) continue;
     const szoveg = readFileSync(join(OUT, f), 'utf8');
-    const minta = new RegExp(gazda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^\\s)\\]"<>]+', 'g');
+    // A backtick kimarad a címből: az llms.txt kódrészletei ` jelek közé
+    // vannak zárva, és a nélküle kiolvasott cím végén ottmaradna a jel.
+    const minta = new RegExp(gazda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^\\s)\\]"<>`]+', 'g');
     const cimek = new Set([...szoveg.matchAll(minta)].map((m) => m[0]));
     let halott = 0;
     for (const c of cimek) {
-      const ut = c.slice(gazda.length).split('#')[0];
+      // A lekérdezőrész és a horgony nem a fájlt azonosítja; a mondatvégi
+      // írásjel pedig nem is része a címnek.
+      const ut = c
+        .slice(gazda.length)
+        .split('#')[0]
+        .split('?')[0]
+        .replace(/[.,;:!?]+$/, '');
       if (!ut) continue;
-      const van = [ut, `${ut}.html`, `${ut.replace(/\/$/, '')}/index.html`].some((j) =>
-        existsSync(join(OUT, j)),
+      // A `server/` mappa is számít: a .htaccess, a send.php és az
+      // ügynök-végpont nem a Next buildjéből jön, hanem a telepítés másolja
+      // a kimenet mellé. Ezek tehát élő címek, csak helyben még nincsenek ott.
+      const van = [ut, `${ut}.html`, `${ut.replace(/\/$/, '')}/index.html`].some(
+        (j) => existsSync(join(OUT, j)) || existsSync(join('server', j)),
       );
       if (!van) {
         halott++;
