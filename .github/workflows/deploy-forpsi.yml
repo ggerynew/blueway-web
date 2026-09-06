@@ -121,7 +121,7 @@ jobs:
       - name: A szerveroldali fájlok a feltöltendő mappába
         if: steps.gate.outputs.go == 'true'
         run: |
-          cp server/.htaccess server/send.php server/.user.ini out/
+          cp server/.htaccess server/send.php server/.user.ini server/agent.php out/
           # A bluewaytrade.us átmeneti oldala. A mappa ÖNMAGÁBAN teljes (HTML,
           # logó, ikon), hogy akkor is feltölthető legyen, ha a .us saját
           # webgyökeret kapott a tárhelyen — akkor ugyanez a mappa megy oda.
@@ -973,6 +973,36 @@ jobs:
           fi
           JSONV=$(curl -sS -o /dev/null --max-time 20 -w '%{http_code}' "https://$HOSZT/ai/termekek.json" 2>/dev/null || echo 000)
           [ "$JSONV" = "200" ] && echo "  /ai/termekek.json -> 200" || echo "::warning::Az /ai/termekek.json nem érhető el ($JSONV)."
+
+          # ——— Az ügynök-végpont: a weblap CSELEKVŐ rétege ————————————
+          # Nem elég, hogy a PHP fut: a négy eszköznek valódi adatot kell
+          # adnia. Ezért két igazi kérdést teszünk fel, és a VÁLASZ TARTALMÁT
+          # nézzük — egy üres vagy hibás JSON ugyanúgy 200-zal jönne.
+          echo "— ügynök-végpont —"
+          UV=$(curl -sS -o /tmp/agent-nevjegy.json --max-time 20 -w '%{http_code}' \
+               "https://$HOSZT/agent.php" 2>/dev/null || echo 000)
+          if [ "$UV" = "200" ] && grep -q 'alkatresz_kereses' /tmp/agent-nevjegy.json; then
+            echo "  /agent.php -> 200, a névjegy felsorolja az eszközöket"
+          else
+            echo "::warning::Az /agent.php névjegye nem jó ($UV): $(head -c 200 /tmp/agent-nevjegy.json 2>/dev/null)"
+          fi
+          # Alkatrészkeresés magyar szóval: ez egyszerre próbálja az adatfájl
+          # elérését, a gépszűrést és a magyar→angol szótárat.
+          DB=$(curl -sS --max-time 20 "https://$HOSZT/agent.php?tool=alkatresz_kereses&gep=SQUIX%204&q=nyomtatofej&limit=3" 2>/dev/null \
+               | tr ',' '\n' | sed -n 's/.*"talalat":[[:space:]]*\([0-9]*\).*/\1/p' | head -1)
+          if [ "${DB:-0}" -gt 0 ]; then
+            echo "  alkatresz_kereses(SQUIX 4, „nyomtatofej”) -> $DB találat"
+          else
+            echo "::warning::Az alkatrészkeresés nem adott találatot — az alkatreszek.json vagy a szótár nem érhető el."
+          fi
+          # MCP-kézfogás: a protokollos ajtó is nyitva van-e.
+          if curl -sS --max-time 20 -X POST "https://$HOSZT/agent.php" \
+               -H 'Content-Type: application/json' \
+               -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' 2>/dev/null | grep -q 'ajanlatkeres'; then
+            echo "  MCP tools/list -> a négy eszköz megvan"
+          else
+            echo "::warning::Az MCP tools/list nem a várt választ adta."
+          fi
 
           # ——— A Bing tulajdonjog-igazoló fájlja: a TARTALMA is stimmeljen ——
           # A 200-as állapot és a méret nem elég. A Bing a fájlban lévő

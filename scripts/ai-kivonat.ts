@@ -106,6 +106,33 @@ function llms(): string {
   }
   s.push(`- [Sitemap](${url('sitemap.xml')})`);
   s.push('');
+  // ——— A cselekvő réteg ————————————————————————————————————————
+  // A fenti fájlok OLVASHATÓK, de kérdezni nem lehet tőlük. Az ügynök-végpont
+  // erről szól: ugyanaz az adat, de kereshetően, és ajánlatot is fel lehet
+  // adni rajta. Azért áll ilyen elöl és ilyen részletesen, mert ez az egyetlen
+  // hely, ahonnan egy keresésből érkező ügynök megtudhatja, hogy létezik —
+  // a végpontot magától senki nem találja ki.
+  s.push('## Ügynök-végpont / Agent endpoint');
+  s.push('');
+  s.push(
+    'Ez a weblap kérdezhető is, nemcsak olvasható. A végpont két úton szólítható meg, ' +
+      'ugyanazzal a négy eszközzel. / This site can be queried, not just read.',
+  );
+  s.push('');
+  s.push(`- **MCP** (Model Context Protocol): \`POST ${url('agent.php')}\` — JSON-RPC 2.0`);
+  s.push(`- **Sima JSON / plain JSON**: \`GET ${url('agent.php')}?tool=<eszköz>&<paraméterek>\``);
+  s.push(`- Névjegy és eszközlista / capabilities: [${url('agent.php')}](${url('agent.php')})`);
+  s.push('');
+  s.push('Eszközök / tools:');
+  s.push('');
+  s.push(
+    '- `alkatresz_kereses` — alkatrész keresése géptípusra és/vagy cikkszámra. ' +
+      'Példa / example: `?tool=alkatresz_kereses&gep=SQUIX%204&q=nyomtatofej`',
+  );
+  s.push('- `termek_kereses` — a forgalmazott gépek között keres. `?tool=termek_kereses&kategoria=lezer-gravirozok`');
+  s.push('- `fogalom_kereses` — szakkifejezés magyarázata. `?tool=fogalom_kereses&q=Data%20Matrix`');
+  s.push('- `ajanlatkeres` — ajánlatkérés beküldése (csak POST, és csak ha a felhasználó kérte).');
+  s.push('');
   s.push('## Termékkategóriák / Categories');
   s.push('');
   for (const c of categories) {
