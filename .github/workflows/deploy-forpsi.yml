@@ -47,6 +47,10 @@ on:
         type: choice
         default: kihagy
         options: [kihagy, leltar, probafutas, vegrehajt]
+      ai_jelentes:
+        description: 'Jelentés: mely AI-robotok jártak a weblapon és mit olvastak'
+        type: boolean
+        default: false
       levelproba:
         description: 'Valódi próbalevelek küldése 7 és 8 MB csatolmánnyal az info@ címre'
         type: choice
@@ -163,6 +167,7 @@ jobs:
           WEB_ROOT: ${{ secrets.FORPSI_WEB_ROOT }}
           DELETE_EXTRA: ${{ inputs.delete_extra }}
           TAKARITAS: ${{ inputs.takaritas }}
+          AI_JELENTES: ${{ inputs.ai_jelentes }}
           # Csak a hibakereséshez: ha az SSH-gazdanév nem válaszol, kiderül,
           # hogy az FTP-é válaszol-e helyette. Magát a nevet nem írjuk ki.
           FTP_HOST_OSSZEVETES: ${{ secrets.FORPSI_FTP_HOST }}
@@ -355,6 +360,15 @@ jobs:
           if [ "${TAKARITAS:-kihagy}" != "kihagy" ]; then
             bash scripts/szerver-takaritas.sh "$TAKARITAS" "$CEL" "$PORT" "$SSH_USER@$HOST" || \
               JEGYZET "::warning::A takarítás nem futott végig — a fenti sorok megmondják, hol állt meg."
+          fi
+
+          # ——— Jelentés: jönnek-e egyáltalán az AI-robotok? ————————————
+          # Nincs olyan csatorna, ahová egy weblap bejelentkezhetne egy nyelvi
+          # modellnél — a kérdés tehát nem az, hogy „értesítettük-e őket",
+          # hanem hogy JÖNNEK-E. Ezt csak a szerver naplója mondja meg.
+          if [ "${AI_JELENTES:-false}" = "true" ]; then
+            bash scripts/ai-latogatok.sh "$CEL" "$PORT" "$SSH_USER@$HOST" || \
+              JEGYZET "::warning::Az AI-látogatói jelentés nem futott végig."
           fi
 
           rm -f ~/.ssh/id_deploy
